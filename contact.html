@@ -1,0 +1,4745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Techuilla Agency | Let's Start a Conversation</title>
+  <meta name="description" content="Start a conversation with Techuilla Agency. Creative technology, autonomous systems, conversion architecture, and high-impact digital experiences.">
+
+  <!-- Google Fonts: Inter, Archivo, Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Three.js and OBJ/MTL Loaders (Local, offline, zero latency) -->
+  <script src="three.min.js"></script>
+  <script src="MTLLoader.js"></script>
+  <script src="OBJLoader.js"></script>
+
+  <style>
+    /* ==========================================================================
+       1. DESIGN TOKENS & SYSTEM VARIABLES (Matching Hero Page Warm Cream Aesthetic)
+       ========================================================================== */
+    :root {
+      --bg-warm: #F7F6F2;
+      --bg-card: #FFFFFF;
+      --bg-surface: #FFFFFF;
+      --bg-surface-elevated: #FAF8F5;
+
+      --text-primary: #111111;
+      --text-secondary: #5E5E5E;
+      --text-muted: #8E8E8E;
+
+      --accent-orange: #FF6600;
+      --accent-orange-hover: #E05A00;
+      --color-orange: #F47732;
+      --accent-orange-glow: rgba(255, 102, 0, 0.22);
+
+      --border-subtle: rgba(0, 0, 0, 0.08);
+      --border-medium: rgba(0, 0, 0, 0.14);
+      --border-focus: rgba(255, 102, 0, 0.6);
+
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Archivo', 'Inter', sans-serif;
+      --font-mono: 'Space Grotesk', monospace;
+
+      --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-curtain: cubic-bezier(0.76, 0, 0.24, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg-warm);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+
+    body {
+      background: var(--bg-warm);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      line-height: 1.6;
+      position: relative;
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+
+    ::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+
+    /* Floating Minimal In-Page Orange Scroller Indicator (Visible ONLY when actively scrolling) */
+    .custom-scroll-indicator {
+      position: fixed;
+      top: 18px;
+      right: 6px;
+      bottom: 18px;
+      width: 4px;
+      pointer-events: none;
+      z-index: 99990;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .custom-scroll-indicator.is-active {
+      opacity: 1;
+    }
+
+    .custom-scroll-thumb {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 48px;
+      background: var(--accent-orange);
+      border-radius: 999px;
+      box-shadow: 0 0 10px rgba(255, 102, 0, 0.55);
+      will-change: transform;
+    }
+
+    /* Selection */
+    ::selection {
+      background: var(--accent-orange);
+      color: #000000;
+    }
+
+    /* Persistent Architectural Grid Lines (Exact Match to Hero Page) */
+    .global-grid-lines {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      background-image: 
+        linear-gradient(to right, rgba(0, 0, 0, 0.055) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.055) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+
+    .grid-v-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      height: 100%;
+    }
+
+    .grid-line-thin {
+      border-right: 1.2px solid rgba(0, 0, 0, 0.12);
+    }
+    .grid-line-thick {
+      border-right: 2px solid rgba(0, 0, 0, 0.20);
+    }
+    .grid-line-orange {
+      border-right: 1.5px solid rgba(255, 107, 44, 0.55);
+    }
+
+    /* ==========================================================================
+       2. CINEMATIC ORANGE PAGE TRANSITION OVERLAY (In & Out at Button / Logo Origin, >= 2.0s Total Duration)
+       ========================================================================== */
+    .page-transition-curtain {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #FF6600;
+      z-index: 9999999 !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1; /* Solid opaque orange - ZERO fade out! */
+      pointer-events: none;
+      visibility: hidden;
+      --wipe-x: calc(100% - 85px);
+      --wipe-y: 40px;
+      clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+      -webkit-clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+      transition: 
+        clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1),
+        -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1);
+      will-change: clip-path;
+      margin: 0;
+      padding: 0;
+    }
+
+    .page-transition-curtain.is-covering,
+    .page-transition-curtain.is-active {
+      visibility: visible;
+      pointer-events: auto;
+      clip-path: circle(160% at var(--wipe-x) var(--wipe-y));
+      -webkit-clip-path: circle(160% at var(--wipe-x) var(--wipe-y));
+    }
+
+    .page-transition-curtain.is-closing,
+    .page-transition-curtain.is-dissolving {
+      visibility: visible;
+      pointer-events: none;
+      clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+      -webkit-clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+    }
+
+    .transition-brand-box,
+    .page-transition-icon-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 20px;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .page-transition-logo {
+      width: 168px; /* Increased by 20% from 140px */
+      height: 168px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+      filter: brightness(0); /* Solid Pitch Black Techuilla Logo */
+      transform: scale(0.92);
+      transition: transform 1000ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .page-transition-curtain.is-covering .page-transition-logo,
+    .page-transition-curtain.is-active .page-transition-logo {
+      transform: scale(1);
+    }
+
+    .page-transition-text {
+      font-family: var(--font-sans);
+      font-size: 40px; /* Increased by 15% from 35px */
+      font-weight: 800;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: #000000; /* Solid Pitch Black Brand Text */
+      text-align: center;
+      display: block;
+      margin: 0 auto;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    /* ==========================================================================
+       3. TOP NAVBAR (Editorial Warm Cream Sticky Navigation)
+       ========================================================================== */
+    .site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 10005;
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      border-bottom: none !important;
+      box-shadow: none !important;
+      pointer-events: none;
+      transition: transform 0.4s ease;
+    }
+
+    body.menu-open .site-nav {
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      border-bottom: none !important;
+      box-shadow: none !important;
+    }
+
+    .nav-inner {
+      max-width: 1540px;
+      margin: 0 auto;
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: opacity 0.2s var(--ease-editorial);
+      pointer-events: auto;
+    }
+
+    .nav-brand:hover {
+      opacity: 0.85;
+    }
+
+    .nav-brand-logo {
+      height: 64px; /* 20% + 20% increased */
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .nav-brand-text {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 29px; /* 20% + 20% increased */
+      letter-spacing: -0.015em;
+      color: var(--text-primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      pointer-events: auto;
+    }
+
+    .btn-enquire {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      height: 46px;
+      padding: 0 19px;
+      background: var(--accent-orange);
+      color: #0A0A0A;
+      font-family: var(--font-sans);
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      text-decoration: none;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      box-shadow: 0 2px 12px rgba(255, 102, 0, 0.28);
+      transition: all 0.22s var(--ease-editorial);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .btn-enquire:hover {
+      background: var(--accent-orange-hover);
+      color: #000000;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(255, 102, 0, 0.45);
+    }
+
+    .btn-enquire-icon {
+      width: 17px;
+      height: 17px;
+      display: inline-block;
+      flex-shrink: 0;
+      transition: transform 0.22s var(--ease-editorial);
+    }
+
+    .btn-enquire:hover .btn-enquire-icon {
+      transform: rotate(-10deg) scale(1.08);
+    }
+
+    .btn-menu {
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      color: var(--text-primary);
+      border: 1.5px solid var(--border-medium);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+      padding: 0;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-menu:hover {
+      border-color: #111111;
+      background: rgba(244, 119, 50, 0.05) !important;
+      box-shadow: 0 0 16px rgba(244, 119, 50, 0.28), 0 2px 8px rgba(244, 119, 50, 0.16);
+    }
+
+    .menu-infinity-svg {
+      width: 24px;
+      height: 18px;
+      overflow: visible;
+      display: block;
+    }
+
+    .menu-morph-stroke {
+      fill: none;
+      stroke: var(--text-primary);
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.25s ease;
+    }
+
+    /* Menu hover while closed: lines turn orange, top line shifts slightly left, bottom line shifts slightly right */
+    .btn-menu:not(.is-open):not(.is-morphing):hover #menuStrokeTop {
+      transform: translateX(-3px);
+      stroke: var(--accent-orange) !important;
+    }
+
+    .btn-menu:not(.is-open):not(.is-morphing):hover #menuStrokeBottom {
+      transform: translateX(3px);
+      stroke: var(--accent-orange) !important;
+    }
+
+    .btn-menu.is-open #menuStrokeTop,
+    .btn-menu.is-open #menuStrokeBottom,
+    .btn-menu.is-morphing #menuStrokeTop,
+    .btn-menu.is-morphing #menuStrokeBottom {
+      transform: none !important;
+    }
+
+    /* ==========================================================================
+       4. FULLSCREEN MENU OVERLAY (100% Solid Opaque Background + Circular Wipe)
+       ========================================================================== */
+    #fullscreen-menu {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      /* 100% Solid opaque background - absolutely NO translucency or see-through */
+      background: linear-gradient(135deg, #FAF8F5 0%, #FAF0E6 45%, #FAD7BE 100%);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      --wipe-x: calc(100% - 54px);
+      --wipe-y: 44px;
+      /* Circular wipe originating from the menu button (spreads outward to 150%) */
+      clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+      -webkit-clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+      opacity: 1;
+      visibility: hidden;
+      pointer-events: none;
+      /* Snappy, fluid circular wipe transition (600ms) */
+      transition: 
+        clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        -webkit-clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        visibility 0s linear 600ms;
+      overflow: hidden;
+      will-change: clip-path;
+    }
+
+    /* Circular wipe opening starting from menu button and spreading across screen (600ms) */
+    #fullscreen-menu.is-open {
+      clip-path: circle(150% at var(--wipe-x) var(--wipe-y));
+      -webkit-clip-path: circle(150% at var(--wipe-x) var(--wipe-y));
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition: 
+        clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        -webkit-clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        visibility 0s linear 0s;
+    }
+
+    /* Symmetrical closing: circular wipe contracting back into menu button (600ms) */
+    #fullscreen-menu.is-closing {
+      clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+      -webkit-clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+      visibility: visible;
+      pointer-events: none;
+      transition: 
+        clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        -webkit-clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        visibility 0s linear 600ms;
+    }
+
+    #fullscreen-menu.is-closing .menu-header,
+    #fullscreen-menu.is-closing .reel-carousel-container,
+    #fullscreen-menu.is-closing .menu-nav-list li,
+    #fullscreen-menu.is-closing .menu-mini-brand-row,
+    #fullscreen-menu.is-closing .menu-enquiries-row,
+    #fullscreen-menu.is-closing .menu-socials-row {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+      transition: none !important;
+    }
+
+    /* Subtle Staggered Entrance for Menu Content */
+    .menu-header,
+    .reel-carousel-container,
+    .menu-nav-list li,
+    .menu-mini-brand-row,
+    .menu-enquiries-row,
+    .menu-socials-row {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #fullscreen-menu.is-open .menu-header {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 140ms;
+    }
+
+    #fullscreen-menu.is-open .reel-carousel-container {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 180ms;
+    }
+
+    #fullscreen-menu.is-open .menu-nav-list li:nth-child(1) {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 230ms;
+    }
+
+    #fullscreen-menu.is-open .menu-nav-list li:nth-child(2) {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 280ms;
+    }
+
+    #fullscreen-menu.is-open .menu-nav-list li:nth-child(3) {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 330ms;
+    }
+
+    #fullscreen-menu.is-open .menu-nav-list li:nth-child(4) {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 380ms;
+    }
+
+    #fullscreen-menu.is-open .menu-mini-brand-row {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 420ms;
+    }
+
+    #fullscreen-menu.is-open .menu-enquiries-row {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 460ms;
+    }
+
+    #fullscreen-menu.is-open .menu-socials-row {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 500ms;
+    }
+
+    .menu-header {
+      max-width: 1540px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 22px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-subtle);
+      z-index: 10;
+    }
+
+    .menu-close-btn {
+      background: transparent;
+      border: 1px solid var(--border-medium);
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .menu-close-btn:hover {
+      background: var(--text-primary);
+      color: #FFFFFF;
+    }
+
+    /* Menu Body Split: Left Rotating Reel Carousel + Right Floating Nav */
+    .menu-body-split {
+      flex: 1;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* LEFT SIDE: CONTINUOUS ROTATING REEL / FILM CAROUSEL */
+    .reel-carousel-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid var(--border-subtle);
+    }
+
+    /* Fixed Techuilla Logo at Extreme Left Center (+80% Size, +20% Width) */
+    .nav-extreme-left-logo-wrap {
+      position: absolute;
+      left: 32px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      width: auto;
+      height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      transition: transform 0.3s ease;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+    }
+
+    .nav-extreme-left-logo {
+      width: 164px;
+      height: 137px;
+      object-fit: fill;
+      display: block;
+      filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.16));
+    }
+
+    /* Large Rotating Reel Wheel shifted left by 20% to prevent cropping */
+    .reel-wheel {
+      position: absolute;
+      left: -14%;
+      top: 50%;
+      width: 980px;
+      height: 980px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      animation: continuousReelSpin 45s linear infinite;
+      will-change: transform;
+      pointer-events: auto;
+    }
+
+    .reel-wheel:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes continuousReelSpin {
+      0%   { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* Reel Image Panel Spokes (10 evenly spaced panels around the 360° circle at 36° increments) */
+    .reel-spoke {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      transform-origin: 0 0;
+    }
+
+    /* 10 Spokes positioned at 36deg increments */
+    .spoke-0 { transform: rotate(0deg); }
+    .spoke-1 { transform: rotate(36deg); }
+    .spoke-2 { transform: rotate(72deg); }
+    .spoke-3 { transform: rotate(108deg); }
+    .spoke-4 { transform: rotate(144deg); }
+    .spoke-5 { transform: rotate(180deg); }
+    .spoke-6 { transform: rotate(216deg); }
+    .spoke-7 { transform: rotate(252deg); }
+    .spoke-8 { transform: rotate(288deg); }
+    .spoke-9 { transform: rotate(324deg); }
+
+    /* Curated Reel Portfolio Cards (+10% Height: 284px, +15% Width: 364px, +15% Spacing: left 485px) */
+    .reel-panel-card {
+      position: absolute;
+      left: 485px; /* Radius distance from central pivot with balanced spacing */
+      top: -142px; /* Centered along spoke (284px / 2) */
+      width: 364px;
+      height: 284px;
+      background: #FFFFFF;
+      border-radius: 14px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      filter: none;
+      opacity: 1;
+      transition: transform 0.35s var(--ease-editorial), border-color 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .reel-panel-card:hover {
+      transform: scale(1.05);
+      border-color: var(--color-orange);
+      box-shadow: 0 20px 42px rgba(244, 119, 50, 0.25);
+    }
+
+    .reel-card-thumb {
+      width: 100%;
+      height: 206px;
+      background: #111111;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reel-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .reel-panel-card:hover .reel-card-img {
+      transform: scale(1.06);
+    }
+
+    /* Monospace pill badge for card number on thumbnail */
+    .reel-card-num-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: #FFFFFF;
+      background: rgba(15, 15, 15, 0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      letter-spacing: 0.04em;
+      transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+      z-index: 2;
+    }
+
+    .reel-panel-card:hover .reel-card-num-badge {
+      background: var(--color-orange);
+      border-color: var(--color-orange);
+      color: #FFFFFF;
+    }
+
+    /* Card info bar */
+    .reel-card-info {
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #FFFFFF;
+      flex: 1;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      gap: 8px;
+    }
+
+    .reel-card-meta-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .reel-card-title {
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .reel-card-niche-sub {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: #737373;
+      letter-spacing: 0.03em;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .reel-card-niche-val {
+      font-weight: 600;
+      color: var(--color-orange);
+    }
+
+    .reel-card-tag {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--color-orange);
+      background: rgba(244, 119, 50, 0.1);
+      border: 1px solid rgba(244, 119, 50, 0.22);
+      border-radius: 999px;
+      padding: 3px 9px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .reel-panel-card:hover .reel-card-tag {
+      background: var(--color-orange);
+      color: #FFFFFF;
+      border-color: var(--color-orange);
+    }
+
+    /* RIGHT SIDE: FLOATING NAV OPTIONS (25% REDUCED FONT, CENTERED IN RIGHT HALF) */
+    .menu-nav-right-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 48px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .menu-nav-inner {
+      width: 100%;
+      max-width: 580px;
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Centered in right side panel */
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    .menu-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+    }
+
+    .menu-nav-list li {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .menu-nav-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-family: var(--font-sans);
+      font-size: clamp(38px, 4.4vw, 60px);
+      font-weight: 800;
+      letter-spacing: -0.015em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: transform 0.3s var(--ease-editorial), color 0.25s ease;
+      position: relative;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .menu-nav-link .nav-text-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    /* Jackpot Screen Ladder Character Animation (Speed Lowered by 0.5s: 1.02s) */
+    .jackpot-char-slot {
+      display: inline-block;
+      overflow: hidden;
+      height: 1.15em;
+      vertical-align: bottom;
+      position: relative;
+    }
+
+    .jackpot-char-sizer {
+      display: inline-block;
+      opacity: 0;
+      visibility: hidden;
+      user-select: none;
+      pointer-events: none;
+      line-height: 1.15;
+    }
+
+    .jackpot-reel-ladder {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 400%;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(0);
+      /* Lowered speed by 0.5s: 1.02s duration for luxurious roll */
+      transition: transform 1.02s cubic-bezier(0.2, 0.95, 0.3, 1);
+      transition-delay: calc(var(--char-idx) * 0.045s);
+      will-change: transform;
+    }
+
+    /* Trigger jackpot roll on major nav options, social buttons, and business enquiries */
+    .menu-nav-link:hover .jackpot-reel-ladder,
+    .menu-channel-item:hover .jackpot-reel-ladder,
+    .menu-enquiries-btn:hover .jackpot-reel-ladder {
+      transform: translateY(-75%);
+    }
+
+    .jackpot-rung {
+      display: block;
+      height: 25%;
+      width: 100%;
+      line-height: 1.15;
+      text-align: center;
+    }
+
+    .jackpot-rung.target {
+      color: var(--color-orange);
+    }
+
+    /* Creative Signature Strikethrough Ribbon (Fluid Reference Path) */
+    .nav-creative-strikethrough {
+      position: absolute;
+      left: -12%;
+      width: 124%;
+      top: 50%;
+      height: 105%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      z-index: 10;
+      overflow: visible;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .nav-creative-strikethrough .stroke-cut {
+      fill: none;
+      stroke: var(--bg-warm);
+      stroke-width: 9.5px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 850;
+      stroke-dashoffset: 850;
+      transition: stroke-dashoffset 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-creative-strikethrough .stroke-ribbon {
+      fill: none;
+      stroke: rgba(244, 119, 50, 0.55);
+      stroke-width: 2.5px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 850;
+      stroke-dashoffset: 850;
+      transition: stroke-dashoffset 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Inclined Arrow Facing Top-Right (↗) */
+    .menu-nav-link .nav-arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(22px, 2.6vw, 36px);
+      color: var(--color-orange);
+      opacity: 0;
+      transform: translate(-8px, 8px) scale(0.6);
+      transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      margin-left: 8px;
+      line-height: 1;
+    }
+
+    /* Active State (e.g. Home when on homepage) */
+    .menu-nav-link.is-active {
+      color: var(--color-orange);
+    }
+
+    .menu-nav-link.is-active .nav-creative-strikethrough {
+      opacity: 1;
+    }
+
+    .menu-nav-link.is-active .nav-creative-strikethrough .stroke-cut,
+    .menu-nav-link.is-active .nav-creative-strikethrough .stroke-ribbon {
+      stroke-dashoffset: 0;
+    }
+
+    .menu-nav-link.is-active .nav-arrow {
+      opacity: 1;
+      transform: translate(0, 0) scale(1);
+    }
+
+    /* Hover State */
+    .menu-nav-link:hover {
+      transform: translateY(-2px);
+      color: var(--color-orange);
+    }
+
+    .menu-nav-link:hover .nav-creative-strikethrough {
+      opacity: 1;
+    }
+
+    .menu-nav-link:hover .nav-creative-strikethrough .stroke-cut,
+    .menu-nav-link:hover .nav-creative-strikethrough .stroke-ribbon {
+      stroke-dashoffset: 0;
+    }
+
+    .menu-nav-link:hover .nav-arrow {
+      opacity: 1;
+      transform: translate(0, 0) scale(1);
+    }
+
+    /* Static Techuilla Logo Icon in Navigation Menu (Static, 40% Larger, Centered directly above Business Enquiries) */
+    .menu-mini-brand-row {
+      margin-top: clamp(42px, 5vh, 60px);
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .menu-mini-brand {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      cursor: default;
+      pointer-events: none;
+      user-select: none;
+      padding: 0;
+      line-height: 0;
+    }
+
+    .menu-mini-logo {
+      height: 62px; /* Increased by another 40% from 44px */
+      width: auto;
+      object-fit: contain;
+      display: block;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* Business Enquiries Centered Row - directly below the centered logo (closer spacing) */
+    .menu-enquiries-row {
+      margin-top: clamp(8px, 1.2vh, 12px);
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .menu-enquiries-btn {
+      font-family: var(--font-sans);
+      font-size: clamp(16px, 1.3vw, 19px);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: none;
+      color: var(--text-primary);
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 6px 0 !important;
+      border-radius: 0 !important;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: transform 0.25s ease;
+      text-decoration: none;
+    }
+
+    .menu-enquiries-btn .nav-text-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .menu-enquiries-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    /* Four Social Links in a Single Row - Shifted down lower below Business Enquiries */
+    .menu-socials-row {
+      margin-top: clamp(24px, 2.8vh, 36px);
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: nowrap;
+    }
+
+    /* 20% Increased Social Buttons Font Size: clamp(15px, 1.25vw, 17px) */
+    .menu-channel-item {
+      font-family: var(--font-mono);
+      font-size: clamp(15px, 1.25vw, 17px);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      transition: color 0.25s ease;
+      text-decoration: none;
+    }
+
+    .menu-channel-item:hover {
+      color: var(--color-orange);
+    }
+
+    .menu-channel-sep {
+      color: var(--text-muted);
+      font-size: 14px;
+      opacity: 0.45;
+      user-select: none;
+    }
+
+
+
+    /* ==========================================================================
+       5. CONVERSATION INTRO HEADER (Single-Line Headline)
+       ========================================================================== */
+    .contact-hero-intro {
+      position: relative;
+      padding-top: 80px;
+      padding-bottom: 8px;
+      text-align: center;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    .contact-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(255, 102, 0, 0.08);
+      border: 1px solid rgba(255, 102, 0, 0.28);
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--accent-orange);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .contact-badge::before {
+      content: '';
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-orange);
+      box-shadow: 0 0 10px var(--accent-orange);
+    }
+
+    /* Headline in a single line */
+    .contact-title {
+      font-family: var(--font-sans);
+      font-size: clamp(1.8rem, 4.4vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      color: #111111;
+      white-space: nowrap; /* Single line guaranteed */
+      margin: 0 auto 8px;
+    }
+
+    .contact-subline {
+      font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+      color: var(--text-secondary);
+      max-width: 680px;
+      margin: 0 auto 10px;
+      line-height: 1.5;
+      font-weight: 400;
+    }
+
+    .scroll-prompt-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+
+    .scroll-mouse-icon {
+      width: 18px;
+      height: 28px;
+      border: 2px solid rgba(0, 0, 0, 0.22);
+      border-radius: 10px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      padding-top: 5px;
+    }
+
+    .scroll-wheel {
+      width: 2.5px;
+      height: 6px;
+      background: var(--color-orange);
+      border-radius: 2px;
+      animation: mouseScroll 1.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    }
+
+    @keyframes mouseScroll {
+      0% { transform: translateY(0); opacity: 1; }
+      70% { transform: translateY(8px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 0; }
+    }
+
+    /* ==========================================================================
+       6. PINNED 3D LAPTOP CONVERSATION STAGE
+       ========================================================================== */
+    .laptop-scroll-track {
+      position: relative;
+      height: 380vh; /* Deliberate, comfortable scroll length for 13 cadence notches */
+      width: 100%;
+      transition: height 0.3s ease;
+    }
+
+    .laptop-scroll-track.is-static {
+      height: 100vh !important;
+    }
+
+    .laptop-sticky-viewport {
+      position: sticky;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+    }
+
+    .laptop-scroll-track.is-static .laptop-sticky-viewport {
+      position: relative !important;
+      height: 100vh !important;
+      top: auto !important;
+    }
+
+    .laptop-scroll-track.is-static .conversation-progress-bar {
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    .laptop-scroll-track.is-static .scroll-hint-bar {
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    /* Three.js Canvas Container */
+    .laptop-3d-stage {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      cursor: grab;
+    }
+
+    .laptop-3d-stage:active {
+      cursor: grabbing;
+    }
+
+    /* Center Orange CTA Button Over Laptop Screen (Pops Up After Last Message When Scrolling Down) */
+    .laptop-screen-cta-overlay {
+      position: absolute;
+      top: 50%; /* Dead center of laptop screen */
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.4);
+      width: 380px;
+      height: 104px;
+      border-radius: 26px;
+      background: #FF6600;
+      border: none; /* NO WHITE BORDER */
+      box-shadow: 0 16px 44px rgba(255, 102, 0, 0.45);
+      cursor: pointer;
+      z-index: 60;
+      opacity: 0;
+      pointer-events: none;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      outline: none;
+    }
+
+    .laptop-screen-cta-overlay * {
+      pointer-events: none;
+    }
+
+    .laptop-screen-cta-overlay.is-active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, -50%) scale(1.0); /* Pops up with spring bounce */
+    }
+
+    .laptop-screen-cta-overlay:hover {
+      transform: translate(-50%, -50%) scale(1.06);
+      box-shadow: 0 22px 56px rgba(255, 102, 0, 0.65);
+    }
+
+    .laptop-screen-cta-overlay .cta-line-1 {
+      font-family: var(--font-mono);
+      font-size: 16px; /* +25% from 13px */
+      font-weight: 700;
+      color: #111111;
+      letter-spacing: 0.05em;
+      text-transform: lowercase;
+      line-height: 1.2;
+    }
+
+    .laptop-screen-cta-overlay .cta-line-2 {
+      font-family: var(--font-sans);
+      font-size: 25px; /* +25% from 20px */
+      font-weight: 800;
+      color: #000000;
+      letter-spacing: 0.04em;
+      text-transform: lowercase;
+      line-height: 1.2;
+    }
+
+    /* Side Progress Dots */
+    .conversation-progress-bar {
+      position: absolute;
+      right: 36px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .progress-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.16);
+      transition: all 0.3s var(--ease-editorial);
+    }
+
+    .progress-dot.is-active {
+      background: var(--accent-orange);
+      box-shadow: 0 0 10px var(--accent-orange);
+      transform: scale(1.4);
+    }
+
+    /* Interactive hint below laptop */
+    .scroll-hint-bar {
+      position: absolute;
+      bottom: 28px;
+      z-index: 10;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+      opacity: 0.8;
+      transition: opacity 0.3s ease;
+    }
+
+    /* ==========================================================================
+       7. CONTACT FORM SECTION (Transitions directly after conversation)
+       ========================================================================== */
+    .contact-form-section {
+      position: relative;
+      padding: 70px 24px 98px; /* 30% reduction from 140px bottom padding */
+      background: transparent;
+      z-index: 20;
+    }
+
+    .form-transition-divider {
+      max-width: 880px;
+      margin: 0 auto 36px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 20px; /* Enlarge by 80% from 11px */
+      font-weight: 800; /* Bold */
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .form-transition-divider::before,
+    .form-transition-divider::after {
+      content: '';
+      flex: 1;
+      height: 1.5px;
+      background: rgba(0, 0, 0, 0.14);
+    }
+
+    /* Appear-on-Scroll Animation for Contact Form Wrapper */
+    .contact-form-wrapper {
+      max-width: 880px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
+      padding: clamp(32px, 5vw, 60px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.05);
+      position: relative;
+      opacity: 0;
+      transform: translateY(60px) scale(0.97);
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .contact-form-wrapper.is-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .form-header {
+      margin-bottom: 40px;
+      text-align: left;
+    }
+
+    .form-headline {
+      font-family: var(--font-sans);
+      font-size: clamp(2.2rem, 4.2vw, 3.4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .form-subline {
+      font-size: clamp(1rem, 1.4vw, 1.18rem);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Form Inputs */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .form-col-full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-label {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .form-label .required-badge {
+      color: var(--accent-orange);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .form-label .optional-badge {
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      background: #FAF8F5;
+      border: 1.5px solid var(--border-medium);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      color: var(--text-primary);
+      transition: all 0.22s var(--ease-editorial);
+      outline: none;
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--accent-orange);
+      background: #FFFFFF;
+      box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.14);
+    }
+
+    .form-input.is-invalid,
+    .form-select.is-invalid,
+    .form-textarea.is-invalid {
+      border-color: #FF4444;
+      box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.16);
+    }
+
+    .form-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235E5E5E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 42px;
+      cursor: pointer;
+    }
+
+    .form-select option {
+      background: #FFFFFF;
+      color: #111111;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 130px;
+      line-height: 1.55;
+    }
+
+    .form-field-error {
+      font-size: 12px;
+      color: #FF5555;
+      display: none;
+      margin-top: 4px;
+    }
+
+    .form-field-error.is-active {
+      display: block;
+    }
+
+    /* ==========================================================================
+       CREATIVE SERVICE FLOWCHART (CORE BRANCH & INTERCONNECTED BUBBLES)
+       ========================================================================== */
+    .service-core-branch-wrapper {
+      position: relative;
+      z-index: 10;
+    }
+
+    .service-core-branch-wrapper.is-open {
+      z-index: 10005 !important;
+    }
+
+    /* Core Branch Input Box Trigger (NO flowchart badge, NO dropdown arrow) */
+    .service-trigger-core-branch {
+      width: 100%;
+      background: #FAF8F5;
+      border: 1.5px solid var(--border-medium);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      color: var(--text-primary);
+      transition: all 0.22s var(--ease-editorial);
+      outline: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-align: left;
+      user-select: none;
+      position: relative;
+      z-index: 9995;
+    }
+
+    .service-trigger-core-branch:hover {
+      border-color: var(--accent-orange);
+      background: #FFFFFF;
+    }
+
+    .service-trigger-core-branch.is-branch-active,
+    .service-trigger-core-branch:focus {
+      border-color: var(--accent-orange);
+      background: #FFFFFF;
+      box-shadow: 0 0 0 3.5px rgba(255, 102, 0, 0.18), 0 8px 24px rgba(255, 102, 0, 0.12);
+    }
+
+    .service-trigger-core-branch.is-invalid {
+      border-color: #FF4444;
+      box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.16);
+    }
+
+    .core-branch-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .core-branch-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.22);
+      flex-shrink: 0;
+      transition: all 0.25s ease;
+    }
+
+    .service-trigger-core-branch.is-branch-active .core-branch-dot {
+      background: var(--accent-orange);
+      box-shadow: 0 0 10px var(--accent-orange);
+      transform: scale(1.35);
+    }
+
+    .trigger-label {
+      color: var(--text-muted);
+      font-size: 15px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+
+    .trigger-label.has-selection {
+      color: #111111;
+      font-weight: 700;
+    }
+
+    /* Core branch status tag inside input box */
+    .core-branch-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--accent-orange);
+      background: rgba(255, 102, 0, 0.1);
+      border: 1px solid rgba(255, 102, 0, 0.28);
+      border-radius: 6px;
+      padding: 3px 8px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .service-trigger-core-branch.is-branch-active .core-branch-tag {
+      opacity: 1;
+    }
+
+    /* Transparent Backdrop click-catcher when branching tree is open (NO background box or dark overlay) */
+    .branch-backdrop {
+      position: fixed;
+      inset: 0;
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      z-index: 9990;
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s;
+    }
+
+    .branch-backdrop.is-active {
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+    }
+
+    /* Branching Tree Container Centered Around The Input Box (Main Branch) - NO Background Box */
+    .branching-tree-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.96);
+      transform-origin: center center;
+      width: 600px;
+      height: 380px;
+      background: transparent !important; /* No background box as requested */
+      border: none !important;
+      border-radius: 0;
+      padding: 0;
+      box-shadow: none !important;
+      z-index: 10000;
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transition: opacity 0.32s var(--ease-editorial), transform 0.32s var(--ease-editorial), visibility 0.32s;
+    }
+
+    .branching-tree-container.is-open {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .branching-tree-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    /* SVG Connecting Stems Radiating from Core Input Box to each Round Bubble */
+    .branching-svg-tree {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .branch-stem-path {
+      stroke: #FF6600;
+      stroke-width: 2.2;
+      stroke-dasharray: 6 4;
+      fill: none;
+      opacity: 0;
+    }
+
+    .branching-tree-container.is-open .branch-stem-path {
+      animation: drawBranchLine 0.5s ease forwards;
+      animation-delay: calc(var(--idx) * 0.12s);
+    }
+
+    @keyframes drawBranchLine {
+      0% {
+        opacity: 0;
+        stroke-dashoffset: 180;
+      }
+      50% {
+        opacity: 0.85;
+      }
+      100% {
+        opacity: 0.70;
+        stroke-dashoffset: 0;
+      }
+    }
+
+    /* 7 Interactive Circular Bubbles Rounded Around The Input Option */
+    .branching-bubbles-cluster {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Creamish Circles with Vibrant Orange Border and Crisp Typography */
+    .branch-bubble {
+      position: absolute;
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: #FAF8F5 !important; /* Same creamish colour as inputs */
+      border: 2px solid #FF6600 !important; /* Orange border */
+      box-shadow: 0 8px 24px rgba(255, 102, 0, 0.22), 0 3px 10px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6px;
+      cursor: pointer;
+      outline: none;
+      opacity: 0;
+      transform: scale(0.2);
+      transition: transform 0.25s var(--ease-editorial), border-color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
+      pointer-events: auto;
+      user-select: none;
+    }
+
+    /* Sequential 0.3s delay appearance as requested: one by one in 0.3s delay */
+    .branching-tree-container.is-open .branch-bubble {
+      animation: popFlowchartBubble 0.58s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      animation-delay: calc(var(--idx) * 0.3s);
+    }
+
+    @keyframes popFlowchartBubble {
+      0% {
+        opacity: 0;
+        transform: scale(0.2);
+      }
+      75% {
+        opacity: 1;
+        transform: scale(1.1);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1.0);
+      }
+    }
+
+    .branch-bubble:hover {
+      transform: scale(1.15) !important;
+      border-color: #FF6600 !important;
+      background: #FF6600 !important;
+      box-shadow: 0 0 32px rgba(255, 102, 0, 0.75), 0 10px 24px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    .branch-bubble.is-selected {
+      border-color: #FF6600 !important;
+      background: #FF6600 !important;
+      box-shadow: 0 0 26px rgba(255, 102, 0, 0.65) !important;
+    }
+
+    .bubble-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      color: #FF6600;
+      letter-spacing: 0.05em;
+      margin-bottom: 2px;
+      transition: color 0.2s ease;
+    }
+
+    .bubble-text {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 700;
+      color: #111111; /* Dark crisp text on cream background */
+      line-height: 1.22;
+      pointer-events: none;
+      transition: color 0.2s ease;
+    }
+
+    .branch-bubble:hover .bubble-num,
+    .branch-bubble.is-selected .bubble-num,
+    .branch-bubble:hover .bubble-text,
+    .branch-bubble.is-selected .bubble-text {
+      color: #FFFFFF !important;
+    }
+
+    .bubble-pulse {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1.5px solid #FF6600;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .branch-bubble:hover .bubble-pulse {
+      animation: bubblePulse 1.2s infinite ease-out;
+    }
+
+    @keyframes bubblePulse {
+      0% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(1.25); opacity: 0; }
+    }
+
+    @media (max-width: 768px) {
+      .branching-tree-container {
+        transform: translate(-50%, -50%) scale(0.85);
+      }
+      .branching-tree-container.is-open {
+        transform: translate(-50%, -50%) scale(0.90);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .branching-tree-container {
+        transform: translate(-50%, -50%) scale(0.68) !important;
+      }
+      .branching-tree-container.is-open {
+        transform: translate(-50%, -50%) scale(0.74) !important;
+      }
+    }
+
+    @media (max-width: 440px) {
+      .branching-tree-container {
+        transform: translate(-50%, -50%) scale(0.54) !important;
+      }
+      .branching-tree-container.is-open {
+        transform: translate(-50%, -50%) scale(0.58) !important;
+      }
+    }
+
+    /* ==========================================================================
+       BRANDED BUDGET CUSTOM DROPDOWN (INR ₹, SLIDE DOWNWARDS, CREAM TO ORANGE)
+       ========================================================================== */
+    .custom-budget-wrapper {
+      position: relative;
+    }
+
+    .custom-budget-trigger {
+      width: 100%;
+      background: #FAF8F5;
+      border: 1.5px solid var(--border-medium);
+      border-radius: 10px; /* Border radius as requested */
+      padding: 14px 18px;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      color: var(--text-primary);
+      transition: all 0.22s var(--ease-editorial);
+      outline: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+    }
+
+    .custom-budget-trigger:hover {
+      border-color: var(--accent-orange);
+      background: #FFFFFF;
+    }
+
+    .custom-budget-trigger:focus,
+    .custom-budget-trigger.is-open {
+      border-color: var(--accent-orange);
+      background: #FFFFFF;
+      box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.14);
+    }
+
+    .budget-trigger-label {
+      color: var(--text-muted);
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .budget-trigger-label.has-selection {
+      color: #111111;
+      font-weight: 700;
+    }
+
+    .budget-chevron {
+      color: #777777;
+      transition: transform 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .custom-budget-trigger.is-open .budget-chevron {
+      transform: rotate(180deg);
+      color: var(--accent-orange);
+    }
+
+    /* Custom Dropdown Menu with Border Radius & Slide Downwards Animation */
+    .custom-budget-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      width: 100%;
+      background: #FAF8F5; /* Creamish background initially */
+      border: 1.5px solid rgba(255, 102, 0, 0.45);
+      border-radius: 12px; /* Border radius to dropdown */
+      padding: 6px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12), 0 0 20px rgba(255, 102, 0, 0.08);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transform-origin: top;
+      transform: translateY(-12px);
+      transition: opacity 0.26s cubic-bezier(0.16, 1, 0.3, 1), transform 0.26s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.26s;
+    }
+
+    /* Slide downwards animation on open */
+    .custom-budget-menu.is-open {
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    /* Individual Budget Items */
+    .budget-menu-item {
+      padding: 12px 18px;
+      border-radius: 8px; /* Border radius */
+      margin: 3px 0;
+      background: #FAF8F5; /* Creamish background initially */
+      color: #111111;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-sans);
+      font-size: 14.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.18s ease, color 0.18s ease, transform 0.15s ease;
+      user-select: none;
+    }
+
+    /* Cascade slide downwards for options */
+    .custom-budget-menu.is-open .budget-menu-item {
+      animation: budgetItemSlideDown 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: calc(var(--item-idx) * 0.045s);
+    }
+
+    @keyframes budgetItemSlideDown {
+      0% {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* On hover: Background turns ORANGE (#FF6600), text turns WHITE (#FFFFFF) */
+    .budget-menu-item:hover {
+      background: #FF6600 !important;
+      color: #FFFFFF !important;
+    }
+
+    .budget-item-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--accent-orange);
+      transition: color 0.18s ease;
+    }
+
+    .budget-menu-item:hover .budget-item-tag {
+      color: #FFFFFF !important;
+      opacity: 0.92;
+    }
+
+    .budget-menu-item.is-selected {
+      background: #FF6600;
+      color: #FFFFFF;
+      font-weight: 700;
+    }
+
+    .budget-menu-item.is-selected .budget-item-tag {
+      color: #FFFFFF;
+    }
+
+    /* Short pop animation on click */
+    .budget-menu-item.pop-click {
+      animation: popSelect 0.26s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes popSelect {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* Submit Button */
+    .form-actions {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .btn-submit-enquiry {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      height: 60px;
+      background: var(--accent-orange);
+      color: #0A0A0A;
+      font-family: var(--font-sans);
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(255, 102, 0, 0.32);
+      transition: all 0.25s var(--ease-editorial);
+    }
+
+    .btn-submit-enquiry:hover:not(:disabled) {
+      background: var(--accent-orange-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(255, 102, 0, 0.48);
+    }
+
+    .btn-submit-enquiry:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .btn-arrow-icon {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.22s var(--ease-editorial);
+    }
+
+    .btn-submit-enquiry:hover:not(:disabled) .btn-arrow-icon {
+      transform: translateX(4px);
+    }
+
+    .spinner-icon {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2.5px solid rgba(0, 0, 0, 0.25);
+      border-top-color: #0A0A0A;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .btn-submit-enquiry.is-loading .spinner-icon {
+      display: inline-block;
+    }
+
+    .btn-submit-enquiry.is-loading .btn-arrow-icon {
+      display: none;
+    }
+
+    /* Success Card Overlay */
+    .form-success-card {
+      display: none;
+      text-align: center;
+      padding: 48px 24px;
+      background: #FFFFFF;
+      border: 1.5px solid var(--accent-orange);
+      border-radius: 18px;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.08);
+      animation: fadeInSuccess 0.4s var(--ease-editorial);
+    }
+
+    @keyframes fadeInSuccess {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-success-card.is-active {
+      display: block;
+    }
+
+    .success-check-badge {
+      width: 64px;
+      height: 64px;
+      background: rgba(255, 102, 0, 0.12);
+      color: var(--accent-orange);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      border: 1.5px solid var(--accent-orange);
+    }
+
+    .success-check-badge svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .success-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: #111111;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+
+    .success-desc {
+      font-size: 16px;
+      color: var(--text-secondary);
+      max-width: 520px;
+      margin: 0 auto 28px;
+      line-height: 1.6;
+    }
+
+    .btn-reset-form {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: #FAF8F5;
+      color: var(--text-primary);
+      border: 1px solid var(--border-medium);
+      border-radius: 8px;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-reset-form:hover {
+      border-color: var(--accent-orange);
+      color: var(--accent-orange);
+    }
+
+    /* Direct Contact Channels */
+    .direct-channels-row {
+      margin-top: 36px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .channel-pills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .channel-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-medium);
+      border-radius: 9999px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .channel-pill:hover {
+      border-color: var(--accent-orange);
+      color: var(--accent-orange);
+      transform: translateY(-1px);
+    }
+
+    /* Screen Reader Accessible Message Container */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ==========================================================================
+       8. UNIFIED BRAND ORANGE FOOTER
+       ========================================================================== */
+    .site-footer {
+      padding: 64px 0 44px 0;
+      background: #FF6600 !important; /* Unified Brand Orange Background */
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-container {
+      max-width: 1540px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+      padding-bottom: 48px;
+    }
+
+    .footer-brand-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .footer-brand-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #000000 !important;
+    }
+
+    .footer-brand-logo-wrap span {
+      font-family: var(--font-sans);
+      font-weight: 800;
+      font-size: 19px;
+      color: #000000 !important;
+      letter-spacing: -0.02em;
+    }
+
+    .footer-brand-logo-wrap img {
+      height: 36px;
+      width: auto;
+      object-fit: contain;
+      filter: brightness(0); /* Clean black logo on vibrant orange */
+    }
+
+    .footer-tagline {
+      font-size: 15px;
+      color: #1A1A1A;
+      max-width: 320px;
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    .footer-col-title {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #000000;
+      margin-bottom: 18px;
+    }
+
+    .footer-links-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-link {
+      font-size: 14.5px;
+      color: #1A1A1A;
+      text-decoration: none;
+      transition: color 0.2s ease, transform 0.2s ease;
+      display: inline-block;
+      font-weight: 500;
+    }
+
+    .footer-link:hover {
+      color: #FFFFFF !important;
+      transform: translateX(4px);
+    }
+
+    .footer-bottom-row {
+      max-width: 1540px;
+      margin: 32px auto 0 auto;
+      padding: 0 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: #222222;
+      font-weight: 500;
+      border-top: none;
+    }
+
+    .btn-back-to-top {
+      background: transparent;
+      border: none;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: #000000;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s ease, transform 0.2s ease;
+      padding: 0;
+    }
+
+    .btn-back-to-top:hover {
+      color: #FFFFFF;
+      transform: translateY(-2px);
+    }
+
+    /* ==========================================================================
+       9. RESPONSIVE MEDIA QUERIES & ACCESSIBILITY
+       ========================================================================== */
+    @media (max-width: 900px) {
+      .nav-inner {
+        padding: 14px 20px;
+      }
+      .contact-title {
+        font-size: clamp(1.4rem, 4vw, 2.2rem);
+      }
+      .footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 36px;
+      }
+      .menu-reel-left-col {
+        display: none;
+      }
+      .menu-nav-right-col {
+        width: 100%;
+        border-left: none;
+        padding: 30px 20px;
+      }
+      .nav-extreme-left-logo-wrap {
+        display: none;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .conversation-progress-bar {
+        right: 16px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .contact-hero-intro {
+        padding-top: 72px;
+        padding-bottom: 6px;
+      }
+      .contact-title {
+        font-size: clamp(1.2rem, 5.2vw, 1.8rem);
+      }
+      .contact-form-wrapper {
+        padding: 24px 18px;
+      }
+      .footer-container {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .footer-bottom-row {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .scroll-wheel {
+        animation: none;
+      }
+      .page-transition-curtain {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Minimal In-Page Orange Scroller Indicator (Visible ONLY when actively scrolling) -->
+  <div class="custom-scroll-indicator" id="customScrollIndicator" aria-hidden="true">
+    <div class="custom-scroll-thumb" id="customScrollThumb"></div>
+  </div>
+
+  <!-- Persistent Background Architectural Grid Lines (Exact Match to Hero Page) -->
+  <div class="global-grid-lines" aria-hidden="true">
+    <div class="grid-v-line grid-line-thin" style="left: 60px;"></div>
+    <div class="grid-v-line grid-line-thin" style="left: 240px;"></div>
+    <div class="grid-v-line grid-line-thick" style="left: 50%;"></div>
+    <div class="grid-v-line grid-line-orange" style="right: 240px;"></div>
+    <div class="grid-v-line grid-line-thin" style="right: 60px;"></div>
+  </div>
+
+  <!-- ==========================================================================
+       ORANGE TRANSITION CURTAIN (Opens smoothly within 1 second)
+       ========================================================================== -->
+  <div class="page-transition-curtain" id="pageTransitionCurtain" aria-hidden="true">
+    <div class="transition-brand-box page-transition-icon-wrap">
+      <img src="Techuilla_logo.png" alt="Techuilla Logo" class="page-transition-logo">
+      <span class="page-transition-text">Techuilla Agency</span>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       TOP NAVBAR
+       ========================================================================== -->
+  <header class="site-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand" aria-label="Techuilla Agency Home" id="navHomeBrand">
+        <img src="Techuilla_logo.png" alt="Techuilla Logo" class="nav-brand-logo">
+        <span class="nav-brand-text">Techuilla Agency</span>
+      </a>
+
+      <div class="nav-actions">
+        <a href="#contact-form" class="btn-enquire" id="navEnquireBtn">
+          <span>Enquire</span>
+          <svg class="btn-enquire-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+        </a>
+        <button class="btn-menu" id="open-menu-btn" aria-label="Open Navigation Menu">
+          <svg class="menu-infinity-svg" viewBox="0 0 28 20" aria-hidden="true">
+            <path class="menu-morph-stroke" id="menuStrokeTop" />
+            <path class="menu-morph-stroke" id="menuStrokeBottom" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       3. FULLSCREEN NAVIGATION OVERLAY (Identical to Index Page)
+       ========================================================================== -->
+  <div id="fullscreen-menu" aria-hidden="true">
+    <div class="menu-header" style="height: 78px; border-bottom: none; opacity: 0; pointer-events: none;"></div>
+
+    <div class="menu-body-split">
+      <!-- LEFT SIDE: CONTINUOUS ROTATING REEL / FILM CAROUSEL -->
+      <div class="reel-carousel-container">
+        <!-- Fixed Techuilla Logo at Extreme Left Center Pivot -->
+        <div class="nav-extreme-left-logo-wrap" aria-label="Techuilla Agency">
+          <img src="Techuilla_logo_extreme.png" alt="Techuilla Logo" class="nav-extreme-left-logo" />
+        </div>
+
+        <div class="reel-wheel" id="reelWheel">
+          <!-- 10 Spokes arranged around 360° circle at 36° increments with balanced spacing -->
+          <div class="reel-spoke spoke-0">
+            <a href="https://audioking.co.in/#home" target="_blank" rel="noopener noreferrer" class="reel-panel-card" data-card-idx="0">
+              <div class="reel-card-thumb">
+                <img src="card_audio_king.png" alt="Audio King Website" class="reel-card-img" />
+                <span class="reel-card-num-badge">01</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-meta-left">
+                  <span class="reel-card-title">Audio King Website</span>
+                  <span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Build</strong></span>
+                </div>
+                <span class="reel-card-tag">Build</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="reel-spoke spoke-1">
+            <a href="https://drive.google.com/file/d/18PrnXsRej_q7XqxTCMtUqSj-SEKbG0yA/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="reel-panel-card" data-card-idx="1">
+              <div class="reel-card-thumb">
+                <img src="card_kaali_mata.png" alt="Kaali mata AI teaser" class="reel-card-img" />
+                <span class="reel-card-num-badge">02</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-meta-left">
+                  <span class="reel-card-title">Kaali mata AI teaser</span>
+                  <span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Create</strong></span>
+                </div>
+                <span class="reel-card-tag">Create</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="reel-spoke spoke-2">
+            <a href="https://ramahairclinic.com/" target="_blank" rel="noopener noreferrer" class="reel-panel-card" data-card-idx="2">
+              <div class="reel-card-thumb">
+                <img src="card_rama_trichology.jpg" alt="Rama Trichology Branding" class="reel-card-img" />
+                <span class="reel-card-num-badge">03</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-meta-left">
+                  <span class="reel-card-title">Rama Trichology Branding</span>
+                  <span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Create</strong></span>
+                </div>
+                <span class="reel-card-tag">Create</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="reel-spoke spoke-3">
+            <a href="https://drive.google.com/file/d/1A3C36LeW2HgyrYftnewULgq4kOUs54oG/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="reel-panel-card" data-card-idx="3">
+              <div class="reel-card-thumb">
+                <img src="card_3d_product.png" alt="3D Product animation" class="reel-card-img" />
+                <span class="reel-card-num-badge">04</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-meta-left">
+                  <span class="reel-card-title">3D Product animation</span>
+                  <span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Create</strong></span>
+                </div>
+                <span class="reel-card-tag">Create</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="reel-spoke spoke-4">
+            <a href="https://healthstreak.in/" target="_blank" rel="noopener noreferrer" class="reel-panel-card" data-card-idx="4">
+              <div class="reel-card-thumb">
+                <img src="card_health_streak.png" alt="Health Streak Website" class="reel-card-img" />
+                <span class="reel-card-num-badge">05</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-meta-left">
+                  <span class="reel-card-title">Health Streak Website</span>
+                  <span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Build</strong></span>
+                </div>
+                <span class="reel-card-tag">Build</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="reel-spoke spoke-5">
+            <a href="https://audioking.co.in/#home" target="_blank" rel="noopener noreferrer" class="reel-panel-card" data-card-idx="5">
+              <div class="reel-card-thumb">
+                <img src="card_audio_king.png" alt="Audio King Website" class="reel-card-img" />
+                <span class="reel-card-num-badge">01</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-meta-left">
+                  <span class="reel-card-title">Audio King Website</span>
+                  <span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Build</strong></span>
+                </div>
+                <span class="reel-card-tag">Build</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="reel-spoke spoke-6">
+            <a href="https://drive.google.com/file/d/18PrnXsRej_q7XqxTCMtUqSj-SEKbG0yA/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="reel-panel-card" data-card-idx="6">
+              <div class="reel-card-thumb">
+                <img src="card_kaali_mata.png" alt="Kaali mata AI teaser" class="reel-card-img" />
+                <span class="reel-card-num-badge">02</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-meta-left">
+                  <span class="reel-card-title">Kaali mata AI teaser</span>
+                  <span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Create</strong></span>
+                </div>
+                <span class="reel-card-tag">Create</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="reel-spoke spoke-7">
+            <a href="https://ramahairclinic.com/" target="_blank" rel="noopener noreferrer" class="reel-panel-card" data-card-idx="7">
+              <div class="reel-card-thumb">
+                <img src="card_rama_trichology.jpg" alt="Rama Trichology Branding" class="reel-card-img" />
+                <span class="reel-card-num-badge">03</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-meta-left">
+                  <span class="reel-card-title">Rama Trichology Branding</span>
+                  <span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Create</strong></span>
+                </div>
+                <span class="reel-card-tag">Create</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="reel-spoke spoke-8">
+            <a href="https://drive.google.com/file/d/1A3C36LeW2HgyrYftnewULgq4kOUs54oG/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="reel-panel-card" data-card-idx="8">
+              <div class="reel-card-thumb">
+                <img src="card_3d_product.png" alt="3D Product animation" class="reel-card-img" />
+                <span class="reel-card-num-badge">04</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-meta-left">
+                  <span class="reel-card-title">3D Product animation</span>
+                  <span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Create</strong></span>
+                </div>
+                <span class="reel-card-tag">Create</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="reel-spoke spoke-9">
+            <a href="https://healthstreak.in/" target="_blank" rel="noopener noreferrer" class="reel-panel-card" data-card-idx="9">
+              <div class="reel-card-thumb">
+                <img src="card_health_streak.png" alt="Health Streak Website" class="reel-card-img" />
+                <span class="reel-card-num-badge">05</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-meta-left">
+                  <span class="reel-card-title">Health Streak Website</span>
+                  <span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Build</strong></span>
+                </div>
+                <span class="reel-card-tag">Build</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDE: FLOATING NAV OPTIONS (25% REDUCED FONT, 4 TARGET OPTIONS) -->
+      <div class="menu-nav-right-col">
+        <div class="menu-nav-inner">
+          <nav aria-label="Main Navigation">
+            <ul class="menu-nav-list">
+              <li>
+                <a href="index.html" class="menu-nav-link" data-section="home">
+                  <span class="nav-text-wrap">
+                    HOME
+                    <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
+                      <path class="stroke-cut" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                      <path class="stroke-ribbon" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                    </svg>
+                  </span>
+                  <span class="nav-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="index.html#services" class="menu-nav-link" data-section="services">
+                  <span class="nav-text-wrap">
+                    SERVICES
+                    <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
+                      <path class="stroke-cut" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                      <path class="stroke-ribbon" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                    </svg>
+                  </span>
+                  <span class="nav-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="index.html#work" class="menu-nav-link" data-section="work">
+                  <span class="nav-text-wrap">
+                    WORK
+                    <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
+                      <path class="stroke-cut" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                      <path class="stroke-ribbon" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                    </svg>
+                  </span>
+                  <span class="nav-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="index.html#about" class="menu-nav-link" data-section="about">
+                  <span class="nav-text-wrap">
+                    ABOUT
+                    <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
+                      <path class="stroke-cut" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                      <path class="stroke-ribbon" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                    </svg>
+                  </span>
+                  <span class="nav-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+          <!-- Row 2: Static Techuilla Logo Mark (40% Larger, Static & Non-Navigational, Centered directly above Business Enquiries) -->
+          <div class="menu-mini-brand-row">
+            <div class="menu-mini-brand" id="menuMiniBrandLogo" aria-hidden="true">
+              <img src="Techuilla_logo.png" alt="Techuilla Agency Logo" class="menu-mini-logo">
+            </div>
+          </div>
+
+          <!-- Row 3: Business Enquiries (Shifted lower down below mini logo) -->
+          <div class="menu-enquiries-row">
+            <div class="menu-enquiries-btn" id="menuEnquiriesBtn" role="button" tabindex="0">
+              <span class="nav-text-wrap enquiry-text">Business Enquiries</span>
+            </div>
+          </div>
+
+          <!-- Row 4: Four Social Links in a Single Row Below Business Enquiries -->
+          <div class="menu-socials-row" role="list">
+            <a href="https://www.instagram.com/techuilla.co/" target="_blank" rel="noopener noreferrer" class="menu-channel-item" role="listitem">
+              <span class="nav-text-wrap">Instagram</span>
+            </a>
+            <span class="menu-channel-sep" aria-hidden="true">·</span>
+            <a href="https://wa.me/917700014486" target="_blank" rel="noopener noreferrer" class="menu-channel-item" role="listitem">
+              <span class="nav-text-wrap">Whatsapp</span>
+            </a>
+            <span class="menu-channel-sep" aria-hidden="true">·</span>
+            <a href="#" target="_blank" rel="noopener noreferrer" class="menu-channel-item" role="listitem">
+              <span class="nav-text-wrap">Linkedin</span>
+            </a>
+            <span class="menu-channel-sep" aria-hidden="true">·</span>
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=techuilla.co@gmail.com&su=Service%20Enquiry%20-%20Techuilla%20Agency&body=Hello%20Techuilla%20Team%2C%0A%0AI%20came%20across%20your%20website%20and%20would%20like%20to%20enquire%20about%20your%20services.%0A%0A%2A%2AMy%20Details%2A%2A%0A-%20Name%3A%0A-%20Company%20/%20Brand%3A%0A-%20Contact%20Number%3A%0A%0A%2A%2AProject%20Details%2A%2A%0A-%20Service%20Required%3A%0A-%20Project%20Description%3A%0A-%20Estimated%20Budget%3A%0A-%20Expected%20Timeline%3A%0A%0APlease%20get%20back%20to%20me%20with%20the%20relevant%20details%20and%20next%20steps.%0A%0ALooking%20forward%20to%20hearing%20from%20you.%0A%0ABest%20regards%2C%0A%5BYour%20Name%5D" target="_blank" rel="noopener noreferrer" class="menu-channel-item" id="menuGmailLink" role="listitem">
+              <span class="nav-text-wrap">Gmail</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+  <!-- ==========================================================================
+       MAIN CONTENT WRAPPER
+       ========================================================================== -->
+  <main>
+    <!-- Section 1: Intro Header with Guaranteed Single-Line Title -->
+    <section class="contact-hero-intro">
+      <div class="contact-badge">DIRECT ENQUIRY CHANNEL</div>
+      <h1 class="contact-title">LET'S START A CONVERSATION.</h1>
+      <p class="contact-subline">Tell us what you're building. We'll figure out the rest together.</p>
+      
+      <div class="scroll-prompt-indicator" aria-hidden="true">
+        <span class="scroll-mouse-icon">
+          <span class="scroll-wheel"></span>
+        </span>
+        <span>SCROLL TO ADVANCE CONVERSATION</span>
+      </div>
+    </section>
+
+    <!-- Section 2: Pinned 3D Laptop Conversation Experience -->
+    <section class="laptop-scroll-track" id="laptopScrollTrack" aria-label="Interactive 3D Laptop Conversation">
+      <div class="laptop-sticky-viewport" id="laptopStickyViewport">
+        <!-- 3D Three.js WebGL Stage (Renders LowPolyLaptop) -->
+        <div class="laptop-3d-stage" id="laptop3dStage"></div>
+
+        <!-- Progress Step Dots -->
+        <div class="conversation-progress-bar" id="conversationProgressBar" aria-hidden="true">
+          <span class="progress-dot is-active" id="dot-0"></span>
+          <span class="progress-dot" id="dot-1"></span>
+          <span class="progress-dot" id="dot-2"></span>
+          <span class="progress-dot" id="dot-3"></span>
+          <span class="progress-dot" id="dot-4"></span>
+          <span class="progress-dot" id="dot-5"></span>
+        </div>
+
+        <!-- Center Orange CTA Button (Appears inside laptop when conversation completes) -->
+        <button class="laptop-screen-cta-overlay" id="laptopScreenCta" aria-label="Wanna be our next client? Tap here to open enquiry form">
+          <span class="cta-line-1">wanna be our next client?</span>
+          <span class="cta-line-2">tap here</span>
+        </button>
+
+        <!-- Subtle Bottom Hint -->
+        <div class="scroll-hint-bar" aria-hidden="true">
+          <span>↓ CONTINUE SCROLLING TO UNLOCK BRIEF & FORM</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Semantic Accessible Message Container for Screen Readers -->
+    <div class="sr-only" aria-live="polite">
+      <h2>Conversation Transcript:</h2>
+      <ol id="accessibleTranscriptList">
+        <li><strong>Potential Client:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. We're exploring a new project.</li>
+        <li><strong>Techuilla:</strong> Lorem ipsum dolor sit amet. We'd love to understand your vision and help bring it to life.</li>
+        <li><strong>Potential Client:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. We have a few ideas we'd like to discuss.</li>
+        <li><strong>Techuilla:</strong> Lorem ipsum dolor sit amet. Our team can help with strategy, design, development, and growth.</li>
+        <li><strong>Potential Client:</strong> Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut labore. What's the best way to get started?</li>
+        <li><strong>Techuilla:</strong> Lorem ipsum dolor sit amet. Tell us a little about your project using the form below, and let's take it forward.</li>
+      </ol>
+    </div>
+
+    <!-- Section 3: Transition to Contact Form Section -->
+    <section class="contact-form-section" id="contact-form">
+      <div class="form-transition-divider" aria-hidden="true">
+        <span>PROJECT BRIEF & ENQUIRY</span>
+      </div>
+
+      <div class="contact-form-wrapper">
+        <header class="form-header">
+          <h2 class="form-headline">LET'S MAKE IT HAPPEN.</h2>
+          <p class="form-subline">Share a few details about your project, and our team will get back to you.</p>
+        </header>
+
+        <!-- Enquiry Form -->
+        <form id="enquiryForm" novalidate>
+          <div class="form-grid">
+            <!-- Full Name (Required) -->
+            <div class="form-group">
+              <label for="fullName" class="form-label">
+                <span>Full Name</span>
+                <span class="required-badge">* Required</span>
+              </label>
+              <input type="text" id="fullName" name="fullName" class="form-input" placeholder="e.g. Elena Rostova" required autocomplete="name">
+              <span class="form-field-error" id="nameError">Please enter your full name.</span>
+            </div>
+
+            <!-- Work Email (Required) -->
+            <div class="form-group">
+              <label for="workEmail" class="form-label">
+                <span>Work Email</span>
+                <span class="required-badge">* Required</span>
+              </label>
+              <input type="email" id="workEmail" name="workEmail" class="form-input" placeholder="elena@company.com" required autocomplete="email">
+              <span class="form-field-error" id="emailError">Please enter a valid work email address.</span>
+            </div>
+
+            <!-- Company Name (Optional) -->
+            <div class="form-group">
+              <label for="companyName" class="form-label">
+                <span>Company or Brand Name</span>
+                <span class="optional-badge">Optional</span>
+              </label>
+              <input type="text" id="companyName" name="companyName" class="form-input" placeholder="e.g. Apex Dynamics" autocomplete="organization">
+            </div>
+
+            <!-- Service Required (Creative Core Branch Flowchart) -->
+            <div class="form-group service-core-branch-wrapper" id="serviceBranchWrapper">
+              <label for="serviceRequired" class="form-label">
+                <span>Service Required</span>
+                <span class="required-badge">* Required</span>
+              </label>
+              <!-- Hidden native select for form validation & submission -->
+              <select id="serviceRequired" name="serviceRequired" style="display: none;" required>
+                <option value="" disabled selected>Select a primary capability...</option>
+                <option value="Website Development">Website Development</option>
+                <option value="Application Development">Application Development</option>
+                <option value="AI Automation">AI Automation</option>
+                <option value="Branding & Graphic Design">Branding & Graphic Design</option>
+                <option value="Video Production & Animation">Video Production & Animation</option>
+                <option value="Digital Marketing">Digital Marketing</option>
+                <option value="Other">Other</option>
+              </select>
+
+              <!-- Interactive Core Branch Input Box (No flowchart badge, No dropdown arrow) -->
+              <div class="service-trigger-core-branch" id="serviceTriggerBtn" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-label="Select a primary capability">
+                <div class="core-branch-indicator">
+                  <span class="core-branch-dot" aria-hidden="true"></span>
+                  <span class="trigger-label" id="serviceTriggerLabel">Select a primary capability...</span>
+                </div>
+                <span class="core-branch-tag">CORE BRANCH</span>
+              </div>
+              <span class="form-field-error" id="serviceError">Please select a service required.</span>
+
+              <!-- Transparent Backdrop click-catcher when branching tree is open (no dark overlay) -->
+              <div class="branch-backdrop" id="branchBackdrop"></div>
+
+              <!-- Branching Tree Container Anchored Directly Around The Core Branch (NO background box) -->
+              <div class="branching-tree-container" id="branchingTreeContainer" aria-hidden="true">
+                <div class="branching-tree-inner">
+                  <!-- SVG Connector Lines Branching from Central Core Input Box to each Round Bubble -->
+                  <svg class="branching-svg-tree" id="branchingSvgTree" viewBox="0 0 600 380" preserveAspectRatio="none">
+                    <path class="branch-stem-path" style="--idx: 0;" d="M 180,165 C 160,130 135,100 120,109" />
+                    <path class="branch-stem-path" style="--idx: 1;" d="M 300,165 C 300,135 300,110 300,92" />
+                    <path class="branch-stem-path" style="--idx: 2;" d="M 420,165 C 440,130 465,100 480,109" />
+                    <path class="branch-stem-path" style="--idx: 3;" d="M 480,190 C 485,190 490,190 496,190" />
+                    <path class="branch-stem-path" style="--idx: 4;" d="M 390,215 C 405,240 420,255 430,271" />
+                    <path class="branch-stem-path" style="--idx: 5;" d="M 210,215 C 195,240 180,255 170,271" />
+                    <path class="branch-stem-path" style="--idx: 6;" d="M 120,190 C 115,190 110,190 104,190" />
+                  </svg>
+
+                  <!-- 7 Interconnected Circular Service Bubbles Rounded Around The Central Option -->
+                  <div class="branching-bubbles-cluster">
+                    <button type="button" class="branch-bubble" data-value="Website Development" style="--idx: 0; left: 76px; top: 21px;">
+                      <span class="bubble-num">01</span>
+                      <span class="bubble-text">Website<br>Development</span>
+                      <span class="bubble-pulse"></span>
+                    </button>
+
+                    <button type="button" class="branch-bubble" data-value="Application Development" style="--idx: 1; left: 256px; top: 4px;">
+                      <span class="bubble-num">02</span>
+                      <span class="bubble-text">Application<br>Development</span>
+                      <span class="bubble-pulse"></span>
+                    </button>
+
+                    <button type="button" class="branch-bubble" data-value="AI Automation" style="--idx: 2; left: 436px; top: 21px;">
+                      <span class="bubble-num">03</span>
+                      <span class="bubble-text">AI<br>Automation</span>
+                      <span class="bubble-pulse"></span>
+                    </button>
+
+                    <button type="button" class="branch-bubble" data-value="Branding & Graphic Design" style="--idx: 3; left: 496px; top: 146px;">
+                      <span class="bubble-num">04</span>
+                      <span class="bubble-text">Branding &amp;<br>Design</span>
+                      <span class="bubble-pulse"></span>
+                    </button>
+
+                    <button type="button" class="branch-bubble" data-value="Video Production & Animation" style="--idx: 4; left: 386px; top: 271px;">
+                      <span class="bubble-num">05</span>
+                      <span class="bubble-text">Video &amp;<br>Animation</span>
+                      <span class="bubble-pulse"></span>
+                    </button>
+
+                    <button type="button" class="branch-bubble" data-value="Digital Marketing" style="--idx: 5; left: 126px; top: 271px;">
+                      <span class="bubble-num">06</span>
+                      <span class="bubble-text">Digital<br>Marketing</span>
+                      <span class="bubble-pulse"></span>
+                    </button>
+
+                    <button type="button" class="branch-bubble" data-value="Other" style="--idx: 6; left: 16px; top: 146px;">
+                      <span class="bubble-num">07</span>
+                      <span class="bubble-text">Other<br>Inquiry</span>
+                      <span class="bubble-pulse"></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project Budget (Custom INR ₹ Dropdown with Slide Downwards) -->
+            <div class="form-group form-col-full custom-budget-wrapper" id="customBudgetWrapper">
+              <label for="projectBudget" class="form-label">
+                <span>Estimated Project Budget</span>
+                <span class="optional-badge">Flexible (INR ₹)</span>
+              </label>
+              <!-- Hidden native select for form submission -->
+              <select id="projectBudget" name="projectBudget" style="display: none;">
+                <option value="" selected>Select a budget range (flexible)...</option>
+                <option value="₹10,000 or below">₹10,000 or below</option>
+                <option value="₹10,000 - ₹25,000">₹10,000 – ₹25,000</option>
+                <option value="₹25,000 - ₹50,000">₹25,000 – ₹50,000</option>
+                <option value="₹50,000 - ₹1,00,000">₹50,000 – ₹1,00,000</option>
+                <option value="₹1,00,000+">₹1,00,000+</option>
+              </select>
+
+              <!-- Interactive Custom Trigger with Border Radius -->
+              <div class="custom-budget-trigger" id="customBudgetTrigger" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
+                <span class="budget-trigger-label" id="budgetTriggerLabel">Select a budget range (flexible)...</span>
+                <svg class="budget-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="m6 9 6 6 6-6"/>
+                </svg>
+              </div>
+
+              <!-- Sliding Downwards Dropdown Menu (Creamish -> Orange on hover) -->
+              <div class="custom-budget-menu" id="customBudgetMenu" role="listbox" aria-label="Estimated Project Budget">
+                <div class="budget-menu-item" role="option" data-value="₹10,000 or below" style="--item-idx: 0;">
+                  <span class="budget-item-tag">TIER 1</span>
+                  <span class="budget-item-text">₹10,000 or below</span>
+                </div>
+                <div class="budget-menu-item" role="option" data-value="₹10,000 - ₹25,000" style="--item-idx: 1;">
+                  <span class="budget-item-tag">TIER 2</span>
+                  <span class="budget-item-text">₹10,000 – ₹25,000</span>
+                </div>
+                <div class="budget-menu-item" role="option" data-value="₹25,000 - ₹50,000" style="--item-idx: 2;">
+                  <span class="budget-item-tag">TIER 3</span>
+                  <span class="budget-item-text">₹25,000 – ₹50,000</span>
+                </div>
+                <div class="budget-menu-item" role="option" data-value="₹50,000 - ₹1,00,000" style="--item-idx: 3;">
+                  <span class="budget-item-tag">TIER 4</span>
+                  <span class="budget-item-text">₹50,000 – ₹1,00,000 (1 Lakh)</span>
+                </div>
+                <div class="budget-menu-item" role="option" data-value="₹1,00,000+" style="--item-idx: 4;">
+                  <span class="budget-item-tag">TIER 5</span>
+                  <span class="budget-item-text">₹1,00,000+ (1 Lakh+)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project Details (Required Textarea) -->
+            <div class="form-group form-col-full">
+              <label for="projectDetails" class="form-label">
+                <span>Project Details</span>
+                <span class="required-badge">* Required</span>
+              </label>
+              <textarea id="projectDetails" name="projectDetails" rows="5" class="form-textarea" placeholder="Tell us about what you're building, key objectives, and any target timelines..." required></textarea>
+              <span class="form-field-error" id="detailsError">Please describe your project details (at least 15 characters).</span>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-submit-enquiry" id="submitEnquiryBtn">
+              <span class="btn-text">SEND YOUR ENQUIRY</span>
+              <svg class="btn-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+              <span class="spinner-icon" aria-hidden="true"></span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Success Confirmation Card with Direct WhatsApp Dispatch -->
+        <div class="form-success-card" id="formSuccessCard" role="alert" aria-live="polite">
+          <div class="success-check-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <h3 class="success-title">Enquiry Sent via WhatsApp</h3>
+          <p class="success-desc">
+            Your project brief has been formatted and opened directly in WhatsApp (+91 7700014486). A senior strategist from Techuilla will review your requirements and respond promptly.
+          </p>
+          <a href="https://wa.me/917700014486" id="btnOpenWhatsApp" target="_blank" rel="noopener noreferrer" class="btn-submit-enquiry" style="text-decoration: none; margin-bottom: 16px; background: #25D366; color: #FFFFFF; box-shadow: 0 8px 24px rgba(37, 211, 102, 0.35); gap: 10px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+            </svg>
+            <span>OPEN IN WHATSAPP</span>
+          </a>
+          <button type="button" class="btn-reset-form" id="btnResetForm">
+            <span>Send Another Message</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+              <path d="M3 3v5h5"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Direct Contact Channels -->
+        <div class="direct-channels-row">
+          <span>Prefer direct communication?</span>
+          <div class="channel-pills-list">
+            <a href="mailto:techuilla.co@gmail.com" class="channel-pill" id="directEmailPill">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              <span>techuilla.co@gmail.com</span>
+            </a>
+            <a href="https://wa.me/917700014486" target="_blank" rel="noopener noreferrer" class="channel-pill">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              <span>+91 7700014486</span>
+            </a>
+            <a href="https://www.instagram.com/techuilla.co/" target="_blank" rel="noopener noreferrer" class="channel-pill">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+              <span>@techuilla.co</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+
+  <!-- ==========================================================================
+       MINIMAL PREMIUM FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-brand-col">
+        <a href="index.html" class="footer-brand-logo-wrap">
+          <img src="Techuilla_logo.png" alt="Techuilla Agency Logo" style="height: 36px; width: auto; object-fit: contain;">
+          <span style="font-family: var(--font-sans); font-weight: 700; font-size: 18px; color: var(--text-primary);">Techuilla Agency</span>
+        </a>
+        <p class="footer-tagline">
+          Creative Technology & Digital Marketing Agency. Turning ambitious ideas into high-impact systems.
+        </p>
+      </div>
+
+      <div>
+        <div class="footer-col-title">NAVIGATION</div>
+        <ul class="footer-links-list">
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="index.html#services" class="footer-link">Services</a></li>
+          <li><a href="index.html#work" class="footer-link">Selected Work</a></li>
+          <li><a href="index.html#about" class="footer-link">Agency Philosophy</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">CAPABILITIES</div>
+        <ul class="footer-links-list">
+          <li><a href="index.html#services" class="footer-link">Headless Commerce</a></li>
+          <li><a href="index.html#services" class="footer-link">Full-Stack Web & Mobile</a></li>
+          <li><a href="index.html#services" class="footer-link">AI & Predictive Telemetry</a></li>
+          <li><a href="index.html#services" class="footer-link">Brand Identity & 3D</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">CONTACT</div>
+        <ul class="footer-links-list">
+          <li><a href="mailto:techuilla.co@gmail.com" class="footer-link">techuilla.co@gmail.com</a></li>
+          <li><a href="tel:+917700014486" class="footer-link">+91 7700014486</a></li>
+          <li><span class="footer-link" style="color: var(--text-muted);">San Francisco · Mumbai · London</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom-row">
+      <span>© 2026 Techuilla Agency. All rights reserved.</span>
+      <button class="btn-back-to-top" id="btnBackToTop" aria-label="Back to Top">
+        BACK TO TOP ↑
+      </button>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       CONVERSATION ENGINE & 3D LAPTOP INTERACTIVE CONTROLLER
+       ========================================================================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ------------------------------------------------------------------------
+         1. UNIFIED CINEMATIC ORANGE TRANSITION ENGINE (>= 2.0s Duration)
+         ------------------------------------------------------------------------ */
+      const curtain = document.getElementById('pageTransitionCurtain');
+
+      function setTransitionOrigin(el, overlay) {
+        let x = window.innerWidth - 85;
+        let y = 40;
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          x = rect.left + rect.width / 2;
+          y = rect.top + rect.height / 2;
+        }
+        if (overlay) {
+          overlay.style.setProperty('--wipe-x', `${Math.round(x)}px`);
+          overlay.style.setProperty('--wipe-y', `${Math.round(y)}px`);
+        }
+        return { x: Math.round(x), y: Math.round(y) };
+      }
+
+      function closeCurtainAt(targetEl, callback) {
+        if (!curtain) {
+          if (callback) callback();
+          return;
+        }
+        setTransitionOrigin(targetEl, curtain);
+
+        // Close back into the target element over 1000ms with ZERO fade-out!
+        requestAnimationFrame(() => {
+          curtain.style.transition = 'clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1), -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1)';
+          curtain.classList.remove('is-covering', 'is-active');
+          curtain.classList.add('is-closing');
+          setTimeout(() => {
+            curtain.style.display = 'none';
+            curtain.classList.remove('is-closing');
+            if (callback) callback();
+          }, 1050);
+        });
+      }
+
+      // Check arrival parameters from transition
+      const urlParams = new URLSearchParams(window.location.search);
+      const transitionType = urlParams.get('transition');
+
+      if (curtain) {
+        // Start 100% solid covered
+        curtain.style.display = 'flex';
+        curtain.style.transition = 'none';
+        curtain.classList.add('is-covering');
+        curtain.classList.remove('is-closing', 'is-dissolving');
+
+        // As requested: as transition closes, it closes keeping the Techuilla logo at the top left as the center medium to close
+        const topNavLogo = document.querySelector('.nav-brand-logo') || document.querySelector('.nav-brand') || document.getElementById('navHomeBrand');
+        setTransitionOrigin(topNavLogo, curtain);
+        void curtain.offsetWidth;
+
+        // Perform smooth 1000ms contraction into top-left Techuilla logo!
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            const logoTarget = document.querySelector('.nav-brand-logo') || document.querySelector('.nav-brand') || document.getElementById('navHomeBrand');
+            closeCurtainAt(logoTarget);
+          }, 80);
+        });
+      }
+
+      // Clean up URL without reload
+      if (window.history && window.history.replaceState && transitionType) {
+        const cleanUrl = window.location.pathname + window.location.hash;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+
+      // Handle Browser Back / Forward Navigation (bfcache)
+      window.addEventListener('pageshow', (e) => {
+        if (curtain) {
+          const navBrand = document.querySelector('.nav-brand') || document.getElementById('navHomeBrand');
+          closeCurtainAt(navBrand);
+        }
+      });
+
+      window.addEventListener('popstate', () => {
+        if (curtain) {
+          const navBrand = document.querySelector('.nav-brand') || document.getElementById('navHomeBrand');
+          closeCurtainAt(navBrand);
+        }
+      });
+
+      // Navigate back to home with the orange transition (opens from logo, closes at logo)
+      function triggerBackToHomeTransition(e) {
+        if (e) e.preventDefault();
+
+        // Immediately dismiss and hide fullscreen menu so it NEVER flashes during transition
+        if (fullscreenMenu) {
+          isMenuCurrentlyOpen = false;
+          fullscreenMenu.classList.remove('is-open', 'is-closing');
+          fullscreenMenu.style.display = '';
+          fullscreenMenu.style.visibility = 'hidden';
+          fullscreenMenu.style.pointerEvents = 'none';
+          fullscreenMenu.setAttribute('aria-hidden', 'true');
+          document.body.classList.remove('menu-open');
+          document.body.style.overflow = '';
+          if (openMenuBtn) {
+            openMenuBtn.classList.remove('is-open');
+            openMenuBtn.setAttribute('aria-label', 'Open Navigation Menu');
+          }
+          if (typeof animateMenuMorph === 'function') animateMenuMorph(0, 0);
+        }
+
+        if (!curtain) {
+          window.location.href = 'index.html?transition=logo';
+          return;
+        }
+
+        const logoEl = document.querySelector('.nav-brand') || document.getElementById('navHomeBrand');
+        const origin = setTransitionOrigin(logoEl, curtain);
+
+        curtain.style.display = 'flex';
+        curtain.style.transition = 'none';
+        curtain.classList.remove('is-closing', 'is-dissolving');
+        curtain.classList.remove('is-covering', 'is-active');
+        void curtain.offsetWidth;
+
+        // Open outward from logo over 1000ms
+        curtain.style.transition = 'clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1), -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1)';
+        curtain.classList.add('is-covering');
+
+        setTimeout(() => {
+          window.location.href = `index.html?transition=logo&x=${origin.x}&y=${origin.y}`;
+        }, 1000);
+      }
+
+      const navHomeBrand = document.getElementById('navHomeBrand');
+      if (navHomeBrand) {
+        navHomeBrand.addEventListener('click', triggerBackToHomeTransition);
+      }
+
+      /* ------------------------------------------------------------------------
+         1B. FULLSCREEN NAVIGATION MENU ENGINE (SVG MORPH + REEL + JACKPOT)
+         ------------------------------------------------------------------------ */
+      const openMenuBtn = document.getElementById('open-menu-btn') || document.getElementById('openMenuBtn');
+      const closeMenuBtn = document.getElementById('close-menu-btn');
+      const fullscreenMenu = document.getElementById('fullscreen-menu');
+      const menuLinks = document.querySelectorAll('.menu-nav-link');
+      const menuStrokeTop = document.getElementById('menuStrokeTop');
+      const menuStrokeBottom = document.getElementById('menuStrokeBottom');
+
+      // Bezier control coordinates for Hamburger -> Infinity -> Clean X
+      const lineTop    = [4, 6,   9, 6,   19, 6,   24, 6,   24, 6,   24, 6,   24, 6];
+      const lineBottom = [4, 14,  9, 14,  19, 14,  24, 14,  24, 14,  24, 14,  24, 14];
+      const infTop    = [14, 10,  18, 5,   25.5, 6,  25.5, 10,  25.5, 14,  18, 15,  14, 10];
+      const infBottom = [14, 10,  10, 15,  2.5, 14,  2.5, 10,   2.5, 6,   10, 5,   14, 10];
+      const xTop    = [6, 4,   10, 7,   18, 13,  22, 16,  22, 16,  22, 16,  22, 16];
+      const xBottom = [6, 16,  10, 13,  18, 7,   22, 4,   22, 4,   22, 4,   22, 4];
+
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      function interpolateCoords(arrA, arrB, t) { return arrA.map((v, i) => lerp(v, arrB[i], t)); }
+      function toPathD(coords) {
+        return `M ${coords[0].toFixed(2)},${coords[1].toFixed(2)} C ${coords[2].toFixed(2)},${coords[3].toFixed(2)} ${coords[4].toFixed(2)},${coords[5].toFixed(2)} ${coords[6].toFixed(2)},${coords[7].toFixed(2)} C ${coords[8].toFixed(2)},${coords[9].toFixed(2)} ${coords[10].toFixed(2)},${coords[11].toFixed(2)} ${coords[12].toFixed(2)},${coords[13].toFixed(2)}`;
+      }
+      function easeCubic(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+
+      let menuMorphT = 0;
+      let menuMorphTargetT = 0;
+      let menuMorphAnimId = null;
+      let isMenuCurrentlyOpen = false;
+
+      function renderMenuMorph(t) {
+        if (!menuStrokeTop || !menuStrokeBottom || !openMenuBtn) return;
+        let coordsTop, coordsBottom;
+        if (t <= 0.5) {
+          const localT = t / 0.5;
+          coordsTop = interpolateCoords(lineTop, infTop, localT);
+          coordsBottom = interpolateCoords(lineBottom, infBottom, localT);
+        } else {
+          const localT = (t - 0.5) / 0.5;
+          coordsTop = interpolateCoords(infTop, xTop, localT);
+          coordsBottom = interpolateCoords(infBottom, xBottom, localT);
+        }
+        menuStrokeTop.setAttribute('d', toPathD(coordsTop));
+        menuStrokeBottom.setAttribute('d', toPathD(coordsBottom));
+        openMenuBtn.style.backgroundColor = '';
+        if (isMenuCurrentlyOpen) {
+          openMenuBtn.style.borderColor = '#111111';
+          menuStrokeTop.style.stroke = '#FF6B2C';
+          menuStrokeBottom.style.stroke = '#FF6B2C';
+        } else {
+          openMenuBtn.style.borderColor = '';
+          menuStrokeTop.style.stroke = '';
+          menuStrokeBottom.style.stroke = '';
+        }
+      }
+
+      const MORPH_DURATION = 600;
+      let morphStartTime = null;
+      let morphStartT = 0;
+
+      function animateMenuMorph(targetT, customDuration = MORPH_DURATION) {
+        menuMorphTargetT = targetT;
+        morphStartT = menuMorphT;
+        morphStartTime = performance.now();
+        if (menuMorphAnimId) cancelAnimationFrame(menuMorphAnimId);
+        if (openMenuBtn) openMenuBtn.classList.add('is-morphing');
+
+        function morphStep(now) {
+          const elapsed = now - morphStartTime;
+          const rawProgress = Math.min(1, elapsed / customDuration);
+          const eased = easeCubic(rawProgress);
+          menuMorphT = lerp(morphStartT, menuMorphTargetT, eased);
+          renderMenuMorph(menuMorphT);
+
+          if (rawProgress < 1) {
+            menuMorphAnimId = requestAnimationFrame(morphStep);
+          } else {
+            menuMorphT = menuMorphTargetT;
+            renderMenuMorph(menuMorphT);
+            menuMorphAnimId = null;
+            if (openMenuBtn) openMenuBtn.classList.remove('is-morphing');
+          }
+        }
+        menuMorphAnimId = requestAnimationFrame(morphStep);
+      }
+
+      renderMenuMorph(0);
+
+      // Jackpot hover animation
+      const JACKPOT_SYMBOLS = ['7', 'X', '9', 'K', 'Q', 'J', '8', '3', 'Z', 'W', 'V'];
+      const jackpotTargets = document.querySelectorAll('.menu-nav-link, .menu-channel-item, .menu-enquiries-btn');
+      
+      jackpotTargets.forEach(targetEl => {
+        const textWrap = targetEl.querySelector('.nav-text-wrap');
+        if (!textWrap) return;
+        const strikethrough = textWrap.querySelector('.nav-strikethrough, .nav-creative-strikethrough');
+        let rawText = '';
+        textWrap.childNodes.forEach(node => {
+          if (node.nodeType === Node.TEXT_NODE) rawText += node.nodeValue;
+        });
+        rawText = rawText.trim();
+        if (!rawText) return;
+
+        textWrap.innerHTML = '';
+        const chars = rawText.split('');
+        chars.forEach((char, idx) => {
+          if (char === ' ') {
+            const spaceSlot = document.createElement('span');
+            spaceSlot.className = 'jackpot-char-slot jackpot-char-space';
+            spaceSlot.innerHTML = '&nbsp;';
+            spaceSlot.style.display = 'inline-block';
+            spaceSlot.style.width = '0.38em';
+            textWrap.appendChild(spaceSlot);
+            return;
+          }
+          const slot = document.createElement('span');
+          slot.className = 'jackpot-char-slot';
+          slot.style.setProperty('--char-idx', idx);
+          const isUpper = char === char.toUpperCase() && char !== char.toLowerCase();
+          const syms = isUpper ? ['7', 'X', 'K', 'Q', 'Z'] : ['7', 'x', 'k', 's', 'z'];
+          const r1 = syms[Math.floor(Math.random() * syms.length)];
+          const r2 = syms[Math.floor(Math.random() * syms.length)];
+
+          slot.innerHTML = `
+            <span class="jackpot-char-sizer" aria-hidden="true">${char}</span>
+            <span class="jackpot-reel-ladder">
+              <span class="jackpot-rung original">${char}</span>
+              <span class="jackpot-rung rung-rand-1">${r1}</span>
+              <span class="jackpot-rung rung-rand-2">${r2}</span>
+              <span class="jackpot-rung target">${char}</span>
+            </span>
+          `;
+          textWrap.appendChild(slot);
+        });
+
+        if (strikethrough) textWrap.appendChild(strikethrough);
+
+        targetEl.addEventListener('mouseenter', () => {
+          const rand1Elements = textWrap.querySelectorAll('.rung-rand-1');
+          const rand2Elements = textWrap.querySelectorAll('.rung-rand-2');
+          let ticks = 0;
+          const interval = setInterval(() => {
+            ticks++;
+            rand1Elements.forEach(el => {
+              el.textContent = JACKPOT_SYMBOLS[Math.floor(Math.random() * JACKPOT_SYMBOLS.length)];
+            });
+            rand2Elements.forEach(el => {
+              el.textContent = JACKPOT_SYMBOLS[Math.floor(Math.random() * JACKPOT_SYMBOLS.length)];
+            });
+            if (ticks > 8) clearInterval(interval);
+          }, 50);
+        });
+      });
+
+      function updateMenuWipeOrigin() {
+        const btn = document.getElementById('open-menu-btn') || document.getElementById('openMenuBtn');
+        if (btn && fullscreenMenu) {
+          const rect = btn.getBoundingClientRect();
+          const x = Math.round(rect.left + rect.width / 2);
+          const y = Math.round(rect.top + rect.height / 2);
+          fullscreenMenu.style.setProperty('--wipe-x', `${x}px`);
+          fullscreenMenu.style.setProperty('--wipe-y', `${y}px`);
+        }
+      }
+
+      function toggleMenu() {
+        if (fullscreenMenu && fullscreenMenu.classList.contains('is-open')) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      }
+
+      function openMenu() {
+        if (fullscreenMenu) {
+          isMenuCurrentlyOpen = true;
+          updateMenuWipeOrigin();
+          fullscreenMenu.classList.remove('is-closing');
+          fullscreenMenu.classList.add('is-open');
+          fullscreenMenu.setAttribute('aria-hidden', 'false');
+          if (openMenuBtn) {
+            openMenuBtn.classList.add('is-open');
+            openMenuBtn.setAttribute('aria-label', 'Close Navigation Menu');
+          }
+          animateMenuMorph(1.0, 600);
+          document.body.classList.add('menu-open');
+          document.body.style.overflow = 'hidden';
+        }
+      }
+
+      function closeMenu() {
+        if (!fullscreenMenu || !isMenuCurrentlyOpen) return;
+        isMenuCurrentlyOpen = false;
+        updateMenuWipeOrigin();
+        if (openMenuBtn) {
+          openMenuBtn.classList.remove('is-open');
+          openMenuBtn.setAttribute('aria-label', 'Open Navigation Menu');
+        }
+        fullscreenMenu.classList.remove('is-open');
+        fullscreenMenu.classList.add('is-closing');
+        fullscreenMenu.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('menu-open');
+        document.body.style.overflow = '';
+        animateMenuMorph(0, 600);
+        setTimeout(() => {
+          if (!isMenuCurrentlyOpen) {
+            fullscreenMenu.classList.remove('is-closing');
+          }
+        }, 600);
+      }
+
+      updateMenuWipeOrigin();
+      window.addEventListener('resize', updateMenuWipeOrigin);
+
+      if (openMenuBtn) openMenuBtn.addEventListener('click', toggleMenu);
+      if (closeMenuBtn) closeMenuBtn.addEventListener('click', closeMenu);
+
+      menuLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          const section = link.getAttribute('data-section');
+          if (section === 'home') {
+            triggerBackToHomeTransition(e);
+          } else {
+            closeMenu();
+          }
+        });
+      });
+
+      const reelLogo = document.querySelector('.nav-extreme-left-logo-wrap');
+      if (reelLogo) {
+        reelLogo.style.cursor = 'pointer';
+        reelLogo.addEventListener('click', (e) => {
+          triggerBackToHomeTransition(e);
+        });
+      }
+
+      const menuEnquiriesBtn = document.getElementById('menuEnquiriesBtn');
+      if (menuEnquiriesBtn) {
+        menuEnquiriesBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          closeMenu();
+          const formTarget = document.getElementById('contact-form');
+          if (formTarget) {
+            formTarget.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      }
+
+      const menuGmailLink = document.getElementById('menuGmailLink');
+      if (menuGmailLink) {
+        menuGmailLink.addEventListener('click', (e) => {
+          const subject = "Service Enquiry - Techuilla Agency";
+          const body = `Hello Techuilla Team,
+
+I came across your website and would like to enquire about your services.
+
+**My Details**
+- Name:
+- Company / Brand:
+- Contact Number:
+
+**Project Details**
+- Service Required:
+- Project Description:
+- Estimated Budget:
+- Expected Timeline:
+
+Please get back to me with the relevant details and next steps.
+
+Looking forward to hearing from you.
+
+Best regards,
+[Your Name]`;
+          const webUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=techuilla.co@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+          window.open(webUrl, '_blank', 'noopener,noreferrer');
+          e.preventDefault();
+        });
+      }
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && fullscreenMenu && fullscreenMenu.classList.contains('is-open')) {
+          closeMenu();
+        }
+      });
+
+      /* ------------------------------------------------------------------------
+         2. STRUCTURED CONVERSATION DATASET
+         ------------------------------------------------------------------------ */
+      const CONVERSATION_DATA = [
+        {
+          id: 1,
+          type: 'incoming', // Client
+          sender: 'Potential Client',
+          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. We're exploring a new project.",
+          time: '10:42 AM'
+        },
+        {
+          id: 2,
+          type: 'outgoing', // Techuilla
+          sender: 'Techuilla',
+          text: "Lorem ipsum dolor sit amet. We'd love to understand your vision and help bring it to life.",
+          time: '10:43 AM'
+        },
+        {
+          id: 3,
+          type: 'incoming', // Client
+          sender: 'Potential Client',
+          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. We have a few ideas we'd like to discuss.",
+          time: '10:44 AM'
+        },
+        {
+          id: 4,
+          type: 'outgoing', // Techuilla
+          sender: 'Techuilla',
+          text: "Lorem ipsum dolor sit amet. Our team can help with strategy, design, development, and growth.",
+          time: '10:44 AM'
+        },
+        {
+          id: 5,
+          type: 'incoming', // Client
+          sender: 'Potential Client',
+          text: "Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut labore. What's the best way to get started?",
+          time: '10:45 AM'
+        },
+        {
+          id: 6,
+          type: 'outgoing', // Techuilla
+          sender: 'Techuilla',
+          text: "Lorem ipsum dolor sit amet. Tell us a little about your project using the form below, and let's take it forward.",
+          time: '10:45 AM'
+        }
+      ];
+
+      // Forward-only revealed states and animation start timestamps
+      const revealedStates = [false, false, false, false, false, false];
+      const popStartTimes = [0, 0, 0, 0, 0, 0];
+      let revealedCount = 0;
+
+      /* ------------------------------------------------------------------------
+         3. DYNAMIC 2D CANVAS CHAT TEXTURE GENERATOR (Creamish Editorial Theme)
+         ------------------------------------------------------------------------ */
+      const chatCanvas = document.createElement('canvas');
+      chatCanvas.width = 1600;
+      chatCanvas.height = 1050;
+      const ctx = chatCanvas.getContext('2d');
+
+      let screenTexture = null;
+      let chatCanvasDirty = true;
+
+      // Draw rounded rectangle helper
+      function drawRoundedRect(c, x, y, w, h, radii) {
+        c.beginPath();
+        if (c.roundRect) {
+          c.roundRect(x, y, w, h, radii);
+        } else {
+          c.rect(x, y, w, h);
+        }
+        c.fill();
+      }
+
+      // Word wrapping helper for canvas
+      function wrapText(c, text, x, y, maxWidth, lineHeight) {
+        const words = text.split(' ');
+        let line = '';
+        let currentY = y;
+
+        for (let n = 0; n < words.length; n++) {
+          const testLine = line + words[n] + ' ';
+          const metrics = c.measureText(testLine);
+          const testWidth = metrics.width;
+          if (testWidth > maxWidth && n > 0) {
+            c.fillText(line.trim(), x, currentY);
+            line = words[n] + ' ';
+            currentY += lineHeight;
+          } else {
+            line = testLine;
+          }
+        }
+        c.fillText(line.trim(), x, currentY);
+        return currentY;
+      }
+
+      // Render the conversation onto the creamish screen
+      function renderChatScreen(timestamp) {
+        const now = timestamp || performance.now();
+        const W = chatCanvas.width;
+        const H = chatCanvas.height;
+
+        // Base screen: Bright Creamish Background (#FAF9F5)
+        ctx.fillStyle = '#FFFFFF'; // Bright illuminated screen canvas
+        ctx.fillRect(0, 0, W, H);
+
+        // Subtle top ambient warm gradient
+        const topGrad = ctx.createLinearGradient(0, 0, 0, 180);
+        topGrad.addColorStop(0, 'rgba(255, 102, 0, 0.04)');
+        topGrad.addColorStop(1, 'rgba(250, 249, 245, 0)');
+        ctx.fillStyle = topGrad;
+        ctx.fillRect(0, 0, W, 180);
+
+        // Top Navigation Header on Laptop Screen (Creamish #F0EDE6)
+        ctx.fillStyle = '#F0EDE6';
+        ctx.fillRect(0, 0, W, 86);
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(0, 86);
+        ctx.lineTo(W, 86);
+        ctx.stroke();
+
+        // Status Emerald Live Dot
+        ctx.fillStyle = '#00C853';
+        ctx.beginPath();
+        ctx.arc(56, 43, 8, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#111111';
+        ctx.font = 'bold 24px Inter, sans-serif';
+        ctx.fillText('Techuilla Agency • Direct Client Channel', 80, 51);
+
+        ctx.fillStyle = '#F47732';
+        ctx.font = '700 15px "Space Grotesk", monospace';
+        ctx.fillText('ACTIVE ENCRYPTED SESSION', W - 290, 51);
+
+        // Bottom Composer Bar on Laptop Screen (Creamish #F0EDE6)
+        ctx.fillStyle = '#F0EDE6';
+        ctx.fillRect(0, H - 86, W, 86);
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(0, H - 86);
+        ctx.lineTo(W, H - 86);
+        ctx.stroke();
+
+        // Input pill
+        ctx.fillStyle = '#FFFFFF';
+        drawRoundedRect(ctx, 44, H - 68, W - 188, 50, 25);
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.10)';
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
+        ctx.fillStyle = '#888890';
+        ctx.font = '500 18px Inter, sans-serif';
+        ctx.fillText('Type an enquiry or continue scrolling down to submit brief...', 74, H - 36);
+
+        // Send pill button
+        ctx.fillStyle = '#FF6600';
+        drawRoundedRect(ctx, W - 124, H - 68, 80, 50, 25);
+        ctx.fillStyle = '#000000';
+        ctx.font = 'bold 15px "Space Grotesk", monospace';
+        ctx.fillText('SEND', W - 104, H - 36);
+
+        // Clip chat messages between header and composer
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(0, 88, W, H - 176);
+        ctx.clip();
+
+        // Render revealed messages with authentic iPhone spring pop
+        const rowStep = 142;
+        const startY = 118;
+
+        CONVERSATION_DATA.forEach((msg, idx) => {
+          if (!revealedStates[idx]) return;
+
+          const isIncoming = msg.type === 'incoming';
+          const bubbleW = 960;
+          const bubbleH = 94;
+          const bubbleX = isIncoming ? 50 : (W - bubbleW - 50);
+          const bubbleY = startY + idx * rowStep;
+
+          // Calculate spring pop progress
+          let scale = 1.0;
+          let alpha = 1.0;
+          if (popStartTimes[idx] > 0) {
+            const elapsed = now - popStartTimes[idx];
+            const duration = 440; // 440ms juicy spring pop
+            if (elapsed < duration) {
+              const t = Math.max(0, Math.min(1, elapsed / duration));
+              // Elastic spring overshoots slightly then settles to 1.0
+              scale = 0.5 + 0.5 * (1 - Math.pow(2, -10 * t) * Math.cos(t * Math.PI * 2.5));
+              alpha = Math.min(1, t * 2.8);
+            }
+          }
+
+          // Anchor point from the message corner
+          const anchorX = isIncoming ? bubbleX + 32 : bubbleX + bubbleW - 32;
+          const anchorY = bubbleY + bubbleH / 2;
+
+          ctx.save();
+          ctx.translate(anchorX, anchorY);
+          ctx.scale(scale, scale);
+          ctx.translate(-anchorX, -anchorY);
+          ctx.globalAlpha = alpha;
+
+          // Sender Meta above bubble (+15%: 14px -> 16px)
+          ctx.fillStyle = isIncoming ? '#757582' : '#FF6600';
+          ctx.font = 'bold 16px "Space Grotesk", monospace';
+          const senderLabel = isIncoming ? '● PROSPECTIVE CLIENT' : '● TECHUILLA STRATEGY';
+          ctx.fillText(senderLabel, bubbleX + 8, bubbleY - 8);
+
+          if (isIncoming) {
+            // Incoming (Client) Bubble: Crisp White with Dark Text and subtle shadow
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.06)';
+            ctx.shadowBlur = 12;
+            ctx.shadowOffsetY = 4;
+            ctx.fillStyle = '#FFFFFF';
+            drawRoundedRect(ctx, bubbleX, bubbleY, bubbleW, bubbleH, [20, 20, 20, 6]);
+
+            // Subtle border
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+
+            // Clear shadow for text (+15% text size: 22px -> 25.5px, line height 28px -> 32px)
+            ctx.shadowColor = 'transparent';
+            ctx.fillStyle = '#111111';
+            ctx.font = '500 25.5px Inter, sans-serif';
+            wrapText(ctx, msg.text, bubbleX + 28, bubbleY + 40, bubbleW - 140, 32);
+
+            ctx.fillStyle = '#787884';
+            ctx.font = '600 15px "Space Grotesk", monospace';
+            ctx.fillText(msg.time, bubbleX + bubbleW - 90, bubbleY + bubbleH - 16);
+
+          } else {
+            // Outgoing (Techuilla) Bubble: Techuilla Orange with High Contrast Dark Text
+            ctx.shadowColor = 'rgba(255, 102, 0, 0.22)';
+            ctx.shadowBlur = 14;
+            ctx.shadowOffsetY = 4;
+            ctx.fillStyle = '#FF6600';
+            drawRoundedRect(ctx, bubbleX, bubbleY, bubbleW, bubbleH, [20, 20, 6, 20]);
+
+            // Clear shadow for text (+15% text size: 22px -> 25.5px, line height 28px -> 32px)
+            ctx.shadowColor = 'transparent';
+            ctx.fillStyle = '#0A0A0A';
+            ctx.font = 'bold 25.5px Inter, sans-serif';
+            wrapText(ctx, msg.text, bubbleX + 28, bubbleY + 40, bubbleW - 140, 32);
+
+            ctx.fillStyle = '#1A1A1E';
+            ctx.font = '700 15px "Space Grotesk", monospace';
+            ctx.fillText(msg.time, bubbleX + bubbleW - 90, bubbleY + bubbleH - 16);
+          }
+
+          ctx.restore();
+        });
+
+        // --------------------------------------------------------------------
+        // CHAT ENDED STATE: DULL OVERLAY (ORANGE CTA DISPLAYED VIA HTML OVERLAY)
+        // --------------------------------------------------------------------
+        const allRevealed = revealedStates.every(Boolean);
+        if (allRevealed) {
+          // Subtle dulling veil over message area
+          ctx.fillStyle = 'rgba(245, 243, 238, 0.28)'; // Soft, light veil to maintain high brightness
+          ctx.fillRect(0, 88, W, H - 176);
+        }
+
+        ctx.restore();
+
+        if (screenTexture) {
+          screenTexture.needsUpdate = true;
+        }
+      }
+
+      /* ------------------------------------------------------------------------
+         4. THREE.JS 3D LAPTOP INITIALIZER (Focused Screen + 40px Sleek Keyboard Strip)
+         ------------------------------------------------------------------------ */
+      const stageContainer = document.getElementById('laptop3dStage');
+      let scene, camera, renderer, laptopGroup;
+      
+      // Resting angles - tilted slightly so ~40px keyboard strip is visible at the bottom
+      let baseRotX = 0.08, baseRotY = -Math.PI / 2;
+      let parallaxRotX = 0, parallaxRotY = 0;
+      let userDragRotX = 0, userDragRotY = 0;
+      let currentRotX = 0.08, currentRotY = -Math.PI / 2;
+      let isDragging = false;
+      let dragStartX = 0, dragStartY = 0;
+
+      function init3DLaptop() {
+        if (!stageContainer || typeof THREE === 'undefined') return;
+
+        const W = stageContainer.clientWidth || window.innerWidth;
+        const H = stageContainer.clientHeight || window.innerHeight;
+
+        scene = new THREE.Scene();
+        scene.background = null; // Transparent scene so architectural grid lines shine through continuously
+
+        // Focused camera with reduced FOV for isometric presence
+        camera = new THREE.PerspectiveCamera(30, W / H, 0.1, 50);
+        camera.position.set(0, 0.13, 1.70);
+        camera.lookAt(0, 0.11, 0);
+
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(W, H);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.25;
+        stageContainer.appendChild(renderer.domElement);
+
+        // Clean warm studio lighting
+        const ambLight = new THREE.AmbientLight(0xffffff, 1.45);
+        scene.add(ambLight);
+
+        const keyLight = new THREE.DirectionalLight(0xffffff, 1.25);
+        keyLight.position.set(2.5, 4.5, 3.5);
+        scene.add(keyLight);
+
+        const rimOrangeLight = new THREE.DirectionalLight(0xff6600, 1.1);
+        rimOrangeLight.position.set(-3, 2, -1.5);
+        scene.add(rimOrangeLight);
+
+        const fillLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        fillLight.position.set(0, -2, 2);
+        scene.add(fillLight);
+
+        // Targeted light for keyboard deck
+        const keyboardLight = new THREE.DirectionalLight(0xffffff, 0.7);
+        keyboardLight.position.set(0, 2.8, 2.2);
+        scene.add(keyboardLight);
+
+        laptopGroup = new THREE.Group();
+        scene.add(laptopGroup);
+
+        // Initialize Canvas Texture
+        screenTexture = new THREE.CanvasTexture(chatCanvas);
+        screenTexture.encoding = THREE.sRGBEncoding;
+        renderChatScreen();
+
+        // Load MTL & OBJ
+        const mtlLoader = new THREE.MTLLoader();
+        mtlLoader.load('LowPolyLaptop.mtl', function (materials) {
+          materials.preload();
+
+          const objLoader = new THREE.OBJLoader();
+          objLoader.setMaterials(materials);
+          objLoader.load('LowPolyLaptop_clean.obj', function (object) {
+            const bbox = new THREE.Box3().setFromObject(object);
+            const center = bbox.getCenter(new THREE.Vector3());
+            const size = bbox.getSize(new THREE.Vector3());
+
+            object.position.x = -center.x;
+            object.position.y = -center.y;
+            object.position.z = -center.z;
+
+            // Orient laptop facing camera with ~40px keyboard strip visible
+            laptopGroup.rotation.y = baseRotY;
+            laptopGroup.rotation.x = baseRotX;
+
+            // Scale laptop so screen dominates and keyboard is a sleek ~40px bottom strip
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const scale = (0.98 / maxDim) * 1.38;
+            laptopGroup.scale.set(scale, scale, scale);
+            laptopGroup.position.y = -0.01;
+            
+            // Expose for dynamic verification if needed
+            window._laptop = { group: laptopGroup, camera: camera, maxDim: maxDim, baseRotX: baseRotX };
+            window._debugLaptop = function(rotX, camY, camZ, lookY, lapY, sFactor) {
+              baseRotX = rotX;
+              currentRotX = rotX;
+              camera.position.set(0, camY, camZ);
+              camera.lookAt(0, lookY, 0);
+              const s = (0.98 / maxDim) * sFactor;
+              laptopGroup.scale.set(s, s, s);
+              laptopGroup.position.y = lapY;
+            };
+
+            laptopGroup.add(object);
+
+            // Refine materials & UVs
+            object.traverse(function (child) {
+              if (child.isMesh) {
+                if (child.name.includes('Screen')) {
+                  // Screen UV mapping
+                  const geom = child.geometry;
+                  const uvAttr = geom.attributes.uv;
+                  const pos = geom.attributes.position;
+                  let minZ = Infinity, maxZ = -Infinity, minY = Infinity, maxY = -Infinity;
+                  for (let i = 0; i < pos.count; i++) {
+                    minZ = Math.min(minZ, pos.getZ(i));
+                    maxZ = Math.max(maxZ, pos.getZ(i));
+                    minY = Math.min(minY, pos.getY(i));
+                    maxY = Math.max(maxY, pos.getY(i));
+                  }
+                  for (let i = 0; i < pos.count; i++) {
+                    const u = 1 - (pos.getZ(i) - minZ) / (maxZ - minZ);
+                    const v = (pos.getY(i) - minY) / (maxY - minY);
+                    uvAttr.setXY(i, u, v);
+                  }
+                  uvAttr.needsUpdate = true;
+
+                  child.material = new THREE.MeshStandardMaterial({
+                    map: screenTexture,
+                    roughness: 0.15,
+                    metalness: 0.05,
+                    emissive: new THREE.Color(0xffffff),
+                    emissiveMap: screenTexture,
+                    emissiveIntensity: 0.45 // +45% backlit screen luminance boost!
+                  });
+                } else if (child.name.includes('Body')) {
+                  child.material = new THREE.MeshStandardMaterial({
+                    color: 0x1F2024,
+                    roughness: 0.35,
+                    metalness: 0.8
+                  });
+                } else if (child.name.includes('Buttons')) {
+                  child.material = new THREE.MeshStandardMaterial({
+                    color: 0x18191D,
+                    roughness: 0.55,
+                    metalness: 0.3
+                  });
+                } else if (child.name.includes('TouchPad')) {
+                  child.material = new THREE.MeshStandardMaterial({
+                    color: 0x25262C,
+                    roughness: 0.4,
+                    metalness: 0.8
+                  });
+                } else if (child.name.includes('Light')) {
+                  child.material = new THREE.MeshBasicMaterial({
+                    color: 0x00E676
+                  });
+                }
+              }
+            });
+
+            window.laptopModelLoaded = true;
+          });
+        });
+
+        // USER CONTROL: Mouse Drag Rotation
+        stageContainer.addEventListener('mousedown', (e) => {
+          isDragging = true;
+          dragStartX = e.clientX;
+          dragStartY = e.clientY;
+          stageContainer.style.cursor = 'grabbing';
+        });
+
+        window.addEventListener('mousemove', (e) => {
+          if (isDragging) {
+            const deltaX = e.clientX - dragStartX;
+            const deltaY = e.clientY - dragStartY;
+            dragStartX = e.clientX;
+            dragStartY = e.clientY;
+            userDragRotY += deltaX * 0.005;
+            userDragRotX += deltaY * 0.005;
+            // Clamp so laptop stays naturally oriented
+            userDragRotX = Math.max(-0.25, Math.min(0.35, userDragRotX));
+            userDragRotY = Math.max(-0.6, Math.min(0.6, userDragRotY));
+          } else {
+            // Passive Parallax: 50% DECREASED as requested
+            const normX = (e.clientX / window.innerWidth) * 2 - 1;
+            const normY = (e.clientY / window.innerHeight) * 2 - 1;
+            parallaxRotY = normX * 0.035;
+            parallaxRotX = normY * 0.02;
+          }
+        }, { passive: true });
+
+        window.addEventListener('mouseup', () => {
+          if (isDragging) {
+            isDragging = false;
+            if (stageContainer) stageContainer.style.cursor = 'grab';
+          }
+        });
+
+        // Touch support for mobile dragging
+        stageContainer.addEventListener('touchstart', (e) => {
+          if (e.touches.length === 1) {
+            isDragging = true;
+            dragStartX = e.touches[0].clientX;
+            dragStartY = e.touches[0].clientY;
+          }
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+          if (isDragging && e.touches.length === 1) {
+            const deltaX = e.touches[0].clientX - dragStartX;
+            const deltaY = e.touches[0].clientY - dragStartY;
+            dragStartX = e.touches[0].clientX;
+            dragStartY = e.touches[0].clientY;
+            userDragRotY += deltaX * 0.006;
+            userDragRotX += deltaY * 0.006;
+            userDragRotX = Math.max(-0.25, Math.min(0.35, userDragRotX));
+            userDragRotY = Math.max(-0.6, Math.min(0.6, userDragRotY));
+          }
+        }, { passive: true });
+
+        window.addEventListener('touchend', () => {
+          isDragging = false;
+        });
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+          if (!camera || !renderer || !stageContainer) return;
+          const newW = stageContainer.clientWidth || window.innerWidth;
+          const newH = stageContainer.clientHeight || window.innerHeight;
+          camera.aspect = newW / newH;
+          camera.updateProjectionMatrix();
+          renderer.setSize(newW, newH);
+        });
+
+        let isStageInView = true;
+        if ('IntersectionObserver' in window && stageContainer) {
+          const stageObs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              isStageInView = entry.isIntersecting;
+            });
+          }, { threshold: 0.05 });
+          stageObs.observe(stageContainer);
+        }
+
+        // Optimized animation loop: zero GPU re-uploads when resting & paused when offscreen
+        function animate(timestamp) {
+          requestAnimationFrame(animate);
+
+          if (!isStageInView) return; // Completely pauses rendering when viewing form or footer
+
+          // Update spring popping canvas animation only during active springs or when marked dirty
+          let isCanvasAnimActive = false;
+          for (let i = 0; i < 6; i++) {
+            if (popStartTimes[i] && (timestamp - popStartTimes[i] < 950)) {
+              isCanvasAnimActive = true;
+              break;
+            }
+          }
+          if (isCanvasAnimActive || chatCanvasDirty) {
+            renderChatScreen(timestamp);
+            chatCanvasDirty = false;
+          }
+
+          if (laptopGroup) {
+            // Smoothly return user drag towards neutral when released
+            if (!isDragging) {
+              userDragRotX *= 0.96;
+              userDragRotY *= 0.96;
+            }
+
+            const targetX = baseRotX + parallaxRotX + userDragRotX;
+            const targetY = baseRotY + parallaxRotY + userDragRotY;
+
+            currentRotX += (targetX - currentRotX) * 0.08;
+            currentRotY += (targetY - currentRotY) * 0.08;
+
+            laptopGroup.rotation.x = currentRotX;
+            laptopGroup.rotation.y = currentRotY;
+          }
+
+          renderer.render(scene, camera);
+        }
+        animate(performance.now());
+      }
+
+      init3DLaptop();
+
+      /* ------------------------------------------------------------------------
+         5. SCROLL-DRIVEN SEQUENTIAL REVEAL ENGINE & STATIC UNPINNING
+         ------------------------------------------------------------------------ */
+      const scrollTrack = document.getElementById('laptopScrollTrack');
+      const laptopCtaOverlay = document.getElementById('laptopScreenCta');
+      let isLaptopStatic = false;
+      let isNavigatingToForm = false;
+
+      function makeLaptopStatic() {
+        if (isLaptopStatic || !scrollTrack || isNavigatingToForm) return;
+        isLaptopStatic = true;
+        scrollTrack.classList.add('is-static');
+
+        // Ensure all messages and CTA are set
+        revealedStates.fill(true);
+        revealedCount = 6;
+        renderChatScreen();
+        if (laptopCtaOverlay) {
+          laptopCtaOverlay.classList.add('is-active');
+        }
+      }
+
+      // ------------------------------------------------------------------------
+      // SCROLL NOTCH CADENCE HANDLER
+      // User specification:
+      // 1 scroll -> 1st message pops (step 1)
+      // 2 scrolls -> 2nd message pops (step 3)
+      // 2 scrolls -> 3rd message pops (step 5)
+      // 2 scrolls -> 4th message pops (step 7)
+      // 2 scrolls -> 5th message pops (step 9)
+      // 2 scrolls -> 6th message pops (step 11)
+      // after 6th message appears, 2 scrolls again -> CTA button pops (step 13)
+      // ------------------------------------------------------------------------
+      let wheelNotchCount = 0;
+      let lastWheelTime = 0;
+      const WHEEL_DEBOUNCE_MS = 240; // Controlled pacing prevents momentum over-scroll
+
+      function applyCadenceStep(step) {
+        const now = performance.now();
+        // step 1: msg 0 (1st)
+        // step 3: msg 1 (2nd)
+        // step 5: msg 2 (3rd)
+        // step 7: msg 3 (4th)
+        // step 9: msg 4 (5th)
+        // step 11: msg 5 (6th)
+        // step 13: CTA button (2 scrolls after 6th message)
+        if (step >= 1 && !revealedStates[0]) {
+          revealedStates[0] = true;
+          popStartTimes[0] = now;
+        }
+        if (step >= 3 && !revealedStates[1]) {
+          revealedStates[1] = true;
+          popStartTimes[1] = now;
+        }
+        if (step >= 5 && !revealedStates[2]) {
+          revealedStates[2] = true;
+          popStartTimes[2] = now;
+        }
+        if (step >= 7 && !revealedStates[3]) {
+          revealedStates[3] = true;
+          popStartTimes[3] = now;
+        }
+        if (step >= 9 && !revealedStates[4]) {
+          revealedStates[4] = true;
+          popStartTimes[4] = now;
+        }
+        if (step >= 11 && !revealedStates[5]) {
+          revealedStates[5] = true;
+          popStartTimes[5] = now;
+        }
+
+        const count = revealedStates.filter(Boolean).length;
+        if (count !== revealedCount) {
+          revealedCount = count;
+          renderChatScreen(now);
+        }
+
+        // CTA button appears only after 2 scrolls after 6th message (step >= 13)
+        if (step >= 13 && laptopCtaOverlay) {
+          laptopCtaOverlay.classList.add('is-active');
+        } else if (step < 13 && laptopCtaOverlay) {
+          laptopCtaOverlay.classList.remove('is-active');
+        }
+
+        for (let i = 0; i < 6; i++) {
+          const dot = document.getElementById(`dot-${i}`);
+          if (dot) {
+            if (i < revealedCount) {
+              dot.classList.add('is-active');
+            } else {
+              dot.classList.remove('is-active');
+            }
+          }
+        }
+      }
+
+      window._revealedStates = revealedStates;
+      window._applyCadenceStep = applyCadenceStep;
+      window._setWheelNotch = function(n) { wheelNotchCount = n; applyCadenceStep(n); };
+
+      window.addEventListener('wheel', (e) => {
+        if (isLaptopStatic || !scrollTrack || isNavigatingToForm) return;
+
+        const rect = scrollTrack.getBoundingClientRect();
+        // Active when laptop stage is pinned within viewport
+        const isPinned = (rect.top <= 15 && rect.bottom >= window.innerHeight + 15);
+        if (!isPinned) return;
+
+        const now = performance.now();
+        if (now - lastWheelTime < WHEEL_DEBOUNCE_MS) return;
+        lastWheelTime = now;
+
+        if (e.deltaY > 0) {
+          wheelNotchCount = Math.min(13, wheelNotchCount + 1);
+          applyCadenceStep(wheelNotchCount);
+        } else if (e.deltaY < 0 && wheelNotchCount > 0) {
+          wheelNotchCount = Math.max(0, wheelNotchCount - 1);
+          applyCadenceStep(wheelNotchCount);
+        }
+      }, { passive: true });
+
+      function updateConversationProgress() {
+        if (!scrollTrack || isLaptopStatic || isNavigatingToForm) return;
+
+        const rect = scrollTrack.getBoundingClientRect();
+        const trackHeight = rect.height - window.innerHeight;
+        if (trackHeight <= 0) return;
+
+        // Progress fraction through the pinned track (0.0 to 1.0)
+        const progress = Math.max(0, Math.min(1, -rect.top / trackHeight));
+
+        // Paced milestone steps across 380vh track synchronized to cadence notches
+        const stepFromProgress = Math.min(13, Math.floor(progress * 13) + 1);
+        const effectiveStep = Math.max(wheelNotchCount, stepFromProgress);
+        applyCadenceStep(effectiveStep);
+
+        // Once chat is finished and user scrolls past the track into the form:
+        // Transition to static scroll so scrolling back up has zero delay!
+        if (revealedCount >= 6 && rect.bottom <= window.innerHeight + 30) {
+          makeLaptopStatic();
+          return;
+        }
+      }
+
+      window.addEventListener('scroll', updateConversationProgress, { passive: true });
+
+      function scrollToContactForm() {
+        const formTarget = document.getElementById('contact-form');
+        if (!formTarget) return;
+
+        isNavigatingToForm = true;
+
+        // Ensure all messages and CTA are active
+        revealedStates.fill(true);
+        revealedCount = 6;
+        wheelNotchCount = 13;
+        renderChatScreen();
+        if (laptopCtaOverlay) {
+          laptopCtaOverlay.classList.add('is-active');
+        }
+
+        // Target the bold section divider title
+        const titleDivider = document.querySelector('.form-transition-divider') || formTarget;
+        const targetTop = titleDivider.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) - 24;
+
+        window.scrollTo({
+          top: targetTop,
+          behavior: 'smooth'
+        });
+
+        // Allow smooth scroll to arrive cleanly without any interruptive jump
+        setTimeout(() => {
+          isNavigatingToForm = false;
+          if (!isLaptopStatic && scrollTrack) {
+            isLaptopStatic = true;
+            scrollTrack.classList.add('is-static');
+          }
+        }, 900);
+      }
+
+      if (laptopCtaOverlay) {
+        const handleCtaClick = (e) => {
+          if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+          scrollToContactForm();
+        };
+
+        laptopCtaOverlay.addEventListener('click', handleCtaClick);
+        laptopCtaOverlay.addEventListener('touchend', handleCtaClick, { passive: false });
+        laptopCtaOverlay.addEventListener('pointerup', handleCtaClick);
+      }
+
+      if (stageContainer) {
+        stageContainer.addEventListener('click', () => {
+          if (revealedStates.every(Boolean) && !isDragging) {
+            scrollToContactForm();
+          }
+        });
+      }
+
+      /* ------------------------------------------------------------------------
+         6. CONTACT FORM & CREATIVE FLOWCHART DROPDOWN
+         ------------------------------------------------------------------------ */
+      const enquiryForm = document.getElementById('enquiryForm');
+      const submitBtn = document.getElementById('submitEnquiryBtn');
+      const formSuccessCard = document.getElementById('formSuccessCard');
+      const btnResetForm = document.getElementById('btnResetForm');
+
+      const fullNameInput = document.getElementById('fullName');
+      const workEmailInput = document.getElementById('workEmail');
+      const companyInput = document.getElementById('companyName');
+      const serviceSelect = document.getElementById('serviceRequired');
+      const serviceTriggerBtn = document.getElementById('serviceTriggerBtn');
+      const serviceTriggerLabel = document.getElementById('serviceTriggerLabel');
+      const budgetSelect = document.getElementById('projectBudget');
+      const detailsTextarea = document.getElementById('projectDetails');
+
+      const nameError = document.getElementById('nameError');
+      const emailError = document.getElementById('emailError');
+      const serviceError = document.getElementById('serviceError');
+      const detailsError = document.getElementById('detailsError');
+
+      // Core Branch Flowchart Elements
+      const serviceBranchWrapper = document.getElementById('serviceBranchWrapper');
+      const branchingTreeContainer = document.getElementById('branchingTreeContainer');
+      const branchBackdrop = document.getElementById('branchBackdrop');
+      const branchBubbles = document.querySelectorAll('.branch-bubble');
+
+      function openBranchingTree() {
+        if (!branchingTreeContainer) return;
+        branchingTreeContainer.classList.add('is-open');
+        branchingTreeContainer.setAttribute('aria-hidden', 'false');
+        if (serviceBranchWrapper) serviceBranchWrapper.classList.add('is-open');
+        if (branchBackdrop) branchBackdrop.classList.add('is-active');
+        if (serviceTriggerBtn) {
+          serviceTriggerBtn.classList.add('is-branch-active');
+          serviceTriggerBtn.setAttribute('aria-expanded', 'true');
+        }
+      }
+
+      function closeBranchingTree() {
+        if (!branchingTreeContainer) return;
+        branchingTreeContainer.classList.remove('is-open');
+        branchingTreeContainer.setAttribute('aria-hidden', 'true');
+        if (serviceBranchWrapper) serviceBranchWrapper.classList.remove('is-open');
+        if (branchBackdrop) branchBackdrop.classList.remove('is-active');
+        if (serviceTriggerBtn) {
+          serviceTriggerBtn.classList.remove('is-branch-active');
+          serviceTriggerBtn.setAttribute('aria-expanded', 'false');
+        }
+      }
+
+      if (serviceTriggerBtn) {
+        serviceTriggerBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (branchingTreeContainer && branchingTreeContainer.classList.contains('is-open')) {
+            closeBranchingTree();
+          } else {
+            closeCustomBudget(); // Close budget dropdown if open
+            openBranchingTree();
+          }
+        });
+      }
+
+      if (branchBackdrop) {
+        branchBackdrop.addEventListener('click', () => {
+          closeBranchingTree();
+        });
+      }
+
+      branchBubbles.forEach(bubble => {
+        bubble.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const val = bubble.getAttribute('data-value');
+          if (!val) return;
+
+          branchBubbles.forEach(b => b.classList.remove('is-selected'));
+          bubble.classList.add('is-selected');
+
+          if (serviceSelect) {
+            serviceSelect.value = val;
+            serviceSelect.classList.remove('is-invalid');
+          }
+          if (serviceTriggerBtn) {
+            serviceTriggerBtn.classList.remove('is-invalid');
+          }
+          if (serviceError) {
+            serviceError.classList.remove('is-active');
+          }
+          if (serviceTriggerLabel) {
+            serviceTriggerLabel.textContent = val;
+            serviceTriggerLabel.classList.add('has-selection');
+          }
+
+          setTimeout(() => {
+            closeBranchingTree();
+          }, 240);
+        });
+      });
+
+      // ------------------------------------------------------------------------
+      // CUSTOM BUDGET DROPDOWN (INR ₹, SLIDE DOWNWARDS, CREAM TO ORANGE)
+      // ------------------------------------------------------------------------
+      const customBudgetWrapper = document.getElementById('customBudgetWrapper');
+      const customBudgetTrigger = document.getElementById('customBudgetTrigger');
+      const customBudgetMenu = document.getElementById('customBudgetMenu');
+      const budgetTriggerLabel = document.getElementById('budgetTriggerLabel');
+      const budgetMenuItems = document.querySelectorAll('.budget-menu-item');
+
+      function openCustomBudget() {
+        if (!customBudgetMenu || !customBudgetTrigger) return;
+        customBudgetMenu.classList.add('is-open');
+        customBudgetTrigger.classList.add('is-open');
+        customBudgetTrigger.setAttribute('aria-expanded', 'true');
+      }
+
+      function closeCustomBudget() {
+        if (!customBudgetMenu || !customBudgetTrigger) return;
+        customBudgetMenu.classList.remove('is-open');
+        customBudgetTrigger.classList.remove('is-open');
+        customBudgetTrigger.setAttribute('aria-expanded', 'false');
+      }
+
+      if (customBudgetTrigger) {
+        customBudgetTrigger.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (customBudgetMenu && customBudgetMenu.classList.contains('is-open')) {
+            closeCustomBudget();
+          } else {
+            closeBranchingTree(); // Close branching tree if open
+            openCustomBudget();
+          }
+        });
+      }
+
+      budgetMenuItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const val = item.getAttribute('data-value');
+          if (!val) return;
+
+          // Short pop animation on click
+          item.classList.add('pop-click');
+          setTimeout(() => item.classList.remove('pop-click'), 260);
+
+          budgetMenuItems.forEach(i => i.classList.remove('is-selected'));
+          item.classList.add('is-selected');
+
+          if (budgetSelect) {
+            budgetSelect.value = val;
+          }
+          if (budgetTriggerLabel) {
+            budgetTriggerLabel.textContent = val;
+            budgetTriggerLabel.classList.add('has-selection');
+          }
+
+          setTimeout(() => {
+            closeCustomBudget();
+          }, 220);
+        });
+      });
+
+      // Close dropdowns on outside click or Escape key
+      document.addEventListener('click', (e) => {
+        if (customBudgetWrapper && !customBudgetWrapper.contains(e.target)) {
+          closeCustomBudget();
+        }
+        if (serviceBranchWrapper && !serviceBranchWrapper.contains(e.target) && (!branchBackdrop || !branchBackdrop.contains(e.target))) {
+          closeBranchingTree();
+        }
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeBranchingTree();
+          closeCustomBudget();
+        }
+      });
+
+      function validateEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      }
+
+      function clearValidation() {
+        [fullNameInput, workEmailInput, serviceSelect, detailsTextarea].forEach(el => {
+          if (el) el.classList.remove('is-invalid');
+        });
+        if (serviceTriggerBtn) {
+          serviceTriggerBtn.classList.remove('is-invalid');
+        }
+        [nameError, emailError, serviceError, detailsError].forEach(err => {
+          if (err) err.classList.remove('is-active');
+        });
+      }
+
+      // ------------------------------------------------------------------------
+      // DIRECT WHATSAPP SUBMISSION DISPATCH (+91 7700014486)
+      // ------------------------------------------------------------------------
+      if (enquiryForm) {
+        enquiryForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          clearValidation();
+
+          let isValid = true;
+
+          // Full Name
+          const fullNameVal = fullNameInput.value.trim();
+          if (!fullNameVal) {
+            fullNameInput.classList.add('is-invalid');
+            nameError.classList.add('is-active');
+            isValid = false;
+          }
+
+          // Work Email
+          const emailVal = workEmailInput.value.trim();
+          if (!emailVal || !validateEmail(emailVal)) {
+            workEmailInput.classList.add('is-invalid');
+            emailError.classList.add('is-active');
+            isValid = false;
+          }
+
+          // Service
+          const serviceVal = serviceSelect.value;
+          if (!serviceVal) {
+            if (serviceTriggerBtn) serviceTriggerBtn.classList.add('is-invalid');
+            serviceSelect.classList.add('is-invalid');
+            serviceError.classList.add('is-active');
+            isValid = false;
+          }
+
+          // Details
+          const detailsVal = detailsTextarea.value.trim();
+          if (!detailsVal || detailsVal.length < 15) {
+            detailsTextarea.classList.add('is-invalid');
+            detailsError.classList.add('is-active');
+            isValid = false;
+          }
+
+          if (!isValid) return;
+
+          const companyVal = (companyInput && companyInput.value.trim()) ? companyInput.value.trim() : 'Not Specified';
+          const budgetVal = (budgetSelect && budgetSelect.value) ? budgetSelect.value : 'Flexible (Discuss on call)';
+
+          // Format Professional WhatsApp Brief Message
+          const waMessage = 
+            `🚀 *NEW PROJECT BRIEF | TECHUILLA AGENCY*\n\n` +
+            `👤 *Client Name:* ${fullNameVal}\n` +
+            `📧 *Email:* ${emailVal}\n` +
+            `🏢 *Company:* ${companyVal}\n` +
+            `⚡ *Service Required:* ${serviceVal}\n` +
+            `💰 *Budget Range:* ${budgetVal}\n\n` +
+            `📝 *Project Details:*\n${detailsVal}\n\n` +
+            `---\n` +
+            `🌐 *Source:* techuilla.agency/contact`;
+
+          const waUrl = `https://wa.me/917700014486?text=${encodeURIComponent(waMessage)}`;
+
+          submitBtn.disabled = true;
+          submitBtn.classList.add('is-loading');
+          submitBtn.querySelector('.btn-text').textContent = 'DISPATCHING TO WHATSAPP...';
+
+          setTimeout(() => {
+            // Direct WhatsApp dispatch in new tab
+            window.open(waUrl, '_blank');
+
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('is-loading');
+            submitBtn.querySelector('.btn-text').textContent = 'SEND YOUR ENQUIRY';
+
+            // Update success card direct link
+            const openWaBtn = document.getElementById('btnOpenWhatsApp');
+            if (openWaBtn) {
+              openWaBtn.href = waUrl;
+            }
+
+            enquiryForm.style.display = 'none';
+            formSuccessCard.classList.add('is-active');
+          }, 650);
+        });
+      }
+
+      if (btnResetForm) {
+        btnResetForm.addEventListener('click', () => {
+          enquiryForm.reset();
+          clearValidation();
+          if (serviceTriggerLabel) {
+            serviceTriggerLabel.textContent = 'Select a primary capability...';
+            serviceTriggerLabel.classList.remove('has-selection');
+          }
+          if (budgetTriggerLabel) {
+            budgetTriggerLabel.textContent = 'Select a budget range (flexible)...';
+            budgetTriggerLabel.classList.remove('has-selection');
+          }
+          branchBubbles.forEach(b => b.classList.remove('is-selected'));
+          budgetMenuItems.forEach(i => i.classList.remove('is-selected'));
+          formSuccessCard.classList.remove('is-active');
+          enquiryForm.style.display = 'block';
+        });
+      }
+
+      /* ------------------------------------------------------------------------
+         APPEAR ON SCROLL ANIMATION FOR CONTACT FORM BOX
+         ------------------------------------------------------------------------ */
+      const formWrapper = document.querySelector('.contact-form-wrapper');
+      if (formWrapper) {
+        if ('IntersectionObserver' in window) {
+          const formObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                formWrapper.classList.add('is-visible');
+                formObserver.unobserve(formWrapper);
+              }
+            });
+          }, { threshold: 0.12 });
+          formObserver.observe(formWrapper);
+        } else {
+          formWrapper.classList.add('is-visible');
+        }
+
+        window.addEventListener('scroll', () => {
+          const rect = formWrapper.getBoundingClientRect();
+          if (rect.top < window.innerHeight * 0.88) {
+            formWrapper.classList.add('is-visible');
+          }
+        }, { passive: true });
+      }
+
+      /* ------------------------------------------------------------------------
+         8. BACK TO TOP
+         ------------------------------------------------------------------------ */
+      const btnBackToTop = document.getElementById('btnBackToTop');
+      if (btnBackToTop) {
+        btnBackToTop.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+      /* ------------------------------------------------------------------------
+         9. CUSTOM FLOATING ORANGE SCROLLER (Active ONLY when actively scrolling)
+         ------------------------------------------------------------------------ */
+      (function initCustomOrangeScroller() {
+        const indicator = document.getElementById('customScrollIndicator');
+        const thumb = document.getElementById('customScrollThumb');
+        if (!indicator || !thumb) return;
+
+        let scrollTimer = null;
+
+        function updateScroller() {
+          const scrollY = window.scrollY || window.pageYOffset || 0;
+          const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+          if (maxScroll <= 0) {
+            indicator.classList.remove('is-active');
+            return;
+          }
+
+          const trackHeight = window.innerHeight - 36; // 18px top & bottom
+          const thumbHeight = Math.max(36, Math.min(110, (window.innerHeight / document.documentElement.scrollHeight) * trackHeight));
+          thumb.style.height = `${thumbHeight}px`;
+
+          const maxThumbTravel = trackHeight - thumbHeight;
+          const progress = Math.max(0, Math.min(1, scrollY / maxScroll));
+          const thumbTop = progress * maxThumbTravel;
+
+          thumb.style.transform = `translate3d(0, ${thumbTop.toFixed(1)}px, 0)`;
+
+          indicator.classList.add('is-active');
+
+          if (scrollTimer) clearTimeout(scrollTimer);
+          scrollTimer = setTimeout(() => {
+            indicator.classList.remove('is-active');
+          }, 700);
+        }
+
+        window.addEventListener('scroll', updateScroller, { passive: true });
+        window.addEventListener('resize', updateScroller, { passive: true });
+      })();
+
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "agency": "TECHUILLA AGENCY",
+  "version": "2.0.0",
+  "palette": {
+    "offWhite": "#FAFAFA",
+    "black": "#0A0A0A",
+    "orange": "#FF6A00",
+    "orangeLight": "#FF9A2E"
+  },
+  "typography": {
+    "headline": "Syne",
+    "subtitle": "Space Grotesk",
+    "ui": "Inter"
+  },
+  "tagline": "BUILD — CREATE — GROW",
+  "meta": {
+    "minLoadFloorMs": 3000,
+    "shutterDurationMs": 1100,
+    "liquidLens": {
+      "baseRadius": 130,
+      "maxRadius": 200,
+      "trailLength": 16
+    }
+  }
+}

@@ -1,0 +1,702 @@
+       4. FULLSCREEN MENU OVERLAY (100% Solid Opaque Background + Circular Wipe)
+       ========================================================================== */
+    #fullscreen-menu {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      /* 100% Solid opaque background - absolutely NO translucency or see-through */
+      background: linear-gradient(135deg, #FAF8F5 0%, #FAF0E6 45%, #FAD7BE 100%);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      /* Oversized circular wipe originating from the top-right menu button */
+      clip-path: circle(0% at calc(100% - 54px) 44px);
+      -webkit-clip-path: circle(0% at calc(100% - 54px) 44px);
+      opacity: 1;
+      visibility: hidden;
+      pointer-events: none;
+      /* Snappy, fluid circular contraction on close (600ms) */
+      transition: 
+        clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        -webkit-clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        visibility 0s linear 600ms;
+      overflow: hidden;
+      will-change: clip-path;
+    }
+
+    /* Circular Wipe Reveal from Top-Right Corner (1250ms) */
+    #fullscreen-menu.is-open {
+      clip-path: circle(150% at calc(100% - 54px) 44px);
+      -webkit-clip-path: circle(150% at calc(100% - 54px) 44px);
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition: 
+        clip-path 1250ms cubic-bezier(0.16, 1, 0.3, 1),
+        -webkit-clip-path 1250ms cubic-bezier(0.16, 1, 0.3, 1),
+        visibility 0s linear 0s;
+    }
+
+    /* Symmetrical closing: keep content fully visible and solid inside circular wipe */
+    #fullscreen-menu.is-closing {
+      visibility: visible;
+      pointer-events: none;
+    }
+
+    #fullscreen-menu.is-closing .menu-header,
+    #fullscreen-menu.is-closing .reel-carousel-container,
+    #fullscreen-menu.is-closing .menu-nav-list li,
+    #fullscreen-menu.is-closing .menu-mini-brand-row,
+    #fullscreen-menu.is-closing .menu-enquiries-row,
+    #fullscreen-menu.is-closing .menu-socials-row {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+      transition: none !important;
+    }
+
+    /* Subtle Staggered Entrance for Menu Content */
+    .menu-header,
+    .reel-carousel-container,
+    .menu-nav-list li,
+    .menu-mini-brand-row,
+    .menu-enquiries-row,
+    .menu-socials-row {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #fullscreen-menu.is-open .menu-header {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 140ms;
+    }
+
+    #fullscreen-menu.is-open .reel-carousel-container {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 180ms;
+    }
+
+    #fullscreen-menu.is-open .menu-nav-list li:nth-child(1) {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 230ms;
+    }
+
+    #fullscreen-menu.is-open .menu-nav-list li:nth-child(2) {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 280ms;
+    }
+
+    #fullscreen-menu.is-open .menu-nav-list li:nth-child(3) {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 330ms;
+    }
+
+    #fullscreen-menu.is-open .menu-nav-list li:nth-child(4) {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 380ms;
+    }
+
+    #fullscreen-menu.is-open .menu-mini-brand-row {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 420ms;
+    }
+
+    #fullscreen-menu.is-open .menu-enquiries-row {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 460ms;
+    }
+
+    #fullscreen-menu.is-open .menu-socials-row {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 500ms;
+    }
+
+    .menu-header {
+      max-width: 1540px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 22px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-subtle);
+      z-index: 10;
+    }
+
+    .menu-close-btn {
+      background: transparent;
+      border: 1px solid var(--border-medium);
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .menu-close-btn:hover {
+      background: var(--text-primary);
+      color: #FFFFFF;
+    }
+
+    /* Menu Body Split: Left Rotating Reel Carousel + Right Floating Nav */
+    .menu-body-split {
+      flex: 1;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* LEFT SIDE: CONTINUOUS ROTATING REEL / FILM CAROUSEL */
+    .reel-carousel-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid var(--border-subtle);
+    }
+
+    /* Fixed Techuilla Logo at Extreme Left Center (+80% Size, +20% Width) */
+    .nav-extreme-left-logo-wrap {
+      position: absolute;
+      left: 32px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      width: auto;
+      height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      transition: transform 0.3s ease;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+    }
+
+    .nav-extreme-left-logo {
+      width: 164px;
+      height: 137px;
+      object-fit: fill;
+      display: block;
+      filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.16));
+    }
+
+    /* Large Rotating Reel Wheel shifted left by 20% to prevent cropping */
+    .reel-wheel {
+      position: absolute;
+      left: -14%;
+      top: 50%;
+      width: 980px;
+      height: 980px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      animation: continuousReelSpin 45s linear infinite;
+      will-change: transform;
+      pointer-events: auto;
+    }
+
+    .reel-wheel:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes continuousReelSpin {
+      0%   { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* Reel Image Panel Spokes (10 evenly spaced panels around the 360° circle at 36° increments) */
+    .reel-spoke {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      transform-origin: 0 0;
+    }
+
+    /* 10 Spokes positioned at 36deg increments */
+    .spoke-0 { transform: rotate(0deg); }
+    .spoke-1 { transform: rotate(36deg); }
+    .spoke-2 { transform: rotate(72deg); }
+    .spoke-3 { transform: rotate(108deg); }
+    .spoke-4 { transform: rotate(144deg); }
+    .spoke-5 { transform: rotate(180deg); }
+    .spoke-6 { transform: rotate(216deg); }
+    .spoke-7 { transform: rotate(252deg); }
+    .spoke-8 { transform: rotate(288deg); }
+    .spoke-9 { transform: rotate(324deg); }
+
+    /* Curated Reel Portfolio Cards (+10% Height: 284px, +15% Width: 364px, +15% Spacing: left 485px) */
+    .reel-panel-card {
+      position: absolute;
+      left: 485px; /* Radius distance from central pivot with balanced spacing */
+      top: -142px; /* Centered along spoke (284px / 2) */
+      width: 364px;
+      height: 284px;
+      background: #FFFFFF;
+      border-radius: 14px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      filter: none;
+      opacity: 1;
+      transition: transform 0.35s var(--ease-editorial), border-color 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .reel-panel-card:hover {
+      transform: scale(1.05);
+      border-color: var(--color-orange);
+      box-shadow: 0 20px 42px rgba(244, 119, 50, 0.25);
+    }
+
+    .reel-card-thumb {
+      width: 100%;
+      height: 206px;
+      background: #111111;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reel-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .reel-panel-card:hover .reel-card-img {
+      transform: scale(1.06);
+    }
+
+    /* Monospace pill badge for card number on thumbnail */
+    .reel-card-num-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: #FFFFFF;
+      background: rgba(15, 15, 15, 0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      letter-spacing: 0.04em;
+      transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+      z-index: 2;
+    }
+
+    .reel-panel-card:hover .reel-card-num-badge {
+      background: var(--color-orange);
+      border-color: var(--color-orange);
+      color: #FFFFFF;
+    }
+
+    /* Card info bar */
+    .reel-card-info {
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #FFFFFF;
+      flex: 1;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      gap: 8px;
+    }
+
+    .reel-card-meta-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .reel-card-title {
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .reel-card-niche-sub {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: #737373;
+      letter-spacing: 0.03em;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .reel-card-niche-val {
+      font-weight: 600;
+      color: var(--color-orange);
+    }
+
+    .reel-card-tag {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--color-orange);
+      background: rgba(244, 119, 50, 0.1);
+      border: 1px solid rgba(244, 119, 50, 0.22);
+      border-radius: 999px;
+      padding: 3px 9px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .reel-panel-card:hover .reel-card-tag {
+      background: var(--color-orange);
+      color: #FFFFFF;
+      border-color: var(--color-orange);
+    }
+
+    /* RIGHT SIDE: FLOATING NAV OPTIONS (25% REDUCED FONT, CENTERED IN RIGHT HALF) */
+    .menu-nav-right-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 48px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .menu-nav-inner {
+      width: 100%;
+      max-width: 580px;
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Centered in right side panel */
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    .menu-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+    }
+
+    .menu-nav-list li {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .menu-nav-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-family: var(--font-sans);
+      font-size: clamp(38px, 4.4vw, 60px);
+      font-weight: 800;
+      letter-spacing: -0.015em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: transform 0.3s var(--ease-editorial), color 0.25s ease;
+      position: relative;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .menu-nav-link .nav-text-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    /* Jackpot Screen Ladder Character Animation (Speed Lowered by 0.5s: 1.02s) */
+    .jackpot-char-slot {
+      display: inline-block;
+      overflow: hidden;
+      height: 1.15em;
+      vertical-align: bottom;
+      position: relative;
+    }
+
+    .jackpot-char-sizer {
+      display: inline-block;
+      opacity: 0;
+      visibility: hidden;
+      user-select: none;
+      pointer-events: none;
+      line-height: 1.15;
+    }
+
+    .jackpot-reel-ladder {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 400%;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(0);
+      /* Lowered speed by 0.5s: 1.02s duration for luxurious roll */
+      transition: transform 1.02s cubic-bezier(0.2, 0.95, 0.3, 1);
+      transition-delay: calc(var(--char-idx) * 0.045s);
+      will-change: transform;
+    }
+
+    /* Trigger jackpot roll on major nav options, social buttons, and business enquiries */
+    .menu-nav-link:hover .jackpot-reel-ladder,
+    .menu-channel-item:hover .jackpot-reel-ladder,
+    .menu-enquiries-btn:hover .jackpot-reel-ladder {
+      transform: translateY(-75%);
+    }
+
+    .jackpot-rung {
+      display: block;
+      height: 25%;
+      width: 100%;
+      line-height: 1.15;
+      text-align: center;
+    }
+
+    .jackpot-rung.target {
+      color: var(--color-orange);
+    }
+
+    /* Creative Signature Strikethrough Ribbon (Fluid Reference Path) */
+    .nav-creative-strikethrough {
+      position: absolute;
+      left: -12%;
+      width: 124%;
+      top: 50%;
+      height: 105%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      z-index: 10;
+      overflow: visible;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .nav-creative-strikethrough .stroke-cut {
+      fill: none;
+      stroke: var(--bg-warm);
+      stroke-width: 9.5px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 850;
+      stroke-dashoffset: 850;
+      transition: stroke-dashoffset 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-creative-strikethrough .stroke-ribbon {
+      fill: none;
+      stroke: rgba(244, 119, 50, 0.55);
+      stroke-width: 2.5px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 850;
+      stroke-dashoffset: 850;
+      transition: stroke-dashoffset 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Inclined Arrow Facing Top-Right (↗) */
+    .menu-nav-link .nav-arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(22px, 2.6vw, 36px);
+      color: var(--color-orange);
+      opacity: 0;
+      transform: translate(-8px, 8px) scale(0.6);
+      transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      margin-left: 8px;
+      line-height: 1;
+    }
+
+    /* Active State (e.g. Home when on homepage) */
+    .menu-nav-link.is-active {
+      color: var(--color-orange);
+    }
+
+    .menu-nav-link.is-active .nav-creative-strikethrough {
+      opacity: 1;
+    }
+
+    .menu-nav-link.is-active .nav-creative-strikethrough .stroke-cut,
+    .menu-nav-link.is-active .nav-creative-strikethrough .stroke-ribbon {
+      stroke-dashoffset: 0;
+    }
+
+    .menu-nav-link.is-active .nav-arrow {
+      opacity: 1;
+      transform: translate(0, 0) scale(1);
+    }
+
+    /* Hover State */
+    .menu-nav-link:hover {
+      transform: translateY(-2px);
+      color: var(--color-orange);
+    }
+
+    .menu-nav-link:hover .nav-creative-strikethrough {
+      opacity: 1;
+    }
+
+    .menu-nav-link:hover .nav-creative-strikethrough .stroke-cut,
+    .menu-nav-link:hover .nav-creative-strikethrough .stroke-ribbon {
+      stroke-dashoffset: 0;
+    }
+
+    .menu-nav-link:hover .nav-arrow {
+      opacity: 1;
+      transform: translate(0, 0) scale(1);
+    }
+
+    /* Static Techuilla Logo Icon in Navigation Menu (Static, 40% Larger, Centered directly above Business Enquiries) */
+    .menu-mini-brand-row {
+      margin-top: clamp(42px, 5vh, 60px);
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .menu-mini-brand {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      cursor: default;
+      pointer-events: none;
+      user-select: none;
+      padding: 0;
+      line-height: 0;
+    }
+
+    .menu-mini-logo {
+      height: 62px; /* Increased by another 40% from 44px */
+      width: auto;
+      object-fit: contain;
+      display: block;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* Business Enquiries Centered Row - directly below the centered logo (closer spacing) */
+    .menu-enquiries-row {
+      margin-top: clamp(8px, 1.2vh, 12px);
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .menu-enquiries-btn {
+      font-family: var(--font-sans);
+      font-size: clamp(16px, 1.3vw, 19px);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: none;
+      color: var(--text-primary);
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 6px 0 !important;
+      border-radius: 0 !important;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: transform 0.25s ease;
+      text-decoration: none;
+    }
+
+    .menu-enquiries-btn .nav-text-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .menu-enquiries-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    /* Four Social Links in a Single Row - Shifted down lower below Business Enquiries */
+    .menu-socials-row {
+      margin-top: clamp(24px, 2.8vh, 36px);
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: nowrap;
+    }
+
+    /* 20% Increased Social Buttons Font Size: clamp(15px, 1.25vw, 17px) */
+    .menu-channel-item {
+      font-family: var(--font-mono);
+      font-size: clamp(15px, 1.25vw, 17px);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      transition: color 0.25s ease;
+      text-decoration: none;
+    }
+
+    .menu-channel-item:hover {
+      color: var(--color-orange);
+    }
+
+    .menu-channel-sep {
+      color: var(--text-muted);
+      font-size: 14px;
+      opacity: 0.45;
+      user-select: none;
+    }
+
