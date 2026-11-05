@@ -3014,7 +3014,7 @@
       inset: 0;
       pointer-events: none;
       z-index: 1;
-      opacity: 0.32; /* Increased opacity by +30% */
+      opacity: 0.25; /* Increased opacity by +30% */
       background-image: 
         linear-gradient(to right, rgba(255, 102, 0, 0.28) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(255, 102, 0, 0.28) 1px, transparent 1px);
@@ -3146,7 +3146,7 @@
 
     .flagship-col-3d .flagship-action-btn {
       align-self: flex-end;
-      margin-right: 28px; /* Placed RIGHT BELOW the letters ON of the word ANIMATION */
+      margin-right: 5px; /* Placed RIGHT BELOW the letters ON of the word ANIMATION */
       margin-top: 24px;
     }
 
@@ -3275,85 +3275,86 @@
       }
     }
 
-    /* Elevated Page Pull-Up Layer with warm beige-to-orange gradient */
+    /* Elevated Page Pull-Up Layer with clean white-to-orange gradient */
     .flagship-pullup-sheet {
       position: absolute;
       inset: 0;
       width: 100vw;
       height: 100vh;
-      background: linear-gradient(135deg, #FAF8F5 0%, #F5EDE3 38%, #FFEAD7 72%, #FFD2AE 100%) !important;
+      background: linear-gradient(135deg, #FFFFFF 0%, #FFF8F2 35%, #FFE8D4 70%, #FFAC6E 100%) !important;
       z-index: 25;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 -28px 75px rgba(0, 0, 0, 0.16), 0 -4px 16px rgba(0, 0, 0, 0.06);
-      border-top: 2px solid #FF6600;
+      box-shadow: 0 -28px 75px rgba(0, 0, 0, 0.12), 0 -4px 16px rgba(0, 0, 0, 0.04);
       transform: translate3d(0, 100%, 0); /* Parked below viewport */
       will-change: transform;
       pointer-events: auto;
       visibility: hidden;
-    }
-
-    .pullup-sheet-inner {
-      width: 100%;
-      text-align: center;
-      padding: 0 32px;
-    }
-
-    /* Orange Color Masked Container for Kinetic Typography */
-    .statement-kinetic-container {
-      position: relative;
-      display: inline-block;
-      width: 100%;
-      max-width: 1280px;
-      margin: 0 auto;
-      text-align: center;
-      padding: clamp(28px, 3.8vw, 54px) clamp(24px, 3.4vw, 56px);
-      border-radius: 28px;
-      border: 2px solid #FF6600 !important; /* Bold orange masked container */
-      background: rgba(255, 255, 255, 0.45);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 24px 60px rgba(255, 102, 0, 0.14), 0 0 0 1px rgba(255, 102, 0, 0.25);
       overflow: hidden;
     }
 
-    .kinetic-orange-glow {
+    /* Background lining textures with least opacity */
+    .pullup-sheet-lines {
       position: absolute;
       inset: 0;
-      border-radius: 28px;
-      background: radial-gradient(ellipse at 50% 60%, rgba(255, 102, 0, 0.18) 0%, rgba(255, 102, 0, 0.03) 65%, transparent 100%);
       pointer-events: none;
       z-index: 1;
-      opacity: 0;
-      will-change: opacity;
+      opacity: 0.07; /* Least opacity */
+      background-image: 
+        linear-gradient(to right, rgba(255, 102, 0, 0.6) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 102, 0, 0.6) 1px, transparent 1px);
+      background-size: 80px 80px;
     }
 
-    .kinetic-mask-line {
-      display: block;
-      overflow: hidden; /* Masked container clipping the oversized text */
-      padding: 8px 0;
+    .pullup-sheet-inner {
       position: relative;
       z-index: 2;
+      width: 100%;
+      text-align: center;
+      padding: 0 clamp(20px, 4vw, 48px);
+    }
+
+    /* Editorial Typography Wrap - Box border removed, clean full-bleed editorial layout */
+    .statement-editorial-wrap {
+      position: relative;
+      display: block;
+      width: 100%;
+      max-width: 1420px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    /* Masked lines clipping the oversized text (Lando Norris manifesto style) */
+    .kinetic-mask-line {
+      display: block;
+      overflow: hidden;
+      padding: 6px 0;
+      line-height: 1.05;
     }
 
     .kinetic-text-line {
       display: inline-block;
-      transform: translate3d(0, 120%, 0); /* Parked below mask */
-      will-change: transform;
-      transition: transform 0.04s linear;
+      transform: translate3d(0, 115%, 0);
+      will-change: transform, opacity;
+      transition: transform 0.04s linear, opacity 0.04s linear;
+      opacity: 0;
     }
 
     .statement-headline {
-      font-size: clamp(52px, 8.2vw, 124px) !important; /* +20% size increase */
+      font-size: clamp(54px, 8.4vw, 130px) !important;
       font-weight: 700;
       line-height: 1.05;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.035em;
       text-transform: uppercase;
       color: #111111;
       margin: 0;
       padding: 0;
       text-align: center;
+    }
+
+    .statement-headline .accent-orange {
+      color: var(--color-orange, #FF6600) !important;
     }
 
     .font-canela {
@@ -4585,27 +4586,22 @@
 
           <!-- Elevated Page Pull-Up Layer with warm beige-to-orange gradient & kinetic typography -->
       <div class="flagship-pullup-sheet" id="flagshipPullupSheet" aria-hidden="true">
+        <!-- Background lining textures with least opacity -->
+        <div class="pullup-sheet-lines" aria-hidden="true"></div>
         <div class="pullup-sheet-inner">
-          <div class="statement-container">
-            
-            <!-- Orange Color Masked Container for Kinetic Typography -->
-            <div class="statement-kinetic-container" id="statementKineticContainer">
-              <div class="kinetic-orange-glow" id="kineticOrangeGlow" aria-hidden="true"></div>
-              
-              <h2 class="statement-headline" id="statementHeadline">
-                <div class="kinetic-mask-line">
-                  <span class="kinetic-text-line" id="kineticTextLine1">
-                    <span class="font-canela">CRAFTED</span> <span class="font-dm-serif">FOR AMBITION.</span>
-                  </span>
-                </div>
-                <div class="kinetic-mask-line">
-                  <span class="kinetic-text-line" id="kineticTextLine2">
-                    <span class="font-dm-serif">DRIVEN BY</span> <span class="font-canela accent-orange">INTELLIGENCE.</span>
-                  </span>
-                </div>
-              </h2>
-            </div>
-
+          <div class="statement-editorial-wrap">
+            <h2 class="statement-headline" id="statementHeadline">
+              <div class="kinetic-mask-line">
+                <span class="kinetic-text-line" id="kineticTextLine1">
+                  <span class="font-canela accent-orange">CRAFTED</span> <span class="font-dm-serif">FOR AMBITION.</span>
+                </span>
+              </div>
+              <div class="kinetic-mask-line">
+                <span class="kinetic-text-line" id="kineticTextLine2">
+                  <span class="font-dm-serif">DRIVEN BY</span> <span class="font-canela accent-orange">INTELLIGENCE.</span>
+                </span>
+              </div>
+            </h2>
           </div>
         </div>
       </div>
@@ -6160,66 +6156,74 @@ Best regards,
             return;
           }
 
-          // Active scrub: begins at rect.top = winH
+          // Active scrub through flagship track
           const scrolledFromEntry = winH - rect.top;
-          const closingSpan = winH + (maxDist * 0.88);
-          const rawProgress = scrolledFromEntry / closingSpan;
+          const totalSpan = maxDist + winH;
+          const rawProgress = scrolledFromEntry / totalSpan;
           const progress = Math.max(0, Math.min(1, rawProgress));
 
-          // 1. Pulling Inside Animation (CONTINUES smoothly across entire duration)
-          const easeProgress = Math.sin((progress * Math.PI) / 2);
+          // Phase 1: 3D and AI Creatives convergence (0.0 to 0.70)
+          // The pulling inside animation is at least 90% completed as we reach the bottom of this section
+          const pullStart = 0.70;
+          const insideRatio = Math.min(1, progress / pullStart);
+          const easeInside = Math.sin((insideRatio * Math.PI) / 2);
 
           // Left character: -50% -> -18% (~82% body visible)
-          const leftShift = -50 + (easeProgress * 32);
+          const leftShift = -50 + (easeInside * 32);
           // Right character: 50% -> 18% (~82% body visible)
-          const rightShift = 50 - (easeProgress * 32);
+          const rightShift = 50 - (easeInside * 32);
 
           charLeft.style.transform = `translate3d(${leftShift.toFixed(2)}%, 0, 0)`;
           charRight.style.transform = `translate3d(${rightShift.toFixed(2)}%, 0, 0)`;
 
           // Center columns converge towards each other
-          const colShift = 70 * (1 - easeProgress);
+          const colShift = 70 * (1 - easeInside);
           col3D.style.transform = `translate3d(-${colShift.toFixed(2)}px, 0, 0)`;
           colAI.style.transform = `translate3d(${colShift.toFixed(2)}px, 0, 0)`;
 
-          // 2. Page Pull-Up Animation: starts when materials hit 60% (progress >= 0.60)
-          // While the page is being pulled up, the pulling inside animation continues above!
+          // Phase 2: Page Pull-Up Animation (scrub >= pullStart)
+          // Appears directly as we reach the bottom of the section, when pulling inside is >= 90% complete
           if (pullupSheet) {
             const kineticLine1 = document.getElementById('kineticTextLine1');
             const kineticLine2 = document.getElementById('kineticTextLine2');
-            const kineticGlow = document.getElementById('kineticOrangeGlow');
 
-            if (progress < 0.60) {
+            if (progress < pullStart) {
               pullupSheet.style.transform = 'translate3d(0, 100%, 0)';
               pullupSheet.style.visibility = 'hidden';
-              if (kineticLine1) kineticLine1.style.transform = 'translate3d(0, 120%, 0)';
-              if (kineticLine2) kineticLine2.style.transform = 'translate3d(0, 120%, 0)';
-              if (kineticGlow) kineticGlow.style.opacity = '0';
+              if (kineticLine1) {
+                kineticLine1.style.transform = 'translate3d(0, 115%, 0)';
+                kineticLine1.style.opacity = '0';
+              }
+              if (kineticLine2) {
+                kineticLine2.style.transform = 'translate3d(0, 115%, 0)';
+                kineticLine2.style.opacity = '0';
+              }
             } else {
               pullupSheet.style.visibility = 'visible';
-              // 60% to 100%: pull up from 100% to 0%
-              const pullRatio = (progress - 0.60) / (1.0 - 0.60);
+              // Pull up sheet smoothly from 100% to 0%
+              const pullRatio = (progress - pullStart) / (1.0 - pullStart);
               const easePull = Math.sin((pullRatio * Math.PI) / 2);
               const translateY = (1 - easePull) * 100;
               pullupSheet.style.transform = `translate3d(0, ${translateY.toFixed(2)}%, 0)`;
 
-              // Kinetic typography animation: begins when text page is revealed in 30% of screen (easePull >= 0.30)
-              if (easePull < 0.30) {
-                if (kineticLine1) kineticLine1.style.transform = 'translate3d(0, 120%, 0)';
-                if (kineticLine2) kineticLine2.style.transform = 'translate3d(0, 120%, 0)';
-                if (kineticGlow) kineticGlow.style.opacity = '0';
-              } else {
-                // Smooth scroll-linked kinetic vertical motion through orange masked container
-                const typoRatio = (easePull - 0.30) / (1.0 - 0.30);
-                const typoEase1 = Math.min(1, Math.sin((Math.min(1, typoRatio * 1.25) * Math.PI) / 2));
-                const typoEase2 = Math.min(1, Math.sin((Math.max(0, (typoRatio - 0.14) * 1.16) * Math.PI) / 2));
+              // Lando Norris manifesto style typography animation:
+              // As the page pulls up, lines reveal upward through overflow-hidden line masks
+              const typoRatio = Math.max(0, (pullRatio - 0.08) / 0.92);
+              const typoEase1 = Math.min(1, Math.sin((Math.min(1, typoRatio * 1.35) * Math.PI) / 2));
+              const typoEase2 = Math.min(1, Math.sin((Math.max(0, (typoRatio - 0.12) * 1.25) * Math.PI) / 2));
 
-                const y1 = (1 - typoEase1) * 120;
-                const y2 = (1 - typoEase2) * 120;
+              const y1 = (1 - typoEase1) * 115;
+              const y2 = (1 - typoEase2) * 115;
+              const op1 = Math.min(1, typoEase1 * 1.8);
+              const op2 = Math.min(1, typoEase2 * 1.8);
 
-                if (kineticLine1) kineticLine1.style.transform = `translate3d(0, ${y1.toFixed(2)}%, 0)`;
-                if (kineticLine2) kineticLine2.style.transform = `translate3d(0, ${y2.toFixed(2)}%, 0)`;
-                if (kineticGlow) kineticGlow.style.opacity = Math.min(1, typoRatio * 1.4).toFixed(3);
+              if (kineticLine1) {
+                kineticLine1.style.transform = `translate3d(0, ${y1.toFixed(2)}%, 0)`;
+                kineticLine1.style.opacity = op1.toFixed(3);
+              }
+              if (kineticLine2) {
+                kineticLine2.style.transform = `translate3d(0, ${y2.toFixed(2)}%, 0)`;
+                kineticLine2.style.opacity = op2.toFixed(3);
               }
             }
           }
