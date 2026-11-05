@@ -21,6 +21,28 @@
   <link rel="preload" as="image" href="assets/project_04_brand.jpg">
 
   <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
+
+    @font-face {
+      font-family: 'Canela';
+      src: url('fonts/canela-bold.woff2') format('woff2');
+      font-weight: 700 800;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    .font-canela {
+      font-family: 'Canela', 'Playfair Display', 'Cinzel', serif !important;
+      font-weight: 800 !important;
+      letter-spacing: -0.015em;
+    }
+
+    .font-dm-serif {
+      font-family: 'DM Serif Display', serif !important;
+      font-weight: 400 !important;
+      letter-spacing: -0.035em;
+    }
+
     /* ==========================================================================
        1. DESIGN TOKENS & SYSTEM VARIABLES (Driezie Studio Editorial Aesthetic)
        ========================================================================== */
@@ -2788,7 +2810,6 @@
       opacity: 0;
       z-index: 1;
       pointer-events: none;
-      transition: opacity 0.05s linear;
       will-change: opacity;
     }
 
@@ -2981,9 +3002,23 @@
        ========================================================================== */
     .flagship-showcase-track {
       position: relative;
-      height: 280vh; /* Smooth, luxurious convergence scrub duration */
+      height: 380vh; /* Smooth convergence scrub + expansive plateau for kinetic typography */
       background: var(--bg-warm, #FAF8F5);
       z-index: 9;
+    }
+
+        /* Background Decorative Orange Lines (Increased Opacity +30%) */
+    .flagship-bg-grid,
+    .flagship-backdrop-lines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.32; /* Increased opacity by +30% */
+      background-image: 
+        linear-gradient(to right, rgba(255, 102, 0, 0.28) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 102, 0, 0.28) 1px, transparent 1px);
+      background-size: 80px 80px;
     }
 
     .flagship-sticky-viewport {
@@ -3051,8 +3086,8 @@
       display: flex;
       align-items: flex-start;
       justify-content: center;
-      gap: clamp(80px, 9vw, 160px);
-      max-width: 960px;
+      gap: clamp(48px, 6vw, 100px);
+      max-width: 1100px;
       width: 100%;
       padding: 0 32px;
     }
@@ -3060,9 +3095,7 @@
     .flagship-column {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
-      flex: 1;
-      max-width: 380px;
+      flex: 0 1 auto;
       will-change: transform;
       transition: transform 0.05s linear;
     }
@@ -3075,19 +3108,74 @@
       transform: translate3d(70px, 0, 0); /* Spread apart initially */
     }
 
-    /* Titles */
-    .flagship-title-wrap {
+    /* Column 1: 3D ANIMATION (Right-aligned, button directly below ON) */
+    .flagship-column#flagshipCol3D,
+    .flagship-col-3d {
+      align-items: flex-end;
+      text-align: right;
+    }
+
+    .flagship-col-3d .flagship-title-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      text-align: right;
+      width: 100%;
+    }
+
+    .flagship-col-3d .flagship-3d-box {
       position: relative;
+      display: inline-block;
+      align-self: flex-end;
+      margin-right: 0px; /* Extreme right side, directly above the letters ON of ANIMATION */
+    }
+
+    .flagship-col-3d .title-animation {
+      text-align: right;
+      align-self: flex-end;
+    }
+
+    .flagship-col-3d .flagship-subline {
+      text-align: right;
+      align-self: flex-end;
+      margin-top: 18px;
+      margin-right: 0px; /* Moved below the animation word towards the right end */
+      max-width: 320px;
+      line-height: 1.45;
+    }
+
+    .flagship-col-3d .flagship-action-btn {
+      align-self: flex-end;
+      margin-right: 28px; /* Placed RIGHT BELOW the letters ON of the word ANIMATION */
+      margin-top: 24px;
+    }
+
+    /* Column 2: AI CREATIVES (Left-aligned, button stays where it is) */
+    .flagship-column#flagshipColAI,
+    .flagship-col-ai {
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .flagship-col-ai .flagship-title-wrap {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      text-align: left;
+      width: 100%;
     }
 
-    .flagship-3d-box {
-      position: relative;
-      display: inline-block;
-      align-self: flex-end; /* Extreme right side of its alignment */
-      margin-right: clamp(12px, 1.8vw, 24px); /* Positioned directly above the letters ON of ANIMATION */
+    .flagship-col-ai .flagship-subline {
+      text-align: left;
+      align-self: flex-start;
+      margin-top: 18px;
+      max-width: 320px;
+      line-height: 1.45;
+    }
+
+    .flagship-col-ai .flagship-action-btn {
+      align-self: flex-start;
+      margin-top: 24px;
     }
 
     .flagship-hero-title {
@@ -3139,14 +3227,13 @@
       transform: rotate(-1.5deg);
     }
 
-    /* Subtitle */
+    /* Subtitle Base */
     .flagship-subline {
       font-family: var(--font-sans);
       font-size: clamp(14px, 1.1vw, 16px);
       font-weight: 500;
       color: #262626;
       line-height: 1.45;
-      margin: 18px 0 0 0;
     }
 
     /* Orange Action Buttons */
@@ -3159,22 +3246,10 @@
       border-radius: 14px;
       background: var(--color-orange, #FF6600);
       color: #FFFFFF;
-      margin-top: 24px;
       text-decoration: none;
       box-shadow: 0 8px 22px rgba(255, 102, 0, 0.30);
       transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, box-shadow 0.25s ease;
       cursor: pointer;
-    }
-
-    #flagshipCol3D .flagship-action-btn,
-    .flagship-col-3d .flagship-action-btn {
-      align-self: flex-end; /* 3D animations button at right side end of its column */
-      margin-right: clamp(16px, 2.2vw, 32px); /* Placed closer towards the AI creatives button */
-    }
-
-    #flagshipColAI .flagship-action-btn,
-    .flagship-col-ai .flagship-action-btn {
-      align-self: flex-start; /* AI creatives button stays exactly where it is */
     }
 
     .flagship-action-btn:hover {
@@ -3206,13 +3281,13 @@
       inset: 0;
       width: 100vw;
       height: 100vh;
-      background: linear-gradient(135deg, #FAF8F5 0%, #F5EDE3 38%, #FFEAD7 72%, #FFD2AE 100%);
+      background: linear-gradient(135deg, #FAF8F5 0%, #F5EDE3 38%, #FFEAD7 72%, #FFD2AE 100%) !important;
       z-index: 25;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 -28px 75px rgba(0, 0, 0, 0.16), 0 -4px 16px rgba(0, 0, 0, 0.06);
-      border-top: 1px solid rgba(255, 102, 0, 0.22);
+      border-top: 2px solid #FF6600;
       transform: translate3d(0, 100%, 0); /* Parked below viewport */
       will-change: transform;
       pointer-events: auto;
@@ -3233,13 +3308,13 @@
       max-width: 1280px;
       margin: 0 auto;
       text-align: center;
-      padding: clamp(24px, 3.2vw, 44px) clamp(20px, 3.0vw, 48px);
+      padding: clamp(28px, 3.8vw, 54px) clamp(24px, 3.4vw, 56px);
       border-radius: 28px;
-      border: 1.5px solid rgba(255, 102, 0, 0.26);
-      background: rgba(255, 255, 255, 0.32);
+      border: 2px solid #FF6600 !important; /* Bold orange masked container */
+      background: rgba(255, 255, 255, 0.45);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 24px 60px rgba(255, 102, 0, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      box-shadow: 0 24px 60px rgba(255, 102, 0, 0.14), 0 0 0 1px rgba(255, 102, 0, 0.25);
       overflow: hidden;
     }
 
@@ -3247,18 +3322,17 @@
       position: absolute;
       inset: 0;
       border-radius: 28px;
-      background: radial-gradient(ellipse at 50% 60%, rgba(255, 102, 0, 0.14) 0%, rgba(255, 102, 0, 0.03) 65%, transparent 100%);
+      background: radial-gradient(ellipse at 50% 60%, rgba(255, 102, 0, 0.18) 0%, rgba(255, 102, 0, 0.03) 65%, transparent 100%);
       pointer-events: none;
       z-index: 1;
       opacity: 0;
       will-change: opacity;
-      transition: opacity 0.25s ease;
     }
 
     .kinetic-mask-line {
       display: block;
       overflow: hidden; /* Masked container clipping the oversized text */
-      padding: 6px 0;
+      padding: 8px 0;
       position: relative;
       z-index: 2;
     }
@@ -3271,7 +3345,7 @@
     }
 
     .statement-headline {
-      font-size: clamp(52px, 8.2vw, 124px); /* 20% size increase while maintaining alignment */
+      font-size: clamp(52px, 8.2vw, 124px) !important; /* +20% size increase */
       font-weight: 700;
       line-height: 1.05;
       letter-spacing: -0.03em;
@@ -4447,6 +4521,7 @@
        ========================================================================== -->
   <section class="flagship-showcase-track" id="flagshipShowcaseTrack">
     <div class="flagship-sticky-viewport" id="flagshipStickyViewport">
+      <div class="flagship-bg-grid" aria-hidden="true"></div>
       
       <!-- Topographical Vector Contour Background (Orange contour lines with +30% opacity) -->
       <svg class="flagship-topo-svg" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
@@ -6025,7 +6100,7 @@ Best regards,
           rail.style.transform = `translate3d(-${currentX.toFixed(2)}px, 0, 0)`;
 
           // Background color shift:
-          // "the background should be first orangish that too as the section appears the background should get shifted to orange and then as 45% of the section is scrolled now it becomes back to the same background as before"
+          // "the background colour changing in the image scrolling section to be changed from 30% to 45%"
           if (progress <= 0.45) {
             const orangeOp = 1 - (progress / 0.45);
             bgOrange.style.opacity = orangeOp.toFixed(3);
@@ -6128,7 +6203,7 @@ Best regards,
               const translateY = (1 - easePull) * 100;
               pullupSheet.style.transform = `translate3d(0, ${translateY.toFixed(2)}%, 0)`;
 
-              // Kinetic typography animation: triggers when text page is revealed in 30% of screen (easePull >= 0.30)
+              // Kinetic typography animation: begins when text page is revealed in 30% of screen (easePull >= 0.30)
               if (easePull < 0.30) {
                 if (kineticLine1) kineticLine1.style.transform = 'translate3d(0, 120%, 0)';
                 if (kineticLine2) kineticLine2.style.transform = 'translate3d(0, 120%, 0)';
