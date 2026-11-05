@@ -18,7 +18,8 @@
 
 ## 🚀 Live Demo & Repository
 
-- **Repository**: [https://github.com/Health-Streak/techuilla-agency](https://github.com/Health-Streak/techuilla-agency)
+- **Repository**: [https://github.com/yathaarthj03-blip/techuilla-agency](https://github.com/yathaarthj03-blip/techuilla-agency)
+- **Live Demo**: [https://yathaarthj03-blip.github.io/techuilla-agency/](https://yathaarthj03-blip.github.io/techuilla-agency/)
 - **Local Preview**: Host locally on port `8080` (`python -m http.server 8080`)
 
 ---
