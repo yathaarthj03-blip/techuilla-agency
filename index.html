@@ -3325,27 +3325,47 @@
       text-align: center;
     }
 
-    /* Masked lines clipping the oversized text (Lando Norris manifesto style) */
+    /* Masked lines clipping the oversized text (Clean single-line ribbons) */
     .kinetic-mask-line {
-      display: block;
+      position: relative;
+      display: inline-block;
       overflow: hidden;
-      padding: 6px 0;
-      line-height: 1.05;
+      white-space: nowrap;
+      padding: 4px 16px;
+      margin: 6px 0;
+      line-height: 1.08;
+      vertical-align: middle;
+    }
+
+    /* Orange Color Mask Layer (moves left-to-right, closes to right to reveal text) */
+    .typo-color-wipe-mask {
+      position: absolute;
+      inset: 0;
+      background: var(--color-orange, #FF6600);
+      z-index: 5;
+      pointer-events: none;
+      transform: scaleX(0);
+      transform-origin: left center;
+      will-change: transform;
+      border-radius: 4px;
     }
 
     .kinetic-text-line {
+      position: relative;
+      z-index: 2;
       display: inline-block;
-      transform: translate3d(0, 115%, 0);
-      will-change: transform, opacity;
-      transition: transform 0.04s linear, opacity 0.04s linear;
+      white-space: nowrap;
       opacity: 0;
+      transform: translate3d(0, 10px, 0);
+      will-change: transform, opacity;
+      transition: opacity 0.05s linear;
     }
 
     .statement-headline {
-      font-size: clamp(54px, 8.4vw, 130px) !important;
+      font-size: clamp(38px, 5.2vw, 86px) !important;
       font-weight: 700;
-      line-height: 1.05;
-      letter-spacing: -0.035em;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
       text-transform: uppercase;
       color: #111111;
       margin: 0;
@@ -4591,22 +4611,26 @@
         <div class="pullup-sheet-inner">
           <div class="statement-editorial-wrap">
             <h2 class="statement-headline" id="statementHeadline">
-              <div class="kinetic-mask-line">
-                <span class="kinetic-text-line" id="kineticTextLine1">
-                  <span class="font-canela accent-orange">CRAFTED</span> <span class="font-dm-serif">FOR AMBITION.</span>
-                </span>
+              <div>
+                <div class="kinetic-mask-line">
+                  <div class="typo-color-wipe-mask" id="wipeMaskLine1" aria-hidden="true"></div>
+                  <span class="kinetic-text-line" id="kineticTextLine1">
+                    <span class="font-canela accent-orange">CRAFTED</span> <span class="font-dm-serif">FOR AMBITION.</span>
+                  </span>
+                </div>
               </div>
-              <div class="kinetic-mask-line">
-                <span class="kinetic-text-line" id="kineticTextLine2">
-                  <span class="font-dm-serif">DRIVEN BY</span> <span class="font-canela accent-orange">INTELLIGENCE.</span>
-                </span>
+              <div>
+                <div class="kinetic-mask-line">
+                  <div class="typo-color-wipe-mask" id="wipeMaskLine2" aria-hidden="true"></div>
+                  <span class="kinetic-text-line" id="kineticTextLine2">
+                    <span class="font-dm-serif">DRIVEN BY</span> <span class="font-canela accent-orange">INTELLIGENCE.</span>
+                  </span>
+                </div>
               </div>
             </h2>
           </div>
         </div>
       </div>
-
-    </div>
   </section>
 
 
@@ -6186,17 +6210,27 @@ Best regards,
           if (pullupSheet) {
             const kineticLine1 = document.getElementById('kineticTextLine1');
             const kineticLine2 = document.getElementById('kineticTextLine2');
+            const wipeMask1 = document.getElementById('wipeMaskLine1');
+            const wipeMask2 = document.getElementById('wipeMaskLine2');
 
             if (progress < pullStart) {
               pullupSheet.style.transform = 'translate3d(0, 100%, 0)';
               pullupSheet.style.visibility = 'hidden';
+              if (wipeMask1) {
+                wipeMask1.style.transformOrigin = 'left center';
+                wipeMask1.style.transform = 'scaleX(0)';
+              }
+              if (wipeMask2) {
+                wipeMask2.style.transformOrigin = 'left center';
+                wipeMask2.style.transform = 'scaleX(0)';
+              }
               if (kineticLine1) {
-                kineticLine1.style.transform = 'translate3d(0, 115%, 0)';
                 kineticLine1.style.opacity = '0';
+                kineticLine1.style.transform = 'translate3d(0, 10px, 0)';
               }
               if (kineticLine2) {
-                kineticLine2.style.transform = 'translate3d(0, 115%, 0)';
                 kineticLine2.style.opacity = '0';
+                kineticLine2.style.transform = 'translate3d(0, 10px, 0)';
               }
             } else {
               pullupSheet.style.visibility = 'visible';
@@ -6206,25 +6240,44 @@ Best regards,
               const translateY = (1 - easePull) * 100;
               pullupSheet.style.transform = `translate3d(0, ${translateY.toFixed(2)}%, 0)`;
 
-              // Lando Norris manifesto style typography animation:
-              // As the page pulls up, lines reveal upward through overflow-hidden line masks
-              const typoRatio = Math.max(0, (pullRatio - 0.08) / 0.92);
-              const typoEase1 = Math.min(1, Math.sin((Math.min(1, typoRatio * 1.35) * Math.PI) / 2));
-              const typoEase2 = Math.min(1, Math.sin((Math.max(0, (typoRatio - 0.12) * 1.25) * Math.PI) / 2));
+              // Orange color mask wipe animation (moves left to right, then closes to right revealing text):
+              // Line 1 wipe: starts at pullRatio 0.20, completes by 0.72
+              const p1 = Math.max(0, Math.min(1, (pullRatio - 0.20) / 0.52));
+              // Line 2 wipe: starts at pullRatio 0.38, completes by 0.90 (staggered)
+              const p2 = Math.max(0, Math.min(1, (pullRatio - 0.38) / 0.52));
 
-              const y1 = (1 - typoEase1) * 115;
-              const y2 = (1 - typoEase2) * 115;
-              const op1 = Math.min(1, typoEase1 * 1.8);
-              const op2 = Math.min(1, typoEase2 * 1.8);
+              function applyWipe(mask, text, p) {
+                if (!mask || !text) return;
+                if (p <= 0) {
+                  mask.style.transformOrigin = 'left center';
+                  mask.style.transform = 'scaleX(0)';
+                  text.style.opacity = '0';
+                  text.style.transform = 'translate3d(0, 10px, 0)';
+                } else if (p < 0.50) {
+                  // Phase 1: Orange layer sweeps in from left to right, covering the line
+                  const sweepIn = Math.sin((p / 0.50 * Math.PI) / 2);
+                  mask.style.transformOrigin = 'left center';
+                  mask.style.transform = 'scaleX(' + sweepIn.toFixed(4) + ')';
+                  text.style.opacity = '0';
+                } else if (p < 1.0) {
+                  // Phase 2: Orange layer closes to the right, revealing the text underneath
+                  const closeOut = (p - 0.50) / 0.50;
+                  const sweepOut = Math.sin((closeOut * Math.PI) / 2);
+                  mask.style.transformOrigin = 'right center';
+                  mask.style.transform = 'scaleX(' + (1 - sweepOut).toFixed(4) + ')';
+                  text.style.opacity = '1';
+                  text.style.transform = 'translate3d(0, ' + ((1 - sweepOut) * 8).toFixed(2) + 'px, 0)';
+                } else {
+                  // Phase 3: Fully revealed
+                  mask.style.transformOrigin = 'right center';
+                  mask.style.transform = 'scaleX(0)';
+                  text.style.opacity = '1';
+                  text.style.transform = 'translate3d(0, 0, 0)';
+                }
+              }
 
-              if (kineticLine1) {
-                kineticLine1.style.transform = `translate3d(0, ${y1.toFixed(2)}%, 0)`;
-                kineticLine1.style.opacity = op1.toFixed(3);
-              }
-              if (kineticLine2) {
-                kineticLine2.style.transform = `translate3d(0, ${y2.toFixed(2)}%, 0)`;
-                kineticLine2.style.opacity = op2.toFixed(3);
-              }
+              applyWipe(wipeMask1, kineticLine1, p1);
+              applyWipe(wipeMask2, kineticLine2, p2);
             }
           }
         }
