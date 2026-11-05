@@ -2780,7 +2780,7 @@
       background: var(--bg-warm);
     }
 
-    /* Background Shift Layer: starts orangish as section appears, fades back to warm cream by 30% scroll */
+    /* Background Shift Layer: starts orangish as section appears, fades back to warm cream by 45% scroll */
     .gallery-bg-orange {
       position: absolute;
       inset: 0;
@@ -3200,19 +3200,19 @@
       }
     }
 
-    /* Elevated Page Pull-Up Layer (Starts at 60% scrub, glides up from bottom) */
+    /* Elevated Page Pull-Up Layer with warm beige-to-orange gradient */
     .flagship-pullup-sheet {
       position: absolute;
       inset: 0;
       width: 100vw;
       height: 100vh;
-      background: var(--bg-warm, #FAF8F5);
+      background: linear-gradient(135deg, #FAF8F5 0%, #F5EDE3 38%, #FFEAD7 72%, #FFD2AE 100%);
       z-index: 25;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 -28px 75px rgba(0, 0, 0, 0.16), 0 -4px 16px rgba(0, 0, 0, 0.06);
-      border-top: 1px solid rgba(0, 0, 0, 0.09);
+      border-top: 1px solid rgba(255, 102, 0, 0.22);
       transform: translate3d(0, 100%, 0); /* Parked below viewport */
       will-change: transform;
       pointer-events: auto;
@@ -3223,6 +3223,75 @@
       width: 100%;
       text-align: center;
       padding: 0 32px;
+    }
+
+    /* Orange Color Masked Container for Kinetic Typography */
+    .statement-kinetic-container {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      text-align: center;
+      padding: clamp(24px, 3.2vw, 44px) clamp(20px, 3.0vw, 48px);
+      border-radius: 28px;
+      border: 1.5px solid rgba(255, 102, 0, 0.26);
+      background: rgba(255, 255, 255, 0.32);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 24px 60px rgba(255, 102, 0, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      overflow: hidden;
+    }
+
+    .kinetic-orange-glow {
+      position: absolute;
+      inset: 0;
+      border-radius: 28px;
+      background: radial-gradient(ellipse at 50% 60%, rgba(255, 102, 0, 0.14) 0%, rgba(255, 102, 0, 0.03) 65%, transparent 100%);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      will-change: opacity;
+      transition: opacity 0.25s ease;
+    }
+
+    .kinetic-mask-line {
+      display: block;
+      overflow: hidden; /* Masked container clipping the oversized text */
+      padding: 6px 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .kinetic-text-line {
+      display: inline-block;
+      transform: translate3d(0, 120%, 0); /* Parked below mask */
+      will-change: transform;
+      transition: transform 0.04s linear;
+    }
+
+    .statement-headline {
+      font-size: clamp(52px, 8.2vw, 124px); /* 20% size increase while maintaining alignment */
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      color: #111111;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    .font-canela {
+      font-family: "Canela", "Playfair Display", "Cinzel", serif;
+      font-weight: 800;
+      letter-spacing: -0.015em;
+    }
+
+    .font-dm-serif {
+      font-family: "DM Serif Display", serif;
+      font-weight: 400;
+      letter-spacing: -0.035em;
     }
 
     /* ==========================================================================
@@ -3549,6 +3618,7 @@
       }
     }
   </style>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&display=swap" rel="stylesheet">
 </head>
 <body class="intro-active">
 
@@ -4250,7 +4320,7 @@
   <section class="gallery-pin-track" id="galleryPinTrack">
     <div class="gallery-sticky-viewport" id="galleryStickyViewport">
       
-      <!-- Background Shift Layer: starts orangish as section appears, fades back to warm cream by 30% scroll -->
+      <!-- Background Shift Layer: starts orangish as section appears, fades back to warm cream by 45% scroll -->
       <div class="gallery-bg-orange" id="galleryBgOrange" aria-hidden="true"></div>
 
       <!-- Horizontal Moving Rail: translates right to left as user scrolls -->
@@ -4438,14 +4508,29 @@
         <img src="assets/flagship_char_right.png" alt="AI Creatives Specialist Character" class="flagship-char-img" draggable="false" />
       </div>
 
-          <!-- Elevated Page Pull-Up Layer: pulls up from bottom starting at 60% scrub -->
+          <!-- Elevated Page Pull-Up Layer with warm beige-to-orange gradient & kinetic typography -->
       <div class="flagship-pullup-sheet" id="flagshipPullupSheet" aria-hidden="true">
         <div class="pullup-sheet-inner">
           <div class="statement-container">
-            <h2 class="statement-headline">
-              CRAFTED FOR AMBITION.<br>
-              <span class="accent-orange">DRIVEN BY INTELLIGENCE.</span>
-            </h2>
+            
+            <!-- Orange Color Masked Container for Kinetic Typography -->
+            <div class="statement-kinetic-container" id="statementKineticContainer">
+              <div class="kinetic-orange-glow" id="kineticOrangeGlow" aria-hidden="true"></div>
+              
+              <h2 class="statement-headline" id="statementHeadline">
+                <div class="kinetic-mask-line">
+                  <span class="kinetic-text-line" id="kineticTextLine1">
+                    <span class="font-canela">CRAFTED</span> <span class="font-dm-serif">FOR AMBITION.</span>
+                  </span>
+                </div>
+                <div class="kinetic-mask-line">
+                  <span class="kinetic-text-line" id="kineticTextLine2">
+                    <span class="font-dm-serif">DRIVEN BY</span> <span class="font-canela accent-orange">INTELLIGENCE.</span>
+                  </span>
+                </div>
+              </h2>
+            </div>
+
           </div>
         </div>
       </div>
@@ -5940,9 +6025,9 @@ Best regards,
           rail.style.transform = `translate3d(-${currentX.toFixed(2)}px, 0, 0)`;
 
           // Background color shift:
-          // "the background should be first orangish that too as the section appears the background should get shifted to orange and then as 30% of the section is scrolled now it becomes back to the same background as before"
-          if (progress <= 0.30) {
-            const orangeOp = 1 - (progress / 0.30);
+          // "the background should be first orangish that too as the section appears the background should get shifted to orange and then as 45% of the section is scrolled now it becomes back to the same background as before"
+          if (progress <= 0.45) {
+            const orangeOp = 1 - (progress / 0.45);
             bgOrange.style.opacity = orangeOp.toFixed(3);
           } else {
             bgOrange.style.opacity = '0';
@@ -6025,9 +6110,16 @@ Best regards,
           // 2. Page Pull-Up Animation: starts when materials hit 60% (progress >= 0.60)
           // While the page is being pulled up, the pulling inside animation continues above!
           if (pullupSheet) {
+            const kineticLine1 = document.getElementById('kineticTextLine1');
+            const kineticLine2 = document.getElementById('kineticTextLine2');
+            const kineticGlow = document.getElementById('kineticOrangeGlow');
+
             if (progress < 0.60) {
               pullupSheet.style.transform = 'translate3d(0, 100%, 0)';
               pullupSheet.style.visibility = 'hidden';
+              if (kineticLine1) kineticLine1.style.transform = 'translate3d(0, 120%, 0)';
+              if (kineticLine2) kineticLine2.style.transform = 'translate3d(0, 120%, 0)';
+              if (kineticGlow) kineticGlow.style.opacity = '0';
             } else {
               pullupSheet.style.visibility = 'visible';
               // 60% to 100%: pull up from 100% to 0%
@@ -6035,6 +6127,25 @@ Best regards,
               const easePull = Math.sin((pullRatio * Math.PI) / 2);
               const translateY = (1 - easePull) * 100;
               pullupSheet.style.transform = `translate3d(0, ${translateY.toFixed(2)}%, 0)`;
+
+              // Kinetic typography animation: triggers when text page is revealed in 30% of screen (easePull >= 0.30)
+              if (easePull < 0.30) {
+                if (kineticLine1) kineticLine1.style.transform = 'translate3d(0, 120%, 0)';
+                if (kineticLine2) kineticLine2.style.transform = 'translate3d(0, 120%, 0)';
+                if (kineticGlow) kineticGlow.style.opacity = '0';
+              } else {
+                // Smooth scroll-linked kinetic vertical motion through orange masked container
+                const typoRatio = (easePull - 0.30) / (1.0 - 0.30);
+                const typoEase1 = Math.min(1, Math.sin((Math.min(1, typoRatio * 1.25) * Math.PI) / 2));
+                const typoEase2 = Math.min(1, Math.sin((Math.max(0, (typoRatio - 0.14) * 1.16) * Math.PI) / 2));
+
+                const y1 = (1 - typoEase1) * 120;
+                const y2 = (1 - typoEase2) * 120;
+
+                if (kineticLine1) kineticLine1.style.transform = `translate3d(0, ${y1.toFixed(2)}%, 0)`;
+                if (kineticLine2) kineticLine2.style.transform = `translate3d(0, ${y2.toFixed(2)}%, 0)`;
+                if (kineticGlow) kineticGlow.style.opacity = Math.min(1, typoRatio * 1.4).toFixed(3);
+              }
             }
           }
         }
