@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact — Techuilla Agency | Let's Start a Conversation</title>
+    <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <meta name="description" content="Start a conversation with Techuilla Agency. Creative technology, autonomous systems, conversion architecture, and high-impact digital experiences.">
 
   <!-- Google Fonts: Inter, Archivo, Space Grotesk -->
@@ -3931,6 +3936,34 @@ Best regards,
         screenTexture = new THREE.CanvasTexture(chatCanvas);
         screenTexture.encoding = THREE.sRGBEncoding;
         renderChatScreen();
+
+        
+        function createProceduralLaptopFallback() {
+          if (laptopGroup.children.length > 0) return; // Already loaded
+          console.warn('Rendering procedural laptop model fallback...');
+          const baseGeom = new THREE.BoxGeometry(1.6, 0.05, 1.1);
+          const baseMat = new THREE.MeshStandardMaterial({ color: 0x181818, roughness: 0.3, metalness: 0.8 });
+          const baseMesh = new THREE.Mesh(baseGeom, baseMat);
+          baseMesh.position.set(0, -0.025, 0.45);
+          laptopGroup.add(baseMesh);
+
+          const lidGeom = new THREE.BoxGeometry(1.6, 1.05, 0.04);
+          const lidMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.4, metalness: 0.7 });
+          const lidMesh = new THREE.Mesh(lidGeom, lidMat);
+          lidMesh.position.set(0, 0.5, 0);
+          laptopGroup.add(lidMesh);
+
+          const scrGeom = new THREE.PlaneGeometry(1.5, 0.95);
+          const scrMat = new THREE.MeshBasicMaterial({ map: chatScreenTexture });
+          const scrMesh = new THREE.Mesh(scrGeom, scrMat);
+          scrMesh.position.set(0, 0.5, 0.022);
+          laptopGroup.add(scrMesh);
+
+          laptopGroup.rotation.y = baseRotY;
+          laptopGroup.rotation.x = baseRotX;
+          laptopGroup.scale.set(1.2, 1.2, 1.2);
+          laptopGroup.position.y = -0.01;
+        }
 
         // Load MTL & OBJ
         const mtlLoader = new THREE.MTLLoader();
