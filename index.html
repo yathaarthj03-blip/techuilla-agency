@@ -2844,15 +2844,19 @@
       z-index: 8;
     }
 
+    /* Architectural Orange & Black Checks Texture Backdrop (Matching WE BUILD MORE THAN CAMPAIGNS) */
     .gallery-grid-backdrop {
       position: absolute;
       inset: 0;
       pointer-events: none;
-      z-index: 0;
+      z-index: 2; /* Sits above gallery-bg-orange (z-index 1) and below rail (z-index 3) */
+      opacity: 0.85;
       background-image: 
-        linear-gradient(to right, rgba(0, 0, 0, 0.055) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(0, 0, 0, 0.055) 1px, transparent 1px);
-      background-size: 80px 80px;
+        linear-gradient(to right, rgba(0, 0, 0, 0.075) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.075) 1px, transparent 1px),
+        linear-gradient(to right, rgba(255, 102, 0, 0.22) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 102, 0, 0.22) 1px, transparent 1px);
+      background-size: 80px 80px, 80px 80px, 160px 160px, 160px 160px;
     }
 
     .gallery-sticky-viewport {
@@ -2928,6 +2932,40 @@
     .gallery-card-item.item-center,
     .gallery-card-item.item-center-hero {
       align-self: center;
+    }
+
+    
+    /* ==========================================================================
+       DESIGN SYSTEM ANIMATION: "KINETIC ORANGE VEIL REVEAL"
+       Signature typography in-animation: an orange mask sweeps across from left
+       to right, then pulls away to the right, dramatically unveiling the text underneath.
+       ========================================================================== */
+    .kinetic-veil-wrap {
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+    }
+
+    .kinetic-veil-mask {
+      position: absolute;
+      inset: 0;
+      background: var(--color-orange, #FF6600);
+      transform: scaleX(0);
+      transform-origin: left center;
+      z-index: 2;
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    .kinetic-veil-text {
+      display: inline-block;
+      opacity: 0;
+      transform: translate3d(0, 8px, 0);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+      position: relative;
+      z-index: 1;
+      will-change: transform, opacity;
     }
 
     .gallery-card-eyebrow {
@@ -4484,12 +4522,15 @@
       <!-- Background Shift Layer: starts orangish as section appears, fades back to warm cream by 45% scroll -->
       <div class="gallery-bg-orange" id="galleryBgOrange" aria-hidden="true"></div>
 
+      <!-- Architectural Orange & Black Checks Texture Layer (Matching WE BUILD MORE THAN CAMPAIGNS) -->
+      <div class="gallery-grid-backdrop" id="galleryGridBackdrop" aria-hidden="true"></div>
+
       <!-- Horizontal Moving Rail: translates right to left as user scrolls -->
       <div class="gallery-horizontal-rail" id="galleryHorizontalRail">
         
         <!-- ITEM 1: TOP (Qatar, 2024 style) -->
         <div class="gallery-card-item item-top">
-          <div class="gallery-card-eyebrow">QATAR, 2024</div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">QATAR, 2024</span></div></div>
           <div class="gallery-card-frame">
             <img src="card_audio_king.png" alt="Qatar Showcase - Digital Infrastructure" class="gallery-img" loading="lazy" />
           </div>
@@ -4497,7 +4538,7 @@
 
         <!-- ITEM 2: BOTTOM (FIA Prize Giving style) -->
         <div class="gallery-card-item item-bottom">
-          <div class="gallery-card-eyebrow">FIA PRIZE GIVING, 2024</div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">FIA PRIZE GIVING, 2024</span></div></div>
           <div class="gallery-card-frame">
             <img src="card_kaali_mata.png" alt="FIA Prize Giving Showcase" class="gallery-img" loading="lazy" />
           </div>
@@ -4506,9 +4547,9 @@
         <!-- EDITORIAL QUOTE 1 (Exact wording from reference layout) -->
         <div class="gallery-quote-block">
           <p class="gallery-quote-text">
-            It doesn’t matter <strong>where</strong><br>
-            you start, it’s <strong>how</strong> you<br>
-            progress from there.
+            <span class="kinetic-veil-wrap"><span class="kinetic-veil-mask" aria-hidden="true"></span><span class="kinetic-veil-text">It doesn’t matter <strong>where</strong></span></span><br>
+            <span class="kinetic-veil-wrap"><span class="kinetic-veil-mask" aria-hidden="true"></span><span class="kinetic-veil-text">you start, it’s <strong>how</strong> you</span></span><br>
+            <span class="kinetic-veil-wrap"><span class="kinetic-veil-mask" aria-hidden="true"></span><span class="kinetic-veil-text">progress from there.</span></span>
           </p>
           <div class="gallery-quote-signature">
             <svg viewBox="0 0 160 55" fill="none" class="signature-svg" aria-hidden="true">
@@ -4519,7 +4560,7 @@
 
         <!-- ITEM 3: CENTER HERO (Miami GP style - Large center portrait) -->
         <div class="gallery-card-item item-center-hero">
-          <div class="gallery-card-eyebrow">MIAMI GP, 2024</div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">MIAMI GP, 2024</span></div></div>
           <div class="gallery-card-frame hero-frame">
             <img src="assets/project_01_nexus.jpg" alt="Miami GP Showcase Hero" class="gallery-img" loading="lazy" />
           </div>
@@ -4527,7 +4568,7 @@
 
         <!-- ITEM 4: TOP (Monaco, 2023 style) -->
         <div class="gallery-card-item item-top">
-          <div class="gallery-card-eyebrow">MONACO, 2023</div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">MONACO, 2023</span></div></div>
           <div class="gallery-card-frame">
             <img src="card_rama_trichology.jpg" alt="Monaco Showcase" class="gallery-img" loading="lazy" />
           </div>
@@ -4535,7 +4576,7 @@
 
         <!-- ITEM 5: BOTTOM (Britain, 2025 style) -->
         <div class="gallery-card-item item-bottom">
-          <div class="gallery-card-eyebrow">BRITAIN, 2025</div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">BRITAIN, 2025</span></div></div>
           <div class="gallery-card-frame">
             <img src="card_3d_product.png" alt="Britain Racing Tech" class="gallery-img" loading="lazy" />
           </div>
@@ -4543,7 +4584,7 @@
 
         <!-- ITEM 6: CENTER / STAGGERED (Singapore, 2025) -->
         <div class="gallery-card-item item-center">
-          <div class="gallery-card-eyebrow">SINGAPORE, 2025</div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">SINGAPORE, 2025</span></div></div>
           <div class="gallery-card-frame">
             <img src="card_health_streak.png" alt="Singapore Platform Experience" class="gallery-img" loading="lazy" />
           </div>
@@ -4552,9 +4593,9 @@
         <!-- EDITORIAL QUOTE 2 -->
         <div class="gallery-quote-block">
           <p class="gallery-quote-text">
-            Precision in <strong>code</strong>.<br>
-            Power in <strong>motion</strong>.<br>
-            Built to scale.
+            <span class="kinetic-veil-wrap"><span class="kinetic-veil-mask" aria-hidden="true"></span><span class="kinetic-veil-text">Precision in <strong>code</strong>.</span></span><br>
+            <span class="kinetic-veil-wrap"><span class="kinetic-veil-mask" aria-hidden="true"></span><span class="kinetic-veil-text">Power in <strong>motion</strong>.</span></span><br>
+            <span class="kinetic-veil-wrap"><span class="kinetic-veil-mask" aria-hidden="true"></span><span class="kinetic-veil-text">Built to scale.</span></span>
           </p>
           <div class="gallery-quote-signature">
             <svg viewBox="0 0 160 55" fill="none" class="signature-svg" aria-hidden="true">
@@ -4565,7 +4606,7 @@
 
         <!-- ITEM 7: TOP (Abu Dhabi, 2025) -->
         <div class="gallery-card-item item-top">
-          <div class="gallery-card-eyebrow">ABU DHABI, 2025</div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">ABU DHABI, 2025</span></div></div>
           <div class="gallery-card-frame">
             <img src="assets/project_02_spatial.jpg" alt="Abu Dhabi Spatial Systems" class="gallery-img" loading="lazy" />
           </div>
@@ -4573,7 +4614,7 @@
 
         <!-- ITEM 8: BOTTOM (Austin, 2025) -->
         <div class="gallery-card-item item-bottom">
-          <div class="gallery-card-eyebrow">AUSTIN, 2025</div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">AUSTIN, 2025</span></div></div>
           <div class="gallery-card-frame">
             <img src="assets/project_03_cinema.jpg" alt="Austin Cinematic Studio" class="gallery-img" loading="lazy" />
           </div>
@@ -4581,7 +4622,7 @@
 
         <!-- ITEM 9: CENTER GRAND FINALE HERO (Melbourne, 2026) -->
         <div class="gallery-card-item item-center-hero">
-          <div class="gallery-card-eyebrow">MELBOURNE, 2026</div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">MELBOURNE, 2026</span></div></div>
           <div class="gallery-card-frame hero-frame">
             <img src="assets/project_04_brand.jpg" alt="Melbourne Enterprise Finale" class="gallery-img" loading="lazy" />
           </div>
@@ -4770,7 +4811,7 @@
         <ul class="footer-links-list">
           <li><a href="mailto:techuilla.co@gmail.com" class="footer-link">techuilla.co@gmail.com</a></li>
           <li><a href="tel:+917700014486" class="footer-link">+91 7700014486</a></li>
-          <li><span class="footer-link" style="color: #2A2B30; font-weight: 500;">San Francisco · Mumbai · London</span></li>
+          <li><span class="footer-link" style="color: #2A2B30; font-weight: 500;">Mumbai, India</span></li>
         </ul>
       </div>
     </div>
@@ -6164,6 +6205,55 @@ Best regards,
           return `rgb(${r}, ${g}, ${b})`;
         }
 
+        
+        // Reusable Signature Animation Helper: "Kinetic Orange Veil Reveal"
+        function applyKineticVeilReveal(mask, text, p) {
+          if (!mask || !text) return;
+          if (p <= 0) {
+            mask.style.transformOrigin = 'left center';
+            mask.style.transform = 'scaleX(0)';
+            text.style.opacity = '0';
+            text.style.transform = 'translate3d(0, 8px, 0)';
+          } else if (p < 0.50) {
+            const sweepIn = Math.sin((p / 0.50 * Math.PI) / 2);
+            mask.style.transformOrigin = 'left center';
+            mask.style.transform = 'scaleX(' + sweepIn.toFixed(4) + ')';
+            text.style.opacity = '0';
+          } else if (p < 1.0) {
+            const sweepOut = (p - 0.50) / 0.50;
+            const easeOut = Math.sin((sweepOut * Math.PI) / 2);
+            mask.style.transformOrigin = 'right center';
+            mask.style.transform = 'scaleX(' + (1 - easeOut).toFixed(4) + ')';
+            text.style.opacity = '1';
+            text.style.transform = 'translate3d(0, 0, 0)';
+          } else {
+            mask.style.transformOrigin = 'right center';
+            mask.style.transform = 'scaleX(0)';
+            text.style.opacity = '1';
+            text.style.transform = 'translate3d(0, 0, 0)';
+          }
+        }
+
+        function updateGalleryVeilAnimations() {
+          const winW = window.innerWidth;
+          const veilWraps = rail.querySelectorAll('.kinetic-veil-wrap');
+          veilWraps.forEach(wrap => {
+            const mask = wrap.querySelector('.kinetic-veil-mask');
+            const text = wrap.querySelector('.kinetic-veil-text');
+            if (!mask || !text) return;
+
+            const r = wrap.getBoundingClientRect();
+            // Starts sweeping when element enters from right (winW * 0.95), completes by winW * 0.62
+            let p = 0;
+            if (r.left <= winW * 0.95 && r.right >= 0) {
+              p = Math.max(0, Math.min(1, (winW * 0.95 - r.left) / (winW * 0.33)));
+            } else if (r.left < 0) {
+              p = 1;
+            }
+            applyKineticVeilReveal(mask, text, p);
+          });
+        }
+
         function updateGallery() {
           const rect = track.getBoundingClientRect();
           const winH = window.innerHeight;
@@ -6193,6 +6283,7 @@ Best regards,
               // Smoothly scrolls from centerOffsetX towards the left
               const currentX = centerOffsetX - (entryProgress * entryGlideDistance);
               rail.style.transform = `translate3d(${currentX.toFixed(2)}px, 0, 0)`;
+              updateGalleryVeilAnimations();
 
               const orangeRatio = Math.min(1, Math.max(0, entryProgress * 1.4));
               bgOrange.style.opacity = orangeRatio.toFixed(3);
@@ -6229,10 +6320,12 @@ Best regards,
           // Interpolate from startPinnedOffset to -maxScrollX
           const currentX = startPinnedOffset - (progress * (startPinnedOffset + maxScrollX));
           rail.style.transform = `translate3d(${currentX.toFixed(2)}px, 0, 0)`;
+              updateGalleryVeilAnimations();
 
           // Active photo counter 1 to 9 (Image 6 begins around progress = 0.555)
           const activeIdx = Math.min(9, Math.max(1, Math.floor(progress * 9) + 1));
           if (counterNum) counterNum.textContent = activeIdx;
+          updateGalleryVeilAnimations();
 
           // Entire website background color shift:
           // Remains orange for images 1 to 5, transitions smoothly back to normal background when reaching image 6

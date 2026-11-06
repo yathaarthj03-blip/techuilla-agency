@@ -307,13 +307,13 @@
       font-weight: 700;
       font-size: 29px; /* 20% + 20% increased */
       letter-spacing: -0.015em;
-      color: #FAF8F5; /* Cream font color by default on dark contact page */
+      color: #111111 !important; /* Solid black font color */
       transition: color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: color;
     }
 
     .site-nav.theme-dark-bg .nav-brand-text {
-      color: #FAF8F5 !important;
+      color: #111111 !important; /* Keep black */
     }
 
     .site-nav.theme-dark-bg .nav-brand-logo {
@@ -1259,7 +1259,8 @@
     }
 
     .laptop-scroll-track.is-static {
-      height: 100vh !important;
+      /* Keep full natural height to prevent sudden layout collapse / rapid scroll jump */
+      height: 380vh !important;
     }
 
     .laptop-sticky-viewport {
@@ -2520,7 +2521,7 @@
   <!-- ==========================================================================
        TOP NAVBAR
        ========================================================================== -->
-  <header class="site-nav theme-dark-bg">
+  <header class="site-nav">
     <div class="nav-inner">
       <a href="index.html" class="nav-brand" aria-label="Techuilla Agency Home" id="navHomeBrand">
         <img src="Techuilla_logo.png" alt="Techuilla Logo" class="nav-brand-logo">
@@ -3176,7 +3177,7 @@
         <ul class="footer-links-list">
           <li><a href="mailto:techuilla.co@gmail.com" class="footer-link">techuilla.co@gmail.com</a></li>
           <li><a href="tel:+917700014486" class="footer-link">+91 7700014486</a></li>
-          <li><span class="footer-link" style="color: var(--text-muted);">San Francisco · Mumbai · London</span></li>
+          <li><span class="footer-link" style="color: var(--text-muted); font-weight: 500;">Mumbai, India</span></li>
         </ul>
       </div>
     </div>
@@ -4794,5 +4795,67 @@ Best regards,
 
     })();
   </script>
+<script>
+    // ==========================================================================
+    // SMOOTH HEAVY INERTIAL SLOW SCROLLING ENGINE FOR CONTACT PAGE
+    // Prevents rapid jumping after laptop animation and enforces luxurious slow glide
+    // ==========================================================================
+    (function initContactHeavySmoothScroll() {
+      if (window.matchMedia('(pointer: coarse)').matches) return;
+
+      let targetY = window.scrollY || 0;
+      let currentY = targetY;
+      let isSmoothScrolling = false;
+      let rafId = null;
+
+      window.addEventListener('wheel', (e) => {
+        if (document.body.classList.contains('menu-open') || 
+            document.body.classList.contains('intro-active')) return;
+
+        e.preventDefault();
+        const maxScrollY = document.documentElement.scrollHeight - window.innerHeight;
+
+        // Extra deliberate slow scrolling through and past the laptop track
+        const laptopTrack = document.getElementById('laptopScrollTrack');
+        let dampener = 0.70;
+        if (laptopTrack) {
+          const r = laptopTrack.getBoundingClientRect();
+          // While in or just exiting laptop track: enforce heavy, slow, luxurious scrub
+          if (r.top <= window.innerHeight && r.bottom >= -600) {
+            dampener = 0.42; // Slow, controlled cadence prevents rapid drop into footer
+          }
+        }
+
+        targetY = Math.max(0, Math.min(maxScrollY, targetY + e.deltaY * dampener));
+
+        if (!isSmoothScrolling) {
+          isSmoothScrolling = true;
+          currentY = window.scrollY || 0;
+          runSmoothScroll();
+        }
+      }, { passive: false });
+
+      function runSmoothScroll() {
+        const diff = targetY - currentY;
+        if (Math.abs(diff) > 0.5) {
+          currentY += diff * 0.075; // Heavy inertial smoothing factor (slow and steady)
+          window.scrollTo(0, currentY);
+          rafId = requestAnimationFrame(runSmoothScroll);
+        } else {
+          window.scrollTo(0, targetY);
+          currentY = targetY;
+          isSmoothScrolling = false;
+          rafId = null;
+        }
+      }
+
+      window.addEventListener('scroll', () => {
+        if (!isSmoothScrolling) {
+          targetY = window.scrollY || 0;
+          currentY = targetY;
+        }
+      }, { passive: true });
+    })();
+</script>
 </body>
 </html>
