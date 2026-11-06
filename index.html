@@ -400,7 +400,7 @@
       pointer-events: none;
     }
 
-    /* 15% INCREASED LOGO & BRAND NAME */
+    /* ADAPTIVE TOP-LEFT BRAND (LOGO + TECHUILLA AGENCY TEXT) */
     .nav-brand {
       display: flex;
       align-items: center;
@@ -415,6 +415,8 @@
       width: auto;
       object-fit: contain;
       display: block;
+      transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
+      will-change: filter;
     }
 
     .nav-brand-text {
@@ -422,7 +424,54 @@
       font-weight: 700;
       font-size: 29px; /* 20% + 20% increased */
       letter-spacing: -0.015em;
-      color: var(--text-primary);
+      color: #111111;
+      transition: color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: color;
+    }
+
+    /* 1. When background is BLACK or GREY:
+          Text smoothly fades from black into warm CREAM (#FAF8F5).
+          Logo stays vibrant original orange. */
+    .site-nav.theme-dark-bg .nav-brand-text,
+    .nav-brand.theme-dark-bg .nav-brand-text {
+      color: #FAF8F5 !important;
+    }
+
+    .site-nav.theme-dark-bg .nav-brand-logo,
+    .nav-brand.theme-dark-bg .nav-brand-logo {
+      filter: none !important;
+    }
+
+    .site-nav.theme-dark-bg .btn-menu {
+      border-color: rgba(250, 248, 245, 0.35);
+    }
+
+    /* 2. When background turns ORANGE:
+          Text stays / turns crisp BLACK (#111111).
+          Logo gets a smooth fade-in transition into SOLID BLACK (brightness: 0)
+          so it does not get overshadowed or blend into the orange background! */
+    .site-nav.theme-orange-bg .nav-brand-text,
+    .nav-brand.theme-orange-bg .nav-brand-text {
+      color: #111111 !important;
+    }
+
+    .site-nav.theme-orange-bg .nav-brand-logo,
+    .nav-brand.theme-orange-bg .nav-brand-logo {
+      filter: brightness(0) !important;
+    }
+
+    .site-nav.theme-orange-bg .btn-menu {
+      border-color: rgba(17, 17, 17, 0.40);
+    }
+
+    .site-nav.theme-orange-bg .btn-enquire {
+      background: #111111;
+      color: #FFFFFF;
+      border-color: #111111;
+    }
+
+    .site-nav.theme-orange-bg .btn-enquire:hover {
+      background: #000000;
     }
 
     .nav-actions {
@@ -3811,9 +3860,9 @@
        ========================================================================== -->
   <header class="site-nav">
     <div class="nav-inner">
-      <a href="#hero" class="nav-brand" aria-label="Techuilla Agency Home">
-        <img src="Techuilla_logo.png" alt="Techuilla Logo" class="nav-brand-logo" />
-        <span class="nav-brand-text">Techuilla Agency</span>
+      <a href="#hero" class="nav-brand" id="navBrandLink" aria-label="Techuilla Agency Home">
+        <img src="Techuilla_logo.png" alt="Techuilla Logo" class="nav-brand-logo" id="navBrandLogo" />
+        <span class="nav-brand-text" id="navBrandText">Techuilla Agency</span>
       </a>
 
       <div class="nav-actions">
@@ -6158,6 +6207,7 @@ Best regards,
               if (prevSec) prevSec.style.backgroundColor = '';
             }
             if (counterNum) counterNum.textContent = '1';
+            if (window.updateNavBrandTheme) window.updateNavBrandTheme();
             return;
           }
 
@@ -6390,6 +6440,129 @@ Best regards,
         window.addEventListener('resize', updateSolutionStage, { passive: true });
         updateSolutionStage();
       })();
+
+      
+    /* ==========================================================================
+       ADAPTIVE TOP-LEFT BRAND CONTROLLER (LOGO & TEXT DYNAMIC THEME)
+       ========================================================================== */
+    (function initAdaptiveNavBrand() {
+      const brandNav = document.querySelector('.site-nav');
+      const brandLogo = document.getElementById('navBrandLogo') || document.querySelector('.nav-brand-logo');
+      const brandText = document.getElementById('navBrandText') || document.querySelector('.nav-brand-text');
+      if (!brandNav || !brandText) return;
+
+      let currentTheme = 'normal';
+
+      function setTheme(t) {
+        if (currentTheme === t) return;
+        currentTheme = t;
+        if (t === 'orange') {
+          brandNav.classList.remove('theme-dark-bg');
+          brandNav.classList.add('theme-orange-bg');
+        } else if (t === 'dark') {
+          brandNav.classList.remove('theme-orange-bg');
+          brandNav.classList.add('theme-dark-bg');
+        } else {
+          brandNav.classList.remove('theme-orange-bg');
+          brandNav.classList.remove('theme-dark-bg');
+        }
+      }
+
+      function updateNavTheme() {
+        // 1. Menu open check (dark overlay)
+        if (document.body.classList.contains('menu-open')) {
+          setTheme('dark');
+          return;
+        }
+
+        // 2. Curtain transition check (orange)
+        const curtain = document.getElementById('enquireCurtain');
+        if (curtain && curtain.classList.contains('is-animating')) {
+          setTheme('orange');
+          return;
+        }
+
+        // 3. Image scroller orange shift check
+        const bgOrangeEl = document.getElementById('galleryBgOrange');
+        const orangeOp = bgOrangeEl ? parseFloat(bgOrangeEl.style.opacity || '0') : 0;
+        if (orangeOp > 0.25) {
+          setTheme('orange');
+          return;
+        }
+
+        // 4. Check footer
+        const footer = document.querySelector('.site-footer');
+        if (footer) {
+          const fRect = footer.getBoundingClientRect();
+          if (fRect.top <= 80 && fRect.bottom >= 0) {
+            setTheme('orange');
+            return;
+          }
+        }
+
+        // 5. Check Solution Stage Track (Three Major Problems)
+        const solutionTrack = document.getElementById('solutionStageTrack');
+        if (solutionTrack) {
+          const sRect = solutionTrack.getBoundingClientRect();
+          if (sRect.top <= 80 && sRect.bottom >= 0) {
+            const bgDarken = document.getElementById('solutionBgDarken');
+            const darkOp = bgDarken ? parseFloat(bgDarken.style.opacity || '0') : 0;
+            if (darkOp > 0.25) {
+              setTheme('dark');
+              return;
+            } else {
+              setTheme('orange'); // Initial orange card hold phase
+              return;
+            }
+          }
+        }
+
+        // 6. Direct pixel sampling under top-left brand (x=60, y=35)
+        try {
+          const elements = document.elementsFromPoint(60, 35);
+          for (let i = 0; i < elements.length; i++) {
+            const el = elements[i];
+            if (!el || el.closest('.site-nav') || el.closest('.cursor-follower') || el.id === 'smoothCursor') continue;
+
+            const style = window.getComputedStyle(el);
+            const bg = style.backgroundColor;
+            if (bg && bg !== 'transparent' && bg !== 'rgba(0, 0, 0, 0)') {
+              const match = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+              if (match) {
+                const r = parseInt(match[1], 10);
+                const g = parseInt(match[2], 10);
+                const b = parseInt(match[3], 10);
+                const a = match[4] !== undefined ? parseFloat(match[4]) : 1;
+                if (a > 0.3) {
+                  // High orange detection
+                  if (r > 200 && g >= 60 && g <= 170 && b < 80) {
+                    setTheme('orange');
+                    return;
+                  }
+                  // Dark / Black / Grey detection
+                  const lum = (0.299 * r + 0.587 * g + 0.114 * b);
+                  if (lum < 95) {
+                    setTheme('dark');
+                    return;
+                  } else if (lum > 160) {
+                    setTheme('normal');
+                    return;
+                  }
+                }
+              }
+            }
+          }
+        } catch (e) {}
+
+        // Default: normal light/cream background
+        setTheme('normal');
+      }
+
+      window.updateNavBrandTheme = updateNavTheme;
+      window.addEventListener('scroll', updateNavTheme, { passive: true });
+      window.addEventListener('resize', updateNavTheme, { passive: true });
+      updateNavTheme();
+    })();
 
       // Expose to window for external/testing access
       window.updatePortalScrub = updatePortalScrub;

@@ -298,6 +298,8 @@
       width: auto;
       object-fit: contain;
       display: block;
+      transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
+      will-change: filter;
     }
 
     .nav-brand-text {
@@ -305,7 +307,25 @@
       font-weight: 700;
       font-size: 29px; /* 20% + 20% increased */
       letter-spacing: -0.015em;
-      color: var(--text-primary);
+      color: #FAF8F5; /* Cream font color by default on dark contact page */
+      transition: color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: color;
+    }
+
+    .site-nav.theme-dark-bg .nav-brand-text {
+      color: #FAF8F5 !important;
+    }
+
+    .site-nav.theme-dark-bg .nav-brand-logo {
+      filter: none !important;
+    }
+
+    .site-nav.theme-orange-bg .nav-brand-text {
+      color: #111111 !important;
+    }
+
+    .site-nav.theme-orange-bg .nav-brand-logo {
+      filter: brightness(0) !important;
     }
 
     .nav-actions {
@@ -2500,7 +2520,7 @@
   <!-- ==========================================================================
        TOP NAVBAR
        ========================================================================== -->
-  <header class="site-nav">
+  <header class="site-nav theme-dark-bg">
     <div class="nav-inner">
       <a href="index.html" class="nav-brand" aria-label="Techuilla Agency Home" id="navHomeBrand">
         <img src="Techuilla_logo.png" alt="Techuilla Logo" class="nav-brand-logo">
