@@ -2867,11 +2867,11 @@
       background: var(--bg-warm);
     }
 
-    /* Background Shift Layer: starts orangish as section appears, fades back to warm cream by 45% scroll */
+    /* Background Shift Layer: starts as a refined lighter shade of orange as section appears, fades back to warm cream by Image 6 */
     .gallery-bg-orange {
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, #FF6600 0%, #FA5500 50%, #E65100 100%);
+      background: linear-gradient(135deg, #FF8C42 0%, #FFA05E 50%, #FF7E30 100%);
       opacity: 0;
       z-index: 1;
       pointer-events: none;
@@ -6157,10 +6157,10 @@ Best regards,
         if (!track || !rail || !bgOrange) return;
 
         function interpolateColor(factor) {
-          // factor 0 -> #FAF8F5 (250, 248, 245), factor 1 -> #FF6600 (255, 102, 0)
+          // factor 0 -> #FAF8F5 (250, 248, 245), factor 1 -> lighter shade of orange #FF8C42 (255, 140, 66)
           const r = Math.round(250 + factor * (255 - 250));
-          const g = Math.round(248 + factor * (102 - 248));
-          const b = Math.round(245 + factor * (0 - 245));
+          const g = Math.round(248 + factor * (140 - 248));
+          const b = Math.round(245 + factor * (66 - 245));
           return `rgb(${r}, ${g}, ${b})`;
         }
 
@@ -6535,7 +6535,7 @@ Best regards,
                 const a = match[4] !== undefined ? parseFloat(match[4]) : 1;
                 if (a > 0.3) {
                   // High orange detection
-                  if (r > 200 && g >= 60 && g <= 170 && b < 80) {
+                  if (r > 200 && g >= 60 && g <= 180 && b < 100) {
                     setTheme('orange');
                     return;
                   }
