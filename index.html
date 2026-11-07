@@ -2116,12 +2116,37 @@
       line-height: 1.08;
       color: var(--text-primary);
       text-transform: uppercase;
-      transition: color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: color;
+      margin-bottom: 24px;
     }
 
-    .problem-title.is-orange {
-      color: #FF6600 !important;
+    .problem-title .kinetic-veil-wrap {
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+      max-width: 100%;
+    }
+
+    .problem-title .kinetic-veil-mask {
+      position: absolute;
+      inset: 0;
+      background: var(--color-orange, #FF6600);
+      transform: scaleX(0);
+      transform-origin: left center;
+      z-index: 2;
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    .problem-title .kinetic-veil-text {
+      display: inline-block;
+      opacity: 0;
+      transform: translate3d(0, 8px, 0);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+      position: relative;
+      z-index: 1;
+      will-change: transform, opacity;
+      color: var(--text-primary);
     }
 
     .problem-image-wrapper {
@@ -2876,9 +2901,9 @@
     }
 
     .gallery-sticky-viewport.theme-gallery-orange {
-      --gallery-eyebrow-color: #FAF8F5;
-      --gallery-veil-mask-bg: #FAF8F5;
-      --gallery-quote-color: #FAF8F5;
+      --gallery-eyebrow-color: #111111;
+      --gallery-veil-mask-bg: #111111;
+      --gallery-quote-color: #111111;
     }
 
     /* Background Shift Layer: starts as a refined lighter shade of orange as section appears, fades back to warm cream by Image 6 */
@@ -2984,15 +3009,14 @@
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--gallery-eyebrow-color, #111111);
+      color: #111111 !important;
       margin-bottom: 12px;
       user-select: none;
-      transition: color 0.4s ease;
     }
 
     .gallery-card-eyebrow .kinetic-veil-text {
-      color: var(--gallery-eyebrow-color, #111111);
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, color 0.4s ease;
+      color: #111111 !important;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
     }
 
     .gallery-card-eyebrow .kinetic-veil-mask {
@@ -3001,8 +3025,8 @@
     }
 
     .gallery-quote-block .kinetic-veil-text {
-      color: var(--gallery-quote-color, #111111);
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, color 0.4s ease;
+      color: #111111 !important;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
     }
 
     .gallery-quote-block .kinetic-veil-mask {
@@ -3011,8 +3035,7 @@
     }
 
     .gallery-quote-signature .signature-svg {
-      color: var(--gallery-quote-color, #111111);
-      transition: color 0.4s ease;
+      color: #111111 !important;
     }
 
     /* Strict 4:5 Aspect Ratio Frame */
@@ -4398,7 +4421,7 @@
         <article class="problem-card problem-card-left fade-in-scroll">
           <div class="problem-visual-block">
             <div class="problem-badge">01 / AUTOMATION FRICTION</div>
-            <h3 class="problem-title">Your team is a software</h3>
+            <h3 class="problem-title"><span class="kinetic-veil-wrap"><span class="kinetic-veil-mask" aria-hidden="true"></span><span class="kinetic-veil-text">Your team is a software</span></span></h3>
             <div class="problem-image-wrapper">
               <img src="problem_01.png" alt="Your team is a software — Repetitive manual workflows" class="problem-image" loading="lazy" />
             </div>
@@ -4429,7 +4452,7 @@
           </div>
           <div class="problem-visual-block">
             <div class="problem-badge">02 / VISUAL OBSCURITY</div>
-            <h3 class="problem-title">Your brand gets scrolled past</h3>
+            <h3 class="problem-title"><span class="kinetic-veil-wrap"><span class="kinetic-veil-mask" aria-hidden="true"></span><span class="kinetic-veil-text">Your brand gets scrolled past</span></span></h3>
             <div class="problem-image-wrapper">
               <img src="problem_02.png" alt="Your brand gets scrolled past — Generic template fatigue" class="problem-image" loading="lazy" />
             </div>
@@ -4440,7 +4463,7 @@
         <article class="problem-card problem-card-left fade-in-scroll">
           <div class="problem-visual-block">
             <div class="problem-badge">03 / CONVERSION LEAK</div>
-            <h3 class="problem-title">A beautiful site that sells nothing</h3>
+            <h3 class="problem-title"><span class="kinetic-veil-wrap"><span class="kinetic-veil-mask" aria-hidden="true"></span><span class="kinetic-veil-text">A beautiful site that sells nothing</span></span></h3>
             <div class="problem-image-wrapper">
               <img src="problem_03.jpg" alt="A beautiful site that sells nothing — Low conversion friction" class="problem-image" loading="lazy" />
             </div>
@@ -6054,56 +6077,74 @@ Best regards,
         setTimeout(updateRoute, 1000);
       })();
 
-      // ----------------------------------------------------------------------
-      // 6C. GROWTH LEAKS SUBSECTION TITLES SCROLL-TRIGGERED ORANGE COLOR TRANSITION
-      // (Turn orange automatically as they appear 35% in the screen)
-      // ----------------------------------------------------------------------
-      (function initProblemTitleColorTransition() {
-        const targetTitles = Array.from(document.querySelectorAll('.problem-statements-list .problem-title')).filter(el => {
-          const txt = (el.textContent || '').trim();
-          return txt.includes('Your team is a software') ||
-                 txt.includes('Your brand gets scrolled past') ||
-                 txt.includes('A beautiful site that sells nothing');
-        });
+      // ======================================================================
+      // GLOBAL DESIGN SYSTEM HELPER: KINETIC VEIL REVEAL
+      // Sweeps across from left to right, then pulls away to the right
+      // ======================================================================
+      function applyKineticVeilReveal(mask, text, p) {
+        if (!mask || !text) return;
+        if (p <= 0) {
+          mask.style.transformOrigin = 'left center';
+          mask.style.transform = 'scaleX(0)';
+          text.style.opacity = '0';
+          text.style.transform = 'translate3d(0, 8px, 0)';
+        } else if (p < 0.50) {
+          const sweepIn = Math.sin((p / 0.50 * Math.PI) / 2);
+          mask.style.transformOrigin = 'left center';
+          mask.style.transform = 'scaleX(' + sweepIn.toFixed(4) + ')';
+          text.style.opacity = '0';
+        } else if (p < 1.0) {
+          const sweepOut = (p - 0.50) / 0.50;
+          const easeOut = Math.sin((sweepOut * Math.PI) / 2);
+          mask.style.transformOrigin = 'right center';
+          mask.style.transform = 'scaleX(' + (1 - easeOut).toFixed(4) + ')';
+          text.style.opacity = '1';
+          text.style.transform = 'translate3d(0, 0, 0)';
+        } else {
+          mask.style.transformOrigin = 'right center';
+          mask.style.transform = 'scaleX(0)';
+          text.style.opacity = '1';
+          text.style.transform = 'translate3d(0, 0, 0)';
+        }
+      }
+      window.applyKineticVeilReveal = applyKineticVeilReveal;
 
-        if (!targetTitles.length) return;
+      // ----------------------------------------------------------------------
+      // 6C. KINETIC ORANGE VEIL REVEAL FOR GROWTH LEAKS TITLES
+      // Sweeps across in vibrant Techuilla orange and unveils the black titles
+      // ----------------------------------------------------------------------
+      (function initProblemTitlesVeil() {
+        const problemVeilWraps = Array.from(document.querySelectorAll('.problem-title .kinetic-veil-wrap'));
+        if (!problemVeilWraps.length) return;
 
-        function updateTitleColors() {
+        function updateProblemVeils() {
           const winH = window.innerHeight;
-          // As requested: titles turn orange automatically as they appear 35% in the screen
-          const triggerLine = winH * 0.65;
+          problemVeilWraps.forEach(wrap => {
+            const mask = wrap.querySelector('.kinetic-veil-mask');
+            const text = wrap.querySelector('.kinetic-veil-text');
+            if (!mask || !text) return;
 
-          targetTitles.forEach(title => {
-            const rect = title.getBoundingClientRect();
-            if (rect.top <= triggerLine) {
-              title.classList.add('is-orange');
-            } else {
-              title.classList.remove('is-orange');
-            }
-          });
-        }
-
-        window.updateTitleColors = updateTitleColors;
-        window.addEventListener('scroll', updateTitleColors, { passive: true });
-        window.addEventListener('resize', updateTitleColors, { passive: true });
-        updateTitleColors();
-
-        if ('IntersectionObserver' in window) {
-          const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add('is-orange');
-              } else if (entry.boundingClientRect.top > window.innerHeight * 0.65) {
-                entry.target.classList.remove('is-orange');
+            const rect = wrap.getBoundingClientRect();
+            let p = 0;
+            const startY = winH * 0.90; // When element enters bottom of viewport
+            const endY = winH * 0.55;   // Fully revealed by middle viewport
+            if (rect.top <= startY) {
+              if (rect.top >= endY) {
+                p = (startY - rect.top) / (startY - endY);
+              } else {
+                p = 1.0;
               }
-            });
-          }, {
-            rootMargin: '0px 0px -35% 0px',
-            threshold: 0
+            } else {
+              p = 0.0;
+            }
+            applyKineticVeilReveal(mask, text, p);
           });
-
-          targetTitles.forEach(t => observer.observe(t));
         }
+
+        window.updateProblemVeils = updateProblemVeils;
+        window.addEventListener('scroll', updateProblemVeils, { passive: true });
+        window.addEventListener('resize', updateProblemVeils, { passive: true });
+        updateProblemVeils();
       })();
 
       // ----------------------------------------------------------------------
@@ -6281,20 +6322,20 @@ Best regards,
         }
 
         // Adaptive colors for gallery titles and kinetic veil mask:
-        // Orange background: typography = creamish (#FAF8F5), veil mask = creamish/beige (#FAF8F5)
-        // Transitions to white/normal: typography = black (#111111), veil mask = orange (#FF6600)
+        // Orange background: typography is solid black (#111111), veil mask is solid black (#111111)
+        // Transitions to white/normal: typography remains black (#111111), veil mask changes to orange (#FF6600)
         function applyAdaptiveGalleryColors(ratio) {
           const r = Math.max(0, Math.min(1, ratio));
-          // Eyebrow font color: black (17,17,17) when r=0 -> creamish (250,248,245) when r=1
-          const textR = Math.round(17 + (250 - 17) * r);
-          const textG = Math.round(17 + (248 - 17) * r);
-          const textB = Math.round(17 + (245 - 17) * r);
-          const eyebrowCol = `rgb(${textR}, ${textG}, ${textB})`;
+          // Eyebrow font color: always solid black (#111111)
+          const eyebrowCol = '#111111';
 
-          // Kinetic veil mask background: orange (255,102,0) when r=0 -> creamish/beige (250,248,245) when r=1
-          const maskR = Math.round(255 + (250 - 255) * r);
-          const maskG = Math.round(102 + (248 - 102) * r);
-          const maskB = Math.round(0 + (245 - 0) * r);
+          // Kinetic veil mask background:
+          // In orange bg (r=1): black (17,17,17)
+          // In white bg (r=0): orange (255,102,0)
+          // Smoothly changes as background goes from orange to white
+          const maskR = Math.round(255 + (17 - 255) * r);
+          const maskG = Math.round(102 + (17 - 102) * r);
+          const maskB = Math.round(0 + (17 - 0) * r);
           const maskCol = `rgb(${maskR}, ${maskG}, ${maskB})`;
 
           const viewport = document.getElementById('galleryStickyViewport');
