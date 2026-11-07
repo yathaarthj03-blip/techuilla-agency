@@ -23,9 +23,8 @@
   <link rel="preload" as="image" href="card_client_meeting.jpg">
   <link rel="preload" as="image" href="card_hindustan_tyre.jpg">
   <link rel="preload" as="image" href="card_untitled_clothing.png">
-  <link rel="preload" as="image" href="assets/project_02_spatial.jpg">
-  <link rel="preload" as="image" href="assets/project_03_cinema.jpg">
-  <link rel="preload" as="image" href="assets/project_04_brand.jpg">
+  <link rel="preload" as="image" href="card_soap_dispenser.jpg">
+  <link rel="preload" as="image" href="card_techuilla_branding.jpg">
 
   <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
@@ -2871,6 +2870,15 @@
       display: flex;
       align-items: center;
       background: var(--bg-warm);
+      --gallery-eyebrow-color: #111111;
+      --gallery-veil-mask-bg: var(--color-orange, #FF6600);
+      --gallery-quote-color: #111111;
+    }
+
+    .gallery-sticky-viewport.theme-gallery-orange {
+      --gallery-eyebrow-color: #FAF8F5;
+      --gallery-veil-mask-bg: #FAF8F5;
+      --gallery-quote-color: #FAF8F5;
     }
 
     /* Background Shift Layer: starts as a refined lighter shade of orange as section appears, fades back to warm cream by Image 6 */
@@ -2976,9 +2984,35 @@
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: rgba(26, 26, 26, 0.70);
+      color: var(--gallery-eyebrow-color, #111111);
       margin-bottom: 12px;
       user-select: none;
+      transition: color 0.4s ease;
+    }
+
+    .gallery-card-eyebrow .kinetic-veil-text {
+      color: var(--gallery-eyebrow-color, #111111);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, color 0.4s ease;
+    }
+
+    .gallery-card-eyebrow .kinetic-veil-mask {
+      background: var(--gallery-veil-mask-bg, var(--color-orange, #FF6600));
+      transition: background-color 0.4s ease;
+    }
+
+    .gallery-quote-block .kinetic-veil-text {
+      color: var(--gallery-quote-color, #111111);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, color 0.4s ease;
+    }
+
+    .gallery-quote-block .kinetic-veil-mask {
+      background: var(--gallery-veil-mask-bg, var(--color-orange, #FF6600));
+      transition: background-color 0.4s ease;
+    }
+
+    .gallery-quote-signature .signature-svg {
+      color: var(--gallery-quote-color, #111111);
+      transition: color 0.4s ease;
     }
 
     /* Strict 4:5 Aspect Ratio Frame */
@@ -4540,19 +4574,19 @@
       <!-- Horizontal Moving Rail: translates right to left as user scrolls -->
       <div class="gallery-horizontal-rail" id="galleryHorizontalRail">
         
-        <!-- ITEM 1: TOP (Client Meeting / Techuilla Studio) -->
+        <!-- ITEM 1: TOP (A.K. Meeting 2026) -->
         <div class="gallery-card-item item-top">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">CLIENT MEETING, 2024</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">A.K. Meeting 2026</span></div></div>
           <div class="gallery-card-frame">
-            <img src="card_client_meeting.jpg" alt="Client Meeting - Techuilla Agency" class="gallery-img" loading="lazy" />
+            <img src="card_client_meeting.jpg" alt="A.K. Meeting 2026 - Techuilla Agency" class="gallery-img" loading="lazy" />
           </div>
         </div>
 
-        <!-- ITEM 2: BOTTOM (Hindustan Tyre Agencies) -->
+        <!-- ITEM 2: BOTTOM (Hindustan Tyres 2026) -->
         <div class="gallery-card-item item-bottom">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">HINDUSTAN TYRE, 2024</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Hindustan Tyres 2026</span></div></div>
           <div class="gallery-card-frame">
-            <img src="card_hindustan_tyre.jpg" alt="Hindustan Tyre Agencies - Web & Mobile Platform" class="gallery-img" loading="lazy" />
+            <img src="card_hindustan_tyre.jpg" alt="Hindustan Tyres 2026 - Web & Mobile Platform" class="gallery-img" loading="lazy" />
           </div>
         </div>
 
@@ -4570,35 +4604,35 @@
           </div>
         </div>
 
-        <!-- ITEM 3: CENTER HERO (Untitled Clothing Co.) -->
+        <!-- ITEM 3: CENTER HERO (Untitled Store Branding, 2026) -->
         <div class="gallery-card-item item-center-hero">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">UNTITLED CLOTHING, 2024</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Untitled Store Branding, 2026</span></div></div>
           <div class="gallery-card-frame hero-frame hero-frame-square">
-            <img src="card_untitled_clothing.png" alt="Untitled Clothing Co. - Brand Identity & Apparel Design" class="gallery-img" loading="lazy" />
+            <img src="card_untitled_clothing.png" alt="Untitled Store Branding, 2026 - Brand Identity & Apparel Design" class="gallery-img" loading="lazy" />
           </div>
         </div>
 
-        <!-- ITEM 4: TOP (Monaco, 2023 style) -->
+        <!-- ITEM 4: TOP (Rama Hair clinic, 2026) -->
         <div class="gallery-card-item item-top">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">MONACO, 2023</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Rama Hair clinic, 2026</span></div></div>
           <div class="gallery-card-frame">
-            <img src="card_rama_trichology.jpg" alt="Monaco Showcase" class="gallery-img" loading="lazy" />
+            <img src="card_rama_trichology.jpg" alt="Rama Hair clinic, 2026" class="gallery-img" loading="lazy" />
           </div>
         </div>
 
-        <!-- ITEM 5: BOTTOM (Britain, 2025 style) -->
+        <!-- ITEM 5: BOTTOM (Health Streak, 2026) -->
         <div class="gallery-card-item item-bottom">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">BRITAIN, 2025</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Health Streak, 2026</span></div></div>
           <div class="gallery-card-frame">
-            <img src="card_3d_product.png" alt="Britain Racing Tech" class="gallery-img" loading="lazy" />
+            <img src="card_health_streak.png" alt="Health Streak, 2026 - Platform Experience" class="gallery-img" loading="lazy" />
           </div>
         </div>
 
-        <!-- ITEM 6: CENTER / STAGGERED (Singapore, 2025) -->
+        <!-- ITEM 6: CENTER / STAGGERED (3d Watch visuals, 2026) -->
         <div class="gallery-card-item item-center">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">SINGAPORE, 2025</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">3d Watch visuals, 2026</span></div></div>
           <div class="gallery-card-frame">
-            <img src="card_health_streak.png" alt="Singapore Platform Experience" class="gallery-img" loading="lazy" />
+            <img src="card_3d_product.png" alt="3d Watch visuals, 2026" class="gallery-img" loading="lazy" />
           </div>
         </div>
 
@@ -4616,27 +4650,27 @@
           </div>
         </div>
 
-        <!-- ITEM 7: TOP (Audio King) -->
+        <!-- ITEM 7: TOP (Soap dispenser G.D. 2026) -->
         <div class="gallery-card-item item-top">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">AUDIO KING, 2024</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Soap dispenser G.D. 2026</span></div></div>
           <div class="gallery-card-frame">
-            <img src="card_audio_king.png" alt="Audio King - 3D Acoustic Architecture" class="gallery-img" loading="lazy" />
+            <img src="card_soap_dispenser.jpg" alt="Soap dispenser G.D. 2026" class="gallery-img" loading="lazy" />
           </div>
         </div>
 
-        <!-- ITEM 8: BOTTOM (Kaali Mata 3D Art) -->
+        <!-- ITEM 8: BOTTOM (Kali Mata AI Promo, 2026) -->
         <div class="gallery-card-item item-bottom">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">KAALI MATA, 2024</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Kali Mata AI Promo, 2026</span></div></div>
           <div class="gallery-card-frame">
-            <img src="card_kaali_mata.png" alt="Kaali Mata - Sculpted 3D Digital Art" class="gallery-img" loading="lazy" />
+            <img src="card_kaali_mata.png" alt="Kali Mata AI Promo, 2026" class="gallery-img" loading="lazy" />
           </div>
         </div>
 
-        <!-- ITEM 9: CENTER GRAND FINALE HERO (Melbourne, 2026) -->
+        <!-- ITEM 9: CENTER GRAND FINALE HERO (TECHUILLA AGENCY 2026) -->
         <div class="gallery-card-item item-center-hero">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">MELBOURNE, 2026</span></div></div>
-          <div class="gallery-card-frame hero-frame">
-            <img src="assets/project_04_brand.jpg" alt="Melbourne Enterprise Finale" class="gallery-img" loading="lazy" />
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">TECHUILLA AGENCY 2026</span></div></div>
+          <div class="gallery-card-frame hero-frame hero-frame-square">
+            <img src="card_techuilla_branding.jpg" alt="TECHUILLA AGENCY 2026" class="gallery-img" loading="lazy" />
           </div>
         </div>
 
@@ -6246,6 +6280,32 @@ Best regards,
           }
         }
 
+        // Adaptive colors for gallery titles and kinetic veil mask:
+        // Orange background: typography = creamish (#FAF8F5), veil mask = creamish/beige (#FAF8F5)
+        // Transitions to white/normal: typography = black (#111111), veil mask = orange (#FF6600)
+        function applyAdaptiveGalleryColors(ratio) {
+          const r = Math.max(0, Math.min(1, ratio));
+          // Eyebrow font color: black (17,17,17) when r=0 -> creamish (250,248,245) when r=1
+          const textR = Math.round(17 + (250 - 17) * r);
+          const textG = Math.round(17 + (248 - 17) * r);
+          const textB = Math.round(17 + (245 - 17) * r);
+          const eyebrowCol = `rgb(${textR}, ${textG}, ${textB})`;
+
+          // Kinetic veil mask background: orange (255,102,0) when r=0 -> creamish/beige (250,248,245) when r=1
+          const maskR = Math.round(255 + (250 - 255) * r);
+          const maskG = Math.round(102 + (248 - 102) * r);
+          const maskB = Math.round(0 + (245 - 0) * r);
+          const maskCol = `rgb(${maskR}, ${maskG}, ${maskB})`;
+
+          const viewport = document.getElementById('galleryStickyViewport');
+          if (viewport) {
+            viewport.style.setProperty('--gallery-eyebrow-color', eyebrowCol);
+            viewport.style.setProperty('--gallery-veil-mask-bg', maskCol);
+            viewport.style.setProperty('--gallery-quote-color', eyebrowCol);
+            viewport.classList.toggle('theme-gallery-orange', r > 0.4);
+          }
+        }
+
         function updateGalleryVeilAnimations() {
           const winW = window.innerWidth;
           const veilWraps = rail.querySelectorAll('.kinetic-veil-wrap');
@@ -6302,12 +6362,14 @@ Best regards,
               const col = interpolateColor(orangeRatio);
               document.body.style.backgroundColor = col;
               if (prevSec) prevSec.style.backgroundColor = col;
+              applyAdaptiveGalleryColors(orangeRatio);
             } else {
               // Not yet 10% visible: starts at the center of the section
               rail.style.transform = `translate3d(${centerOffsetX.toFixed(2)}px, 0, 0)`;
               bgOrange.style.opacity = '0';
               document.body.style.backgroundColor = '';
               if (prevSec) prevSec.style.backgroundColor = '';
+              applyAdaptiveGalleryColors(0);
             }
             if (counterNum) counterNum.textContent = '1';
             if (window.updateNavBrandTheme) window.updateNavBrandTheme();
@@ -6321,6 +6383,7 @@ Best regards,
             document.body.style.backgroundColor = '';
             if (prevSec) prevSec.style.backgroundColor = '';
             if (counterNum) counterNum.textContent = '9';
+            applyAdaptiveGalleryColors(0);
             return;
           }
 
@@ -6363,6 +6426,7 @@ Best regards,
             document.body.style.backgroundColor = '';
             if (prevSec) prevSec.style.backgroundColor = '';
           }
+          applyAdaptiveGalleryColors(orangeRatio);
         }
 
         window.updateGalleryScrub = updateGallery;
