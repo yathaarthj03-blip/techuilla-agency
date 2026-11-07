@@ -20,7 +20,9 @@
 
   <!-- Preload 3D Vintage Portfolio Book Visuals -->
   <link rel="preload" as="image" href="assets/book_cover_artwork.jpg">
-  <link rel="preload" as="image" href="assets/project_01_nexus.jpg">
+  <link rel="preload" as="image" href="card_client_meeting.jpg">
+  <link rel="preload" as="image" href="card_hindustan_tyre.jpg">
+  <link rel="preload" as="image" href="card_untitled_clothing.png">
   <link rel="preload" as="image" href="assets/project_02_spatial.jpg">
   <link rel="preload" as="image" href="assets/project_03_cinema.jpg">
   <link rel="preload" as="image" href="assets/project_04_brand.jpg">
@@ -2998,6 +3000,16 @@
       box-shadow: 0 24px 64px rgba(0, 0, 0, 0.15), 0 4px 14px rgba(0, 0, 0, 0.06);
     }
 
+    .gallery-card-frame.hero-frame-square {
+      width: 440px;
+      aspect-ratio: 1 / 1;
+    }
+
+    .gallery-card-frame.hero-frame-square .gallery-img {
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+    }
+
     .gallery-img {
       width: 100%;
       height: 100%;
@@ -4528,19 +4540,19 @@
       <!-- Horizontal Moving Rail: translates right to left as user scrolls -->
       <div class="gallery-horizontal-rail" id="galleryHorizontalRail">
         
-        <!-- ITEM 1: TOP (Qatar, 2024 style) -->
+        <!-- ITEM 1: TOP (Client Meeting / Techuilla Studio) -->
         <div class="gallery-card-item item-top">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">QATAR, 2024</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">CLIENT MEETING, 2024</span></div></div>
           <div class="gallery-card-frame">
-            <img src="card_audio_king.png" alt="Qatar Showcase - Digital Infrastructure" class="gallery-img" loading="lazy" />
+            <img src="card_client_meeting.jpg" alt="Client Meeting - Techuilla Agency" class="gallery-img" loading="lazy" />
           </div>
         </div>
 
-        <!-- ITEM 2: BOTTOM (FIA Prize Giving style) -->
+        <!-- ITEM 2: BOTTOM (Hindustan Tyre Agencies) -->
         <div class="gallery-card-item item-bottom">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">FIA PRIZE GIVING, 2024</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">HINDUSTAN TYRE, 2024</span></div></div>
           <div class="gallery-card-frame">
-            <img src="card_kaali_mata.png" alt="FIA Prize Giving Showcase" class="gallery-img" loading="lazy" />
+            <img src="card_hindustan_tyre.jpg" alt="Hindustan Tyre Agencies - Web & Mobile Platform" class="gallery-img" loading="lazy" />
           </div>
         </div>
 
@@ -4558,11 +4570,11 @@
           </div>
         </div>
 
-        <!-- ITEM 3: CENTER HERO (Miami GP style - Large center portrait) -->
+        <!-- ITEM 3: CENTER HERO (Untitled Clothing Co.) -->
         <div class="gallery-card-item item-center-hero">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">MIAMI GP, 2024</span></div></div>
-          <div class="gallery-card-frame hero-frame">
-            <img src="assets/project_01_nexus.jpg" alt="Miami GP Showcase Hero" class="gallery-img" loading="lazy" />
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">UNTITLED CLOTHING, 2024</span></div></div>
+          <div class="gallery-card-frame hero-frame hero-frame-square">
+            <img src="card_untitled_clothing.png" alt="Untitled Clothing Co. - Brand Identity & Apparel Design" class="gallery-img" loading="lazy" />
           </div>
         </div>
 
@@ -4604,19 +4616,19 @@
           </div>
         </div>
 
-        <!-- ITEM 7: TOP (Abu Dhabi, 2025) -->
+        <!-- ITEM 7: TOP (Audio King) -->
         <div class="gallery-card-item item-top">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">ABU DHABI, 2025</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">AUDIO KING, 2024</span></div></div>
           <div class="gallery-card-frame">
-            <img src="assets/project_02_spatial.jpg" alt="Abu Dhabi Spatial Systems" class="gallery-img" loading="lazy" />
+            <img src="card_audio_king.png" alt="Audio King - 3D Acoustic Architecture" class="gallery-img" loading="lazy" />
           </div>
         </div>
 
-        <!-- ITEM 8: BOTTOM (Austin, 2025) -->
+        <!-- ITEM 8: BOTTOM (Kaali Mata 3D Art) -->
         <div class="gallery-card-item item-bottom">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">AUSTIN, 2025</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">KAALI MATA, 2024</span></div></div>
           <div class="gallery-card-frame">
-            <img src="assets/project_03_cinema.jpg" alt="Austin Cinematic Studio" class="gallery-img" loading="lazy" />
+            <img src="card_kaali_mata.png" alt="Kaali Mata - Sculpted 3D Digital Art" class="gallery-img" loading="lazy" />
           </div>
         </div>
 
