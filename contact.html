@@ -1276,11 +1276,6 @@
       background: transparent;
     }
 
-    .laptop-scroll-track.is-static .laptop-sticky-viewport {
-      position: relative !important;
-      height: 100vh !important;
-      top: auto !important;
-    }
 
     .laptop-scroll-track.is-static .conversation-progress-bar {
       opacity: 0 !important;
@@ -4795,67 +4790,5 @@ Best regards,
 
     })();
   </script>
-<script>
-    // ==========================================================================
-    // SMOOTH HEAVY INERTIAL SLOW SCROLLING ENGINE FOR CONTACT PAGE
-    // Prevents rapid jumping after laptop animation and enforces luxurious slow glide
-    // ==========================================================================
-    (function initContactHeavySmoothScroll() {
-      if (window.matchMedia('(pointer: coarse)').matches) return;
-
-      let targetY = window.scrollY || 0;
-      let currentY = targetY;
-      let isSmoothScrolling = false;
-      let rafId = null;
-
-      window.addEventListener('wheel', (e) => {
-        if (document.body.classList.contains('menu-open') || 
-            document.body.classList.contains('intro-active')) return;
-
-        e.preventDefault();
-        const maxScrollY = document.documentElement.scrollHeight - window.innerHeight;
-
-        // Extra deliberate slow scrolling through and past the laptop track
-        const laptopTrack = document.getElementById('laptopScrollTrack');
-        let dampener = 0.70;
-        if (laptopTrack) {
-          const r = laptopTrack.getBoundingClientRect();
-          // While in or just exiting laptop track: enforce heavy, slow, luxurious scrub
-          if (r.top <= window.innerHeight && r.bottom >= -600) {
-            dampener = 0.42; // Slow, controlled cadence prevents rapid drop into footer
-          }
-        }
-
-        targetY = Math.max(0, Math.min(maxScrollY, targetY + e.deltaY * dampener));
-
-        if (!isSmoothScrolling) {
-          isSmoothScrolling = true;
-          currentY = window.scrollY || 0;
-          runSmoothScroll();
-        }
-      }, { passive: false });
-
-      function runSmoothScroll() {
-        const diff = targetY - currentY;
-        if (Math.abs(diff) > 0.5) {
-          currentY += diff * 0.075; // Heavy inertial smoothing factor (slow and steady)
-          window.scrollTo(0, currentY);
-          rafId = requestAnimationFrame(runSmoothScroll);
-        } else {
-          window.scrollTo(0, targetY);
-          currentY = targetY;
-          isSmoothScrolling = false;
-          rafId = null;
-        }
-      }
-
-      window.addEventListener('scroll', () => {
-        if (!isSmoothScrolling) {
-          targetY = window.scrollY || 0;
-          currentY = targetY;
-        }
-      }, { passive: true });
-    })();
-</script>
 </body>
 </html>
