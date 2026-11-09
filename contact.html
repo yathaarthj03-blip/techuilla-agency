@@ -2337,29 +2337,29 @@
     .footer-brand-logo-wrap span {
       font-family: var(--font-sans);
       font-weight: 800;
-      font-size: 19px;
+      font-size: 23px; /* +20% (19px -> 23px) */
       color: #000000 !important;
       letter-spacing: -0.02em;
     }
 
     .footer-brand-logo-wrap img {
-      height: 36px;
+      height: 42px; /* Proportional balance with 23px brand text */
       width: auto;
       object-fit: contain;
       filter: brightness(0); /* Clean black logo on vibrant orange */
     }
 
     .footer-tagline {
-      font-size: 15px;
+      font-size: 18px; /* +20% (15px -> 18px) */
       color: #1A1A1A;
-      max-width: 320px;
+      max-width: 380px;
       line-height: 1.5;
       font-weight: 500;
     }
 
     .footer-col-title {
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 14.5px; /* +20% (12px -> 14.5px) */
       font-weight: 800;
       letter-spacing: 0.12em;
       text-transform: uppercase;
@@ -2371,11 +2371,11 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
     }
 
     .footer-link {
-      font-size: 14.5px;
+      font-size: 17.5px; /* +20% (14.5px -> 17.5px) */
       color: #1A1A1A;
       text-decoration: none;
       transition: color 0.2s ease, transform 0.2s ease;
@@ -2396,7 +2396,7 @@
       justify-content: space-between;
       align-items: center;
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 14.5px; /* +20% (12px -> 14.5px) */
       color: #222222;
       font-weight: 500;
       border-top: none;
@@ -2406,19 +2406,19 @@
       background: transparent;
       border: none;
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 14.5px; /* +20% (12px -> 14.5px) */
       font-weight: 700;
       color: #000000;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: color 0.2s ease, transform 0.2s ease;
+      transition: color 0.25s ease, transform 0.25s ease;
       padding: 0;
     }
 
     .btn-back-to-top:hover {
-      color: #FFFFFF;
+      color: #FFFFFF !important; /* Hovering text colour changes from black to white */
       transform: translateY(-2px);
     }
 
@@ -3139,8 +3139,8 @@
     <div class="footer-container">
       <div class="footer-brand-col">
         <a href="index.html" class="footer-brand-logo-wrap">
-          <img src="Techuilla_logo.png" alt="Techuilla Agency Logo" style="height: 36px; width: auto; object-fit: contain;">
-          <span style="font-family: var(--font-sans); font-weight: 700; font-size: 18px; color: var(--text-primary);">Techuilla Agency</span>
+          <img src="Techuilla_logo.png" alt="Techuilla Agency Logo" style="height: 42px; width: auto; object-fit: contain;">
+          <span style="font-family: var(--font-sans); font-weight: 700; font-size: 23px; color: var(--text-primary);">Techuilla Agency</span>
         </a>
         <p class="footer-tagline">
           Creative Technology & Digital Marketing Agency. Turning ambitious ideas into high-impact systems.
@@ -3152,8 +3152,9 @@
         <ul class="footer-links-list">
           <li><a href="index.html" class="footer-link">Home</a></li>
           <li><a href="index.html#services" class="footer-link">Services</a></li>
-          <li><a href="index.html#work" class="footer-link">Selected Work</a></li>
-          <li><a href="index.html#about" class="footer-link">Agency Philosophy</a></li>
+          <li><a href="index.html#work" class="footer-link">Work</a></li>
+          <li><a href="index.html#about" class="footer-link">About</a></li>
+          <li><a href="contact.html" class="footer-link">Book a meeting</a></li>
         </ul>
       </div>
 

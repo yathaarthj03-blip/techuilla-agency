@@ -1383,7 +1383,7 @@
     .hero-portal-track {
       position: relative;
       width: 100%;
-      height: 460vh; /* Slowed down portal scrub (LETS EXPLORE AHEAD / VISIT US BACK SOON) */
+      height: 550vh; /* Paced portal scrub duration matching 20% decreased scroll speed */
       background-color: transparent;
       z-index: 2;
     }
@@ -2142,7 +2142,7 @@
       display: inline-block;
       opacity: 0;
       transform: translate3d(0, 8px, 0);
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
       position: relative;
       z-index: 1;
       will-change: transform, opacity;
@@ -3701,29 +3701,29 @@
     .footer-brand-logo-wrap span {
       font-family: var(--font-sans);
       font-weight: 800;
-      font-size: 19px;
+      font-size: 23px; /* +20% (19px -> 23px) */
       color: #000000 !important;
       letter-spacing: -0.02em;
     }
 
     .footer-brand-logo-wrap img {
-      height: 36px;
+      height: 42px; /* Proportional balance with 23px brand text */
       width: auto;
       object-fit: contain;
       filter: brightness(0); /* Clean black logo on vibrant orange */
     }
 
     .footer-tagline {
-      font-size: 15px;
+      font-size: 18px; /* +20% (15px -> 18px) */
       color: #1A1A1A;
-      max-width: 320px;
+      max-width: 380px;
       line-height: 1.5;
       font-weight: 500;
     }
 
     .footer-col-title {
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 14.5px; /* +20% (12px -> 14.5px) */
       font-weight: 800;
       letter-spacing: 0.12em;
       text-transform: uppercase;
@@ -3735,11 +3735,11 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
     }
 
     .footer-link {
-      font-size: 14.5px;
+      font-size: 17.5px; /* +20% (14.5px -> 17.5px) */
       color: #1A1A1A;
       text-decoration: none;
       transition: color 0.2s ease, transform 0.2s ease;
@@ -3760,7 +3760,7 @@
       justify-content: space-between;
       align-items: center;
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 14.5px; /* +20% (12px -> 14.5px) */
       color: #222222;
       font-weight: 500;
     }
@@ -3769,23 +3769,19 @@
       background: transparent;
       border: none;
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 14.5px; /* +20% (12px -> 14.5px) */
       font-weight: 700;
       color: #000000;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: color 0.2s ease, transform 0.2s ease;
+      transition: color 0.25s ease, transform 0.25s ease;
     }
 
     .btn-back-to-top:hover {
-      color: #FFFFFF;
+      color: #FFFFFF !important; /* Hovering text colour changes from black to white */
       transform: translateY(-2px);
-    }
-
-    .btn-back-to-top:hover {
-      color: var(--color-orange);
     }
 
     /* ==========================================================================
@@ -4847,8 +4843,8 @@
     <div class="footer-container">
       <div class="footer-brand-col">
         <a href="#hero" class="footer-brand-logo-wrap">
-          <img src="Techuilla_logo.png" alt="Techuilla Agency Logo" style="height: 36px; width: auto; object-fit: contain;">
-          <span style="font-family: var(--font-sans); font-weight: 700; font-size: 18px; color: var(--text-primary);">Techuilla Agency</span>
+          <img src="Techuilla_logo.png" alt="Techuilla Agency Logo" style="height: 42px; width: auto; object-fit: contain;">
+          <span style="font-family: var(--font-sans); font-weight: 700; font-size: 23px; color: var(--text-primary);">Techuilla Agency</span>
         </a>
         <p class="footer-tagline">
           Creative Technology & Digital Marketing Agency. Turning ambitious ideas into high-impact systems.
@@ -4860,8 +4856,9 @@
         <ul class="footer-links-list">
           <li><a href="#hero" class="footer-link">Home</a></li>
           <li><a href="#services" class="footer-link">Services</a></li>
-          <li><a href="#work" class="footer-link">Selected Work</a></li>
-          <li><a href="#about" class="footer-link">Agency Philosophy</a></li>
+          <li><a href="#work" class="footer-link">Work</a></li>
+          <li><a href="#about" class="footer-link">About</a></li>
+          <li><a href="contact.html" class="footer-link">Book a meeting</a></li>
         </ul>
       </div>
 
@@ -5414,13 +5411,9 @@ Best regards,
 
       const btnBackToTop = document.getElementById('btnBackToTop');
       if (btnBackToTop) {
-        btnBackToTop.addEventListener('click', () => {
-          if (window.resetScrollToTop) {
-            window.resetScrollToTop();
-          } else {
-            window.scrollTo(0, 0);
-            if (window.updatePortalScrub) window.updatePortalScrub();
-          }
+        btnBackToTop.addEventListener('click', (e) => {
+          // Orange bloom transition returning to top-left logo, identical to clicking top-left logo
+          triggerHomeTransition(e);
         });
       }
 
@@ -5873,7 +5866,7 @@ Best regards,
           if (portalTrk) {
             const pr = portalTrk.getBoundingClientRect();
             if (pr.top <= window.innerHeight && pr.bottom >= 0) {
-              portalDampener = 0.45; // Deliberate slow, cinematic scrub through portal
+              portalDampener = 0.36; // Decreased scroll speed by 20% (from 0.45 to 0.36)
             }
           }
 
@@ -5904,6 +5897,7 @@ Best regards,
             window.scrollTo(0, currentY);
             updatePortalScrub();
             if (window.updateSolutionStageScrub) window.updateSolutionStageScrub();
+            if (window.updateProblemVeils) window.updateProblemVeils();
             if (window.updateGalleryScrub) window.updateGalleryScrub();
             if (window.updateFlagshipScrub) window.updateFlagshipScrub();
             smoothScrollRafId = requestAnimationFrame(smoothScrollTick);
@@ -5912,6 +5906,7 @@ Best regards,
             window.scrollTo(0, currentY);
             updatePortalScrub();
             if (window.updateSolutionStageScrub) window.updateSolutionStageScrub();
+            if (window.updateProblemVeils) window.updateProblemVeils();
             if (window.updateGalleryScrub) window.updateGalleryScrub();
             if (window.updateFlagshipScrub) window.updateFlagshipScrub();
             isSmoothScrolling = false;
@@ -6127,7 +6122,7 @@ Best regards,
             const rect = wrap.getBoundingClientRect();
             let p = 0;
             const startY = winH * 0.90; // When element enters bottom of viewport
-            const endY = winH * 0.55;   // Fully revealed by middle viewport
+            const endY = winH * 0.445;  // Slowed by 30% (reveals over 0.455 * winH instead of 0.35 * winH)
             if (rect.top <= startY) {
               if (rect.top >= endY) {
                 p = (startY - rect.top) / (startY - endY);
