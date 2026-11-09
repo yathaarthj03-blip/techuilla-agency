@@ -2865,7 +2865,7 @@
        ========================================================================== */
     .gallery-pin-track {
       position: relative;
-      height: 560vh; /* Deliberately slow, luxurious scrub duration through editorial gallery */
+      height: 480vh; /* Scrub duration paced 15% faster (560vh -> 480vh) */
       background: var(--bg-warm);
       z-index: 8;
     }
@@ -5870,13 +5870,13 @@ Best regards,
             }
           }
 
-          // Extra slow scrolling through EDITORIAL GALLERY section (unhurried, paced image progression)
+          // Scrolling through EDITORIAL GALLERY section (scrolling speed increased by 15%)
           const galleryTrack = document.getElementById('galleryPinTrack');
           let galleryDampener = 1.0;
           if (galleryTrack) {
             const gr = galleryTrack.getBoundingClientRect();
             if (gr.top <= window.innerHeight && gr.bottom >= 0) {
-              galleryDampener = 0.45; // Deliberate slow scrub through horizontal images
+              galleryDampener = 0.52; // Increased scrolling speed by 15% (0.45 -> 0.52)
             }
           }
 
