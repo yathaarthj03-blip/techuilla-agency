@@ -2865,7 +2865,7 @@
        ========================================================================== */
     .gallery-pin-track {
       position: relative;
-      height: 480vh; /* Scrub duration paced 15% faster (560vh -> 480vh) */
+      height: 380vh; /* Scrub duration paced another 20% faster (480vh -> 380vh) */
       background: var(--bg-warm);
       z-index: 8;
     }
@@ -5870,13 +5870,13 @@ Best regards,
             }
           }
 
-          // Scrolling through EDITORIAL GALLERY section (scrolling speed increased by 15%)
+          // Scrolling through EDITORIAL GALLERY section (scrolling speed increased by another 20%)
           const galleryTrack = document.getElementById('galleryPinTrack');
           let galleryDampener = 1.0;
           if (galleryTrack) {
             const gr = galleryTrack.getBoundingClientRect();
             if (gr.top <= window.innerHeight && gr.bottom >= 0) {
-              galleryDampener = 0.52; // Increased scrolling speed by 15% (0.45 -> 0.52)
+              galleryDampener = 0.625; // Increased scrolling speed by another 20% (0.52 -> 0.625)
             }
           }
 
