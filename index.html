@@ -1383,7 +1383,7 @@
     .hero-portal-track {
       position: relative;
       width: 100%;
-      height: 550vh; /* Paced portal scrub duration matching 20% decreased scroll speed */
+      height: 320vh; /* Accelerated portal scrub duration (increased speed by 30%) */
       background-color: transparent;
       z-index: 2;
     }
@@ -2142,7 +2142,7 @@
       display: inline-block;
       opacity: 0;
       transform: translate3d(0, 8px, 0);
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+      transition: transform 0.50s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.50s ease; /* Slowed by 50% */
       position: relative;
       z-index: 1;
       will-change: transform, opacity;
@@ -5860,13 +5860,13 @@ Best regards,
             }
           }
 
-          // Extra slow scrolling through LETS EXPLORE AHEAD / VISIT US BACK SOON portal section
+          // Scrolling through LETS EXPLORE AHEAD / VISIT US BACK SOON portal section (speed increased by 30%)
           const portalTrk = document.getElementById('portalScrollTrack');
           let portalDampener = 1.0;
           if (portalTrk) {
             const pr = portalTrk.getBoundingClientRect();
             if (pr.top <= window.innerHeight && pr.bottom >= 0) {
-              portalDampener = 0.36; // Decreased scroll speed by 20% (from 0.45 to 0.36)
+              portalDampener = 0.60; // Increased scroll speed by 30%+ so transition is brisk & responsive
             }
           }
 
@@ -6121,8 +6121,8 @@ Best regards,
 
             const rect = wrap.getBoundingClientRect();
             let p = 0;
-            const startY = winH * 0.90; // When element enters bottom of viewport
-            const endY = winH * 0.445;  // Slowed by 30% (reveals over 0.455 * winH instead of 0.35 * winH)
+            const startY = winH * 0.92; // When element enters bottom of viewport
+            const endY = winH * 0.22;   // Slowed by 50% (reveals over 0.70 * winH instead of 0.35 * winH)
             if (rect.top <= startY) {
               if (rect.top >= endY) {
                 p = (startY - rect.top) / (startY - endY);
