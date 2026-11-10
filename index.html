@@ -2865,7 +2865,7 @@
        ========================================================================== */
     .gallery-pin-track {
       position: relative;
-      height: 440vh; /* Scrub duration tuned 15% slower (380vh -> 440vh) */
+      height: 650vh; /* Extended scroll runway for 10 cards + WHAT WE DO intro (+48% duration) */
       background: var(--bg-warm);
       z-index: 8;
     }
@@ -2939,7 +2939,7 @@
       display: flex;
       align-items: center;
       height: 100%;
-      padding: 0 10vw; /* Starts at 10% of the screen */
+      padding: 0 45vw 0 10vw; /* Generous 45vw right padding so final Card 10 centers perfectly on screen */
       gap: 5.5vw;
       width: max-content;
       will-change: transform;
@@ -6533,7 +6533,10 @@ Best regards,
           if (maxDist <= 0) return;
 
           const railW = rail.scrollWidth;
-          const maxScrollX = Math.max(0, railW - winW + winW * 0.08);
+          // Calculate maxScrollX so that the finale Card 10 stops precisely in the center of the viewport (winW / 2)
+          const lastCard = rail.querySelector('.gallery-card-item:last-of-type');
+          const lastCardCenter = lastCard ? (lastCard.offsetLeft + lastCard.offsetWidth / 2) : (railW - winW * 0.45);
+          const maxScrollX = Math.max(0, lastCardCenter - (winW / 2));
 
           // Position WHAT WE DO starting from 50% of the screen (horizontal center)
           const introCol = rail.querySelector('.gallery-intro-col');
@@ -6587,13 +6590,15 @@ Best regards,
           }
 
           // 3. Inside pinned horizontal scroll:
-          // Continues seamlessly from startPinnedOffset to full -maxScrollX
+          // Smooth scrub until progress = 0.88, then hold Card 10 centered on screen as finale plateau from 0.88 to 1.00
           const scrolled = -rect.top;
           const progress = Math.max(0, Math.min(1, scrolled / maxDist));
 
-          const currentX = startPinnedOffset - (progress * (startPinnedOffset + maxScrollX));
+          const scrubProgress = Math.min(1.0, progress / 0.88);
+          const currentX = startPinnedOffset - (scrubProgress * (startPinnedOffset + maxScrollX));
           rail.style.transform = `translate3d(${currentX.toFixed(2)}px, 0, 0)`;
           updateGalleryVeilAnimations(1.0);
+          ensureGalleryVideosPlaying();
 
           // Active photo counter 1 to 10 (Image 6 begins around progress = 0.50)
           const activeIdx = Math.min(10, Math.max(1, Math.floor(progress * 10) + 1));
