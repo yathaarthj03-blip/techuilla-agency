@@ -3128,6 +3128,7 @@
     .gallery-card-frame.hero-frame-square .gallery-video {
       aspect-ratio: 1 / 1;
       object-fit: cover;
+      object-position: center;
     }
 
     .gallery-img,
@@ -3136,6 +3137,7 @@
       height: 100%;
       aspect-ratio: 4 / 5;
       object-fit: cover;
+      object-position: center; /* Center framing in the same aspect ratio as the cards */
       display: block;
       transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
       pointer-events: none; /* Disables controls/context menu so video loops smoothly and silently */
@@ -4763,31 +4765,44 @@
           </div>
         </div>
 
-        <!-- ITEM 7: TOP (Soap dispenser G.D. 2026) -->
+        <!-- ITEM 7: TOP (3D animation) -->
         <div class="gallery-card-item item-top">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Soap dispenser G.D. 2026</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">3D animation</span></div></div>
           <div class="gallery-card-frame">
-            <img src="card_soap_dispenser.jpg" alt="Soap dispenser G.D. 2026" class="gallery-img" loading="lazy" />
+            <video class="gallery-video" autoplay loop muted playsinline preload="auto" disablepictureinpicture tabindex="-1">
+              <source src="card_3d_animation.mp4" type="video/mp4">
+            </video>
           </div>
         </div>
 
-        <!-- ITEM 8: BOTTOM (Kali Mata AI Promo, 2026) -->
+        <!-- ITEM 8: BOTTOM (Ai video) -->
         <div class="gallery-card-item item-bottom">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Kali Mata AI Promo, 2026</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Ai video</span></div></div>
           <div class="gallery-card-frame">
-            <img src="card_kaali_mata.png" alt="Kali Mata AI Promo, 2026" class="gallery-img" loading="lazy" />
+            <video class="gallery-video" autoplay loop muted playsinline preload="auto" disablepictureinpicture tabindex="-1">
+              <source src="card_ai_video.mp4" type="video/mp4">
+            </video>
           </div>
         </div>
 
-        <!-- ITEM 9: CENTER GRAND FINALE HERO (TECHUILLA AGENCY 2026) -->
+        <!-- ITEM 9: TOP (Products animation) -->
+        <div class="gallery-card-item item-top">
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Products animation</span></div></div>
+          <div class="gallery-card-frame">
+            <video class="gallery-video" autoplay loop muted playsinline preload="auto" disablepictureinpicture tabindex="-1">
+              <source src="card_products_animation.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+        <!-- ITEM 10: CENTER GRAND FINALE HERO (Techuilla Agency, 2026) -->
         <div class="gallery-card-item item-center-hero">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">TECHUILLA AGENCY 2026</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Techuilla Agency, 2026</span></div></div>
           <div class="gallery-card-frame hero-frame hero-frame-square">
-            <img src="card_techuilla_branding.jpg" alt="TECHUILLA AGENCY 2026" class="gallery-img" loading="lazy" />
+            <img src="card_techuilla_branding.jpg" alt="Techuilla Agency, 2026" class="gallery-img" loading="lazy" />
           </div>
         </div>
-
-      </div>
+</div>
 
       <!-- Minimal Corner Progress Badge (matching reference '1 | 🏁') -->
       <div class="gallery-corner-counter" aria-hidden="true">
@@ -6566,7 +6581,7 @@ Best regards,
             bgOrange.style.opacity = '0';
             document.body.style.backgroundColor = '';
             if (prevSec) prevSec.style.backgroundColor = '';
-            if (counterNum) counterNum.textContent = '9';
+            if (counterNum) counterNum.textContent = '10';
             applyAdaptiveGalleryColors(0);
             return;
           }
@@ -6580,23 +6595,23 @@ Best regards,
           rail.style.transform = `translate3d(${currentX.toFixed(2)}px, 0, 0)`;
           updateGalleryVeilAnimations(1.0);
 
-          // Active photo counter 1 to 9 (Image 6 begins around progress = 0.555)
-          const activeIdx = Math.min(9, Math.max(1, Math.floor(progress * 9) + 1));
+          // Active photo counter 1 to 10 (Image 6 begins around progress = 0.50)
+          const activeIdx = Math.min(10, Math.max(1, Math.floor(progress * 10) + 1));
           if (counterNum) counterNum.textContent = activeIdx;
           updateGalleryVeilAnimations(1.0);
 
           // Entire website background color shift:
-          // Remains orange for images 1 to 5, transitions smoothly back to normal background when reaching image 6
+          // Remains orange for cards 1 to 5, transitions smoothly back to normal background when reaching card 6
           let orangeRatio = 1.0;
-          if (progress < 0.48) {
-            // Images 1 through 5: full orange across the entire website
+          if (progress < 0.45) {
+            // Cards 1 through 5: full orange across the entire website
             orangeRatio = 1.0;
-          } else if (progress <= 0.58) {
-            // When reaching image 6 (progress 0.48 -> 0.58): smoothly transition back to normal style
-            const fade = (progress - 0.48) / (0.58 - 0.48);
+          } else if (progress <= 0.55) {
+            // When reaching card 6 (progress 0.45 -> 0.55): smoothly transition back to normal style
+            const fade = (progress - 0.45) / (0.55 - 0.45);
             orangeRatio = Math.max(0, Math.min(1, 1 - fade));
           } else {
-            // From image 6 onwards: normal background style as before
+            // From card 6 onwards: normal background style as before
             orangeRatio = 0.0;
           }
 
