@@ -2946,23 +2946,23 @@
       transform: translate3d(0, 0, 0);
     }
 
-    /* Intro Title Column on Gallery Rail: WHAT WE DO */
+    /* Intro Title Column on Gallery Rail: WHAT WE DO (+30% Font Size) */
     .gallery-intro-col {
       display: flex;
       flex-direction: column;
       justify-content: center;
       flex-shrink: 0;
-      min-width: 260px;
-      margin-right: 2vw;
+      min-width: 320px;
+      margin-right: 3vw;
       user-select: none;
       z-index: 4;
     }
 
     .gallery-what-we-do-title {
       font-family: var(--font-sans);
-      font-size: clamp(52px, 6.2vw, 96px);
+      font-size: clamp(68px, 8.1vw, 125px); /* +30% font size increase */
       font-weight: 900;
-      line-height: 0.92;
+      line-height: 0.90;
       letter-spacing: -0.04em;
       text-transform: uppercase;
       color: var(--gallery-wwd-color, #111111);
@@ -6483,16 +6483,23 @@ Best regards,
           const railW = rail.scrollWidth;
           const maxScrollX = Math.max(0, railW - winW + winW * 0.08);
 
-          // Position first image starting from 10% of the screen (10vw), not 50%
-          const entryGlideDistance = winW * 0.10; // Gentle glide as 10% of section enters
+          // Position WHAT WE DO starting from 50% of the screen (horizontal center)
+          const introCol = rail.querySelector('.gallery-intro-col');
+          const introCenter = introCol ? (introCol.offsetLeft + introCol.offsetWidth / 2) : (winW * 0.10 + 180);
+          const centerOffsetX = (winW / 2) - introCenter;
+
+          // How much the rail smoothly glides during entry from 10% visible to pinned (top = 0)
+          const entryGlideDistance = Math.min(centerOffsetX, winW * 0.18);
+          const startPinnedOffset = centerOffsetX - entryGlideDistance;
 
           // 1. As section approaches viewport from below:
-          // Starts from 10% of the screen with WHAT WE DO before Card 1
+          // Starts from 50% of the screen and begins scrolling as 10% of the section is visible
           if (rect.top > 0) {
             const triggerH = winH * 0.90; // When 10% of section is visible
             if (rect.top < triggerH) {
               const entryProgress = (triggerH - rect.top) / triggerH;
-              const currentX = entryGlideDistance * (1 - entryProgress);
+              // Smoothly scrolls from centerOffsetX towards startPinnedOffset
+              const currentX = centerOffsetX - (entryProgress * entryGlideDistance);
               rail.style.transform = `translate3d(${currentX.toFixed(2)}px, 0, 0)`;
               updateGalleryVeilAnimations(entryProgress);
 
@@ -6503,8 +6510,8 @@ Best regards,
               if (prevSec) prevSec.style.backgroundColor = col;
               applyAdaptiveGalleryColors(orangeRatio);
             } else {
-              // Not yet 10% visible: starts at 10% of the screen
-              rail.style.transform = `translate3d(${entryGlideDistance.toFixed(2)}px, 0, 0)`;
+              // Not yet 10% visible: starts at 50% of the screen
+              rail.style.transform = `translate3d(${centerOffsetX.toFixed(2)}px, 0, 0)`;
               bgOrange.style.opacity = '0';
               document.body.style.backgroundColor = '';
               if (prevSec) prevSec.style.backgroundColor = '';
@@ -6528,11 +6535,11 @@ Best regards,
           }
 
           // 3. Inside pinned horizontal scroll:
-          // Smooth scrub across maxScrollX starting from 10% of the screen
+          // Continues seamlessly from startPinnedOffset to full -maxScrollX
           const scrolled = -rect.top;
           const progress = Math.max(0, Math.min(1, scrolled / maxDist));
 
-          const currentX = -(progress * maxScrollX);
+          const currentX = startPinnedOffset - (progress * (startPinnedOffset + maxScrollX));
           rail.style.transform = `translate3d(${currentX.toFixed(2)}px, 0, 0)`;
           updateGalleryVeilAnimations(1.0);
 
