@@ -2939,11 +2939,73 @@
       display: flex;
       align-items: center;
       height: 100%;
-      padding: 0 7vw;
-      gap: 6.5vw;
+      padding: 0 10vw; /* Starts at 10% of the screen */
+      gap: 5.5vw;
       width: max-content;
       will-change: transform;
       transform: translate3d(0, 0, 0);
+    }
+
+    /* Intro Title Column on Gallery Rail: WHAT WE DO */
+    .gallery-intro-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-shrink: 0;
+      min-width: 260px;
+      margin-right: 2vw;
+      user-select: none;
+      z-index: 4;
+    }
+
+    .gallery-what-we-do-title {
+      font-family: var(--font-sans);
+      font-size: clamp(52px, 6.2vw, 96px);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      color: var(--gallery-wwd-color, #111111);
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .gallery-wwd-line {
+      display: block;
+      white-space: nowrap;
+    }
+
+    .gallery-what-we-do-title .kinetic-veil-wrap {
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+    }
+
+    .gallery-what-we-do-title .kinetic-veil-mask {
+      position: absolute;
+      inset: 0;
+      background: var(--gallery-veil-mask-bg, var(--color-orange, #FF6600));
+      transform: scaleX(0);
+      transform-origin: left center;
+      z-index: 2;
+      pointer-events: none;
+      will-change: transform;
+      transition: background-color 0.4s ease;
+    }
+
+    .gallery-what-we-do-title .kinetic-veil-text {
+      display: inline-block;
+      opacity: 0;
+      transform: translate3d(0, 10px, 0);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, color 0.45s ease;
+      position: relative;
+      z-index: 1;
+      will-change: transform, opacity, color;
+      color: var(--gallery-wwd-color, #111111);
     }
 
     /* Card Item (Staggered up / down / center rhythm) */
@@ -4593,6 +4655,24 @@
       <!-- Horizontal Moving Rail: translates right to left as user scrolls -->
       <div class="gallery-horizontal-rail" id="galleryHorizontalRail">
         
+        <!-- INTRO TITLE: WHAT WE DO (Large, bold, 2-line kinetic typography with adaptive color animation) -->
+        <div class="gallery-intro-col" id="galleryIntroCol">
+          <h2 class="gallery-what-we-do-title" id="galleryWhatWeDoTitle">
+            <span class="gallery-wwd-line">
+              <span class="kinetic-veil-wrap">
+                <span class="kinetic-veil-mask" aria-hidden="true"></span>
+                <span class="kinetic-veil-text">WHAT</span>
+              </span>
+            </span>
+            <span class="gallery-wwd-line">
+              <span class="kinetic-veil-wrap">
+                <span class="kinetic-veil-mask" aria-hidden="true"></span>
+                <span class="kinetic-veil-text">WE DO</span>
+              </span>
+            </span>
+          </h2>
+        </div>
+
         <!-- ITEM 1: TOP (A.K. Meeting 2026) -->
         <div class="gallery-card-item item-top">
           <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">A.K. Meeting 2026</span></div></div>
@@ -6317,12 +6397,20 @@ Best regards,
         }
 
         // Adaptive colors for gallery titles and kinetic veil mask:
-        // Orange background: typography is solid black (#111111), veil mask is solid black (#111111)
-        // Transitions to white/normal: typography remains black (#111111), veil mask changes to orange (#FF6600)
+        // Text color for WHAT WE DO starts solid black (#111111) and animates adaptively as background changes
+        // Kinetic veil mask shifts between black and Techuilla orange with the background transitions
         function applyAdaptiveGalleryColors(ratio) {
           const r = Math.max(0, Math.min(1, ratio));
           // Eyebrow font color: always solid black (#111111)
           const eyebrowCol = '#111111';
+
+          // Adaptive text color animation for WHAT WE DO:
+          // In cream/white bg (r=0): solid black rgb(17, 17, 17)
+          // As background transitions to orange (r=1): smoothly animates to cream rgb(250, 248, 245) for supreme contrast
+          const textR = Math.round(17 + (250 - 17) * r);
+          const textG = Math.round(17 + (248 - 17) * r);
+          const textB = Math.round(17 + (245 - 17) * r);
+          const wwdCol = `rgb(${textR}, ${textG}, ${textB})`;
 
           // Kinetic veil mask background:
           // In orange bg (r=1): black (17,17,17)
@@ -6336,16 +6424,38 @@ Best regards,
           const viewport = document.getElementById('galleryStickyViewport');
           if (viewport) {
             viewport.style.setProperty('--gallery-eyebrow-color', eyebrowCol);
+            viewport.style.setProperty('--gallery-wwd-color', wwdCol);
             viewport.style.setProperty('--gallery-veil-mask-bg', maskCol);
             viewport.style.setProperty('--gallery-quote-color', eyebrowCol);
             viewport.classList.toggle('theme-gallery-orange', r > 0.4);
           }
         }
 
-        function updateGalleryVeilAnimations() {
+        function updateGalleryVeilAnimations(entryP) {
           const winW = window.innerWidth;
-          const veilWraps = rail.querySelectorAll('.kinetic-veil-wrap');
-          veilWraps.forEach(wrap => {
+
+          // 1. Animate WHAT WE DO intro title with kinetic veil reveal as section arrives
+          const introTitle = document.getElementById('galleryWhatWeDoTitle');
+          if (introTitle) {
+            const introWraps = introTitle.querySelectorAll('.kinetic-veil-wrap');
+            let pIntro = 1.0;
+            if (typeof entryP === 'number') {
+              if (entryP <= 0.10) pIntro = 0;
+              else if (entryP >= 0.85) pIntro = 1.0;
+              else pIntro = (entryP - 0.10) / 0.75;
+            }
+            introWraps.forEach((wrap, idx) => {
+              const mask = wrap.querySelector('.kinetic-veil-mask');
+              const text = wrap.querySelector('.kinetic-veil-text');
+              const stagger = idx * 0.12;
+              const staggeredP = Math.max(0, Math.min(1, (pIntro - stagger) / (1 - stagger)));
+              applyKineticVeilReveal(mask, text, staggeredP);
+            });
+          }
+
+          // 2. Animate all card eyebrows and quotes as they scroll across the screen
+          const cardVeilWraps = Array.from(rail.querySelectorAll('.gallery-card-item .kinetic-veil-wrap, .gallery-quote-block .kinetic-veil-wrap'));
+          cardVeilWraps.forEach(wrap => {
             const mask = wrap.querySelector('.kinetic-veil-mask');
             const text = wrap.querySelector('.kinetic-veil-text');
             if (!mask || !text) return;
@@ -6373,25 +6483,18 @@ Best regards,
           const railW = rail.scrollWidth;
           const maxScrollX = Math.max(0, railW - winW + winW * 0.08);
 
-          // Calculate center offset so the first card is exactly in the horizontal center of the section
-          const card1 = rail.querySelector('.gallery-card-item');
-          const card1Center = card1 ? (card1.offsetLeft + card1.offsetWidth / 2) : (winW * 0.07 + 145);
-          const centerOffsetX = (winW / 2) - card1Center;
-
-          // How much the rail smoothly glides during entry from 10% visible to pinned (top = 0)
-          const entryGlideDistance = Math.min(centerOffsetX, winW * 0.22);
-          const startPinnedOffset = centerOffsetX - entryGlideDistance;
+          // Position first image starting from 10% of the screen (10vw), not 50%
+          const entryGlideDistance = winW * 0.10; // Gentle glide as 10% of section enters
 
           // 1. As section approaches viewport from below:
-          // Starts in the middle / center, and starts scrolling as 10% of the section is visible
+          // Starts from 10% of the screen with WHAT WE DO before Card 1
           if (rect.top > 0) {
             const triggerH = winH * 0.90; // When 10% of section is visible
             if (rect.top < triggerH) {
               const entryProgress = (triggerH - rect.top) / triggerH;
-              // Smoothly scrolls from centerOffsetX towards the left
-              const currentX = centerOffsetX - (entryProgress * entryGlideDistance);
+              const currentX = entryGlideDistance * (1 - entryProgress);
               rail.style.transform = `translate3d(${currentX.toFixed(2)}px, 0, 0)`;
-              updateGalleryVeilAnimations();
+              updateGalleryVeilAnimations(entryProgress);
 
               const orangeRatio = Math.min(1, Math.max(0, entryProgress * 1.4));
               bgOrange.style.opacity = orangeRatio.toFixed(3);
@@ -6400,12 +6503,13 @@ Best regards,
               if (prevSec) prevSec.style.backgroundColor = col;
               applyAdaptiveGalleryColors(orangeRatio);
             } else {
-              // Not yet 10% visible: starts at the center of the section
-              rail.style.transform = `translate3d(${centerOffsetX.toFixed(2)}px, 0, 0)`;
+              // Not yet 10% visible: starts at 10% of the screen
+              rail.style.transform = `translate3d(${entryGlideDistance.toFixed(2)}px, 0, 0)`;
               bgOrange.style.opacity = '0';
               document.body.style.backgroundColor = '';
               if (prevSec) prevSec.style.backgroundColor = '';
               applyAdaptiveGalleryColors(0);
+              updateGalleryVeilAnimations(0);
             }
             if (counterNum) counterNum.textContent = '1';
             if (window.updateNavBrandTheme) window.updateNavBrandTheme();
@@ -6424,19 +6528,18 @@ Best regards,
           }
 
           // 3. Inside pinned horizontal scroll:
-          // Continues seamlessly from startPinnedOffset to full -maxScrollX
+          // Smooth scrub across maxScrollX starting from 10% of the screen
           const scrolled = -rect.top;
           const progress = Math.max(0, Math.min(1, scrolled / maxDist));
 
-          // Interpolate from startPinnedOffset to -maxScrollX
-          const currentX = startPinnedOffset - (progress * (startPinnedOffset + maxScrollX));
+          const currentX = -(progress * maxScrollX);
           rail.style.transform = `translate3d(${currentX.toFixed(2)}px, 0, 0)`;
-              updateGalleryVeilAnimations();
+          updateGalleryVeilAnimations(1.0);
 
           // Active photo counter 1 to 9 (Image 6 begins around progress = 0.555)
           const activeIdx = Math.min(9, Math.max(1, Math.floor(progress * 9) + 1));
           if (counterNum) counterNum.textContent = activeIdx;
-          updateGalleryVeilAnimations();
+          updateGalleryVeilAnimations(1.0);
 
           // Entire website background color shift:
           // Remains orange for images 1 to 5, transitions smoothly back to normal background when reaching image 6
