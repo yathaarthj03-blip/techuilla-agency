@@ -2946,23 +2946,23 @@
       transform: translate3d(0, 0, 0);
     }
 
-    /* Intro Title Column on Gallery Rail: WHAT WE DO (+30% Font Size) */
+    /* Intro Title Column on Gallery Rail: WHAT WE DO (+69% cumulative, another +30% Font Size) */
     .gallery-intro-col {
       display: flex;
       flex-direction: column;
       justify-content: center;
       flex-shrink: 0;
-      min-width: 320px;
-      margin-right: 3vw;
+      min-width: 440px;
+      margin-right: 4vw;
       user-select: none;
       z-index: 4;
     }
 
     .gallery-what-we-do-title {
       font-family: var(--font-sans);
-      font-size: clamp(68px, 8.1vw, 125px); /* +30% font size increase */
+      font-size: clamp(88px, 10.5vw, 162px); /* +30% font size increase */
       font-weight: 900;
-      line-height: 0.90;
+      line-height: 0.88;
       letter-spacing: -0.04em;
       text-transform: uppercase;
       color: var(--gallery-wwd-color, #111111);
@@ -3067,12 +3067,12 @@
 
     .gallery-card-eyebrow {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 15.4px; /* Increased by 40% (11px -> 15.4px) */
       font-weight: 700;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: #111111 !important;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       user-select: none;
     }
 
@@ -3124,21 +3124,25 @@
       aspect-ratio: 1 / 1;
     }
 
-    .gallery-card-frame.hero-frame-square .gallery-img {
+    .gallery-card-frame.hero-frame-square .gallery-img,
+    .gallery-card-frame.hero-frame-square .gallery-video {
       aspect-ratio: 1 / 1;
       object-fit: cover;
     }
 
-    .gallery-img {
+    .gallery-img,
+    .gallery-video {
       width: 100%;
       height: 100%;
       aspect-ratio: 4 / 5;
       object-fit: cover;
       display: block;
       transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+      pointer-events: none; /* Disables controls/context menu so video loops smoothly and silently */
     }
 
-    .gallery-card-frame:hover .gallery-img {
+    .gallery-card-frame:hover .gallery-img,
+    .gallery-card-frame:hover .gallery-video {
       transform: scale(1.04);
     }
 
@@ -4673,19 +4677,23 @@
           </h2>
         </div>
 
-        <!-- ITEM 1: TOP (A.K. Meeting 2026) -->
+        <!-- ITEM 1: TOP (Website Development) -->
         <div class="gallery-card-item item-top">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">A.K. Meeting 2026</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Website Development</span></div></div>
           <div class="gallery-card-frame">
-            <img src="card_client_meeting.jpg" alt="A.K. Meeting 2026 - Techuilla Agency" class="gallery-img" loading="lazy" />
+            <video class="gallery-video" autoplay loop muted playsinline preload="auto" disablepictureinpicture tabindex="-1">
+              <source src="card_website_dev.mp4" type="video/mp4">
+            </video>
           </div>
         </div>
 
-        <!-- ITEM 2: BOTTOM (Hindustan Tyres 2026) -->
+        <!-- ITEM 2: BOTTOM (Application Development) -->
         <div class="gallery-card-item item-bottom">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Hindustan Tyres 2026</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Application Development</span></div></div>
           <div class="gallery-card-frame">
-            <img src="card_hindustan_tyre.jpg" alt="Hindustan Tyres 2026 - Web & Mobile Platform" class="gallery-img" loading="lazy" />
+            <video class="gallery-video" autoplay loop muted playsinline preload="auto" disablepictureinpicture tabindex="-1">
+              <source src="card_application_dev.mp4" type="video/mp4">
+            </video>
           </div>
         </div>
 
@@ -4703,35 +4711,41 @@
           </div>
         </div>
 
-        <!-- ITEM 3: CENTER HERO (Untitled Store Branding, 2026) -->
+        <!-- ITEM 3: CENTER HERO (Graphic designing) -->
         <div class="gallery-card-item item-center-hero">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Untitled Store Branding, 2026</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Graphic designing</span></div></div>
           <div class="gallery-card-frame hero-frame hero-frame-square">
-            <img src="card_untitled_clothing.png" alt="Untitled Store Branding, 2026 - Brand Identity & Apparel Design" class="gallery-img" loading="lazy" />
+            <img src="card_untitled_clothing.png" alt="Graphic designing - Techuilla Agency" class="gallery-img" loading="lazy" />
           </div>
         </div>
 
-        <!-- ITEM 4: TOP (Rama Hair clinic, 2026) -->
+        <!-- ITEM 4: TOP (SaaS videos) -->
         <div class="gallery-card-item item-top">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Rama Hair clinic, 2026</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">SaaS videos</span></div></div>
           <div class="gallery-card-frame">
-            <img src="card_rama_trichology.jpg" alt="Rama Hair clinic, 2026" class="gallery-img" loading="lazy" />
+            <video class="gallery-video" autoplay loop muted playsinline preload="auto" disablepictureinpicture tabindex="-1">
+              <source src="card_saas_videos.mp4" type="video/mp4">
+            </video>
           </div>
         </div>
 
-        <!-- ITEM 5: BOTTOM (Health Streak, 2026) -->
+        <!-- ITEM 5: BOTTOM (Talking head videos) -->
         <div class="gallery-card-item item-bottom">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Health Streak, 2026</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Talking head videos</span></div></div>
           <div class="gallery-card-frame">
-            <img src="card_health_streak.png" alt="Health Streak, 2026 - Platform Experience" class="gallery-img" loading="lazy" />
+            <video class="gallery-video" autoplay loop muted playsinline preload="auto" disablepictureinpicture tabindex="-1">
+              <source src="card_talking_head_videos.mp4" type="video/mp4">
+            </video>
           </div>
         </div>
 
-        <!-- ITEM 6: CENTER / STAGGERED (3d Watch visuals, 2026) -->
+        <!-- ITEM 6: CENTER / STAGGERED (2D animation) -->
         <div class="gallery-card-item item-center">
-          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">3d Watch visuals, 2026</span></div></div>
+          <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">2D animation</span></div></div>
           <div class="gallery-card-frame">
-            <img src="card_3d_product.png" alt="3d Watch visuals, 2026" class="gallery-img" loading="lazy" />
+            <video class="gallery-video" autoplay loop muted playsinline preload="auto" disablepictureinpicture tabindex="-1">
+              <source src="card_2d_animation.mp4" type="video/mp4">
+            </video>
           </div>
         </div>
 
@@ -6358,6 +6372,29 @@ Best regards,
         const prevSec = document.querySelector('.methodology-section');
 
         if (!track || !rail || !bgOrange) return;
+
+        // Ensure all gallery background videos play silently, automatically, and looped with no controls
+        const galleryVideos = rail.querySelectorAll('.gallery-video');
+        function ensureGalleryVideosPlaying() {
+          galleryVideos.forEach(vid => {
+            vid.muted = true;
+            vid.defaultMuted = true;
+            vid.setAttribute('muted', '');
+            vid.setAttribute('playsinline', '');
+            vid.removeAttribute('controls');
+            if (vid.paused) {
+              const playPromise = vid.play();
+              if (playPromise && typeof playPromise.catch === 'function') {
+                playPromise.catch(() => {});
+              }
+            }
+          });
+        }
+        ensureGalleryVideosPlaying();
+        window.addEventListener('load', ensureGalleryVideosPlaying);
+        window.addEventListener('scroll', ensureGalleryVideosPlaying, { passive: true });
+        document.addEventListener('touchstart', ensureGalleryVideosPlaying, { passive: true, once: true });
+        document.addEventListener('click', ensureGalleryVideosPlaying, { passive: true, once: true });
 
         function interpolateColor(factor) {
           // factor 0 -> #FAF8F5 (250, 248, 245), factor 1 -> lighter shade of orange #FF8C42 (255, 140, 66)
