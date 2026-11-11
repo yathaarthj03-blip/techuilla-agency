@@ -4683,7 +4683,7 @@
         <div class="gallery-card-item item-top">
           <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Website Development</span></div></div>
           <div class="gallery-card-frame">
-            <video class="gallery-video" autoplay loop muted playsinline preload="auto" disablepictureinpicture tabindex="-1">
+            <video class="gallery-video" autoplay loop muted playsinline preload="metadata" disablepictureinpicture tabindex="-1">
               <source src="card_website_dev.mp4" type="video/mp4">
             </video>
           </div>
@@ -4693,7 +4693,7 @@
         <div class="gallery-card-item item-bottom">
           <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Application Development</span></div></div>
           <div class="gallery-card-frame">
-            <video class="gallery-video" autoplay loop muted playsinline preload="auto" disablepictureinpicture tabindex="-1">
+            <video class="gallery-video" autoplay loop muted playsinline preload="metadata" disablepictureinpicture tabindex="-1">
               <source src="card_application_dev.mp4" type="video/mp4">
             </video>
           </div>
@@ -4725,7 +4725,7 @@
         <div class="gallery-card-item item-top">
           <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">SaaS videos</span></div></div>
           <div class="gallery-card-frame">
-            <video class="gallery-video" autoplay loop muted playsinline preload="auto" disablepictureinpicture tabindex="-1">
+            <video class="gallery-video" autoplay loop muted playsinline preload="metadata" disablepictureinpicture tabindex="-1">
               <source src="card_saas_videos.mp4" type="video/mp4">
             </video>
           </div>
@@ -4735,7 +4735,7 @@
         <div class="gallery-card-item item-bottom">
           <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Talking head videos</span></div></div>
           <div class="gallery-card-frame">
-            <video class="gallery-video" autoplay loop muted playsinline preload="auto" disablepictureinpicture tabindex="-1">
+            <video class="gallery-video" autoplay loop muted playsinline preload="metadata" disablepictureinpicture tabindex="-1">
               <source src="card_talking_head_videos.mp4" type="video/mp4">
             </video>
           </div>
@@ -4745,7 +4745,7 @@
         <div class="gallery-card-item item-center">
           <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">2D animation</span></div></div>
           <div class="gallery-card-frame">
-            <video class="gallery-video" autoplay loop muted playsinline preload="auto" disablepictureinpicture tabindex="-1">
+            <video class="gallery-video" autoplay loop muted playsinline preload="metadata" disablepictureinpicture tabindex="-1">
               <source src="card_2d_animation.mp4" type="video/mp4">
             </video>
           </div>
@@ -4769,7 +4769,7 @@
         <div class="gallery-card-item item-top">
           <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">3D animation</span></div></div>
           <div class="gallery-card-frame">
-            <video class="gallery-video" autoplay loop muted playsinline preload="auto" disablepictureinpicture tabindex="-1">
+            <video class="gallery-video" autoplay loop muted playsinline preload="metadata" disablepictureinpicture tabindex="-1">
               <source src="card_3d_animation.mp4" type="video/mp4">
             </video>
           </div>
@@ -4779,7 +4779,7 @@
         <div class="gallery-card-item item-bottom">
           <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Ai video</span></div></div>
           <div class="gallery-card-frame">
-            <video class="gallery-video" autoplay loop muted playsinline preload="auto" disablepictureinpicture tabindex="-1">
+            <video class="gallery-video" autoplay loop muted playsinline preload="metadata" disablepictureinpicture tabindex="-1">
               <source src="card_ai_video.mp4" type="video/mp4">
             </video>
           </div>
@@ -4789,7 +4789,7 @@
         <div class="gallery-card-item item-top">
           <div class="gallery-card-eyebrow"><div class="kinetic-veil-wrap"><div class="kinetic-veil-mask" aria-hidden="true"></div><span class="kinetic-veil-text">Products animation</span></div></div>
           <div class="gallery-card-frame">
-            <video class="gallery-video" autoplay loop muted playsinline preload="auto" disablepictureinpicture tabindex="-1">
+            <video class="gallery-video" autoplay loop muted playsinline preload="metadata" disablepictureinpicture tabindex="-1">
               <source src="card_products_animation.mp4?v=2" type="video/mp4">
             </video>
           </div>
@@ -6418,26 +6418,42 @@ function triggerHomeTransition(e) {
 
         // Ensure all gallery background videos play silently, automatically, and looped with no controls
         const galleryVideos = rail.querySelectorAll('.gallery-video');
-        function ensureGalleryVideosPlaying() {
-          galleryVideos.forEach(vid => {
-            vid.muted = true;
-            vid.defaultMuted = true;
-            vid.setAttribute('muted', '');
-            vid.setAttribute('playsinline', '');
-            vid.removeAttribute('controls');
-            if (vid.paused) {
-              const playPromise = vid.play();
-              if (playPromise && typeof playPromise.catch === 'function') {
-                playPromise.catch(() => {});
+
+        // High-Performance Stream-on-Demand Video Observer
+        // Only streams & plays videos that are active/visible in viewport to conserve bandwidth and prevent socket stalls
+        if ('IntersectionObserver' in window) {
+          const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              const vid = entry.target.querySelector('video') || (entry.target.tagName === 'VIDEO' ? entry.target : null);
+              if (!vid) return;
+              vid.muted = true;
+              vid.defaultMuted = true;
+              vid.setAttribute('muted', '');
+              vid.setAttribute('playsinline', '');
+              vid.removeAttribute('controls');
+
+              if (entry.isIntersecting) {
+                const p = vid.play();
+                if (p && typeof p.catch === 'function') p.catch(() => {});
+              } else {
+                vid.pause();
               }
-            }
+            });
+          }, { root: null, rootMargin: '300px', threshold: 0.1 });
+
+          rail.querySelectorAll('.gallery-card-frame').forEach(frame => {
+            videoObserver.observe(frame);
           });
+        } else {
+          // Fallback for older browsers
+          function playVisibleVideos() {
+            galleryVideos.forEach(vid => {
+              vid.muted = true;
+              vid.play().catch(() => {});
+            });
+          }
+          window.addEventListener('load', playVisibleVideos);
         }
-        ensureGalleryVideosPlaying();
-        window.addEventListener('load', ensureGalleryVideosPlaying);
-        window.addEventListener('scroll', ensureGalleryVideosPlaying, { passive: true });
-        document.addEventListener('touchstart', ensureGalleryVideosPlaying, { passive: true, once: true });
-        document.addEventListener('click', ensureGalleryVideosPlaying, { passive: true, once: true });
 
         function interpolateColor(factor) {
           // factor 0 -> #FAF8F5 (250, 248, 245), factor 1 -> lighter shade of orange #FF8C42 (255, 140, 66)
@@ -6976,5 +6992,17 @@ function triggerHomeTransition(e) {
   <!-- 3D Vintage Portfolio Book Data & Controller -->
   <script src="portfolioProjects.js"></script>
   <script src="portfolioBook.js"></script>
+  <!-- Techuilla Media & 3D Cache Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then((reg) => {
+          console.log('[Techuilla Cache] Service Worker active:', reg.scope);
+        }).catch((err) => {
+          console.warn('[Techuilla Cache] SW failed:', err);
+        });
+      });
+    }
+  </script>
 </body>
 </html>

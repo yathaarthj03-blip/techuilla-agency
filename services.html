@@ -8,6 +8,14 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- Priority Preloading for Instant 3D Character & Texture Rendering -->
+  <link rel="preload" href="three.min.js" as="script">
+  <link rel="preload" href="fflate.min.js" as="script">
+  <link rel="preload" href="FBXLoader.js" as="script">
+  <link rel="preload" href="assets/character_frank/FBX/Frank.fbx" as="fetch" crossorigin="anonymous">
+  <link rel="preload" href="assets/character_frank/Texture/defaultMat1_albedo.jpg" as="image">
+  <link rel="preload" href="assets/character_frank/Texture/Std_Skin_Head_Diffuse%20-%20Copy.png" as="image">
+
 
   <!-- Google Fonts Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1918,7 +1926,18 @@
       const texLoader = new THREE.TextureLoader();
       const basePath = 'assets/character_frank/Texture/';
       function loadTex(file) {
-        const t = texLoader.load(basePath + file);
+        const t = texLoader.load(basePath + file, 
+          (texture) => {
+            texture.minFilter = THREE.LinearFilter;
+            texture.magFilter = THREE.LinearFilter;
+            texture.generateMipmaps = false;
+            if (renderer) renderer.render(scene, camera);
+          },
+          undefined,
+          (err) => {
+            console.warn('[Frank Texture] Fallback for:', file, err);
+          }
+        );
         t.encoding = THREE.sRGBEncoding;
         t.flipY = false;
         return t;
@@ -1933,8 +1952,13 @@
       const tEyes = loadTex('Eyes/Std_Eye_L_Diffuse - C2opy.jpg');
       const tFeet = loadTex('M_Feet_BR02_03_D.png');
 
+      const badgeText = document.getElementById('badgeText');
+      if (badgeText) badgeText.textContent = 'Loading 3D Character Experience...';
+
       const fbxLoader = new THREE.FBXLoader();
-      fbxLoader.load('assets/character_frank/FBX/Frank.fbx', (fbx) => {
+      fbxLoader.load('assets/character_frank/FBX/Frank.fbx', 
+        (fbx) => {
+          if (badgeText) badgeText.textContent = '3D Interactive Experience';
         fbx.traverse(c => {
           if (c.name === 'Skate_Board') c.visible = false;
           if (c.isMesh) {
@@ -2264,6 +2288,18 @@
       });
 
     })();
+  </script>
+  <!-- Techuilla Media & 3D Cache Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then((reg) => {
+          console.log('[Techuilla Cache] Service Worker active:', reg.scope);
+        }).catch((err) => {
+          console.warn('[Techuilla Cache] SW failed:', err);
+        });
+      });
+    }
   </script>
 </body>
 </html>

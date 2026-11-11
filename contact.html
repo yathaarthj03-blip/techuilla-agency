@@ -4819,5 +4819,17 @@ Best regards,
 
     })();
   </script>
+  <!-- Techuilla Media & 3D Cache Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then((reg) => {
+          console.log('[Techuilla Cache] Service Worker active:', reg.scope);
+        }).catch((err) => {
+          console.warn('[Techuilla Cache] SW failed:', err);
+        });
+      });
+    }
+  </script>
 </body>
 </html>

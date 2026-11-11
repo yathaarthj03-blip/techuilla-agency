@@ -1,0 +1,89 @@
+# Production Cache & Streaming Headers for Techuilla Agency
+
+# 1. Heavy Media & Video Files: 1-Year Immutable Cache + Byte Range Streaming
+/*.mp4
+  Cache-Control: public, max-age=31536000, immutable
+  Accept-Ranges: bytes
+  Access-Control-Allow-Origin: *
+
+/*.webm
+  Cache-Control: public, max-age=31536000, immutable
+  Accept-Ranges: bytes
+  Access-Control-Allow-Origin: *
+
+# 2. 3D Models & Rigs: 1-Year Immutable Cache + Cross-Origin Support
+/*.fbx
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+  Content-Type: model/fbx
+
+/*.obj
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+  Content-Type: model/obj
+
+/*.mtl
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+/*.glb
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+  Content-Type: model/gltf-binary
+
+/*.gltf
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+  Content-Type: model/gltf+json
+
+# 3. High-Resolution Textures & Images
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+/*.jpeg
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+/*.png
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+/*.webp
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+/*.svg
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+# 4. Web Fonts
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+  Content-Type: font/woff2
+
+/*.woff
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+# 5. Core Libraries & Compiled Scripts
+/*.js
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+  Access-Control-Allow-Origin: *
+
+/*.css
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+  Access-Control-Allow-Origin: *
+
+# 6. Service Worker
+/sw.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+# 7. HTML Entry Points: Always Revalidate for Instant Deploy Updates
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
