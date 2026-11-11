@@ -8,6 +8,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
   <!-- Priority Preloading for Instant 3D Character & Texture Rendering -->
   <link rel="preload" href="three.min.js" as="script">
   <link rel="preload" href="fflate.min.js" as="script">
@@ -16,7 +17,6 @@
   <link rel="preload" href="assets/character_frank/Texture/defaultMat1_albedo.jpg" as="image">
   <link rel="preload" href="assets/character_frank/Texture/Std_Skin_Head_Diffuse%20-%20Copy.png" as="image">
 
-
   <!-- Google Fonts Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,7 +24,7 @@
 
   <style>
     /* ==========================================================================
-       0. CSS RESET & VARIABLES (Techuilla Design System)
+       0. CSS RESET & VARIABLES (Exact Techuilla Design System)
        ========================================================================== */
     *, *::before, *::after {
       box-sizing: border-box;
@@ -35,27 +35,30 @@
     :root {
       --bg-cream: #FAF8F5;
       --bg-orange: #FF6600;
+      --color-orange: #FF6600;
       --bg-dark: #111111;
+      --text-primary: #111111;
       --text-black: #111111;
       --text-white: #FFFFFF;
       --text-muted: rgba(0, 0, 0, 0.6);
+      --border-medium: rgba(0, 0, 0, 0.18);
       --border-light: rgba(0, 0, 0, 0.08);
       --font-display: 'Archivo', 'Space Grotesk', -apple-system, sans-serif;
       --font-sans: 'Space Grotesk', -apple-system, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
-      --header-height: 78px;
+      --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     html, body {
       width: 100%;
       min-height: 100vh;
       background-color: var(--bg-cream);
-      color: var(--text-black);
+      color: var(--text-primary);
       font-family: var(--font-sans);
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      transition: background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: background-color 0.4s ease;
     }
 
     body.menu-open {
@@ -64,10 +67,10 @@
 
     /* Architectural Checks Texture */
     .global-grid-lines {
-      position: fixed;
+      position: absolute;
       inset: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
       z-index: 1;
       overflow: hidden;
@@ -75,7 +78,7 @@
         linear-gradient(to right, rgba(0, 0, 0, 0.055) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(0, 0, 0, 0.055) 1px, transparent 1px);
       background-size: 80px 80px;
-      transition: opacity 0.8s ease;
+      transition: opacity 0.4s ease;
     }
 
     .grid-v-line {
@@ -89,7 +92,7 @@
     .grid-line-orange { border-right: 1.5px solid rgba(255, 102, 0, 0.4); }
 
     /* ==========================================================================
-       1. CINEMATIC ORANGE PAGE TRANSITION OVERLAY
+       1. CINEMATIC ORANGE PAGE TRANSITION OVERLAY (Exact Parity with Home & Contact)
        ========================================================================== */
     .page-transition-curtain {
       position: fixed;
@@ -104,7 +107,7 @@
       opacity: 1;
       pointer-events: none;
       visibility: hidden;
-      --wipe-x: 60px;
+      --wipe-x: calc(100% - 85px);
       --wipe-y: 40px;
       clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
       -webkit-clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
@@ -112,6 +115,8 @@
         clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1),
         -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1);
       will-change: clip-path;
+      margin: 0;
+      padding: 0;
     }
 
     .page-transition-curtain.is-covering,
@@ -122,20 +127,26 @@
       -webkit-clip-path: circle(160% at var(--wipe-x) var(--wipe-y));
     }
 
-    .page-transition-curtain.is-closing {
+    .page-transition-curtain.is-closing,
+    .page-transition-curtain.is-dissolving {
       visibility: visible;
       pointer-events: none;
       clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
       -webkit-clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
     }
 
-    .transition-brand-box {
+    .transition-brand-box,
+    .page-transition-icon-wrap {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
       gap: 20px;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      pointer-events: none;
       user-select: none;
     }
 
@@ -143,169 +154,267 @@
       width: 168px;
       height: 168px;
       object-fit: contain;
+      display: block;
+      margin: 0 auto;
       filter: brightness(0);
       transform: scale(0.92);
       transition: transform 1000ms cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .page-transition-curtain.is-covering .page-transition-logo {
+    .page-transition-curtain.is-covering .page-transition-logo,
+    .page-transition-curtain.is-active .page-transition-logo {
       transform: scale(1);
     }
 
     .page-transition-text {
-      font-family: var(--font-display);
+      font-family: var(--font-sans);
       font-size: 40px;
       font-weight: 800;
       letter-spacing: 0.10em;
       text-transform: uppercase;
       color: #000000;
+      text-align: center;
+      display: block;
+      margin: 0 auto;
+      line-height: 1.2;
+      white-space: nowrap;
     }
 
     /* ==========================================================================
-       2. GLOBAL HEADER & FLOATING NAVIGATION
+       2. TOP NAVBAR (100% Exact Parity to Home Page & Contact Page)
        ========================================================================== */
     .site-nav {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      height: var(--header-height);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 40px;
+      z-index: 10005;
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      border-bottom: none !important;
+      box-shadow: none !important;
       pointer-events: none;
+      transition: transform 0.4s ease;
+    }
+
+    body.menu-open .site-nav {
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      border-bottom: none !important;
+      box-shadow: none !important;
     }
 
     .nav-inner {
-      width: 100%;
-      max-width: 1440px;
+      max-width: 1540px;
+      margin: 0 auto;
+      padding: 16px 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      pointer-events: auto;
+      pointer-events: none;
     }
 
+    /* Adaptive Top-Left Brand (Logo + Techuilla Agency Text) */
     .nav-brand {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
       text-decoration: none;
-      color: var(--text-black);
-      font-weight: 800;
-      font-size: 19px;
-      letter-spacing: -0.01em;
-      cursor: pointer;
-      user-select: none;
-      transition: transform 0.2s ease, opacity 0.2s ease;
-    }
-    .nav-brand:hover {
-      opacity: 0.85;
-      transform: scale(0.99);
+      color: var(--text-primary);
+      pointer-events: auto;
     }
 
     .nav-brand-logo {
-      width: 38px;
-      height: 38px;
+      height: 64px;
+      width: auto;
       object-fit: contain;
       display: block;
+      transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
+      will-change: filter;
+    }
+
+    .nav-brand-text {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 29px;
+      letter-spacing: -0.015em;
+      color: #111111;
+      transition: color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: color;
+    }
+
+    /* Orange Theme Adaptations for Navbar */
+    .site-nav.theme-orange-bg .nav-brand-text,
+    .nav-brand.theme-orange-bg .nav-brand-text {
+      color: #111111 !important;
+    }
+
+    .site-nav.theme-orange-bg .nav-brand-logo,
+    .nav-brand.theme-orange-bg .nav-brand-logo {
+      filter: brightness(0) !important;
+    }
+
+    .site-nav.theme-orange-bg .btn-menu {
+      border-color: rgba(17, 17, 17, 0.40);
+    }
+
+    .site-nav.theme-orange-bg .btn-enquire {
+      background: #111111;
+      color: #FFFFFF;
+      border-color: #111111;
+    }
+    .site-nav.theme-orange-bg .btn-enquire:hover {
+      background: #000000;
     }
 
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
+      pointer-events: auto;
     }
 
+    /* Enquiry Button */
     .btn-enquire {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 10px 22px;
-      background: #FFFFFF;
-      color: #111111;
-      border: 1px solid rgba(0, 0, 0, 0.12);
-      border-radius: 999px;
-      font-family: var(--font-sans);
-      font-size: 14px;
-      font-weight: 700;
-      text-decoration: none;
-      cursor: pointer;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .btn-enquire:hover {
-      background: #FF6600;
+      justify-content: center;
+      gap: 9px;
+      height: 46px;
+      padding: 0 19px;
+      background: var(--color-orange);
       color: #FFFFFF;
-      border-color: #FF6600;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(255, 102, 0, 0.3);
-    }
-    .btn-enquire-icon {
-      width: 16px;
-      height: 16px;
+      font-family: var(--font-sans);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      text-decoration: none;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      box-shadow: 0 2px 8px rgba(244, 119, 50, 0.22);
+      transition: all 0.2s var(--ease-editorial);
+      cursor: pointer;
+      flex-shrink: 0;
     }
 
+    .btn-enquire:hover {
+      background: #E06422;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(244, 119, 50, 0.35);
+    }
+
+    .btn-enquire-icon {
+      width: 17px;
+      height: 17px;
+      display: inline-block;
+      flex-shrink: 0;
+      transition: transform 0.22s var(--ease-editorial);
+    }
+    .btn-enquire:hover .btn-enquire-icon {
+      transform: rotate(-10deg) scale(1.08);
+    }
+
+    /* Morphing Infinity Hamburger Menu Button */
     .btn-menu {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: #FFFFFF;
-      border: 1px solid rgba(0, 0, 0, 0.12);
-      display: flex;
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
+      background: transparent;
+      color: var(--text-primary);
+      border: 1.5px solid var(--border-medium);
+      border-radius: 4px;
       cursor: pointer;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
-      transition: all 0.25s ease;
+      transition: border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+      user-select: none;
+      outline: none;
+      box-shadow: none;
+      position: relative;
+      flex-shrink: 0;
+      margin: 0;
+      padding: 0;
     }
     .btn-menu:hover {
-      border-color: #FF6600;
-      transform: scale(1.04);
+      border-color: #111111;
+      background: rgba(0, 0, 0, 0.04);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     }
     .btn-menu.is-open {
-      background: #111111;
       border-color: #111111;
+      background: transparent;
     }
 
     .menu-infinity-svg {
-      width: 24px;
-      height: 18px;
+      width: 28px;
+      height: 20px;
+      display: block;
       overflow: visible;
+      pointer-events: none;
     }
+
     .menu-morph-stroke {
       fill: none;
       stroke: #111111;
-      stroke-width: 2.2;
+      stroke-width: 1.8;
       stroke-linecap: round;
       stroke-linejoin: round;
       transition: stroke 0.25s ease;
     }
     .btn-menu.is-open .menu-morph-stroke {
-      stroke: #FFFFFF;
+      stroke: #FF6B2C;
     }
 
     /* ==========================================================================
-       3. FULLSCREEN NAVIGATION OVERLAY (Identical to Site Standard)
+       3. FULLSCREEN NAVIGATION OVERLAY (Circular Wipe & Continuous Reel Carousel)
        ========================================================================== */
     #fullscreen-menu {
       position: fixed;
       inset: 0;
       width: 100vw;
       height: 100vh;
-      background: #FAF8F5;
-      z-index: 900;
+      background: linear-gradient(135deg, #FAF8F5 0%, #FAF0E6 45%, #FAD7BE 100%);
+      z-index: 10000;
       display: flex;
       flex-direction: column;
-      opacity: 0;
+      --wipe-x: calc(100% - 54px);
+      --wipe-y: 44px;
+      clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+      -webkit-clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+      opacity: 1;
       visibility: hidden;
       pointer-events: none;
-      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
+      transition: 
+        clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        -webkit-clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        visibility 0s linear 600ms;
+      overflow: hidden;
+      will-change: clip-path;
     }
+
     #fullscreen-menu.is-open {
+      clip-path: circle(150% at var(--wipe-x) var(--wipe-y));
+      -webkit-clip-path: circle(150% at var(--wipe-x) var(--wipe-y));
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
+      transition: 
+        clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        -webkit-clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        visibility 0s linear 0s;
+    }
+
+    #fullscreen-menu.is-closing {
+      clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+      -webkit-clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+      opacity: 1;
+      visibility: visible;
+      pointer-events: none;
+      transition: 
+        clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        -webkit-clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        visibility 0s linear 600ms;
     }
 
     .menu-body-split {
@@ -546,17 +655,27 @@
     }
 
     /* ==========================================================================
-       4. HERO STAGE - 3D FRANK & TYPOGRAPHY EXPERIENCE
+       4. SCROLL-DRIVEN 3D CHARACTER HERO STAGE (PINNED SCROLL TRACK)
        ========================================================================== */
-    .services-hero-section {
+    .services-hero-scroll-track {
       position: relative;
       width: 100vw;
+      height: 350vh; /* Smooth, generous scroll travel distance */
+      background: transparent;
+    }
+
+    .services-hero-sticky-stage {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100vw;
       height: 100vh;
-      min-height: 700px;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
+      background-color: var(--bg-cream);
+      transition: background-color 0.15s linear;
       z-index: 2;
     }
 
@@ -577,28 +696,29 @@
       z-index: 5;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      padding: 90px 4vw 70px;
+      justify-content: space-between;
+      padding: 100px 3vw 60px;
       pointer-events: none;
     }
 
-    /* Every word is on its own separate line */
+    /* Each word on a distinct line */
     .hero-word-line {
       position: relative;
-      height: 27vh;
-      min-height: 140px;
+      height: 28vh;
+      min-height: 120px;
       width: 100%;
       display: flex;
       align-items: center;
     }
 
+    /* 50% Increased Font Size for Build, Create, and Grow */
     .hero-word {
       position: absolute;
       font-family: var(--font-display);
-      font-size: clamp(56px, 10vw, 150px);
+      font-size: clamp(84px, 14.5vw, 220px);
       font-weight: 900;
-      letter-spacing: -0.03em;
-      line-height: 0.95;
+      letter-spacing: -0.035em;
+      line-height: 0.90;
       text-transform: uppercase;
       white-space: nowrap;
       user-select: none;
@@ -628,140 +748,36 @@
       transform: translateX(-150%);
     }
 
-    /* Hero Subtitle / Badge */
-    .hero-eyebrow-badge {
+    /* Subtle Scroll Indicator at Bottom Right */
+    .hero-scroll-indicator {
       position: absolute;
-      top: calc(var(--header-height) + 16px);
-      left: 40px;
-      z-index: 20;
-      display: inline-flex;
+      bottom: 28px;
+      right: 40px;
+      z-index: 30;
+      display: flex;
       align-items: center;
       gap: 10px;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      padding: 6px 16px;
-      border-radius: 999px;
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: #111111;
-      pointer-events: auto;
-      transition: all 0.5s ease;
+      color: rgba(0, 0, 0, 0.45);
+      pointer-events: none;
+      transition: opacity 0.3s ease, color 0.3s ease;
     }
-    .badge-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #FF6600;
-      box-shadow: 0 0 10px #FF6600;
-      animation: pulseDot 2s infinite;
+    .hero-scroll-indicator .scroll-arrow {
+      animation: bounceArrow 1.8s infinite;
+      font-size: 14px;
     }
-    @keyframes pulseDot {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.4); opacity: 0.6; }
-    }
-
-    /* Sleek Stage Interactive Progress Controller */
-    .hero-stage-controller {
-      position: absolute;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 50;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      padding: 8px 16px;
-      border-radius: 999px;
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
-      pointer-events: auto;
-      transition: background-color 0.5s ease, border-color 0.5s ease;
-    }
-
-    .stage-step-pill {
-      border: none;
-      background: transparent;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      color: rgba(0, 0, 0, 0.6);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.25s ease;
-    }
-    .stage-step-pill:hover {
-      color: #FF6600;
-      background: rgba(255, 102, 0, 0.08);
-    }
-    .stage-step-pill.is-active {
-      background: #FF6600;
-      color: #FFFFFF;
-      box-shadow: 0 4px 14px rgba(255, 102, 0, 0.35);
-    }
-
-    .stage-replay-btn {
-      border: 1px solid rgba(0, 0, 0, 0.12);
-      background: #FFFFFF;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-family: var(--font-sans);
-      font-size: 11px;
-      font-weight: 700;
-      color: #111111;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-    }
-    .stage-replay-btn:hover {
-      background: #111111;
-      color: #FFFFFF;
-      border-color: #111111;
-    }
-
-    .scroll-hint-down {
-      position: absolute;
-      bottom: 26px;
-      right: 40px;
-      z-index: 50;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(0, 0, 0, 0.5);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-    .scroll-hint-down:hover {
-      color: #FF6600;
-    }
-    .scroll-hint-icon {
-      animation: bounceHint 2s infinite;
-    }
-    @keyframes bounceHint {
+    @keyframes bounceArrow {
       0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-      40% { transform: translateY(5px); }
+      40% { transform: translateY(6px); }
       60% { transform: translateY(3px); }
     }
 
     /* ==========================================================================
-       5. CAPABILITIES & SERVICES SHOWCASE (All Core Offerings)
+       5. CAPABILITIES CATALOG (Full Offerings)
        ========================================================================== */
     .services-catalog-section {
       position: relative;
@@ -1049,57 +1065,55 @@
       }
     }
     @media (max-width: 768px) {
-      .site-nav {
-        padding: 0 20px;
+      .nav-inner {
+        padding: 12px 16px;
+      }
+      .nav-brand-logo {
+        height: 48px;
+      }
+      .nav-brand-text {
+        font-size: 22px;
+      }
+      .btn-enquire {
+        height: 38px;
+        padding: 0 14px;
+        font-size: 16px;
       }
       .catalog-grid {
         grid-template-columns: 1fr;
       }
-      .services-hero-section {
-        min-height: 560px;
+      .hero-word {
+        font-size: clamp(52px, 15vw, 110px);
       }
-      .hero-word-line {
-        height: 25vh;
-        min-height: 100px;
+      .hero-words-wrapper {
+        padding: 80px 2vw 40px;
       }
       .footer-container {
         grid-template-columns: 1fr;
       }
-      .hero-stage-controller {
+      .hero-scroll-indicator {
         bottom: 16px;
-        padding: 6px 12px;
-      }
-      .scroll-hint-down {
-        display: none;
+        right: 20px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Persistent Background Architectural Grid Lines -->
-  <div class="global-grid-lines" id="globalGridLines" aria-hidden="true">
-    <div class="grid-v-line grid-line-thin" style="left: 60px;"></div>
-    <div class="grid-v-line grid-line-thin" style="left: 240px;"></div>
-    <div class="grid-v-line grid-line-thick" style="left: 50%;"></div>
-    <div class="grid-v-line grid-line-orange" style="right: 240px;"></div>
-    <div class="grid-v-line grid-line-thin" style="right: 60px;"></div>
-  </div>
-
-  <!-- Cinematic Orange Page Transition Overlay -->
+  <!-- Cinematic Orange Page Transition Overlay (Exact Parity with Home & Contact) -->
   <div class="page-transition-curtain" id="pageTransitionCurtain" aria-hidden="true">
-    <div class="transition-brand-box">
+    <div class="transition-brand-box page-transition-icon-wrap">
       <img src="Techuilla_logo.png" alt="Techuilla Logo" class="page-transition-logo">
-      <span class="page-transition-text">Techuilla</span>
+      <span class="page-transition-text">Techuilla Agency</span>
     </div>
   </div>
 
-  <!-- Global Header Navigation -->
-  <header class="site-nav">
+  <!-- Global Header Navigation (100% Identical to Home & Contact Page) -->
+  <header class="site-nav" id="mainSiteNav">
     <div class="nav-inner">
       <a href="index.html" class="nav-brand" id="navBrandLink" aria-label="Techuilla Agency Home">
         <img src="Techuilla_logo.png" alt="Techuilla Logo" class="nav-brand-logo" id="navBrandLogo">
-        <span class="nav-brand-text">Techuilla Agency</span>
+        <span class="nav-brand-text" id="navBrandText">Techuilla Agency</span>
       </a>
 
       <div class="nav-actions">
@@ -1119,7 +1133,7 @@
     </div>
   </header>
 
-  <!-- Fullscreen Navigation Menu Overlay -->
+  <!-- Fullscreen Navigation Menu Overlay (Exact Parity) -->
   <div id="fullscreen-menu" aria-hidden="true">
     <div class="menu-header" style="height: 78px; opacity: 0; pointer-events: none;"></div>
 
@@ -1324,62 +1338,47 @@
   </div>
 
   <!-- ==========================================================================
-       HERO STAGE: 3D CHARACTER FRANK & DRAGGED TYPOGRAPHY
+       HERO SCROLL TRACK: SCROLL-DRIVEN 3D PINNED STAGE
        ========================================================================== -->
-  <section class="services-hero-section" id="servicesHero">
-    <!-- Top Left Eyebrow -->
-    <div class="hero-eyebrow-badge" id="heroBadge">
-      <span class="badge-dot"></span>
-      <span id="badgeText">3D Character Interactive Experience</span>
-    </div>
-
-    <!-- The 3 Words (Each on a Different Line) -->
-    <div class="hero-words-wrapper">
-      <!-- Line 1: BUILD (Orange, Pushed Left to Right to 80% screen space) -->
-      <div class="hero-word-line" id="lineBuild">
-        <span class="hero-word" id="wordBuild">BUILD</span>
+  <div class="services-hero-scroll-track" id="heroScrollTrack">
+    <div class="services-hero-sticky-stage" id="servicesHero">
+      <!-- Architectural Checks Texture Inside Sticky Stage -->
+      <div class="global-grid-lines" id="heroGridLines" aria-hidden="true">
+        <div class="grid-v-line grid-line-thin" style="left: 60px;"></div>
+        <div class="grid-v-line grid-line-thin" style="left: 240px;"></div>
+        <div class="grid-v-line grid-line-thick" style="left: 50%;"></div>
+        <div class="grid-v-line grid-line-orange" style="right: 240px;"></div>
+        <div class="grid-v-line grid-line-thin" style="right: 60px;"></div>
       </div>
 
-      <!-- Line 2: CREATE (Pushed Right to Left to 80% left side space, bg turns orange, text turns black) -->
-      <div class="hero-word-line" id="lineCreate">
-        <span class="hero-word" id="wordCreate">CREATE</span>
+      <!-- The 3 Words (Each on a Different Line with 50% Increased Size) -->
+      <div class="hero-words-wrapper">
+        <!-- Line 1: BUILD -->
+        <div class="hero-word-line" id="lineBuild">
+          <span class="hero-word" id="wordBuild">BUILD</span>
+        </div>
+
+        <!-- Line 2: CREATE -->
+        <div class="hero-word-line" id="lineCreate">
+          <span class="hero-word" id="wordCreate">CREATE</span>
+        </div>
+
+        <!-- Line 3: GROW -->
+        <div class="hero-word-line" id="lineGrow">
+          <span class="hero-word" id="wordGrow">GROW</span>
+        </div>
       </div>
 
-      <!-- Line 3: GROW (Pushed Left to Right to 80% screen space, bg turns white, text turns orange) -->
-      <div class="hero-word-line" id="lineGrow">
-        <span class="hero-word" id="wordGrow">GROW</span>
+      <!-- Three.js Frank WebGL Canvas -->
+      <canvas id="frankCanvas"></canvas>
+
+      <!-- Scroll Indicator Hint -->
+      <div class="hero-scroll-indicator" id="heroScrollHint">
+        <span>Scroll to push</span>
+        <span class="scroll-arrow">↓</span>
       </div>
     </div>
-
-    <!-- Three.js Frank WebGL Canvas -->
-    <canvas id="frankCanvas"></canvas>
-
-    <!-- Interactive Stage Progression Controller -->
-    <div class="hero-stage-controller">
-      <button class="stage-step-pill" id="pillStep1" onclick="jumpToStep(1)">
-        <span>01</span> BUILD
-      </button>
-      <button class="stage-step-pill" id="pillStep2" onclick="jumpToStep(2)">
-        <span>02</span> CREATE
-      </button>
-      <button class="stage-step-pill" id="pillStep3" onclick="jumpToStep(3)">
-        <span>03</span> GROW
-      </button>
-      <button class="stage-replay-btn" id="btnReplay" onclick="replayHeroSequence()" aria-label="Replay Full Sequence">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="1 4 1 10 7 10"></polyline>
-          <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
-        </svg>
-        Replay
-      </button>
-    </div>
-
-    <!-- Scroll Down Hint -->
-    <a href="#catalog" class="scroll-hint-down">
-      <span>Scroll for Catalog</span>
-      <span class="scroll-hint-icon">↓</span>
-    </a>
-  </section>
+  </div>
 
   <!-- ==========================================================================
        SERVICES CATALOG: FULL CAPABILITIES SHOWCASE
@@ -1678,7 +1677,7 @@
       'use strict';
 
       /* ------------------------------------------------------------------------
-         1. UNIFIED CINEMATIC ORANGE TRANSITION ENGINE
+         1. UNIFIED CINEMATIC ORANGE TRANSITION ENGINE (Exact Parity with Home & Contact)
          ------------------------------------------------------------------------ */
       const curtain = document.getElementById('pageTransitionCurtain');
 
@@ -1716,7 +1715,6 @@
         });
       }
 
-      // Check arrival parameters from transition
       const urlParams = new URLSearchParams(window.location.search);
       const transitionType = urlParams.get('transition');
 
@@ -1726,7 +1724,6 @@
         curtain.classList.add('is-covering');
         curtain.classList.remove('is-closing');
 
-        // Target top left logo as origin to close into
         const topNavLogo = document.querySelector('.nav-brand-logo') || document.querySelector('.nav-brand') || document.getElementById('navBrandLink');
         setTransitionOrigin(topNavLogo, curtain);
         void curtain.offsetWidth;
@@ -1739,11 +1736,9 @@
         });
       }
 
-      // Universal Page Transition Trigger
       window.triggerPageTransition = function(e, targetUrl, originEl) {
         if (e) e.preventDefault();
 
-        // Dismiss menu immediately if open
         if (fullscreenMenu && isMenuCurrentlyOpen) {
           closeMenu();
         }
@@ -1762,7 +1757,6 @@
         curtain.classList.remove('is-covering', 'is-active');
         void curtain.offsetWidth;
 
-        // Open outward from origin over 1000ms
         curtain.style.transition = 'clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1), -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1)';
         curtain.classList.add('is-covering');
 
@@ -1772,14 +1766,13 @@
         }, 1000);
       };
 
-      // Clean up URL without reload
       if (window.history && window.history.replaceState && transitionType) {
         const cleanUrl = window.location.pathname + window.location.hash;
         window.history.replaceState({}, document.title, cleanUrl);
       }
 
       /* ------------------------------------------------------------------------
-         2. FULLSCREEN NAVIGATION MENU ENGINE & MORPHING HAMBURGER
+         2. FULLSCREEN NAVIGATION MENU ENGINE (SVG MORPH + REEL + JACKPOT - 100% PARITY)
          ------------------------------------------------------------------------ */
       const openMenuBtn = document.getElementById('open-menu-btn');
       const fullscreenMenu = document.getElementById('fullscreen-menu');
@@ -1788,51 +1781,150 @@
       const navEnquireBtn = document.getElementById('navEnquireBtn');
       const menuEnquiriesBtn = document.getElementById('menuEnquiriesBtn');
       const ctaStartBtn = document.getElementById('ctaStartBtn');
-      let isMenuCurrentlyOpen = false;
-
-      // Morphing SVG paths: hamburger to X
-      const pClosedTop = "M 4,6 L 24,6";
-      const pClosedBottom = "M 4,14 L 24,14";
-      const pOpenTop = "M 5,5 L 23,15";
-      const pOpenBottom = "M 5,15 L 23,5";
-
       const menuStrokeTop = document.getElementById('menuStrokeTop');
       const menuStrokeBottom = document.getElementById('menuStrokeBottom');
 
-      function updateMenuIcon(isOpen) {
-        if (!menuStrokeTop || !menuStrokeBottom) return;
-        if (isOpen) {
-          menuStrokeTop.setAttribute('d', pOpenTop);
-          menuStrokeBottom.setAttribute('d', pOpenBottom);
+      // Bezier control coordinates for Hamburger -> Infinity -> Clean X
+      const lineTop    = [4, 6,   9, 6,   19, 6,   24, 6,   24, 6,   24, 6,   24, 6];
+      const lineBottom = [4, 14,  9, 14,  19, 14,  24, 14,  24, 14,  24, 14,  24, 14];
+      const infTop     = [14, 10,  18, 5,   25.5, 6,  25.5, 10,  25.5, 14,  18, 15,  14, 10];
+      const infBottom  = [14, 10,  10, 15,  2.5, 14,  2.5, 10,   2.5, 6,   10, 5,   14, 10];
+      const xTop       = [6, 4,   10, 7,   18, 13,  22, 16,  22, 16,  22, 16,  22, 16];
+      const xBottom    = [6, 16,  10, 13,  18, 7,   22, 4,   22, 4,   22, 4,   22, 4];
+
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      function interpolateCoords(arrA, arrB, t) { return arrA.map((v, i) => lerp(v, arrB[i], t)); }
+      function toPathD(coords) {
+        return `M ${coords[0].toFixed(2)},${coords[1].toFixed(2)} C ${coords[2].toFixed(2)},${coords[3].toFixed(2)} ${coords[4].toFixed(2)},${coords[5].toFixed(2)} ${coords[6].toFixed(2)},${coords[7].toFixed(2)} C ${coords[8].toFixed(2)},${coords[9].toFixed(2)} ${coords[10].toFixed(2)},${coords[11].toFixed(2)} ${coords[12].toFixed(2)},${coords[13].toFixed(2)}`;
+      }
+      function easeCubic(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+
+      let menuMorphT = 0;
+      let menuMorphTargetT = 0;
+      let menuMorphAnimId = null;
+      let isMenuCurrentlyOpen = false;
+
+      function renderMenuMorph(t) {
+        if (!menuStrokeTop || !menuStrokeBottom || !openMenuBtn) return;
+        let coordsTop, coordsBottom;
+        if (t <= 0.5) {
+          const localT = t / 0.5;
+          coordsTop = interpolateCoords(lineTop, infTop, localT);
+          coordsBottom = interpolateCoords(lineBottom, infBottom, localT);
         } else {
-          menuStrokeTop.setAttribute('d', pClosedTop);
-          menuStrokeBottom.setAttribute('d', pClosedBottom);
+          const localT = (t - 0.5) / 0.5;
+          coordsTop = interpolateCoords(infTop, xTop, localT);
+          coordsBottom = interpolateCoords(infBottom, xBottom, localT);
+        }
+        menuStrokeTop.setAttribute('d', toPathD(coordsTop));
+        menuStrokeBottom.setAttribute('d', toPathD(coordsBottom));
+        if (isMenuCurrentlyOpen) {
+          openMenuBtn.style.borderColor = '#111111';
+          menuStrokeTop.style.stroke = '#FF6B2C';
+          menuStrokeBottom.style.stroke = '#FF6B2C';
+        } else {
+          openMenuBtn.style.borderColor = '';
+          menuStrokeTop.style.stroke = '';
+          menuStrokeBottom.style.stroke = '';
         }
       }
-      updateMenuIcon(false);
+
+      const MORPH_DURATION = 600;
+      let morphStartTime = null;
+      let morphStartT = 0;
+
+      function animateMenuMorph(targetT, customDuration = MORPH_DURATION) {
+        menuMorphTargetT = targetT;
+        morphStartT = menuMorphT;
+        morphStartTime = performance.now();
+        if (menuMorphAnimId) cancelAnimationFrame(menuMorphAnimId);
+
+        function morphStep(now) {
+          const elapsed = now - morphStartTime;
+          const p = Math.min(elapsed / customDuration, 1);
+          const ease = easeCubic(p);
+          menuMorphT = lerp(morphStartT, menuMorphTargetT, ease);
+          renderMenuMorph(menuMorphT);
+          if (p < 1) {
+            menuMorphAnimId = requestAnimationFrame(morphStep);
+          } else {
+            menuMorphT = menuMorphTargetT;
+            renderMenuMorph(menuMorphT);
+            menuMorphAnimId = null;
+          }
+        }
+        menuMorphAnimId = requestAnimationFrame(morphStep);
+      }
+
+      function updateMenuWipeOrigin() {
+        if (!fullscreenMenu || !openMenuBtn) return;
+        const rect = openMenuBtn.getBoundingClientRect();
+        const originX = Math.round(rect.left + rect.width / 2);
+        const originY = Math.round(rect.top + rect.height / 2);
+        fullscreenMenu.style.setProperty('--wipe-x', `${originX}px`);
+        fullscreenMenu.style.setProperty('--wipe-y', `${originY}px`);
+      }
+
+      function openMenu() {
+        if (!fullscreenMenu) return;
+        isMenuCurrentlyOpen = true;
+        updateMenuWipeOrigin();
+
+        fullscreenMenu.style.display = 'flex';
+        fullscreenMenu.classList.remove('is-closing');
+        fullscreenMenu.classList.add('is-open');
+        fullscreenMenu.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('menu-open');
+
+        if (openMenuBtn) {
+          openMenuBtn.classList.add('is-open');
+          openMenuBtn.setAttribute('aria-label', 'Close Navigation Menu');
+        }
+        animateMenuMorph(1.0, 600);
+      }
+
+      function closeMenu() {
+        if (!fullscreenMenu) return;
+        isMenuCurrentlyOpen = false;
+        updateMenuWipeOrigin();
+
+        fullscreenMenu.classList.remove('is-open');
+        fullscreenMenu.classList.add('is-closing');
+        fullscreenMenu.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('menu-open');
+
+        if (openMenuBtn) {
+          openMenuBtn.classList.remove('is-open');
+          openMenuBtn.setAttribute('aria-label', 'Open Navigation Menu');
+        }
+        animateMenuMorph(0.0, 600);
+
+        setTimeout(() => {
+          if (!isMenuCurrentlyOpen) {
+            fullscreenMenu.classList.remove('is-closing');
+            fullscreenMenu.style.display = 'none';
+          }
+        }, 650);
+      }
 
       function toggleMenu() {
         if (isMenuCurrentlyOpen) closeMenu();
         else openMenu();
       }
 
-      function openMenu() {
-        isMenuCurrentlyOpen = true;
-        fullscreenMenu.classList.add('is-open');
-        openMenuBtn.classList.add('is-open');
-        document.body.classList.add('menu-open');
-        updateMenuIcon(true);
+      if (openMenuBtn) {
+        openMenuBtn.addEventListener('click', toggleMenu);
+        openMenuBtn.addEventListener('mouseenter', () => {
+          if (!isMenuCurrentlyOpen) animateMenuMorph(0.5, 450);
+          else animateMenuMorph(0.5, 300);
+        });
+        openMenuBtn.addEventListener('mouseleave', () => {
+          if (!isMenuCurrentlyOpen) animateMenuMorph(0.0, 450);
+          else animateMenuMorph(1.0, 300);
+        });
       }
 
-      function closeMenu() {
-        isMenuCurrentlyOpen = false;
-        fullscreenMenu.classList.remove('is-open');
-        openMenuBtn.classList.remove('is-open');
-        document.body.classList.remove('menu-open');
-        updateMenuIcon(false);
-      }
-
-      if (openMenuBtn) openMenuBtn.addEventListener('click', toggleMenu);
+      renderMenuMorph(0.0);
 
       menuLinks.forEach(link => {
         link.addEventListener('click', (e) => {
@@ -1876,11 +1968,13 @@
       }
 
       /* ------------------------------------------------------------------------
-         3. THREE.JS 3D CHARACTER FRANK & DRAGGED TYPOGRAPHY ENGINE
+         3. SCROLL-DRIVEN 3D CHARACTER FRANK & DRAGGED TYPOGRAPHY ENGINE
          ------------------------------------------------------------------------ */
-      const canvas = document.getElementById('frankCanvas');
-      const heroSection = document.getElementById('servicesHero');
-      const globalGridLines = document.getElementById('globalGridLines');
+      const heroScrollTrack = document.getElementById('heroScrollTrack');
+      const heroStickyStage = document.getElementById('servicesHero');
+      const heroGridLines = document.getElementById('heroGridLines');
+      const mainSiteNav = document.getElementById('mainSiteNav');
+      const heroScrollHint = document.getElementById('heroScrollHint');
 
       const elBuild = document.getElementById('wordBuild');
       const elCreate = document.getElementById('wordCreate');
@@ -1890,9 +1984,7 @@
       const lineCreate = document.getElementById('lineCreate');
       const lineGrow = document.getElementById('lineGrow');
 
-      const pillStep1 = document.getElementById('pillStep1');
-      const pillStep2 = document.getElementById('pillStep2');
-      const pillStep3 = document.getElementById('pillStep3');
+      const canvas = document.getElementById('frankCanvas');
 
       // Three.js Scene Setup
       const scene = new THREE.Scene();
@@ -1922,22 +2014,15 @@
       let bones = {};
       let isModelLoaded = false;
 
-      // Texture loader for Frank
+      // Texture loader for Frank with linear filtering for instant rendering
       const texLoader = new THREE.TextureLoader();
       const basePath = 'assets/character_frank/Texture/';
       function loadTex(file) {
-        const t = texLoader.load(basePath + file, 
-          (texture) => {
-            texture.minFilter = THREE.LinearFilter;
-            texture.magFilter = THREE.LinearFilter;
-            texture.generateMipmaps = false;
-            if (renderer) renderer.render(scene, camera);
-          },
-          undefined,
-          (err) => {
-            console.warn('[Frank Texture] Fallback for:', file, err);
-          }
-        );
+        const t = texLoader.load(basePath + file, (texture) => {
+          texture.minFilter = THREE.LinearFilter;
+          texture.magFilter = THREE.LinearFilter;
+          texture.generateMipmaps = false;
+        });
         t.encoding = THREE.sRGBEncoding;
         t.flipY = false;
         return t;
@@ -1952,13 +2037,8 @@
       const tEyes = loadTex('Eyes/Std_Eye_L_Diffuse - C2opy.jpg');
       const tFeet = loadTex('M_Feet_BR02_03_D.png');
 
-      const badgeText = document.getElementById('badgeText');
-      if (badgeText) badgeText.textContent = 'Loading 3D Character Experience...';
-
       const fbxLoader = new THREE.FBXLoader();
-      fbxLoader.load('assets/character_frank/FBX/Frank.fbx', 
-        (fbx) => {
-          if (badgeText) badgeText.textContent = '3D Interactive Experience';
+      fbxLoader.load('assets/character_frank/FBX/Frank.fbx', (fbx) => {
         fbx.traverse(c => {
           if (c.name === 'Skate_Board') c.visible = false;
           if (c.isMesh) {
@@ -1991,19 +2071,16 @@
           }
         });
 
-        // Scale Frank relative to typography lines
-        fbx.scale.set(0.65, 0.65, 0.65);
+        fbx.scale.set(0.68, 0.68, 0.68);
         scene.add(fbx);
         frank = fbx;
         isModelLoaded = true;
+        window.frankModel = fbx;
 
-        // Auto play sequence shortly after load
-        setTimeout(() => {
-          replayHeroSequence();
-        }, 350);
+        // Initial update with current scroll progress
+        updateScrollState(true);
       });
 
-      // Screen pixels to 3D World conversion
       function screenToWorld(x, y) {
         const dist = camera.position.z;
         const vHeight = 2 * dist * Math.tan((camera.fov * Math.PI / 180) / 2);
@@ -2018,16 +2095,62 @@
         };
       }
 
-      // Procedural Pushing Gait & Pose System
+      function clamp(val, min, max) {
+        return Math.max(min, Math.min(max, val));
+      }
+
+      function lerpColor(c1, c2, t) {
+        const r1 = parseInt(c1.substr(1,2),16), g1 = parseInt(c1.substr(3,2),16), b1 = parseInt(c1.substr(5,2),16);
+        const r2 = parseInt(c2.substr(1,2),16), g2 = parseInt(c2.substr(3,2),16), b2 = parseInt(c2.substr(5,2),16);
+        const r = Math.round(r1 + (r2 - r1) * t);
+        const g = Math.round(g1 + (g2 - g1) * t);
+        const b = Math.round(b1 + (b2 - b1) * t);
+        return `rgb(${r},${g},${b})`;
+      }
+
+      // Scroll State Variables
+      let currentProgress = 0;
+      let targetProgress = 0;
+      let lastScrollY = window.scrollY || 0;
       let walkPhase = 0;
       let isWalking = false;
+      let walkSpeed = 0;
       let pushDirection = 1; // 1 = right, -1 = left
 
+      function updateScrollState(force = false) {
+        const scrollY = window.scrollY || window.pageYOffset;
+        const trackRect = heroScrollTrack.getBoundingClientRect();
+        const scrollDist = trackRect.height - window.innerHeight;
+
+        // How far we have scrolled into the pinned track
+        const scrolledIntoTrack = Math.max(0, -trackRect.top);
+        targetProgress = clamp(scrolledIntoTrack / scrollDist, 0, 1);
+
+        const deltaY = Math.abs(scrollY - lastScrollY);
+        lastScrollY = scrollY;
+
+        if (deltaY > 0.5) {
+          isWalking = true;
+          walkSpeed = Math.min(deltaY * 0.08, 1.5);
+          walkPhase += deltaY * 0.018; // gait advances with scroll distance
+        }
+
+        if (force) {
+          currentProgress = targetProgress;
+        }
+      }
+
+      window.addEventListener('scroll', () => updateScrollState(false), { passive: true });
+
+      // Procedural Pushing Gait
       function updateFrankPose(dt) {
         if (!frank || !bones['CC_Base_Hip']) return;
 
-        if (isWalking) {
-          walkPhase += dt * 6.5; // energetic stride
+        // Fade out walking when scrolling halts
+        if (walkSpeed > 0.01) {
+          walkSpeed = Math.max(0, walkSpeed - dt * 2.5);
+        } else {
+          isWalking = false;
         }
 
         const cycle = Math.sin(walkPhase);
@@ -2038,10 +2161,10 @@
         frank.rotation.y = targetRotY;
 
         // Leaning spine into the load
-        const lean = isWalking ? 0.32 : 0.05;
+        const lean = isWalking ? (0.28 + walkSpeed * 0.08) : 0.06;
         if (bones['CC_Base_Spine01']) {
           bones['CC_Base_Spine01'].rotation.x = lean;
-          bones['CC_Base_Spine01'].rotation.z = isWalking ? Math.sin(walkPhase) * 0.06 : 0;
+          bones['CC_Base_Spine01'].rotation.z = isWalking ? Math.sin(walkPhase) * 0.05 : 0;
         }
         if (bones['CC_Base_Spine02']) {
           bones['CC_Base_Spine02'].rotation.x = lean * 0.7;
@@ -2069,7 +2192,7 @@
         if (bones['CC_Base_R_Hand']) bones['CC_Base_R_Hand'].rotation.x = 0.55;
 
         // Energetic Leg Strides
-        const legAmp = isWalking ? 0.65 : 0.02;
+        const legAmp = isWalking ? (0.50 + walkSpeed * 0.15) : 0.02;
         if (bones['CC_Base_L_Thigh']) bones['CC_Base_L_Thigh'].rotation.x = cycle * legAmp;
         if (bones['CC_Base_L_Calf']) bones['CC_Base_L_Calf'].rotation.x = Math.max(0, -cycle * legAmp * 1.3);
         if (bones['CC_Base_L_Foot']) bones['CC_Base_L_Foot'].rotation.x = -cycle * legAmp * 0.5;
@@ -2084,211 +2207,174 @@
         }
       }
 
-      // Smooth Animation Driver
-      let activeAnimationId = null;
-      function animateTransition(duration, onUpdate, onComplete) {
-        if (activeAnimationId) cancelAnimationFrame(activeAnimationId);
-        const startTime = performance.now();
-        function frame(now) {
-          const elapsed = now - startTime;
-          const p = Math.min(elapsed / duration, 1);
-          // High-end cubic ease out
-          const ease = 1 - Math.pow(1 - p, 3);
-          onUpdate(ease, p);
-          if (p < 1) {
-            activeAnimationId = requestAnimationFrame(frame);
-          } else {
-            activeAnimationId = null;
-            if (onComplete) onComplete();
-          }
+      /* ------------------------------------------------------------------------
+         APPLY SCROLL PROGRESS TO TYPOGRAPHY, FRANK, & BACKGROUND
+         ------------------------------------------------------------------------ */
+      function applyScrollChoreography(progress) {
+        const winW = window.innerWidth;
+
+        // Measure word widths
+        const wBuild = elBuild.offsetWidth || (winW * 0.45);
+        const wCreate = elCreate.offsetWidth || (winW * 0.55);
+        const wGrow = elGrow.offsetWidth || (winW * 0.45);
+
+        // Word destination coordinates
+        const targetX_Build = (winW * 0.80) - wBuild; // 80% horizontal screen space
+        const startX_Build = -wBuild - 60;
+
+        const startX_Create = winW + 60;
+        const targetX_Create = winW * 0.18; // 80% left side space
+
+        const startX_Grow = -wGrow - 60;
+        const targetX_Grow = (winW * 0.80) - wGrow; // 80% horizontal screen space
+
+        // Heights
+        const rectBuild = lineBuild.getBoundingClientRect();
+        const rectCreate = lineCreate.getBoundingClientRect();
+        const rectGrow = lineGrow.getBoundingClientRect();
+
+        const yBuild = rectBuild.top + rectBuild.height / 2;
+        const yCreate = rectCreate.top + rectCreate.height / 2;
+        const yGrow = rectGrow.top + rectGrow.height / 2;
+
+        // Hide scroll hint once user starts scrolling
+        if (heroScrollHint) {
+          heroScrollHint.style.opacity = progress > 0.05 ? '0' : '1';
         }
-        activeAnimationId = requestAnimationFrame(frame);
-      }
 
-      function lerpColor(c1, c2, t) {
-        const r1 = parseInt(c1.substr(1,2),16), g1 = parseInt(c1.substr(3,2),16), b1 = parseInt(c1.substr(5,2),16);
-        const r2 = parseInt(c2.substr(1,2),16), g2 = parseInt(c2.substr(3,2),16), b2 = parseInt(c2.substr(5,2),16);
-        const r = Math.round(r1 + (r2 - r1) * t);
-        const g = Math.round(g1 + (g2 - g1) * t);
-        const b = Math.round(b1 + (b2 - b1) * t);
-        return `rgb(${r},${g},${b})`;
-      }
+        if (progress <= 0.33) {
+          // --- STAGE 1: Frank pushes BUILD left to right ---
+          const p1 = clamp(progress / 0.33, 0, 1);
+          pushDirection = 1; // Facing right
 
-      function setActiveStepPill(step) {
-        [pillStep1, pillStep2, pillStep3].forEach((p, idx) => {
-          if (p) p.classList.toggle('is-active', idx + 1 === step);
-        });
-      }
+          const curX_Build = startX_Build + (targetX_Build - startX_Build) * p1;
+          elBuild.style.transform = `translateX(${curX_Build}px)`;
+          elBuild.style.color = '#FF6600';
 
-      /* ------------------------------------------------------------------------
-         STAGE 1: Frank pushes "BUILD" from Left to 80% Horizontal Screen Space
-         ------------------------------------------------------------------------ */
-      function runStep1(callback) {
-        if (!isModelLoaded) return;
-        setActiveStepPill(1);
-        pushDirection = 1;
-        isWalking = true;
+          elCreate.style.transform = `translateX(${startX_Create}px)`;
+          elGrow.style.transform = `translateX(${startX_Grow}px)`;
 
-        heroSection.style.backgroundColor = '#FAF8F5';
-        document.body.style.backgroundColor = '#FAF8F5';
-        globalGridLines.style.opacity = '1';
+          // Background & grid: white cream
+          heroStickyStage.style.backgroundColor = '#FAF8F5';
+          document.body.style.backgroundColor = '#FAF8F5';
+          heroGridLines.style.opacity = '1';
+          mainSiteNav.classList.remove('theme-orange-bg');
 
-        const rowRect = lineBuild.getBoundingClientRect();
-        const lineCenterY = rowRect.top + rowRect.height / 2 + 10;
+          // Frank placed at left edge of BUILD
+          if (frank) {
+            frank.visible = true;
+            const wPos = screenToWorld(curX_Build - 55, yBuild);
+            frank.position.set(wPos.x, wPos.y - 3.2, 0);
+          }
 
-        const wordW = elBuild.offsetWidth || 340;
-        // Stops at 80% horizontal screen space
-        const targetX = (window.innerWidth * 0.80) - wordW;
-        const startX = -wordW - 50;
+        } else if (progress <= 0.66) {
+          // --- STAGE 2: Frank pushes CREATE right to left ---
+          // Background smoothly turns Orange; text of CREATE smoothly turns Black
+          const p2 = clamp((progress - 0.33) / 0.33, 0, 1);
+          pushDirection = -1; // Facing left
 
-        animateTransition(2200, (ease) => {
-          const currentX = startX + (targetX - startX) * ease;
-          elBuild.style.transform = `translateX(${currentX}px)`;
+          // BUILD stays locked at 80% screen space
+          elBuild.style.transform = `translateX(${targetX_Build}px)`;
+          elBuild.style.color = '#FF6600';
 
-          // Frank placed at left edge of BUILD, pushing rightward
-          const frankScreenX = currentX - 45;
-          const wPos = screenToWorld(frankScreenX, lineCenterY);
-          frank.position.set(wPos.x, wPos.y - 3.2, 0);
-        }, () => {
-          isWalking = false;
-          if (callback) setTimeout(callback, 650);
-        });
-      }
+          const curX_Create = startX_Create + (targetX_Create - startX_Create) * p2;
+          elCreate.style.transform = `translateX(${curX_Create}px)`;
 
-      /* ------------------------------------------------------------------------
-         STAGE 2: Frank pushes "CREATE" from Right to 80% Left Space
-         Background smoothly transitions to Orange; Text of CREATE smoothly changes to Black
-         ------------------------------------------------------------------------ */
-      function runStep2(callback) {
-        if (!isModelLoaded) return;
-        setActiveStepPill(2);
-        pushDirection = -1; // Facing left
-        isWalking = true;
-
-        const rowRect = lineCreate.getBoundingClientRect();
-        const lineCenterY = rowRect.top + rowRect.height / 2 + 10;
-
-        const wordW = elCreate.offsetWidth || 440;
-        // Stops at 80% left side space (~18% from left edge)
-        const targetX = window.innerWidth * 0.18;
-        const startX = window.innerWidth + 60;
-
-        animateTransition(2400, (ease) => {
-          const currentX = startX + (targetX - startX) * ease;
-          elCreate.style.transform = `translateX(${currentX}px)`;
+          elGrow.style.transform = `translateX(${startX_Grow}px)`;
 
           // Smooth background transition from whitish (#FAF8F5) to Orange (#FF6600)
-          const bgCol = lerpColor('#FAF8F5', '#FF6600', ease);
-          heroSection.style.backgroundColor = bgCol;
+          const bgCol = lerpColor('#FAF8F5', '#FF6600', p2);
+          heroStickyStage.style.backgroundColor = bgCol;
           document.body.style.backgroundColor = bgCol;
-          globalGridLines.style.opacity = `${1 - ease * 0.75}`;
+          heroGridLines.style.opacity = `${1 - p2 * 0.75}`;
 
-          // Text color of CREATE changes from Orange (#FF6600) to Black (#111111) as orange appears
-          const txtCol = lerpColor('#FF6600', '#111111', ease);
+          // Text of CREATE smoothly changes from Orange (#FF6600) to Black (#111111)
+          const txtCol = lerpColor('#FF6600', '#111111', p2);
           elCreate.style.color = txtCol;
 
-          // Frank placed at right edge of CREATE, pushing leftward
-          const frankScreenX = currentX + wordW + 45;
-          const wPos = screenToWorld(frankScreenX, lineCenterY);
-          frank.position.set(wPos.x, wPos.y - 3.2, 0);
-        }, () => {
-          isWalking = false;
-          if (callback) setTimeout(callback, 650);
-        });
-      }
+          // Header turns to solid black logo & black enquire button on orange bg
+          if (p2 > 0.4) {
+            mainSiteNav.classList.add('theme-orange-bg');
+          } else {
+            mainSiteNav.classList.remove('theme-orange-bg');
+          }
 
-      /* ------------------------------------------------------------------------
-         STAGE 3: Frank pushes "GROW" from Left to 80% Horizontal Screen Space
-         Background smoothly transitions from Orange back to White with texture restored
-         ------------------------------------------------------------------------ */
-      function runStep3(callback) {
-        if (!isModelLoaded) return;
-        setActiveStepPill(3);
-        pushDirection = 1; // Facing right
-        isWalking = true;
+          // Frank placed at right edge of CREATE
+          if (frank) {
+            frank.visible = true;
+            const wPos = screenToWorld(curX_Create + wCreate + 55, yCreate);
+            frank.position.set(wPos.x, wPos.y - 3.2, 0);
+          }
 
-        const rowRect = lineGrow.getBoundingClientRect();
-        const lineCenterY = rowRect.top + rowRect.height / 2 + 10;
+        } else {
+          // --- STAGE 3: Frank pushes GROW left to right ---
+          // Background smoothly transitions from Orange back to white; text returns to Orange
+          const p3 = clamp((progress - 0.66) / 0.34, 0, 1);
+          pushDirection = 1; // Facing right
 
-        const wordW = elGrow.offsetWidth || 340;
-        const targetX = (window.innerWidth * 0.80) - wordW;
-        const startX = -wordW - 50;
+          // BUILD & CREATE stay locked
+          elBuild.style.transform = `translateX(${targetX_Build}px)`;
+          elBuild.style.color = '#FF6600';
 
-        animateTransition(2200, (ease) => {
-          const currentX = startX + (targetX - startX) * ease;
-          elGrow.style.transform = `translateX(${currentX}px)`;
+          elCreate.style.transform = `translateX(${targetX_Create}px)`;
 
-          // Background transitions smoothly from Orange (#FF6600) back to whitish (#FAF8F5)
-          const bgCol = lerpColor('#FF6600', '#FAF8F5', ease);
-          heroSection.style.backgroundColor = bgCol;
-          document.body.style.backgroundColor = bgCol;
-          globalGridLines.style.opacity = `${0.25 + ease * 0.75}`;
-
-          // Word Grow is Orange
+          const curX_Grow = startX_Grow + (targetX_Grow - startX_Grow) * p3;
+          elGrow.style.transform = `translateX(${curX_Grow}px)`;
           elGrow.style.color = '#FF6600';
 
-          // As bg returns to white, Create also returns to Orange on white background
-          const createTxtCol = lerpColor('#111111', '#FF6600', ease);
+          // Background transitions from Orange (#FF6600) back to whitish (#FAF8F5)
+          const bgCol = lerpColor('#FF6600', '#FAF8F5', p3);
+          heroStickyStage.style.backgroundColor = bgCol;
+          document.body.style.backgroundColor = bgCol;
+          heroGridLines.style.opacity = `${0.25 + p3 * 0.75}`;
+
+          // CREATE text color transitions from Black back to Orange on white background
+          const createTxtCol = lerpColor('#111111', '#FF6600', p3);
           elCreate.style.color = createTxtCol;
 
-          // Frank placed at left edge of GROW, pushing rightward
-          const frankScreenX = currentX - 45;
-          const wPos = screenToWorld(frankScreenX, lineCenterY);
-          frank.position.set(wPos.x, wPos.y - 3.2, 0);
-        }, () => {
-          isWalking = false;
-          // Settle into proud resting posture
-          if (bones['CC_Base_Spine01']) bones['CC_Base_Spine01'].rotation.x = 0.04;
-          if (bones['CC_Base_L_Upperarm']) bones['CC_Base_L_Upperarm'].rotation.set(-0.25, 0.2, -0.4);
-          if (bones['CC_Base_R_Upperarm']) bones['CC_Base_R_Upperarm'].rotation.set(-0.25, -0.2, 0.4);
-          if (callback) callback();
-        });
+          if (p3 > 0.5) {
+            mainSiteNav.classList.remove('theme-orange-bg');
+          } else {
+            mainSiteNav.classList.add('theme-orange-bg');
+          }
+
+          // Frank placed at left edge of GROW
+          if (frank) {
+            frank.visible = true;
+            const wPos = screenToWorld(curX_Grow - 55, yGrow);
+            frank.position.set(wPos.x, wPos.y - 3.2, 0);
+          }
+        }
       }
 
-      window.replayHeroSequence = function() {
-        if (!isModelLoaded) return;
-        // Reset positions
-        elBuild.style.transform = 'translateX(-150%)';
-        elCreate.style.transform = 'translateX(150vw)';
-        elCreate.style.color = '#FF6600';
-        elGrow.style.transform = 'translateX(-150%)';
-        heroSection.style.backgroundColor = '#FAF8F5';
-        document.body.style.backgroundColor = '#FAF8F5';
-        globalGridLines.style.opacity = '1';
-
-        runStep1(() => {
-          runStep2(() => {
-            runStep3();
-          });
-        });
-      };
-
-      window.jumpToStep = function(step) {
-        if (!isModelLoaded) return;
-        if (step === 1) runStep1();
-        else if (step === 2) runStep2();
-        else if (step === 3) runStep3();
-      };
-
-      // Three.js Render Loop
+      // Three.js Render Loop + Smooth Scroll Interpolator
       const renderClock = new THREE.Clock();
       function renderLoop() {
         requestAnimationFrame(renderLoop);
         const dt = renderClock.getDelta();
+
+        // Smooth physics-based interpolation of scroll progress (0.12 lerp)
+        currentProgress += (targetProgress - currentProgress) * 0.14;
+
+        if (isModelLoaded) {
+          applyScrollChoreography(currentProgress);
+        }
+
         updateFrankPose(dt);
         renderer.render(scene, camera);
       }
       renderLoop();
 
-      // Window Resize Handler
       window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
+        if (isModelLoaded) applyScrollChoreography(currentProgress);
       });
 
     })();
   </script>
+
   <!-- Techuilla Media & 3D Cache Service Worker -->
   <script>
     if ('serviceWorker' in navigator) {
