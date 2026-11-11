@@ -674,7 +674,7 @@
     .services-hero-scroll-track {
       position: relative;
       width: 100vw;
-      height: 400vh; /* Smooth, generous scroll travel distance */
+      height: 480vh; /* Decreased scroll speed by 15% (longer track) */ /* Smooth, generous scroll travel distance */
       background: transparent;
     }
 
@@ -718,8 +718,8 @@
     /* Each word on a distinct line */
     .hero-word-line {
       position: relative;
-      height: 28vh;
-      min-height: 120px;
+      height: 31vh;
+      min-height: 160px;
       width: 100%;
       display: flex;
       align-items: center;
@@ -729,7 +729,10 @@
     .hero-word {
       position: absolute;
       font-family: var(--font-display);
-      font-size: clamp(84px, 14.5vw, 220px);
+      font-size: clamp(135px, 23.2vw, 350px); /* Increased by another 60% */
+      line-height: 0.85;
+      opacity: 0;
+      transition: opacity 0.22s ease, color 0.15s ease;
       font-weight: 900;
       letter-spacing: -0.035em;
       line-height: 0.90;
@@ -1097,7 +1100,7 @@
         grid-template-columns: 1fr;
       }
       .hero-word {
-        font-size: clamp(52px, 15vw, 110px);
+        font-size: clamp(84px, 24vw, 175px); /* Increased by another 60% */
       }
       .hero-words-wrapper {
         padding: 80px 2vw 40px;
@@ -2157,12 +2160,19 @@
       window.addEventListener('scroll', () => updateScrollState(false), { passive: true });
 
       // Procedural Pushing Gait
+            /* ------------------------------------------------------------------------
+         ATHLETIC FORWARD PUSHING RIG & BENT-KNEE WALKING ANIMATION
+         - Hands bent in the front pushing firmly against the word block
+         - Palms upright pressed flat against word side
+         - Energetic walking gait with visibly bent knees (athletic flexion)
+         - Powerful spine lean forward into the load
+         ------------------------------------------------------------------------ */
       function updateFrankPose(dt) {
         if (!frank || !bones['CC_Base_Hip']) return;
 
         // Fade out walking when scrolling halts
         if (walkSpeed > 0.01) {
-          walkSpeed = Math.max(0, walkSpeed - dt * 2.5);
+          walkSpeed = Math.max(0, walkSpeed - dt * 2.8);
         } else {
           isWalking = false;
         }
@@ -2170,54 +2180,60 @@
         const cycle = Math.sin(walkPhase);
         const cosCycle = Math.cos(walkPhase);
 
-        // Turn Frank facing direction of travel
+        // Turn Frank facing direction of travel (Right = +PI/2, Left = -PI/2)
         const targetRotY = (pushDirection === 1) ? (Math.PI / 2) : (-Math.PI / 2);
         frank.rotation.y = targetRotY;
 
-        // Leaning spine into the load
-        const lean = isWalking ? (0.28 + walkSpeed * 0.08) : 0.06;
+        // 1. Spine: powerful forward lean into the load
+        const lean = isWalking ? (0.34 + walkSpeed * 0.08) : 0.18;
         if (bones['CC_Base_Spine01']) {
-          bones['CC_Base_Spine01'].rotation.x = lean;
-          bones['CC_Base_Spine01'].rotation.z = isWalking ? Math.sin(walkPhase) * 0.05 : 0;
+          bones['CC_Base_Spine01'].rotation.set(lean, 0, isWalking ? cycle * 0.03 : 0);
         }
         if (bones['CC_Base_Spine02']) {
-          bones['CC_Base_Spine02'].rotation.x = lean * 0.7;
+          bones['CC_Base_Spine02'].rotation.set(lean * 0.75, 0, 0);
         }
         if (bones['CC_Base_Head']) {
-          bones['CC_Base_Head'].rotation.x = -lean * 0.8;
+          bones['CC_Base_Head'].rotation.set(-lean * 0.65, 0, 0);
         }
 
-        // Outstretched hands pushing firmly against word side
-        const armExtension = -0.95;
-        if (bones['CC_Base_L_Upperarm']) {
-          bones['CC_Base_L_Upperarm'].rotation.x = armExtension + (isWalking ? Math.sin(walkPhase) * 0.08 : 0);
-          bones['CC_Base_L_Upperarm'].rotation.y = 0.25;
-          bones['CC_Base_L_Upperarm'].rotation.z = -0.3;
-        }
-        if (bones['CC_Base_L_Forearm']) bones['CC_Base_L_Forearm'].rotation.x = -0.35;
-        if (bones['CC_Base_L_Hand']) bones['CC_Base_L_Hand'].rotation.x = 0.55;
+        // 2. Arms: bent forward in front of chest pushing against word block
+        const armPushPump = isWalking ? cycle * 0.08 : 0;
+        
+        // Left Arm (pushing forward)
+        const lux = 1.55 + armPushPump;
+        const luz = 0.55;
+        const luy = 0.12;
+        if (bones['CC_Base_L_Upperarm']) bones['CC_Base_L_Upperarm'].rotation.set(lux, luy, luz);
+        if (bones['CC_Base_L_Forearm']) bones['CC_Base_L_Forearm'].rotation.set(0.12 + armPushPump * 0.5, 0, 0.52);
+        if (bones['CC_Base_L_Hand']) bones['CC_Base_L_Hand'].rotation.set(0.42, 0.10, -0.20);
 
-        if (bones['CC_Base_R_Upperarm']) {
-          bones['CC_Base_R_Upperarm'].rotation.x = armExtension - (isWalking ? Math.sin(walkPhase) * 0.08 : 0);
-          bones['CC_Base_R_Upperarm'].rotation.y = -0.25;
-          bones['CC_Base_R_Upperarm'].rotation.z = 0.3;
-        }
-        if (bones['CC_Base_R_Forearm']) bones['CC_Base_R_Forearm'].rotation.x = -0.35;
-        if (bones['CC_Base_R_Hand']) bones['CC_Base_R_Hand'].rotation.x = 0.55;
+        // Right Arm (pushing forward)
+        const rux = 1.55 - armPushPump;
+        const ruz = -0.55;
+        const ruy = -0.12;
+        if (bones['CC_Base_R_Upperarm']) bones['CC_Base_R_Upperarm'].rotation.set(rux, ruy, ruz);
+        if (bones['CC_Base_R_Forearm']) bones['CC_Base_R_Forearm'].rotation.set(0.12 - armPushPump * 0.5, 0, -0.52);
+        if (bones['CC_Base_R_Hand']) bones['CC_Base_R_Hand'].rotation.set(0.42, -0.10, 0.20);
 
-        // Energetic Leg Strides
-        const legAmp = isWalking ? (0.50 + walkSpeed * 0.15) : 0.02;
-        if (bones['CC_Base_L_Thigh']) bones['CC_Base_L_Thigh'].rotation.x = cycle * legAmp;
-        if (bones['CC_Base_L_Calf']) bones['CC_Base_L_Calf'].rotation.x = Math.max(0, -cycle * legAmp * 1.3);
-        if (bones['CC_Base_L_Foot']) bones['CC_Base_L_Foot'].rotation.x = -cycle * legAmp * 0.5;
+        // 3. Legs: Athletic forward walking stride with visibly bent knees!
+        // Thigh base = 3.0 (points legs down to floor). Stride swing = cycle * 0.40
+        const stride = isWalking ? (cycle * (0.38 + walkSpeed * 0.12)) : 0.05;
 
-        if (bones['CC_Base_R_Thigh']) bones['CC_Base_R_Thigh'].rotation.x = -cycle * legAmp;
-        if (bones['CC_Base_R_Calf']) bones['CC_Base_R_Calf'].rotation.x = Math.max(0, cycle * legAmp * 1.3);
-        if (bones['CC_Base_R_Foot']) bones['CC_Base_R_Foot'].rotation.x = cycle * legAmp * 0.5;
+        // Left Leg: Thigh swings forward/back, knee stays bent (0.50 to 1.15)
+        if (bones['CC_Base_L_Thigh']) bones['CC_Base_L_Thigh'].rotation.set(3.0 + stride, 0, 0.08);
+        const leftKneeBend = 0.50 + (stride < 0 ? Math.abs(stride) * 1.5 : 0.12);
+        if (bones['CC_Base_L_Calf']) bones['CC_Base_L_Calf'].rotation.set(leftKneeBend, 0, 0);
+        if (bones['CC_Base_L_Foot']) bones['CC_Base_L_Foot'].rotation.set(-leftKneeBend * 0.55, 0, 0);
+
+        // Right Leg: Mirrored stride with visibly bent knee
+        if (bones['CC_Base_R_Thigh']) bones['CC_Base_R_Thigh'].rotation.set(3.0 - stride, 0, -0.08);
+        const rightKneeBend = 0.50 + (stride > 0 ? Math.abs(stride) * 1.5 : 0.12);
+        if (bones['CC_Base_R_Calf']) bones['CC_Base_R_Calf'].rotation.set(rightKneeBend, 0, 0);
+        if (bones['CC_Base_R_Foot']) bones['CC_Base_R_Foot'].rotation.set(-rightKneeBend * 0.55, 0, 0);
 
         // Hip vertical bobbing with footsteps
         if (bones['CC_Base_Hip']) {
-          bones['CC_Base_Hip'].position.y = 6.2 - (isWalking ? Math.abs(cosCycle) * 0.15 : 0);
+          bones['CC_Base_Hip'].position.y = 6.1 - (isWalking ? Math.abs(cosCycle) * 0.12 : 0);
         }
       }
 
@@ -2228,21 +2244,21 @@
         const winW = window.innerWidth;
 
         // Measure word widths
-        const wBuild = elBuild.offsetWidth || (winW * 0.45);
-        const wCreate = elCreate.offsetWidth || (winW * 0.55);
-        const wGrow = elGrow.offsetWidth || (winW * 0.45);
+        const wBuild = elBuild.offsetWidth || (winW * 0.50);
+        const wCreate = elCreate.offsetWidth || (winW * 0.60);
+        const wGrow = elGrow.offsetWidth || (winW * 0.50);
 
         // Word destination coordinates
-        const targetX_Build = (winW * 0.80) - wBuild; // 80% horizontal screen space
-        const startX_Build = Math.max(24, winW * 0.04); // Opens with BUILD fully visible on screen, ready to be pushed!
+        const targetX_Build = Math.max(winW * 0.15, (winW * 0.82) - wBuild); // 80% horizontal screen space
+        const startX_Build = Math.max(24, winW * 0.04); // Opens prominently visible on Line 1
 
-        const startX_Create = winW + 60;
-        const targetX_Create = winW * 0.18; // 80% left side space
+        const startX_Create = winW + 40;
+        const targetX_Create = Math.max(30, winW * 0.10); // Stops at 80% left side space
 
-        const startX_Grow = -wGrow - 60;
-        const targetX_Grow = (winW * 0.80) - wGrow; // 80% horizontal screen space
+        const startX_Grow = -wGrow - 50;
+        const targetX_Grow = Math.max(winW * 0.15, (winW * 0.82) - wGrow);
 
-        // Heights
+        // Line vertical centers
         const rectBuild = lineBuild.getBoundingClientRect();
         const rectCreate = lineCreate.getBoundingClientRect();
         const rectGrow = lineGrow.getBoundingClientRect();
@@ -2253,17 +2269,29 @@
 
         // Hide scroll hint once user starts scrolling
         if (heroScrollHint) {
-          heroScrollHint.style.opacity = progress > 0.05 ? '0' : '1';
+          heroScrollHint.style.opacity = progress > 0.03 ? '0' : '1';
         }
 
         if (progress <= 0.33) {
-          // --- STAGE 1: Frank pushes BUILD left to right ---
-          const p1 = clamp(progress / 0.33, 0, 1);
-          pushDirection = 1; // Facing right
+          // ==================================================================
+          // STAGE 1 (Line 1): Frank pushes BUILD from left to right
+          // ONLY BUILD is visible on screen. Lines 2 & 3 are hidden.
+          // ==================================================================
+          const p1 = clamp(progress / 0.31, 0, 1);
+          pushDirection = 1; // Facing right (+X)
 
           const curX_Build = startX_Build + (targetX_Build - startX_Build) * p1;
           elBuild.style.transform = `translateX(${curX_Build}px)`;
           elBuild.style.color = '#FF6600';
+
+          // Opacity: ONLY Line 1 (BUILD) is visible
+          let opBuild = 1;
+          if (progress > 0.28) {
+            opBuild = clamp(1 - (progress - 0.28) / 0.05, 0, 1);
+          }
+          elBuild.style.opacity = `${opBuild}`;
+          elCreate.style.opacity = '0';
+          elGrow.style.opacity = '0';
 
           elCreate.style.transform = `translateX(${startX_Create}px)`;
           elGrow.style.transform = `translateX(${startX_Grow}px)`;
@@ -2274,26 +2302,42 @@
           heroGridLines.style.opacity = '1';
           mainSiteNav.classList.remove('theme-orange-bg');
 
-          // Frank placed at left edge of BUILD
+          // Frank placed at left edge of BUILD, pushing rightward
           if (frank) {
             frank.visible = true;
-            const wPos = screenToWorld(curX_Build - 55, yBuild);
+            let currentY = yBuild;
+            if (progress > 0.28) {
+              const blend = (progress - 0.28) / 0.05;
+              currentY = yBuild + (yCreate - yBuild) * blend;
+            }
+            const wPos = screenToWorld(curX_Build - 65, currentY);
             frank.position.set(wPos.x, wPos.y - 3.2, 0);
           }
 
         } else if (progress <= 0.66) {
-          // --- STAGE 2: Frank pushes CREATE right to left ---
-          // Background smoothly turns Orange; text of CREATE smoothly turns Black
-          const p2 = clamp((progress - 0.33) / 0.33, 0, 1);
-          pushDirection = -1; // Facing left
-
-          // BUILD stays locked at 80% screen space
-          elBuild.style.transform = `translateX(${targetX_Build}px)`;
-          elBuild.style.color = '#FF6600';
+          // ==================================================================
+          // STAGE 2 (Line 2): Frank pushes CREATE from right to left
+          // ONLY CREATE is visible on screen in Line 2. Lines 1 & 3 are hidden.
+          // Background turns smoothly to Orange (#FF6600); text turns Black (#111111).
+          // ==================================================================
+          const p2 = clamp((progress - 0.33) / 0.31, 0, 1);
+          pushDirection = -1; // Facing left (-X)
 
           const curX_Create = startX_Create + (targetX_Create - startX_Create) * p2;
           elCreate.style.transform = `translateX(${curX_Create}px)`;
 
+          // Opacity: ONLY Line 2 (CREATE) is visible
+          let opCreate = 1;
+          if (progress < 0.36) {
+            opCreate = clamp((progress - 0.31) / 0.05, 0, 1);
+          } else if (progress > 0.61) {
+            opCreate = clamp(1 - (progress - 0.61) / 0.05, 0, 1);
+          }
+          elCreate.style.opacity = `${opCreate}`;
+          elBuild.style.opacity = '0';
+          elGrow.style.opacity = '0';
+
+          elBuild.style.transform = `translateX(${targetX_Build}px)`;
           elGrow.style.transform = `translateX(${startX_Grow}px)`;
 
           // Smooth background transition from whitish (#FAF8F5) to Orange (#FF6600)
@@ -2306,56 +2350,63 @@
           const txtCol = lerpColor('#FF6600', '#111111', p2);
           elCreate.style.color = txtCol;
 
-          // Header turns to solid black logo & black enquire button on orange bg
-          if (p2 > 0.4) {
+          // Header adapts to solid black logo & enquiry button on orange bg
+          if (p2 > 0.35) {
             mainSiteNav.classList.add('theme-orange-bg');
           } else {
             mainSiteNav.classList.remove('theme-orange-bg');
           }
 
-          // Frank placed at right edge of CREATE
+          // Frank placed at right edge of CREATE, pushing leftward
           if (frank) {
             frank.visible = true;
-            const wPos = screenToWorld(curX_Create + wCreate + 55, yCreate);
+            let currentY = yCreate;
+            if (progress > 0.61) {
+              const blend = (progress - 0.61) / 0.05;
+              currentY = yCreate + (yGrow - yCreate) * blend;
+            }
+            const wPos = screenToWorld(curX_Create + wCreate + 65, currentY);
             frank.position.set(wPos.x, wPos.y - 3.2, 0);
           }
 
         } else {
-          // --- STAGE 3: Frank pushes GROW left to right ---
-          // Background smoothly transitions from Orange back to white; text returns to Orange
-          const p3 = clamp((progress - 0.66) / 0.34, 0, 1);
-          pushDirection = 1; // Facing right
-
-          // BUILD & CREATE stay locked
-          elBuild.style.transform = `translateX(${targetX_Build}px)`;
-          elBuild.style.color = '#FF6600';
-
-          elCreate.style.transform = `translateX(${targetX_Create}px)`;
+          // ==================================================================
+          // STAGE 3 (Line 3): Frank pushes GROW from left to right
+          // ONLY GROW is visible on screen in Line 3. Lines 1 & 2 are hidden.
+          // Background transitions back to cream white; text returns to Orange.
+          // ==================================================================
+          const p3 = clamp((progress - 0.66) / 0.32, 0, 1);
+          pushDirection = 1; // Facing right (+X)
 
           const curX_Grow = startX_Grow + (targetX_Grow - startX_Grow) * p3;
           elGrow.style.transform = `translateX(${curX_Grow}px)`;
           elGrow.style.color = '#FF6600';
 
-          // Background transitions from Orange (#FF6600) back to whitish (#FAF8F5)
+          // Opacity: ONLY Line 3 (GROW) is visible
+          const opGrow = clamp((progress - 0.64) / 0.05, 0, 1);
+          elGrow.style.opacity = `${opGrow}`;
+          elBuild.style.opacity = '0';
+          elCreate.style.opacity = '0';
+
+          elBuild.style.transform = `translateX(${targetX_Build}px)`;
+          elCreate.style.transform = `translateX(${targetX_Create}px)`;
+
+          // Background transitions back to whitish cream (#FAF8F5)
           const bgCol = lerpColor('#FF6600', '#FAF8F5', p3);
           heroStickyStage.style.backgroundColor = bgCol;
           document.body.style.backgroundColor = bgCol;
           heroGridLines.style.opacity = `${0.25 + p3 * 0.75}`;
 
-          // CREATE text color transitions from Black back to Orange on white background
-          const createTxtCol = lerpColor('#111111', '#FF6600', p3);
-          elCreate.style.color = createTxtCol;
-
-          if (p3 > 0.5) {
+          if (p3 > 0.45) {
             mainSiteNav.classList.remove('theme-orange-bg');
           } else {
             mainSiteNav.classList.add('theme-orange-bg');
           }
 
-          // Frank placed at left edge of GROW
+          // Frank placed at left edge of GROW, pushing rightward
           if (frank) {
             frank.visible = true;
-            const wPos = screenToWorld(curX_Grow - 55, yGrow);
+            const wPos = screenToWorld(curX_Grow - 65, yGrow);
             frank.position.set(wPos.x, wPos.y - 3.2, 0);
           }
         }
