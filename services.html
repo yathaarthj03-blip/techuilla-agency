@@ -23,6 +23,19 @@
 
   <style>
 
+    /* -------------------------------------------------------------------------
+       RITTERU DISPLAY TYPEFACE (Exact Reference Match)
+       ------------------------------------------------------------------------- */
+    @font-face {
+      font-family: 'Ritteru';
+      src: url('fonts/ritteru.woff') format('woff'),
+           url('fonts/ritteru.otf') format('opentype');
+      font-weight: 400 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+
         @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
 
     @font-face {
@@ -4037,13 +4050,13 @@
   
 
     /* -------------------------------------------------------------------------
-       SCROLL-DRIVEN BIG TYPOGRAPHY ROLLER SECTION
-       "We Are" (Black) + [Developers, Designers, Marketers, Creators, Techuilla] (Orange)
+       SCROLL-DRIVEN BIG TYPOGRAPHY ROLLER SECTION (RITTERU TYPEFACE)
+       Award-Winning Dual-Layer Masked Slot Physics (1:1 Reference Video Match)
        ------------------------------------------------------------------------- */
     .roller-section {
       position: relative;
       width: 100%;
-      height: 480vh; /* Smooth, natural scroll track */
+      height: 320vh; /* Smooth, natural scroll track */
       background: transparent;
       z-index: 2;
     }
@@ -4058,84 +4071,114 @@
       justify-content: center;
       overflow: hidden;
       pointer-events: none;
-      /* Soft top and bottom cinema masking to feather words at screen boundaries */
-      mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 12%, black 28%, black 72%, rgba(0,0,0,0.3) 88%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 12%, black 28%, black 72%, rgba(0,0,0,0.3) 88%, transparent 100%);
     }
 
-    .roller-container {
-      position: relative;
+    /* Exactly Centered Lockup (Horizontally and Vertically) */
+    .roller-lockup {
       display: flex;
-      align-items: baseline;
+      align-items: center;
       justify-content: center;
-      width: 100%;
-      max-width: 1700px;
-      padding: 0 clamp(20px, 4vw, 60px);
+      position: relative;
+      user-select: none;
+      max-width: 100vw;
+      padding: 0 24px;
       box-sizing: border-box;
     }
 
     /* Fixed Left Text: "We Are" in Black */
     .roller-prefix {
-      font-family: 'Syne', var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
-      font-size: clamp(32px, 5.2vw, 150px);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1.1;
+      font-family: 'Ritteru', sans-serif;
+      font-size: clamp(32px, 5.2vw, 100px);
+      font-weight: 400; /* Ritteru is inherently heavy display */
+      line-height: 1.15;
       color: #111111;
       white-space: nowrap;
       user-select: none;
-      margin-right: clamp(14px, 1.8vw, 32px);
+      margin-right: clamp(16px, 2.2vw, 36px);
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
     }
 
-    /* Dynamic Rolling Words Wrap on the Right */
-    .roller-words-wrap {
+    /* Scroller Viewport: Exactly 1 line-height tall, holds both layers */
+    .roller-viewport {
       position: relative;
-      height: calc(clamp(32px, 5.2vw, 150px) * 1.1);
-      display: inline-block;
-      user-select: none;
+      height: 1.15em;
+      font-family: 'Ritteru', sans-serif;
+      font-size: clamp(32px, 5.2vw, 100px);
+      line-height: 1.15;
+      overflow: visible; /* Lets background ghost words flow above & below */
       flex-shrink: 0;
+      width: max-content;
     }
 
-    /* Individual Scroller Word: Orange (#FF6600) */
-    .roller-word {
+    /* Column Shared Styling */
+    .roller-column {
+      display: flex;
+      flex-direction: column;
       position: absolute;
       top: 0;
       left: 0;
-      font-family: 'Syne', var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
-      font-size: clamp(32px, 5.2vw, 150px);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1.1;
-      color: #FF6600;
+      width: max-content;
       white-space: nowrap;
-      transform-origin: left center;
-      will-change: transform, opacity;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      will-change: transform;
       pointer-events: none;
+    }
+
+    .roller-item {
+      height: 1.15em;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      width: max-content;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Layer 1: Background Ghost List (Orange 22%, soft edge feathering) */
+    .roller-col-bg {
+      color: rgba(255, 102, 0, 0.22);
+      z-index: 1;
+      mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 15%, black 30%, black 70%, rgba(0,0,0,0.5) 85%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 15%, black 30%, black 70%, rgba(0,0,0,0.5) 85%, transparent 100%);
+    }
+
+    /* Layer 2: Foreground Active Masked Slot (Strictly 1 line-height tall, overflow: hidden) */
+    .roller-active-slot {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Foreground Column: Solid Vibrant Orange #FF6600 */
+    .roller-col-fg {
+      color: #FF6600;
+      z-index: 2;
     }
 
     /* Mobile Responsive Optimizations */
     @media (max-width: 768px) {
-      .roller-container {
-        flex-direction: row;
-        align-items: baseline;
-        justify-content: center;
+      .roller-lockup {
         padding: 0 16px;
       }
       .roller-prefix,
-      .roller-word {
-        font-size: clamp(34px, 9vw, 64px);
-      }
-      .roller-words-wrap {
-        height: calc(clamp(34px, 9vw, 64px) * 1.1);
+      .roller-viewport {
+        font-size: clamp(26px, 7.5vw, 54px);
       }
       .roller-prefix {
         margin-right: 12px;
       }
     }
-
-
-    /* Zero flash helper when navigating from other pages */
+/* Zero flash helper when navigating from other pages */
     html.is-transitioning .enquire-transition-overlay {
       display: flex !important;
       visibility: visible !important;
@@ -4463,14 +4506,27 @@
   <!-- Big Typography Scroll Section -->
   <section class="roller-section" id="rollerTrack">
     <div class="roller-stage">
-      <div class="roller-container">
+      <div class="roller-lockup">
         <div class="roller-prefix">We Are</div>
-        <div class="roller-words-wrap" id="rollerWordsWrap">
-          <div class="roller-word" data-index="0">Developers</div>
-          <div class="roller-word" data-index="1">Designers</div>
-          <div class="roller-word" data-index="2">Marketers</div>
-          <div class="roller-word" data-index="3">Creators</div>
-          <div class="roller-word" data-index="4">Techuilla</div>
+        <div class="roller-viewport" id="rollerViewport">
+          <!-- Layer 1: Background Ghost List (Orange 22%, soft edge masking) -->
+          <div class="roller-column roller-col-bg" id="rollerColBg">
+            <div class="roller-item">Developers</div>
+            <div class="roller-item">Designers</div>
+            <div class="roller-item">Marketers</div>
+            <div class="roller-item">Creators</div>
+            <div class="roller-item">Techuilla</div>
+          </div>
+          <!-- Layer 2: Foreground Active Mask Window (Solid Orange #FF6600, clipped to central line) -->
+          <div class="roller-active-slot">
+            <div class="roller-column roller-col-fg" id="rollerColFg">
+              <div class="roller-item">Developers</div>
+              <div class="roller-item">Designers</div>
+              <div class="roller-item">Marketers</div>
+              <div class="roller-item">Creators</div>
+              <div class="roller-item">Techuilla</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -4818,82 +4874,85 @@
       });
 
       /* ------------------------------------------------------------------------
-         5. SCROLL-DRIVEN BIG TYPOGRAPHY ROLLER ENGINE
-         "We Are" + [Developers, Designers, Marketers, Creators, Techuilla]
+         5. SCROLL-DRIVEN BIG TYPOGRAPHY ROLLER ENGINE (RITTERU TYPEFACE)
+         Dual-Layer Synchronized Slot Motion with Fluid 120fps Lerp Momentum
          ------------------------------------------------------------------------ */
       const rollerTrack = document.getElementById('rollerTrack');
-      const rollerWords = Array.from(document.querySelectorAll('.roller-word'));
-      const wordsWrap = document.getElementById('rollerWordsWrap');
-      const TOTAL_WORDS = rollerWords.length; // 5
+      const rollerViewport = document.getElementById('rollerViewport');
+      const rollerColBg = document.getElementById('rollerColBg');
+      const rollerColFg = document.getElementById('rollerColFg');
+      const bgItems = rollerColBg ? Array.from(rollerColBg.querySelectorAll('.roller-item')) : [];
+      const TOTAL_WORDS = bgItems.length; // 5
 
-      function updateRoller() {
-        if (!rollerTrack || rollerWords.length === 0) return;
+      let currentY = 0;
+      let targetY = 0;
+      let itemHeight = 0;
+
+      function measureRoller() {
+        if (!rollerViewport || bgItems.length === 0) return;
+        
+        // Exact computed item height
+        const rect = bgItems[0].getBoundingClientRect();
+        itemHeight = rect.height;
+        if (!itemHeight || itemHeight <= 0) {
+          const fs = parseFloat(window.getComputedStyle(rollerViewport).fontSize);
+          itemHeight = fs * 1.15;
+        }
+
+        // Anchor viewport width to widest word so the lockup center never wobbles
+        const widths = bgItems.map(item => item.getBoundingClientRect().width);
+        const maxWordWidth = Math.max(...widths);
+        if (maxWordWidth > 0) {
+          rollerViewport.style.width = `${Math.ceil(maxWordWidth + 8)}px`;
+        }
+        rollerViewport.style.height = `${itemHeight.toFixed(1)}px`;
+      }
+
+      function updateTargetY() {
+        if (!rollerTrack || itemHeight <= 0) return;
         const rect = rollerTrack.getBoundingClientRect();
         const maxScroll = rollerTrack.offsetHeight - window.innerHeight;
         if (maxScroll <= 0) return;
 
         const scrolled = -rect.top;
-        const rawProgress = Math.max(0, Math.min(1, scrolled / maxScroll));
+        const progress = Math.max(0, Math.min(1, scrolled / maxScroll));
 
-        // Calculate smooth continuous index with subtle resting plateau at each word
-        const rawIdx = rawProgress * (TOTAL_WORDS - 1);
-        const base = Math.floor(rawIdx);
-        const frac = rawIdx - base;
-        const smoothFrac = base < TOTAL_WORDS - 1 ? (frac * frac * (3 - 2 * frac)) : 0;
-        const continuousIdx = Math.min(TOTAL_WORDS - 1, base + smoothFrac);
+        // Smooth continuous linear progression through all words
+        const maxOffset = (TOTAL_WORDS - 1) * itemHeight;
+        targetY = progress * maxOffset;
+      }
 
-        // Get single line item height in pixels
-        const computedStyle = window.getComputedStyle(rollerWords[0]);
-        const itemHeight = parseFloat(computedStyle.lineHeight) || (parseFloat(computedStyle.fontSize) * 1.1) || 160;
+      function tickRoller() {
+        // Silky 120fps lerp factor: immediate responsiveness with smooth inertia
+        currentY += (targetY - currentY) * 0.14;
 
-        // Sync words wrap container height and width
-        if (wordsWrap) {
-          wordsWrap.style.height = `${itemHeight.toFixed(1)}px`;
-          const maxWordWidth = Math.max(...rollerWords.map(w => w.scrollWidth || w.offsetWidth));
-          if (maxWordWidth > 0) {
-            wordsWrap.style.width = `${maxWordWidth}px`;
-          }
-        }
+        const yStr = `translate3d(0, -${currentY.toFixed(2)}px, 0)`;
+        if (rollerColBg) rollerColBg.style.transform = yStr;
+        if (rollerColFg) rollerColFg.style.transform = yStr;
 
-        // Position and fade every word
-        rollerWords.forEach((wordEl, idx) => {
-          const delta = idx - continuousIdx;
-          const absDelta = Math.abs(delta);
-          const translateY = delta * itemHeight;
+        requestAnimationFrame(tickRoller);
+      }
 
-          // Opacity curve: 1.0 at center, ~0.34 at delta 1, ~0.04 at delta 2, 0 at >= 2.6
-          let opacity = 0;
-          if (absDelta < 2.6) {
-            opacity = Math.pow(Math.max(0, 1.0 - absDelta / 2.6), 2.2);
-          }
+      window.addEventListener('scroll', updateTargetY, { passive: true });
+      window.addEventListener('resize', () => {
+        measureRoller();
+        updateTargetY();
+      });
 
-          // Subtle 3D perspective scale: 1.0 at center, 0.96 at delta 1
-          const scale = Math.max(0.88, 1.0 - absDelta * 0.04);
-
-          wordEl.style.transform = `translate3d(0, ${translateY.toFixed(2)}px, 0) scale(${scale.toFixed(3)})`;
-          wordEl.style.opacity = opacity.toFixed(3);
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => {
+          measureRoller();
+          updateTargetY();
         });
       }
-
-      // Scroll listener with requestAnimationFrame throttling
-      let ticking = false;
-      function onScroll() {
-        if (!ticking) {
-          requestAnimationFrame(() => {
-            updateRoller();
-            ticking = false;
-          });
-          ticking = true;
-        }
-      }
-
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', updateRoller);
-
-      // Initial run
-      updateRoller();
-
-    })();
+      window.addEventListener('load', () => {
+        measureRoller();
+        updateTargetY();
+      });
+      measureRoller();
+      updateTargetY();
+      requestAnimationFrame(tickRoller);
+})();
   </script>
 </body>
 </html>
