@@ -3,6 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
   <title>Services | Techuilla Agency - Build. Create. Grow.</title>
   <meta name="description" content="Explore Techuilla Agency's full suite of digital engineering and creative services: Website Development, Application Development, 3D Animation, SaaS Videos, AI Creatives, and more.">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -14,8 +18,8 @@
   <link rel="preload" href="fflate.min.js" as="script">
   <link rel="preload" href="FBXLoader.js" as="script">
   <link rel="preload" href="assets/character_frank/FBX/Frank.fbx" as="fetch" crossorigin="anonymous">
-  <link rel="preload" href="assets/character_frank/Texture/defaultMat1_albedo.jpg" as="image">
-  <link rel="preload" href="assets/character_frank/Texture/Std_Skin_Head_Diffuse%20-%20Copy.png" as="image">
+  <link rel="preload" href="assets/character_frank/Texture/defaultMat1_albedo.jpg" as="image" crossorigin="anonymous">
+  <link rel="preload" href="assets/character_frank/Texture/Std_Skin_Head_Diffuse%20-%20Copy.png" as="image" crossorigin="anonymous">
 
   <!-- Google Fonts Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,13 +53,23 @@
       --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    html, body {
+    html {
+      width: 100%;
+      min-height: 100%;
+      background-color: var(--bg-cream);
+      overflow-x: clip;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
       width: 100%;
       min-height: 100vh;
       background-color: var(--bg-cream);
       color: var(--text-primary);
       font-family: var(--font-sans);
-      overflow-x: hidden;
+      overflow-x: clip;
+      position: relative;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       transition: background-color 0.4s ease;
@@ -660,7 +674,7 @@
     .services-hero-scroll-track {
       position: relative;
       width: 100vw;
-      height: 350vh; /* Smooth, generous scroll travel distance */
+      height: 400vh; /* Smooth, generous scroll travel distance */
       background: transparent;
     }
 
@@ -2220,7 +2234,7 @@
 
         // Word destination coordinates
         const targetX_Build = (winW * 0.80) - wBuild; // 80% horizontal screen space
-        const startX_Build = -wBuild - 60;
+        const startX_Build = Math.max(24, winW * 0.04); // Opens with BUILD fully visible on screen, ready to be pushed!
 
         const startX_Create = winW + 60;
         const targetX_Create = winW * 0.18; // 80% left side space
@@ -2356,9 +2370,8 @@
         // Smooth physics-based interpolation of scroll progress (0.12 lerp)
         currentProgress += (targetProgress - currentProgress) * 0.14;
 
-        if (isModelLoaded) {
-          applyScrollChoreography(currentProgress);
-        }
+        // Always apply scroll choreography so typography & colors scrub instantly even before 3D model finishes parsing
+        applyScrollChoreography(currentProgress);
 
         updateFrankPose(dt);
         renderer.render(scene, camera);
@@ -2369,7 +2382,7 @@
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-        if (isModelLoaded) applyScrollChoreography(currentProgress);
+        applyScrollChoreography(currentProgress);
       });
 
     })();

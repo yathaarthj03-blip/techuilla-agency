@@ -7,7 +7,7 @@
    - Fonts & Images
    ========================================================================== */
 
-const CACHE_NAME = 'techuilla-media-cache-v1';
+const CACHE_NAME = 'techuilla-media-cache-v2';
 
 // Priority static assets to pre-cache immediately upon activation
 const PRECACHE_ASSETS = [
@@ -81,10 +81,10 @@ self.addEventListener('fetch', (event) => {
     pathname.endsWith('.css')
   );
 
-  // For HTML files: Network-first to ensure live updates
-  if (pathname.endsWith('.html') || pathname === '/') {
+  // For HTML navigations: ALWAYS fetch live from network first, bypass cache
+  if (req.mode === 'navigate' || pathname.endsWith('.html') || pathname === '/' || pathname.endsWith('/techuilla-agency') || pathname.endsWith('/techuilla-agency/')) {
     event.respondWith(
-      fetch(req).catch(() => caches.match(req))
+      fetch(req, { cache: 'no-cache' }).catch(() => caches.match(req))
     );
     return;
   }
