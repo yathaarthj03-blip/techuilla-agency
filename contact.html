@@ -3398,8 +3398,7 @@
       // Navigate back to home with the orange transition (opens from logo, closes at logo)
             function triggerServicesTransition(e) {
         if (e) e.preventDefault();
-        if (typeof closeMenu === 'function') closeMenu();
-
+        // Do NOT call closeMenu() here! Keeps menu open under the blooming curtain to eliminate any jerk
         if (!curtain) {
           window.location.href = 'services.html';
           return;
@@ -3418,7 +3417,7 @@
         curtain.classList.add('is-covering');
 
         setTimeout(() => {
-          window.location.href = `services.html?transition=services&x=${origin.x}&y=${origin.y}`;
+          window.location.href = `services.html?transition=services&t=${Date.now()}&x=${origin.x}&y=${origin.y}`;
         }, 1000);
       }
 
