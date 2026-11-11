@@ -2736,7 +2736,7 @@
                 </a>
               </li>
               <li>
-                <a href="index.html#services" class="menu-nav-link" data-section="services">
+                <a href="services.html" class="menu-nav-link" data-section="services">
                   <span class="nav-text-wrap">
                     SERVICES
                     <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
@@ -3151,7 +3151,7 @@
         <div class="footer-col-title">NAVIGATION</div>
         <ul class="footer-links-list">
           <li><a href="index.html" class="footer-link">Home</a></li>
-          <li><a href="index.html#services" class="footer-link">Services</a></li>
+          <li><a href="services.html" class="footer-link">Services</a></li>
           <li><a href="index.html#work" class="footer-link">Work</a></li>
           <li><a href="index.html#about" class="footer-link">About</a></li>
           <li><a href="contact.html" class="footer-link">Book a meeting</a></li>
@@ -3280,7 +3280,33 @@
       });
 
       // Navigate back to home with the orange transition (opens from logo, closes at logo)
-      function triggerBackToHomeTransition(e) {
+            function triggerServicesTransition(e) {
+        if (e) e.preventDefault();
+        if (typeof closeMenu === 'function') closeMenu();
+
+        if (!curtain) {
+          window.location.href = 'services.html';
+          return;
+        }
+
+        const linkEl = (e && e.currentTarget) || document.querySelector('[data-section="services"]') || document.querySelector('.nav-brand');
+        const origin = setTransitionOrigin(linkEl, curtain);
+
+        curtain.style.display = 'flex';
+        curtain.style.transition = 'none';
+        curtain.classList.remove('is-closing', 'is-dissolving');
+        curtain.classList.remove('is-covering', 'is-active');
+        void curtain.offsetWidth;
+
+        curtain.style.transition = 'clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1), -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1)';
+        curtain.classList.add('is-covering');
+
+        setTimeout(() => {
+          window.location.href = `services.html?transition=services&x=${origin.x}&y=${origin.y}`;
+        }, 1000);
+      }
+
+function triggerBackToHomeTransition(e) {
         if (e) e.preventDefault();
 
         // Immediately dismiss and hide fullscreen menu so it NEVER flashes during transition
@@ -3550,6 +3576,8 @@
           const section = link.getAttribute('data-section');
           if (section === 'home') {
             triggerBackToHomeTransition(e);
+          } else if (section === 'services') {
+            triggerServicesTransition(e);
           } else {
             closeMenu();
           }

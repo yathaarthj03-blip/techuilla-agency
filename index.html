@@ -4249,7 +4249,7 @@
                 </a>
               </li>
               <li>
-                <a href="#services" class="menu-nav-link" data-section="services">
+                <a href="services.html" class="menu-nav-link" data-section="services">
                   <span class="nav-text-wrap">
                     SERVICES
                     <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
@@ -4964,7 +4964,7 @@
         <div class="footer-col-title">NAVIGATION</div>
         <ul class="footer-links-list">
           <li><a href="#hero" class="footer-link">Home</a></li>
-          <li><a href="#services" class="footer-link">Services</a></li>
+          <li><a href="services.html" class="footer-link">Services</a></li>
           <li><a href="#work" class="footer-link">Work</a></li>
           <li><a href="#about" class="footer-link">About</a></li>
           <li><a href="contact.html" class="footer-link">Book a meeting</a></li>
@@ -5526,7 +5526,33 @@ Best regards,
         });
       }
 
-      function triggerHomeTransition(e) {
+            function triggerServicesTransition(e) {
+        if (e) e.preventDefault();
+        if (typeof closeMenu === 'function') closeMenu();
+
+        const overlay = document.getElementById('enquireTransitionOverlay');
+        if (!overlay) {
+          window.location.href = 'services.html';
+          return;
+        }
+
+        const linkEl = (e && e.currentTarget) || document.querySelector('[data-section="services"]') || document.querySelector('.nav-brand');
+        const origin = setTransitionOrigin(linkEl, overlay);
+
+        overlay.style.transition = 'none';
+        overlay.classList.remove('is-closing', 'is-dissolving');
+        overlay.classList.remove('is-covering', 'is-active');
+        void overlay.offsetWidth;
+
+        overlay.style.transition = 'clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1), -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1)';
+        overlay.classList.add('is-covering');
+
+        setTimeout(() => {
+          window.location.href = `services.html?transition=services&x=${origin.x}&y=${origin.y}`;
+        }, 1000);
+      }
+
+function triggerHomeTransition(e) {
         if (e) e.preventDefault();
         if (typeof closeMenu === 'function') closeMenu();
 
@@ -5579,6 +5605,8 @@ Best regards,
           link.classList.add('is-active');
           if (section === 'home') {
             triggerHomeTransition(e);
+          } else if (section === 'services') {
+            triggerServicesTransition(e);
           } else {
             closeMenu();
           }

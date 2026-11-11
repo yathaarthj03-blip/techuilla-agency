@@ -1,0 +1,2269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services | Techuilla Agency - Build. Create. Grow.</title>
+  <meta name="description" content="Explore Techuilla Agency's full suite of digital engineering and creative services: Website Development, Application Development, 3D Animation, SaaS Videos, AI Creatives, and more.">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       0. CSS RESET & VARIABLES (Techuilla Design System)
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-cream: #FAF8F5;
+      --bg-orange: #FF6600;
+      --bg-dark: #111111;
+      --text-black: #111111;
+      --text-white: #FFFFFF;
+      --text-muted: rgba(0, 0, 0, 0.6);
+      --border-light: rgba(0, 0, 0, 0.08);
+      --font-display: 'Archivo', 'Space Grotesk', -apple-system, sans-serif;
+      --font-sans: 'Space Grotesk', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --header-height: 78px;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      background-color: var(--bg-cream);
+      color: var(--text-black);
+      font-family: var(--font-sans);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      transition: background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    /* Architectural Checks Texture */
+    .global-grid-lines {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+      background-image: 
+        linear-gradient(to right, rgba(0, 0, 0, 0.055) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.055) 1px, transparent 1px);
+      background-size: 80px 80px;
+      transition: opacity 0.8s ease;
+    }
+
+    .grid-v-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      height: 100%;
+    }
+    .grid-line-thin { border-right: 1.2px solid rgba(0, 0, 0, 0.08); }
+    .grid-line-thick { border-right: 2px solid rgba(0, 0, 0, 0.15); }
+    .grid-line-orange { border-right: 1.5px solid rgba(255, 102, 0, 0.4); }
+
+    /* ==========================================================================
+       1. CINEMATIC ORANGE PAGE TRANSITION OVERLAY
+       ========================================================================== */
+    .page-transition-curtain {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #FF6600;
+      z-index: 9999999 !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      pointer-events: none;
+      visibility: hidden;
+      --wipe-x: 60px;
+      --wipe-y: 40px;
+      clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+      -webkit-clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+      transition: 
+        clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1),
+        -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1);
+      will-change: clip-path;
+    }
+
+    .page-transition-curtain.is-covering,
+    .page-transition-curtain.is-active {
+      visibility: visible;
+      pointer-events: auto;
+      clip-path: circle(160% at var(--wipe-x) var(--wipe-y));
+      -webkit-clip-path: circle(160% at var(--wipe-x) var(--wipe-y));
+    }
+
+    .page-transition-curtain.is-closing {
+      visibility: visible;
+      pointer-events: none;
+      clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+      -webkit-clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+    }
+
+    .transition-brand-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 20px;
+      user-select: none;
+    }
+
+    .page-transition-logo {
+      width: 168px;
+      height: 168px;
+      object-fit: contain;
+      filter: brightness(0);
+      transform: scale(0.92);
+      transition: transform 1000ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .page-transition-curtain.is-covering .page-transition-logo {
+      transform: scale(1);
+    }
+
+    .page-transition-text {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: #000000;
+    }
+
+    /* ==========================================================================
+       2. GLOBAL HEADER & FLOATING NAVIGATION
+       ========================================================================== */
+    .site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--header-height);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 40px;
+      pointer-events: none;
+    }
+
+    .nav-inner {
+      width: 100%;
+      max-width: 1440px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: auto;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: var(--text-black);
+      font-weight: 800;
+      font-size: 19px;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    .nav-brand:hover {
+      opacity: 0.85;
+      transform: scale(0.99);
+    }
+
+    .nav-brand-logo {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-enquire {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      background: #FFFFFF;
+      color: #111111;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 999px;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-enquire:hover {
+      background: #FF6600;
+      color: #FFFFFF;
+      border-color: #FF6600;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(255, 102, 0, 0.3);
+    }
+    .btn-enquire-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .btn-menu {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+      transition: all 0.25s ease;
+    }
+    .btn-menu:hover {
+      border-color: #FF6600;
+      transform: scale(1.04);
+    }
+    .btn-menu.is-open {
+      background: #111111;
+      border-color: #111111;
+    }
+
+    .menu-infinity-svg {
+      width: 24px;
+      height: 18px;
+      overflow: visible;
+    }
+    .menu-morph-stroke {
+      fill: none;
+      stroke: #111111;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke 0.25s ease;
+    }
+    .btn-menu.is-open .menu-morph-stroke {
+      stroke: #FFFFFF;
+    }
+
+    /* ==========================================================================
+       3. FULLSCREEN NAVIGATION OVERLAY (Identical to Site Standard)
+       ========================================================================== */
+    #fullscreen-menu {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #FAF8F5;
+      z-index: 900;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
+    }
+    #fullscreen-menu.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .menu-body-split {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      width: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 40px 60px 60px;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .reel-carousel-container {
+      position: relative;
+      height: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .nav-extreme-left-logo-wrap {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      cursor: pointer;
+    }
+    .nav-extreme-left-logo {
+      width: 58px;
+      height: 58px;
+      object-fit: contain;
+    }
+
+    .reel-wheel {
+      position: relative;
+      width: 440px;
+      height: 440px;
+      border-radius: 50%;
+      border: 1px dashed rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: spinReel 45s linear infinite;
+    }
+    @keyframes spinReel {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .reel-spoke {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      pointer-events: none;
+    }
+    .spoke-0 { transform: rotate(0deg); }
+    .spoke-1 { transform: rotate(36deg); }
+    .spoke-2 { transform: rotate(72deg); }
+    .spoke-3 { transform: rotate(108deg); }
+    .spoke-4 { transform: rotate(144deg); }
+    .spoke-5 { transform: rotate(180deg); }
+    .spoke-6 { transform: rotate(216deg); }
+    .spoke-7 { transform: rotate(252deg); }
+    .spoke-8 { transform: rotate(288deg); }
+    .spoke-9 { transform: rotate(324deg); }
+
+    .reel-panel-card {
+      width: 140px;
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      padding: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+      pointer-events: auto;
+      text-decoration: none;
+      color: #111111;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transform: rotate(90deg);
+      transition: transform 0.25s ease;
+    }
+    .reel-panel-card:hover {
+      transform: rotate(90deg) scale(1.08);
+      border-color: #FF6600;
+    }
+    .reel-card-thumb {
+      position: relative;
+      width: 100%;
+      height: 75px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #eee;
+    }
+    .reel-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .reel-card-num-badge {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      background: rgba(0,0,0,0.65);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .reel-card-title {
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .reel-card-niche-sub {
+      font-size: 10px;
+      color: rgba(0,0,0,0.5);
+    }
+    .reel-card-tag {
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #FF6600;
+    }
+
+    .menu-nav-right-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-left: 40px;
+    }
+    .menu-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .menu-nav-link {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 5.5vw, 68px);
+      font-weight: 900;
+      text-decoration: none;
+      color: #111111;
+      display: inline-flex;
+      align-items: center;
+      gap: 20px;
+      letter-spacing: -0.02em;
+      position: relative;
+      transition: color 0.25s ease, transform 0.25s ease;
+    }
+    .menu-nav-link:hover,
+    .menu-nav-link.is-active {
+      color: #FF6600;
+      transform: translateX(10px);
+    }
+    .menu-nav-link .nav-arrow {
+      font-size: 0.6em;
+      opacity: 0;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .menu-nav-link:hover .nav-arrow,
+    .menu-nav-link.is-active .nav-arrow {
+      opacity: 1;
+      transform: translate(4px, -4px);
+    }
+
+    .nav-creative-strikethrough {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 28px;
+      transform: translateY(-50%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .menu-nav-link:hover .nav-creative-strikethrough,
+    .menu-nav-link.is-active .nav-creative-strikethrough {
+      opacity: 1;
+    }
+    .stroke-cut {
+      fill: none;
+      stroke: #FF6600;
+      stroke-width: 4;
+      stroke-linecap: round;
+    }
+
+    .menu-footer-actions {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .menu-enquiries-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 28px;
+      background: #111111;
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 15px;
+      border-radius: 999px;
+      text-decoration: none;
+      width: fit-content;
+      transition: all 0.25s ease;
+    }
+    .menu-enquiries-btn:hover {
+      background: #FF6600;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 102, 0, 0.35);
+    }
+    .menu-socials-row {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .menu-channel-item {
+      color: rgba(0, 0, 0, 0.6);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .menu-channel-item:hover {
+      color: #FF6600;
+    }
+
+    /* ==========================================================================
+       4. HERO STAGE - 3D FRANK & TYPOGRAPHY EXPERIENCE
+       ========================================================================== */
+    .services-hero-section {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      min-height: 700px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    #frankCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .hero-words-wrapper {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 90px 4vw 70px;
+      pointer-events: none;
+    }
+
+    /* Every word is on its own separate line */
+    .hero-word-line {
+      position: relative;
+      height: 27vh;
+      min-height: 140px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-word {
+      position: absolute;
+      font-family: var(--font-display);
+      font-size: clamp(56px, 10vw, 150px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 0.95;
+      text-transform: uppercase;
+      white-space: nowrap;
+      user-select: none;
+      transform: translate3d(0, 0, 0);
+      will-change: transform, color;
+      display: inline-block;
+    }
+
+    /* Word 1: BUILD */
+    #wordBuild {
+      color: #FF6600;
+      left: 0;
+      transform: translateX(-150%);
+    }
+
+    /* Word 2: CREATE */
+    #wordCreate {
+      color: #FF6600;
+      left: 0;
+      transform: translateX(150vw);
+    }
+
+    /* Word 3: GROW */
+    #wordGrow {
+      color: #FF6600;
+      left: 0;
+      transform: translateX(-150%);
+    }
+
+    /* Hero Subtitle / Badge */
+    .hero-eyebrow-badge {
+      position: absolute;
+      top: calc(var(--header-height) + 16px);
+      left: 40px;
+      z-index: 20;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #111111;
+      pointer-events: auto;
+      transition: all 0.5s ease;
+    }
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #FF6600;
+      box-shadow: 0 0 10px #FF6600;
+      animation: pulseDot 2s infinite;
+    }
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.6; }
+    }
+
+    /* Sleek Stage Interactive Progress Controller */
+    .hero-stage-controller {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      padding: 8px 16px;
+      border-radius: 999px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+      pointer-events: auto;
+      transition: background-color 0.5s ease, border-color 0.5s ease;
+    }
+
+    .stage-step-pill {
+      border: none;
+      background: transparent;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: rgba(0, 0, 0, 0.6);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s ease;
+    }
+    .stage-step-pill:hover {
+      color: #FF6600;
+      background: rgba(255, 102, 0, 0.08);
+    }
+    .stage-step-pill.is-active {
+      background: #FF6600;
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(255, 102, 0, 0.35);
+    }
+
+    .stage-replay-btn {
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      background: #FFFFFF;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 700;
+      color: #111111;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .stage-replay-btn:hover {
+      background: #111111;
+      color: #FFFFFF;
+      border-color: #111111;
+    }
+
+    .scroll-hint-down {
+      position: absolute;
+      bottom: 26px;
+      right: 40px;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(0, 0, 0, 0.5);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .scroll-hint-down:hover {
+      color: #FF6600;
+    }
+    .scroll-hint-icon {
+      animation: bounceHint 2s infinite;
+    }
+    @keyframes bounceHint {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(5px); }
+      60% { transform: translateY(3px); }
+    }
+
+    /* ==========================================================================
+       5. CAPABILITIES & SERVICES SHOWCASE (All Core Offerings)
+       ========================================================================== */
+    .services-catalog-section {
+      position: relative;
+      width: 100%;
+      background: #FAF8F5;
+      padding: 120px 40px 100px;
+      z-index: 3;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .catalog-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    .catalog-header {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 70px;
+    }
+
+    .catalog-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #FF6600;
+    }
+
+    .catalog-headline {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      color: #111111;
+      max-width: 800px;
+    }
+
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .service-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 20px;
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 380px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .service-card:hover {
+      transform: translateY(-8px);
+      border-color: #FF6600;
+      box-shadow: 0 20px 40px rgba(255, 102, 0, 0.12);
+    }
+
+    .service-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+    .service-num {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(0, 0, 0, 0.4);
+    }
+    .service-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 102, 0, 0.1);
+      color: #FF6600;
+    }
+
+    .service-title {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: #111111;
+      margin-bottom: 12px;
+    }
+
+    .service-desc {
+      font-size: 15px;
+      line-height: 1.6;
+      color: rgba(0, 0, 0, 0.65);
+      margin-bottom: 24px;
+    }
+
+    .service-deliverables {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .service-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      background: #F4F2EE;
+      color: #111111;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .service-action-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #FF6600;
+      text-decoration: none;
+      transition: gap 0.2s ease;
+    }
+    .service-card:hover .service-action-link {
+      gap: 14px;
+    }
+
+    /* ==========================================================================
+       6. CALL TO ACTION BANNER & FOOTER
+       ========================================================================== */
+    .services-cta-section {
+      background: #111111;
+      color: #FFFFFF;
+      padding: 100px 40px;
+      position: relative;
+      overflow: hidden;
+      z-index: 3;
+    }
+    .cta-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+      position: relative;
+      z-index: 2;
+    }
+    .cta-left {
+      max-width: 700px;
+    }
+    .cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 4.5vw, 56px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .cta-sub {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+    }
+    .btn-cta-giant {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: #FF6600;
+      color: #FFFFFF;
+      padding: 20px 44px;
+      border-radius: 999px;
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow: 0 12px 36px rgba(255, 102, 0, 0.4);
+      transition: all 0.25s ease;
+    }
+    .btn-cta-giant:hover {
+      background: #FFFFFF;
+      color: #111111;
+      transform: translateY(-3px);
+      box-shadow: 0 16px 40px rgba(255, 255, 255, 0.25);
+    }
+
+    /* Site Footer */
+    .site-footer {
+      background: #000000;
+      color: #FFFFFF;
+      padding: 80px 40px 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      z-index: 3;
+    }
+    .footer-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 60px;
+    }
+    .footer-brand-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+    .footer-brand-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.6);
+      max-width: 320px;
+    }
+    .footer-col-title {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 20px;
+    }
+    .footer-link-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .footer-link {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s ease;
+    }
+    .footer-link:hover {
+      color: #FF6600;
+    }
+    .footer-bottom-bar {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+      .catalog-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .cta-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .footer-container {
+        grid-template-columns: 1fr 1fr;
+      }
+      .menu-body-split {
+        grid-template-columns: 1fr;
+      }
+      .reel-carousel-container {
+        display: none;
+      }
+    }
+    @media (max-width: 768px) {
+      .site-nav {
+        padding: 0 20px;
+      }
+      .catalog-grid {
+        grid-template-columns: 1fr;
+      }
+      .services-hero-section {
+        min-height: 560px;
+      }
+      .hero-word-line {
+        height: 25vh;
+        min-height: 100px;
+      }
+      .footer-container {
+        grid-template-columns: 1fr;
+      }
+      .hero-stage-controller {
+        bottom: 16px;
+        padding: 6px 12px;
+      }
+      .scroll-hint-down {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Persistent Background Architectural Grid Lines -->
+  <div class="global-grid-lines" id="globalGridLines" aria-hidden="true">
+    <div class="grid-v-line grid-line-thin" style="left: 60px;"></div>
+    <div class="grid-v-line grid-line-thin" style="left: 240px;"></div>
+    <div class="grid-v-line grid-line-thick" style="left: 50%;"></div>
+    <div class="grid-v-line grid-line-orange" style="right: 240px;"></div>
+    <div class="grid-v-line grid-line-thin" style="right: 60px;"></div>
+  </div>
+
+  <!-- Cinematic Orange Page Transition Overlay -->
+  <div class="page-transition-curtain" id="pageTransitionCurtain" aria-hidden="true">
+    <div class="transition-brand-box">
+      <img src="Techuilla_logo.png" alt="Techuilla Logo" class="page-transition-logo">
+      <span class="page-transition-text">Techuilla</span>
+    </div>
+  </div>
+
+  <!-- Global Header Navigation -->
+  <header class="site-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand" id="navBrandLink" aria-label="Techuilla Agency Home">
+        <img src="Techuilla_logo.png" alt="Techuilla Logo" class="nav-brand-logo" id="navBrandLogo">
+        <span class="nav-brand-text">Techuilla Agency</span>
+      </a>
+
+      <div class="nav-actions">
+        <a href="contact.html" class="btn-enquire" id="navEnquireBtn">
+          <span>Enquire</span>
+          <svg class="btn-enquire-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+        </a>
+        <button class="btn-menu" id="open-menu-btn" aria-label="Open Navigation Menu">
+          <svg class="menu-infinity-svg" viewBox="0 0 28 20" aria-hidden="true">
+            <path class="menu-morph-stroke" id="menuStrokeTop" />
+            <path class="menu-morph-stroke" id="menuStrokeBottom" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Fullscreen Navigation Menu Overlay -->
+  <div id="fullscreen-menu" aria-hidden="true">
+    <div class="menu-header" style="height: 78px; opacity: 0; pointer-events: none;"></div>
+
+    <div class="menu-body-split">
+      <!-- Left side: Continuous rotating reel -->
+      <div class="reel-carousel-container">
+        <div class="nav-extreme-left-logo-wrap" aria-label="Techuilla Agency">
+          <img src="Techuilla_logo_extreme.png" alt="Techuilla Logo" class="nav-extreme-left-logo" />
+        </div>
+
+        <div class="reel-wheel" id="reelWheel">
+          <div class="reel-spoke spoke-0">
+            <a href="https://audioking.co.in/#home" target="_blank" rel="noopener noreferrer" class="reel-panel-card">
+              <div class="reel-card-thumb">
+                <img src="card_audio_king.png" alt="Audio King Website" class="reel-card-img" />
+                <span class="reel-card-num-badge">01</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-title">Audio King Website</div>
+                <div class="reel-card-niche-sub">Niche: <strong class="reel-card-tag">Build</strong></div>
+              </div>
+            </a>
+          </div>
+          <div class="reel-spoke spoke-1">
+            <a href="https://drive.google.com/file/d/18PrnXsRej_q7XqxTCMtUqSj-SEKbG0yA/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="reel-panel-card">
+              <div class="reel-card-thumb">
+                <img src="card_kaali_mata.png" alt="Kaali mata AI teaser" class="reel-card-img" />
+                <span class="reel-card-num-badge">02</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-title">Kaali mata AI teaser</div>
+                <div class="reel-card-niche-sub">Niche: <strong class="reel-card-tag">Create</strong></div>
+              </div>
+            </a>
+          </div>
+          <div class="reel-spoke spoke-2">
+            <a href="https://ramahairclinic.com/" target="_blank" rel="noopener noreferrer" class="reel-panel-card">
+              <div class="reel-card-thumb">
+                <img src="card_rama_trichology.jpg" alt="Rama Trichology" class="reel-card-img" />
+                <span class="reel-card-num-badge">03</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-title">Rama Trichology</div>
+                <div class="reel-card-niche-sub">Niche: <strong class="reel-card-tag">Create</strong></div>
+              </div>
+            </a>
+          </div>
+          <div class="reel-spoke spoke-3">
+            <a href="https://drive.google.com/file/d/1A3C36LeW2HgyrYftnewULgq4kOUs54oG/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="reel-panel-card">
+              <div class="reel-card-thumb">
+                <img src="card_3d_product.png" alt="3D Product animation" class="reel-card-img" />
+                <span class="reel-card-num-badge">04</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-title">3D Product animation</div>
+                <div class="reel-card-niche-sub">Niche: <strong class="reel-card-tag">Create</strong></div>
+              </div>
+            </a>
+          </div>
+          <div class="reel-spoke spoke-4">
+            <a href="https://healthstreak.in/" target="_blank" rel="noopener noreferrer" class="reel-panel-card">
+              <div class="reel-card-thumb">
+                <img src="card_health_streak.png" alt="Health Streak Website" class="reel-card-img" />
+                <span class="reel-card-num-badge">05</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-title">Health Streak Website</div>
+                <div class="reel-card-niche-sub">Niche: <strong class="reel-card-tag">Build</strong></div>
+              </div>
+            </a>
+          </div>
+          <div class="reel-spoke spoke-5">
+            <a href="https://hindustantyre.com/" target="_blank" rel="noopener noreferrer" class="reel-panel-card">
+              <div class="reel-card-thumb">
+                <img src="card_hindustan_tyre.jpg" alt="Hindustan Tyre Branding" class="reel-card-img" />
+                <span class="reel-card-num-badge">06</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-title">Hindustan Tyre Branding</div>
+                <div class="reel-card-niche-sub">Niche: <strong class="reel-card-tag">Grow</strong></div>
+              </div>
+            </a>
+          </div>
+          <div class="reel-spoke spoke-6">
+            <a href="https://untitledclothing.in/" target="_blank" rel="noopener noreferrer" class="reel-panel-card">
+              <div class="reel-card-thumb">
+                <img src="card_untitled_clothing.png" alt="Untitled Clothing Website" class="reel-card-img" />
+                <span class="reel-card-num-badge">07</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-title">Untitled Clothing</div>
+                <div class="reel-card-niche-sub">Niche: <strong class="reel-card-tag">Build</strong></div>
+              </div>
+            </a>
+          </div>
+          <div class="reel-spoke spoke-7">
+            <a href="https://drive.google.com/file/d/1BODr5w6Wc-l2_E8e0d-U19h8jXzN1Z5s/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="reel-panel-card">
+              <div class="reel-card-thumb">
+                <img src="card_soap_dispenser.jpg" alt="Soap Dispenser 3D" class="reel-card-img" />
+                <span class="reel-card-num-badge">08</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-title">Soap Dispenser 3D</div>
+                <div class="reel-card-niche-sub">Niche: <strong class="reel-card-tag">Create</strong></div>
+              </div>
+            </a>
+          </div>
+          <div class="reel-spoke spoke-8">
+            <a href="https://drive.google.com/file/d/1CQEs7x-Yd_m3_F9f1e-V20i9kY0O2A6t/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="reel-panel-card">
+              <div class="reel-card-thumb">
+                <img src="card_client_meeting.jpg" alt="Client Strategy Session" class="reel-card-img" />
+                <span class="reel-card-num-badge">09</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-title">Client Strategy</div>
+                <div class="reel-card-niche-sub">Niche: <strong class="reel-card-tag">Grow</strong></div>
+              </div>
+            </a>
+          </div>
+          <div class="reel-spoke spoke-9">
+            <a href="index.html#work" class="reel-panel-card">
+              <div class="reel-card-thumb">
+                <img src="card_techuilla_branding.jpg" alt="Techuilla Agency" class="reel-card-img" />
+                <span class="reel-card-num-badge">10</span>
+              </div>
+              <div class="reel-card-info">
+                <div class="reel-card-title">Techuilla Agency</div>
+                <div class="reel-card-niche-sub">Niche: <strong class="reel-card-tag">Powerhouse</strong></div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right side: Navigation list -->
+      <div class="menu-nav-right-col">
+        <nav aria-label="Main Navigation">
+          <ul class="menu-nav-list">
+            <li>
+              <a href="index.html" class="menu-nav-link" data-section="home">
+                <span class="nav-text-wrap">
+                  HOME
+                  <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
+                    <path class="stroke-cut" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                  </svg>
+                </span>
+                <span class="nav-arrow" aria-hidden="true">↗</span>
+              </a>
+            </li>
+            <li>
+              <a href="services.html" class="menu-nav-link is-active" data-section="services">
+                <span class="nav-text-wrap">
+                  SERVICES
+                  <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
+                    <path class="stroke-cut" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                  </svg>
+                </span>
+                <span class="nav-arrow" aria-hidden="true">↗</span>
+              </a>
+            </li>
+            <li>
+              <a href="index.html#work" class="menu-nav-link" data-section="work">
+                <span class="nav-text-wrap">
+                  WORK
+                  <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
+                    <path class="stroke-cut" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                  </svg>
+                </span>
+                <span class="nav-arrow" aria-hidden="true">↗</span>
+              </a>
+            </li>
+            <li>
+              <a href="index.html#about" class="menu-nav-link" data-section="about">
+                <span class="nav-text-wrap">
+                  ABOUT
+                  <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
+                    <path class="stroke-cut" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                  </svg>
+                </span>
+                <span class="nav-arrow" aria-hidden="true">↗</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="menu-footer-actions">
+          <a href="contact.html" class="menu-enquiries-btn" id="menuEnquiriesBtn">
+            <span>START A PROJECT →</span>
+          </a>
+          <div class="menu-socials-row">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="menu-channel-item">Instagram</a>
+            <span style="opacity: 0.3;">·</span>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="menu-channel-item">LinkedIn</a>
+            <span style="opacity: 0.3;">·</span>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="menu-channel-item">Twitter / X</a>
+            <span style="opacity: 0.3;">·</span>
+            <a href="mailto:techuilla.co@gmail.com" class="menu-channel-item">Gmail</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       HERO STAGE: 3D CHARACTER FRANK & DRAGGED TYPOGRAPHY
+       ========================================================================== -->
+  <section class="services-hero-section" id="servicesHero">
+    <!-- Top Left Eyebrow -->
+    <div class="hero-eyebrow-badge" id="heroBadge">
+      <span class="badge-dot"></span>
+      <span id="badgeText">3D Character Interactive Experience</span>
+    </div>
+
+    <!-- The 3 Words (Each on a Different Line) -->
+    <div class="hero-words-wrapper">
+      <!-- Line 1: BUILD (Orange, Pushed Left to Right to 80% screen space) -->
+      <div class="hero-word-line" id="lineBuild">
+        <span class="hero-word" id="wordBuild">BUILD</span>
+      </div>
+
+      <!-- Line 2: CREATE (Pushed Right to Left to 80% left side space, bg turns orange, text turns black) -->
+      <div class="hero-word-line" id="lineCreate">
+        <span class="hero-word" id="wordCreate">CREATE</span>
+      </div>
+
+      <!-- Line 3: GROW (Pushed Left to Right to 80% screen space, bg turns white, text turns orange) -->
+      <div class="hero-word-line" id="lineGrow">
+        <span class="hero-word" id="wordGrow">GROW</span>
+      </div>
+    </div>
+
+    <!-- Three.js Frank WebGL Canvas -->
+    <canvas id="frankCanvas"></canvas>
+
+    <!-- Interactive Stage Progression Controller -->
+    <div class="hero-stage-controller">
+      <button class="stage-step-pill" id="pillStep1" onclick="jumpToStep(1)">
+        <span>01</span> BUILD
+      </button>
+      <button class="stage-step-pill" id="pillStep2" onclick="jumpToStep(2)">
+        <span>02</span> CREATE
+      </button>
+      <button class="stage-step-pill" id="pillStep3" onclick="jumpToStep(3)">
+        <span>03</span> GROW
+      </button>
+      <button class="stage-replay-btn" id="btnReplay" onclick="replayHeroSequence()" aria-label="Replay Full Sequence">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="1 4 1 10 7 10"></polyline>
+          <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+        </svg>
+        Replay
+      </button>
+    </div>
+
+    <!-- Scroll Down Hint -->
+    <a href="#catalog" class="scroll-hint-down">
+      <span>Scroll for Catalog</span>
+      <span class="scroll-hint-icon">↓</span>
+    </a>
+  </section>
+
+  <!-- ==========================================================================
+       SERVICES CATALOG: FULL CAPABILITIES SHOWCASE
+       ========================================================================== -->
+  <section class="services-catalog-section" id="catalog">
+    <div class="catalog-inner">
+      <div class="catalog-header">
+        <span class="catalog-eyebrow">Our Capabilities</span>
+        <h2 class="catalog-headline">Comprehensive Creative & Engineering Powerhouse</h2>
+      </div>
+
+      <div class="catalog-grid">
+        <!-- 01 Website Development -->
+        <div class="service-card">
+          <div>
+            <div class="service-card-top">
+              <span class="service-num">01 / 09</span>
+              <span class="service-badge">Flagship</span>
+            </div>
+            <h3 class="service-title">Website Development</h3>
+            <p class="service-desc">
+              High-performance, bespoke web experiences built on Next.js, WebGL, and headless CMS architectures. Fast, fluid, and conversion-optimized.
+            </p>
+            <div class="service-deliverables">
+              <span class="service-tag">Next.js</span>
+              <span class="service-tag">Three.js</span>
+              <span class="service-tag">Tailwind</span>
+              <span class="service-tag">Headless CMS</span>
+            </div>
+          </div>
+          <a href="contact.html?service=website-dev" class="service-action-link">
+            <span>Enquire for Websites</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- 02 Application Development -->
+        <div class="service-card">
+          <div>
+            <div class="service-card-top">
+              <span class="service-num">02 / 09</span>
+              <span class="service-badge">Engineering</span>
+            </div>
+            <h3 class="service-title">Application Development</h3>
+            <p class="service-desc">
+              Cross-platform iOS and Android mobile applications engineered with React Native, Flutter, and scalable cloud microservices.
+            </p>
+            <div class="service-deliverables">
+              <span class="service-tag">iOS</span>
+              <span class="service-tag">Android</span>
+              <span class="service-tag">React Native</span>
+              <span class="service-tag">Cloud APIs</span>
+            </div>
+          </div>
+          <a href="contact.html?service=app-dev" class="service-action-link">
+            <span>Enquire for Apps</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- 03 Graphic Designing -->
+        <div class="service-card">
+          <div>
+            <div class="service-card-top">
+              <span class="service-num">03 / 09</span>
+              <span class="service-badge">Creative</span>
+            </div>
+            <h3 class="service-title">Graphic Designing</h3>
+            <p class="service-desc">
+              Visual brand identity, design tokens, marketing assets, and corporate identity guidelines crafted with typographical distinction.
+            </p>
+            <div class="service-deliverables">
+              <span class="service-tag">Brand Identity</span>
+              <span class="service-tag">Typography</span>
+              <span class="service-tag">Design Systems</span>
+              <span class="service-tag">Vector Art</span>
+            </div>
+          </div>
+          <a href="contact.html?service=graphic-design" class="service-action-link">
+            <span>Enquire for Design</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- 04 SaaS Videos -->
+        <div class="service-card">
+          <div>
+            <div class="service-card-top">
+              <span class="service-num">04 / 09</span>
+              <span class="service-badge">Motion</span>
+            </div>
+            <h3 class="service-title">SaaS Videos</h3>
+            <p class="service-desc">
+              High-converting product explainers, walkthroughs, and UI motion graphics that distill intricate software capabilities into irresistible stories.
+            </p>
+            <div class="service-deliverables">
+              <span class="service-tag">Product Walkthrough</span>
+              <span class="service-tag">UI Animation</span>
+              <span class="service-tag">Explainer</span>
+            </div>
+          </div>
+          <a href="contact.html?service=saas-videos" class="service-action-link">
+            <span>Enquire for SaaS Videos</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- 05 Talking Head Videos -->
+        <div class="service-card">
+          <div>
+            <div class="service-card-top">
+              <span class="service-num">05 / 09</span>
+              <span class="service-badge">Production</span>
+            </div>
+            <h3 class="service-title">Talking Head Videos</h3>
+            <p class="service-desc">
+              Studio-grade direct-to-camera production, dynamic pacing, sound design, and narrative retention editing tailored for founders and thought leaders.
+            </p>
+            <div class="service-deliverables">
+              <span class="service-tag">Studio Pacing</span>
+              <span class="service-tag">Color Grading</span>
+              <span class="service-tag">Sound FX</span>
+            </div>
+          </div>
+          <a href="contact.html?service=talking-head" class="service-action-link">
+            <span>Enquire for Production</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- 06 2D Animation -->
+        <div class="service-card">
+          <div>
+            <div class="service-card-top">
+              <span class="service-num">06 / 09</span>
+              <span class="service-badge">Animation</span>
+            </div>
+            <h3 class="service-title">2D Animation</h3>
+            <p class="service-desc">
+              Vector motion graphics, kinetic typography, and character-driven narratives that capture audience imagination in seconds.
+            </p>
+            <div class="service-deliverables">
+              <span class="service-tag">After Effects</span>
+              <span class="service-tag">Character Rigging</span>
+              <span class="service-tag">Kinetic Type</span>
+            </div>
+          </div>
+          <a href="contact.html?service=2d-animation" class="service-action-link">
+            <span>Enquire for 2D Motion</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- 07 3D Animation -->
+        <div class="service-card">
+          <div>
+            <div class="service-card-top">
+              <span class="service-num">07 / 09</span>
+              <span class="service-badge">Flagship 3D</span>
+            </div>
+            <h3 class="service-title">3D Animation</h3>
+            <p class="service-desc">
+              Cinema-grade 3D visualization, photorealistic CGI rendering, and dynamic physics simulations that elevate brands to world-class stature.
+            </p>
+            <div class="service-deliverables">
+              <span class="service-tag">Blender</span>
+              <span class="service-tag">Cinema 4D</span>
+              <span class="service-tag">Redshift</span>
+              <span class="service-tag">Octane</span>
+            </div>
+          </div>
+          <a href="contact.html?service=3d" class="service-action-link">
+            <span>Enquire for 3D</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- 08 AI Video -->
+        <div class="service-card">
+          <div>
+            <div class="service-card-top">
+              <span class="service-num">08 / 09</span>
+              <span class="service-badge">Generative</span>
+            </div>
+            <h3 class="service-title">AI Video</h3>
+            <p class="service-desc">
+              Next-generation generative AI workflows combining Midjourney, Runway Gen-3, Kling, and proprietary prompt engineering for cinematic spots.
+            </p>
+            <div class="service-deliverables">
+              <span class="service-tag">Runway Gen-3</span>
+              <span class="service-tag">Midjourney</span>
+              <span class="service-tag">Neural Synthesis</span>
+            </div>
+          </div>
+          <a href="contact.html?service=ai" class="service-action-link">
+            <span>Enquire for AI Video</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- 09 Products Animation -->
+        <div class="service-card">
+          <div>
+            <div class="service-card-top">
+              <span class="service-num">09 / 09</span>
+              <span class="service-badge">Showcase</span>
+            </div>
+            <h3 class="service-title">Products Animation</h3>
+            <p class="service-desc">
+              Industrial design visualization, explode-view assembly breakdowns, macro optical textures, and commercial launch campaigns for hardware.
+            </p>
+            <div class="service-deliverables">
+              <span class="service-tag">Industrial CGI</span>
+              <span class="service-tag">Exploded View</span>
+              <span class="service-tag">Lighting Design</span>
+            </div>
+          </div>
+          <a href="contact.html?service=products-animation" class="service-action-link">
+            <span>Enquire for Products</span>
+            <span>→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       CTA BANNER
+       ========================================================================== -->
+  <section class="services-cta-section">
+    <div class="cta-container">
+      <div class="cta-left">
+        <h2 class="cta-title">Ready to build, create, or scale your brand?</h2>
+        <p class="cta-sub">
+          From custom digital engineering to cinematic 3D motion and AI-driven growth campaigns, we engineer outcomes that matter.
+        </p>
+      </div>
+      <a href="contact.html" class="btn-cta-giant" id="ctaStartBtn">START A PROJECT →</a>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       GLOBAL FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div>
+        <div class="footer-brand-title">Techuilla Agency</div>
+        <p class="footer-brand-desc">
+          A hybrid digital engineering & cinematic creative powerhouse building world-class platforms, 3D motion, and AI systems.
+        </p>
+      </div>
+      <div>
+        <div class="footer-col-title">NAVIGATION</div>
+        <ul class="footer-link-list">
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="services.html" class="footer-link">Services</a></li>
+          <li><a href="index.html#work" class="footer-link">Work</a></li>
+          <li><a href="index.html#about" class="footer-link">About</a></li>
+          <li><a href="contact.html" class="footer-link">Book a meeting</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">CAPABILITIES</div>
+        <ul class="footer-link-list">
+          <li><a href="contact.html?service=website-dev" class="footer-link">Website Development</a></li>
+          <li><a href="contact.html?service=app-dev" class="footer-link">App Development</a></li>
+          <li><a href="contact.html?service=3d" class="footer-link">3D Animation</a></li>
+          <li><a href="contact.html?service=ai" class="footer-link">AI Video & Systems</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">CONNECT</div>
+        <ul class="footer-link-list">
+          <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="footer-link">Instagram</a></li>
+          <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="footer-link">LinkedIn</a></li>
+          <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="footer-link">Twitter / X</a></li>
+          <li><a href="mailto:techuilla.co@gmail.com" class="footer-link">techuilla.co@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom-bar">
+      <span>© 2026 Techuilla Agency. All rights reserved.</span>
+      <span>Crafted for high performance & distinction.</span>
+    </div>
+  </footer>
+
+  <!-- Three.js + Standalone Loaders -->
+  <script src="three.min.js"></script>
+  <script src="fflate.min.js"></script>
+  <script src="FBXLoader.js"></script>
+
+  <!-- Services Interactive Orchestrator -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ------------------------------------------------------------------------
+         1. UNIFIED CINEMATIC ORANGE TRANSITION ENGINE
+         ------------------------------------------------------------------------ */
+      const curtain = document.getElementById('pageTransitionCurtain');
+
+      function setTransitionOrigin(el, overlay) {
+        let x = window.innerWidth - 85;
+        let y = 40;
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          x = rect.left + rect.width / 2;
+          y = rect.top + rect.height / 2;
+        }
+        if (overlay) {
+          overlay.style.setProperty('--wipe-x', `${Math.round(x)}px`);
+          overlay.style.setProperty('--wipe-y', `${Math.round(y)}px`);
+        }
+        return { x: Math.round(x), y: Math.round(y) };
+      }
+
+      function closeCurtainAt(targetEl, callback) {
+        if (!curtain) {
+          if (callback) callback();
+          return;
+        }
+        setTransitionOrigin(targetEl, curtain);
+
+        requestAnimationFrame(() => {
+          curtain.style.transition = 'clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1), -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1)';
+          curtain.classList.remove('is-covering', 'is-active');
+          curtain.classList.add('is-closing');
+          setTimeout(() => {
+            curtain.style.display = 'none';
+            curtain.classList.remove('is-closing');
+            if (callback) callback();
+          }, 1050);
+        });
+      }
+
+      // Check arrival parameters from transition
+      const urlParams = new URLSearchParams(window.location.search);
+      const transitionType = urlParams.get('transition');
+
+      if (curtain) {
+        curtain.style.display = 'flex';
+        curtain.style.transition = 'none';
+        curtain.classList.add('is-covering');
+        curtain.classList.remove('is-closing');
+
+        // Target top left logo as origin to close into
+        const topNavLogo = document.querySelector('.nav-brand-logo') || document.querySelector('.nav-brand') || document.getElementById('navBrandLink');
+        setTransitionOrigin(topNavLogo, curtain);
+        void curtain.offsetWidth;
+
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            const logoTarget = document.querySelector('.nav-brand-logo') || document.querySelector('.nav-brand') || document.getElementById('navBrandLink');
+            closeCurtainAt(logoTarget);
+          }, 100);
+        });
+      }
+
+      // Universal Page Transition Trigger
+      window.triggerPageTransition = function(e, targetUrl, originEl) {
+        if (e) e.preventDefault();
+
+        // Dismiss menu immediately if open
+        if (fullscreenMenu && isMenuCurrentlyOpen) {
+          closeMenu();
+        }
+
+        if (!curtain) {
+          window.location.href = targetUrl;
+          return;
+        }
+
+        const el = originEl || (e && e.currentTarget) || document.querySelector('.nav-brand');
+        const origin = setTransitionOrigin(el, curtain);
+
+        curtain.style.display = 'flex';
+        curtain.style.transition = 'none';
+        curtain.classList.remove('is-closing');
+        curtain.classList.remove('is-covering', 'is-active');
+        void curtain.offsetWidth;
+
+        // Open outward from origin over 1000ms
+        curtain.style.transition = 'clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1), -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1)';
+        curtain.classList.add('is-covering');
+
+        setTimeout(() => {
+          const sep = targetUrl.includes('?') ? '&' : '?';
+          window.location.href = `${targetUrl}${sep}transition=open&x=${origin.x}&y=${origin.y}`;
+        }, 1000);
+      };
+
+      // Clean up URL without reload
+      if (window.history && window.history.replaceState && transitionType) {
+        const cleanUrl = window.location.pathname + window.location.hash;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+
+      /* ------------------------------------------------------------------------
+         2. FULLSCREEN NAVIGATION MENU ENGINE & MORPHING HAMBURGER
+         ------------------------------------------------------------------------ */
+      const openMenuBtn = document.getElementById('open-menu-btn');
+      const fullscreenMenu = document.getElementById('fullscreen-menu');
+      const menuLinks = document.querySelectorAll('.menu-nav-link');
+      const navBrandLink = document.getElementById('navBrandLink');
+      const navEnquireBtn = document.getElementById('navEnquireBtn');
+      const menuEnquiriesBtn = document.getElementById('menuEnquiriesBtn');
+      const ctaStartBtn = document.getElementById('ctaStartBtn');
+      let isMenuCurrentlyOpen = false;
+
+      // Morphing SVG paths: hamburger to X
+      const pClosedTop = "M 4,6 L 24,6";
+      const pClosedBottom = "M 4,14 L 24,14";
+      const pOpenTop = "M 5,5 L 23,15";
+      const pOpenBottom = "M 5,15 L 23,5";
+
+      const menuStrokeTop = document.getElementById('menuStrokeTop');
+      const menuStrokeBottom = document.getElementById('menuStrokeBottom');
+
+      function updateMenuIcon(isOpen) {
+        if (!menuStrokeTop || !menuStrokeBottom) return;
+        if (isOpen) {
+          menuStrokeTop.setAttribute('d', pOpenTop);
+          menuStrokeBottom.setAttribute('d', pOpenBottom);
+        } else {
+          menuStrokeTop.setAttribute('d', pClosedTop);
+          menuStrokeBottom.setAttribute('d', pClosedBottom);
+        }
+      }
+      updateMenuIcon(false);
+
+      function toggleMenu() {
+        if (isMenuCurrentlyOpen) closeMenu();
+        else openMenu();
+      }
+
+      function openMenu() {
+        isMenuCurrentlyOpen = true;
+        fullscreenMenu.classList.add('is-open');
+        openMenuBtn.classList.add('is-open');
+        document.body.classList.add('menu-open');
+        updateMenuIcon(true);
+      }
+
+      function closeMenu() {
+        isMenuCurrentlyOpen = false;
+        fullscreenMenu.classList.remove('is-open');
+        openMenuBtn.classList.remove('is-open');
+        document.body.classList.remove('menu-open');
+        updateMenuIcon(false);
+      }
+
+      if (openMenuBtn) openMenuBtn.addEventListener('click', toggleMenu);
+
+      menuLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          const section = link.getAttribute('data-section');
+          if (section === 'home') {
+            triggerPageTransition(e, 'index.html', link);
+          } else if (section === 'services') {
+            closeMenu();
+          } else if (section === 'work') {
+            triggerPageTransition(e, 'index.html#work', link);
+          } else if (section === 'about') {
+            triggerPageTransition(e, 'index.html#about', link);
+          } else {
+            closeMenu();
+          }
+        });
+      });
+
+      if (navBrandLink) {
+        navBrandLink.addEventListener('click', (e) => {
+          triggerPageTransition(e, 'index.html', navBrandLink);
+        });
+      }
+
+      if (navEnquireBtn) {
+        navEnquireBtn.addEventListener('click', (e) => {
+          triggerPageTransition(e, 'contact.html', navEnquireBtn);
+        });
+      }
+
+      if (menuEnquiriesBtn) {
+        menuEnquiriesBtn.addEventListener('click', (e) => {
+          triggerPageTransition(e, 'contact.html', menuEnquiriesBtn);
+        });
+      }
+
+      if (ctaStartBtn) {
+        ctaStartBtn.addEventListener('click', (e) => {
+          triggerPageTransition(e, 'contact.html', ctaStartBtn);
+        });
+      }
+
+      /* ------------------------------------------------------------------------
+         3. THREE.JS 3D CHARACTER FRANK & DRAGGED TYPOGRAPHY ENGINE
+         ------------------------------------------------------------------------ */
+      const canvas = document.getElementById('frankCanvas');
+      const heroSection = document.getElementById('servicesHero');
+      const globalGridLines = document.getElementById('globalGridLines');
+
+      const elBuild = document.getElementById('wordBuild');
+      const elCreate = document.getElementById('wordCreate');
+      const elGrow = document.getElementById('wordGrow');
+
+      const lineBuild = document.getElementById('lineBuild');
+      const lineCreate = document.getElementById('lineCreate');
+      const lineGrow = document.getElementById('lineGrow');
+
+      const pillStep1 = document.getElementById('pillStep1');
+      const pillStep2 = document.getElementById('pillStep2');
+      const pillStep3 = document.getElementById('pillStep3');
+
+      // Three.js Scene Setup
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(0, 0, 24);
+      camera.lookAt(0, 0, 0);
+
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.25;
+      renderer.outputEncoding = THREE.sRGBEncoding;
+
+      const ambLight = new THREE.AmbientLight(0xffffff, 1.3);
+      scene.add(ambLight);
+
+      const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.2);
+      dirLight1.position.set(20, 35, 25);
+      scene.add(dirLight1);
+
+      const dirLight2 = new THREE.DirectionalLight(0xff7722, 0.9);
+      dirLight2.position.set(-20, 20, 10);
+      scene.add(dirLight2);
+
+      let frank = null;
+      let bones = {};
+      let isModelLoaded = false;
+
+      // Texture loader for Frank
+      const texLoader = new THREE.TextureLoader();
+      const basePath = 'assets/character_frank/Texture/';
+      function loadTex(file) {
+        const t = texLoader.load(basePath + file);
+        t.encoding = THREE.sRGBEncoding;
+        t.flipY = false;
+        return t;
+      }
+
+      const tHead = loadTex('Std_Skin_Head_Diffuse - Copy.png');
+      const tArm = loadTex('Std_Skin_Arm_Diffuse.jpg');
+      const tLeg = loadTex('Std_Skin_Leg_Diffuse.jpg');
+      const tHoodie = loadTex('defaultMat1_albedo.jpg');
+      const tShorts = loadTex('M_Legs_U_01_D.jpg');
+      const tShoes = loadTex('shoes_3_mat_albedo.jpg');
+      const tEyes = loadTex('Eyes/Std_Eye_L_Diffuse - C2opy.jpg');
+      const tFeet = loadTex('M_Feet_BR02_03_D.png');
+
+      const fbxLoader = new THREE.FBXLoader();
+      fbxLoader.load('assets/character_frank/FBX/Frank.fbx', (fbx) => {
+        fbx.traverse(c => {
+          if (c.name === 'Skate_Board') c.visible = false;
+          if (c.isMesh) {
+            c.castShadow = true;
+            if (c.name === 'CC_Base_Body' && Array.isArray(c.material)) {
+              c.material = c.material.map(m => {
+                let map = null;
+                if (m.name.includes('Head')) map = tHead;
+                else if (m.name.includes('Arm')) map = tArm;
+                else if (m.name.includes('Leg')) map = tLeg;
+                return new THREE.MeshStandardMaterial({ map: map, roughness: 0.55, skinning: true });
+              });
+            } else if (c.name === 'Hoodie') {
+              c.material = new THREE.MeshStandardMaterial({ map: tHoodie, color: 0x181818, roughness: 0.75, skinning: true });
+            } else if (c.name === 'Shorts') {
+              c.material = new THREE.MeshStandardMaterial({ map: tShorts, roughness: 0.8, skinning: true });
+            } else if (c.name.includes('shoes')) {
+              c.material = new THREE.MeshStandardMaterial({ map: tShoes, roughness: 0.4, skinning: true });
+            } else if (c.name.includes('sock')) {
+              c.material = new THREE.MeshStandardMaterial({ map: tFeet, roughness: 0.6, skinning: true });
+            } else if (c.name.includes('Eye')) {
+              c.material = new THREE.MeshStandardMaterial({ map: tEyes, roughness: 0.1, skinning: true });
+            } else if (c.material) {
+              if (Array.isArray(c.material)) c.material.forEach(m => { m.skinning = true; });
+              else c.material.skinning = true;
+            }
+          }
+          if (c.isBone && !bones[c.name]) {
+            bones[c.name] = c;
+          }
+        });
+
+        // Scale Frank relative to typography lines
+        fbx.scale.set(0.65, 0.65, 0.65);
+        scene.add(fbx);
+        frank = fbx;
+        isModelLoaded = true;
+
+        // Auto play sequence shortly after load
+        setTimeout(() => {
+          replayHeroSequence();
+        }, 350);
+      });
+
+      // Screen pixels to 3D World conversion
+      function screenToWorld(x, y) {
+        const dist = camera.position.z;
+        const vHeight = 2 * dist * Math.tan((camera.fov * Math.PI / 180) / 2);
+        const vWidth = vHeight * (window.innerWidth / window.innerHeight);
+
+        const ndcX = (x / window.innerWidth) * 2 - 1;
+        const ndcY = -(y / window.innerHeight) * 2 + 1;
+
+        return {
+          x: ndcX * (vWidth / 2),
+          y: ndcY * (vHeight / 2)
+        };
+      }
+
+      // Procedural Pushing Gait & Pose System
+      let walkPhase = 0;
+      let isWalking = false;
+      let pushDirection = 1; // 1 = right, -1 = left
+
+      function updateFrankPose(dt) {
+        if (!frank || !bones['CC_Base_Hip']) return;
+
+        if (isWalking) {
+          walkPhase += dt * 6.5; // energetic stride
+        }
+
+        const cycle = Math.sin(walkPhase);
+        const cosCycle = Math.cos(walkPhase);
+
+        // Turn Frank facing direction of travel
+        const targetRotY = (pushDirection === 1) ? (Math.PI / 2) : (-Math.PI / 2);
+        frank.rotation.y = targetRotY;
+
+        // Leaning spine into the load
+        const lean = isWalking ? 0.32 : 0.05;
+        if (bones['CC_Base_Spine01']) {
+          bones['CC_Base_Spine01'].rotation.x = lean;
+          bones['CC_Base_Spine01'].rotation.z = isWalking ? Math.sin(walkPhase) * 0.06 : 0;
+        }
+        if (bones['CC_Base_Spine02']) {
+          bones['CC_Base_Spine02'].rotation.x = lean * 0.7;
+        }
+        if (bones['CC_Base_Head']) {
+          bones['CC_Base_Head'].rotation.x = -lean * 0.8;
+        }
+
+        // Outstretched hands pushing firmly against word side
+        const armExtension = -0.95;
+        if (bones['CC_Base_L_Upperarm']) {
+          bones['CC_Base_L_Upperarm'].rotation.x = armExtension + (isWalking ? Math.sin(walkPhase) * 0.08 : 0);
+          bones['CC_Base_L_Upperarm'].rotation.y = 0.25;
+          bones['CC_Base_L_Upperarm'].rotation.z = -0.3;
+        }
+        if (bones['CC_Base_L_Forearm']) bones['CC_Base_L_Forearm'].rotation.x = -0.35;
+        if (bones['CC_Base_L_Hand']) bones['CC_Base_L_Hand'].rotation.x = 0.55;
+
+        if (bones['CC_Base_R_Upperarm']) {
+          bones['CC_Base_R_Upperarm'].rotation.x = armExtension - (isWalking ? Math.sin(walkPhase) * 0.08 : 0);
+          bones['CC_Base_R_Upperarm'].rotation.y = -0.25;
+          bones['CC_Base_R_Upperarm'].rotation.z = 0.3;
+        }
+        if (bones['CC_Base_R_Forearm']) bones['CC_Base_R_Forearm'].rotation.x = -0.35;
+        if (bones['CC_Base_R_Hand']) bones['CC_Base_R_Hand'].rotation.x = 0.55;
+
+        // Energetic Leg Strides
+        const legAmp = isWalking ? 0.65 : 0.02;
+        if (bones['CC_Base_L_Thigh']) bones['CC_Base_L_Thigh'].rotation.x = cycle * legAmp;
+        if (bones['CC_Base_L_Calf']) bones['CC_Base_L_Calf'].rotation.x = Math.max(0, -cycle * legAmp * 1.3);
+        if (bones['CC_Base_L_Foot']) bones['CC_Base_L_Foot'].rotation.x = -cycle * legAmp * 0.5;
+
+        if (bones['CC_Base_R_Thigh']) bones['CC_Base_R_Thigh'].rotation.x = -cycle * legAmp;
+        if (bones['CC_Base_R_Calf']) bones['CC_Base_R_Calf'].rotation.x = Math.max(0, cycle * legAmp * 1.3);
+        if (bones['CC_Base_R_Foot']) bones['CC_Base_R_Foot'].rotation.x = cycle * legAmp * 0.5;
+
+        // Hip vertical bobbing with footsteps
+        if (bones['CC_Base_Hip']) {
+          bones['CC_Base_Hip'].position.y = 6.2 - (isWalking ? Math.abs(cosCycle) * 0.15 : 0);
+        }
+      }
+
+      // Smooth Animation Driver
+      let activeAnimationId = null;
+      function animateTransition(duration, onUpdate, onComplete) {
+        if (activeAnimationId) cancelAnimationFrame(activeAnimationId);
+        const startTime = performance.now();
+        function frame(now) {
+          const elapsed = now - startTime;
+          const p = Math.min(elapsed / duration, 1);
+          // High-end cubic ease out
+          const ease = 1 - Math.pow(1 - p, 3);
+          onUpdate(ease, p);
+          if (p < 1) {
+            activeAnimationId = requestAnimationFrame(frame);
+          } else {
+            activeAnimationId = null;
+            if (onComplete) onComplete();
+          }
+        }
+        activeAnimationId = requestAnimationFrame(frame);
+      }
+
+      function lerpColor(c1, c2, t) {
+        const r1 = parseInt(c1.substr(1,2),16), g1 = parseInt(c1.substr(3,2),16), b1 = parseInt(c1.substr(5,2),16);
+        const r2 = parseInt(c2.substr(1,2),16), g2 = parseInt(c2.substr(3,2),16), b2 = parseInt(c2.substr(5,2),16);
+        const r = Math.round(r1 + (r2 - r1) * t);
+        const g = Math.round(g1 + (g2 - g1) * t);
+        const b = Math.round(b1 + (b2 - b1) * t);
+        return `rgb(${r},${g},${b})`;
+      }
+
+      function setActiveStepPill(step) {
+        [pillStep1, pillStep2, pillStep3].forEach((p, idx) => {
+          if (p) p.classList.toggle('is-active', idx + 1 === step);
+        });
+      }
+
+      /* ------------------------------------------------------------------------
+         STAGE 1: Frank pushes "BUILD" from Left to 80% Horizontal Screen Space
+         ------------------------------------------------------------------------ */
+      function runStep1(callback) {
+        if (!isModelLoaded) return;
+        setActiveStepPill(1);
+        pushDirection = 1;
+        isWalking = true;
+
+        heroSection.style.backgroundColor = '#FAF8F5';
+        document.body.style.backgroundColor = '#FAF8F5';
+        globalGridLines.style.opacity = '1';
+
+        const rowRect = lineBuild.getBoundingClientRect();
+        const lineCenterY = rowRect.top + rowRect.height / 2 + 10;
+
+        const wordW = elBuild.offsetWidth || 340;
+        // Stops at 80% horizontal screen space
+        const targetX = (window.innerWidth * 0.80) - wordW;
+        const startX = -wordW - 50;
+
+        animateTransition(2200, (ease) => {
+          const currentX = startX + (targetX - startX) * ease;
+          elBuild.style.transform = `translateX(${currentX}px)`;
+
+          // Frank placed at left edge of BUILD, pushing rightward
+          const frankScreenX = currentX - 45;
+          const wPos = screenToWorld(frankScreenX, lineCenterY);
+          frank.position.set(wPos.x, wPos.y - 3.2, 0);
+        }, () => {
+          isWalking = false;
+          if (callback) setTimeout(callback, 650);
+        });
+      }
+
+      /* ------------------------------------------------------------------------
+         STAGE 2: Frank pushes "CREATE" from Right to 80% Left Space
+         Background smoothly transitions to Orange; Text of CREATE smoothly changes to Black
+         ------------------------------------------------------------------------ */
+      function runStep2(callback) {
+        if (!isModelLoaded) return;
+        setActiveStepPill(2);
+        pushDirection = -1; // Facing left
+        isWalking = true;
+
+        const rowRect = lineCreate.getBoundingClientRect();
+        const lineCenterY = rowRect.top + rowRect.height / 2 + 10;
+
+        const wordW = elCreate.offsetWidth || 440;
+        // Stops at 80% left side space (~18% from left edge)
+        const targetX = window.innerWidth * 0.18;
+        const startX = window.innerWidth + 60;
+
+        animateTransition(2400, (ease) => {
+          const currentX = startX + (targetX - startX) * ease;
+          elCreate.style.transform = `translateX(${currentX}px)`;
+
+          // Smooth background transition from whitish (#FAF8F5) to Orange (#FF6600)
+          const bgCol = lerpColor('#FAF8F5', '#FF6600', ease);
+          heroSection.style.backgroundColor = bgCol;
+          document.body.style.backgroundColor = bgCol;
+          globalGridLines.style.opacity = `${1 - ease * 0.75}`;
+
+          // Text color of CREATE changes from Orange (#FF6600) to Black (#111111) as orange appears
+          const txtCol = lerpColor('#FF6600', '#111111', ease);
+          elCreate.style.color = txtCol;
+
+          // Frank placed at right edge of CREATE, pushing leftward
+          const frankScreenX = currentX + wordW + 45;
+          const wPos = screenToWorld(frankScreenX, lineCenterY);
+          frank.position.set(wPos.x, wPos.y - 3.2, 0);
+        }, () => {
+          isWalking = false;
+          if (callback) setTimeout(callback, 650);
+        });
+      }
+
+      /* ------------------------------------------------------------------------
+         STAGE 3: Frank pushes "GROW" from Left to 80% Horizontal Screen Space
+         Background smoothly transitions from Orange back to White with texture restored
+         ------------------------------------------------------------------------ */
+      function runStep3(callback) {
+        if (!isModelLoaded) return;
+        setActiveStepPill(3);
+        pushDirection = 1; // Facing right
+        isWalking = true;
+
+        const rowRect = lineGrow.getBoundingClientRect();
+        const lineCenterY = rowRect.top + rowRect.height / 2 + 10;
+
+        const wordW = elGrow.offsetWidth || 340;
+        const targetX = (window.innerWidth * 0.80) - wordW;
+        const startX = -wordW - 50;
+
+        animateTransition(2200, (ease) => {
+          const currentX = startX + (targetX - startX) * ease;
+          elGrow.style.transform = `translateX(${currentX}px)`;
+
+          // Background transitions smoothly from Orange (#FF6600) back to whitish (#FAF8F5)
+          const bgCol = lerpColor('#FF6600', '#FAF8F5', ease);
+          heroSection.style.backgroundColor = bgCol;
+          document.body.style.backgroundColor = bgCol;
+          globalGridLines.style.opacity = `${0.25 + ease * 0.75}`;
+
+          // Word Grow is Orange
+          elGrow.style.color = '#FF6600';
+
+          // As bg returns to white, Create also returns to Orange on white background
+          const createTxtCol = lerpColor('#111111', '#FF6600', ease);
+          elCreate.style.color = createTxtCol;
+
+          // Frank placed at left edge of GROW, pushing rightward
+          const frankScreenX = currentX - 45;
+          const wPos = screenToWorld(frankScreenX, lineCenterY);
+          frank.position.set(wPos.x, wPos.y - 3.2, 0);
+        }, () => {
+          isWalking = false;
+          // Settle into proud resting posture
+          if (bones['CC_Base_Spine01']) bones['CC_Base_Spine01'].rotation.x = 0.04;
+          if (bones['CC_Base_L_Upperarm']) bones['CC_Base_L_Upperarm'].rotation.set(-0.25, 0.2, -0.4);
+          if (bones['CC_Base_R_Upperarm']) bones['CC_Base_R_Upperarm'].rotation.set(-0.25, -0.2, 0.4);
+          if (callback) callback();
+        });
+      }
+
+      window.replayHeroSequence = function() {
+        if (!isModelLoaded) return;
+        // Reset positions
+        elBuild.style.transform = 'translateX(-150%)';
+        elCreate.style.transform = 'translateX(150vw)';
+        elCreate.style.color = '#FF6600';
+        elGrow.style.transform = 'translateX(-150%)';
+        heroSection.style.backgroundColor = '#FAF8F5';
+        document.body.style.backgroundColor = '#FAF8F5';
+        globalGridLines.style.opacity = '1';
+
+        runStep1(() => {
+          runStep2(() => {
+            runStep3();
+          });
+        });
+      };
+
+      window.jumpToStep = function(step) {
+        if (!isModelLoaded) return;
+        if (step === 1) runStep1();
+        else if (step === 2) runStep2();
+        else if (step === 3) runStep3();
+      };
+
+      // Three.js Render Loop
+      const renderClock = new THREE.Clock();
+      function renderLoop() {
+        requestAnimationFrame(renderLoop);
+        const dt = renderClock.getDelta();
+        updateFrankPose(dt);
+        renderer.render(scene, camera);
+      }
+      renderLoop();
+
+      // Window Resize Handler
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+    })();
+  </script>
+</body>
+</html>
