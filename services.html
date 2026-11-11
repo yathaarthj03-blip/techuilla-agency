@@ -12,7 +12,7 @@
   <!-- Google Fonts: Syne & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800&family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
   <!-- Instant Transition Detection: Prevents ANY initial white flash / jerk on load -->
   <script>
@@ -1170,6 +1170,7 @@
 
     /* Trigger jackpot roll on major nav options, social buttons, and business enquiries */
     .menu-nav-link:hover .jackpot-reel-ladder,
+    .menu-nav-link.is-active .jackpot-reel-ladder,
     .menu-channel-item:hover .jackpot-reel-ladder,
     .menu-enquiries-btn:hover .jackpot-reel-ladder {
       transform: translateY(-75%);
@@ -1181,6 +1182,7 @@
       width: 100%;
       line-height: 1.15;
       text-align: center;
+      font-weight: 800;
     }
 
     .jackpot-rung.target {
@@ -4056,7 +4058,7 @@
     .roller-section {
       position: relative;
       width: 100%;
-      height: 320vh; /* Smooth, natural scroll track */
+      height: 420vh; /* Smooth, natural scroll track */
       background: transparent;
       z-index: 2;
     }
@@ -4408,7 +4410,7 @@
           <nav aria-label="Main Navigation">
             <ul class="menu-nav-list">
               <li>
-                <a href="#hero" class="menu-nav-link is-active" data-section="home">
+                <a href="index.html" class="menu-nav-link" data-section="home">
                   <span class="nav-text-wrap">
                     HOME
                     <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
@@ -4420,7 +4422,7 @@
                 </a>
               </li>
               <li>
-                <a href="services.html" class="menu-nav-link" data-section="services">
+                <a href="services.html" class="menu-nav-link is-active" data-section="services">
                   <span class="nav-text-wrap">
                     SERVICES
                     <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
@@ -4513,6 +4515,8 @@
           <div class="roller-column roller-col-bg" id="rollerColBg">
             <div class="roller-item">Developers</div>
             <div class="roller-item">Designers</div>
+            <div class="roller-item">Animators</div>
+            <div class="roller-item">Editors</div>
             <div class="roller-item">Marketers</div>
             <div class="roller-item">Creators</div>
             <div class="roller-item">Techuilla</div>
@@ -4522,6 +4526,8 @@
             <div class="roller-column roller-col-fg" id="rollerColFg">
               <div class="roller-item">Developers</div>
               <div class="roller-item">Designers</div>
+              <div class="roller-item">Animators</div>
+              <div class="roller-item">Editors</div>
               <div class="roller-item">Marketers</div>
               <div class="roller-item">Creators</div>
               <div class="roller-item">Techuilla</div>
@@ -4731,7 +4737,84 @@
       function openMenu() {
         if (!fullscreenMenu || isMenuCurrentlyOpen) return;
         isMenuCurrentlyOpen = true;
-        updateMenuWipeOrigin();
+        
+      /* ------------------------------------------------------------------------
+         6. JACKPOT CHARACTER REEL INITIALIZATION FOR NAV LINKS & BUTTONS
+         ------------------------------------------------------------------------ */
+      const JACKPOT_SYMBOLS = ['7', 'X', '9', 'K', 'Q', 'J', '8', '3', 'Z', 'W', 'V'];
+      const jackpotTargets = document.querySelectorAll('.menu-nav-link, .menu-channel-item, .menu-enquiries-btn');
+      
+      jackpotTargets.forEach(targetEl => {
+        const textWrap = targetEl.querySelector('.nav-text-wrap');
+        if (!textWrap) return;
+
+        const strikethrough = textWrap.querySelector('.nav-strikethrough, .nav-creative-strikethrough');
+        let rawText = '';
+        textWrap.childNodes.forEach(node => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            rawText += node.nodeValue;
+          }
+        });
+        rawText = rawText.trim();
+        if (!rawText) return;
+
+        textWrap.innerHTML = '';
+
+        const chars = rawText.split('');
+        chars.forEach((char, idx) => {
+          if (char === ' ') {
+            const spaceSlot = document.createElement('span');
+            spaceSlot.className = 'jackpot-char-slot jackpot-char-space';
+            spaceSlot.innerHTML = '&nbsp;';
+            spaceSlot.style.display = 'inline-block';
+            spaceSlot.style.width = '0.38em';
+            textWrap.appendChild(spaceSlot);
+            return;
+          }
+
+          const slot = document.createElement('span');
+          slot.className = 'jackpot-char-slot';
+          slot.style.setProperty('--char-idx', idx);
+
+          const isUpper = char === char.toUpperCase() && char !== char.toLowerCase();
+          const syms = isUpper ? ['7', 'X', 'K', 'Q', 'Z'] : ['7', 'x', 'k', 's', 'z'];
+          const r1 = syms[Math.floor(Math.random() * syms.length)];
+          const r2 = syms[Math.floor(Math.random() * syms.length)];
+
+          slot.innerHTML = `
+            <span class="jackpot-char-sizer" aria-hidden="true">${char}</span>
+            <span class="jackpot-reel-ladder">
+              <span class="jackpot-rung original">${char}</span>
+              <span class="jackpot-rung rung-rand-1">${r1}</span>
+              <span class="jackpot-rung rung-rand-2">${r2}</span>
+              <span class="jackpot-rung target">${char}</span>
+            </span>
+          `;
+          textWrap.appendChild(slot);
+        });
+
+        if (strikethrough) {
+          textWrap.appendChild(strikethrough);
+        }
+
+        targetEl.addEventListener('mouseenter', () => {
+          const rand1Elements = textWrap.querySelectorAll('.rung-rand-1');
+          const rand2Elements = textWrap.querySelectorAll('.rung-rand-2');
+          let ticks = 0;
+          const interval = setInterval(() => {
+            ticks++;
+            rand1Elements.forEach(el => {
+              el.textContent = JACKPOT_SYMBOLS[Math.floor(Math.random() * JACKPOT_SYMBOLS.length)];
+            });
+            rand2Elements.forEach(el => {
+              el.textContent = JACKPOT_SYMBOLS[Math.floor(Math.random() * JACKPOT_SYMBOLS.length)];
+            });
+            if (ticks > 8) clearInterval(interval);
+          }, 50);
+        });
+      });
+
+      updateMenuWipeOrigin();
         if (openMenuBtn) {
           openMenuBtn.classList.add('is-open');
           openMenuBtn.setAttribute('aria-label', 'Close Navigation Menu');
