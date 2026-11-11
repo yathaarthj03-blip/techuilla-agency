@@ -6036,20 +6036,28 @@ function triggerHomeTransition(e) {
           if (Math.abs(diff) > 0.4) {
             currentY += diff * 0.088; // Slower, heavier, more cinematic inertia
             window.scrollTo(0, currentY);
-            updatePortalScrub();
-            if (window.updateSolutionStageScrub) window.updateSolutionStageScrub();
-            if (window.updateProblemVeils) window.updateProblemVeils();
-            if (window.updateGalleryScrub) window.updateGalleryScrub();
-            if (window.updateFlagshipScrub) window.updateFlagshipScrub();
+            try {
+              updatePortalScrub();
+              if (window.updateSolutionStageScrub) window.updateSolutionStageScrub();
+              if (window.updateProblemVeils) window.updateProblemVeils();
+              if (window.updateGalleryScrub) window.updateGalleryScrub();
+              if (window.updateFlagshipScrub) window.updateFlagshipScrub();
+            } catch (err) {
+              console.error('Error during smoothScrollTick:', err);
+            }
             smoothScrollRafId = requestAnimationFrame(smoothScrollTick);
           } else {
             currentY = targetY;
             window.scrollTo(0, currentY);
-            updatePortalScrub();
-            if (window.updateSolutionStageScrub) window.updateSolutionStageScrub();
-            if (window.updateProblemVeils) window.updateProblemVeils();
-            if (window.updateGalleryScrub) window.updateGalleryScrub();
-            if (window.updateFlagshipScrub) window.updateFlagshipScrub();
+            try {
+              updatePortalScrub();
+              if (window.updateSolutionStageScrub) window.updateSolutionStageScrub();
+              if (window.updateProblemVeils) window.updateProblemVeils();
+              if (window.updateGalleryScrub) window.updateGalleryScrub();
+              if (window.updateFlagshipScrub) window.updateFlagshipScrub();
+            } catch (err) {
+              console.error('Error during smoothScrollTick end:', err);
+            }
             isSmoothScrolling = false;
             smoothScrollRafId = null;
           }
@@ -6059,10 +6067,14 @@ function triggerHomeTransition(e) {
           if (!isSmoothScrolling) {
             targetY = window.scrollY || 0;
             currentY = targetY;
-            updatePortalScrub();
-            if (window.updateSolutionStageScrub) window.updateSolutionStageScrub();
-            if (window.updateGalleryScrub) window.updateGalleryScrub();
-            if (window.updateFlagshipScrub) window.updateFlagshipScrub();
+            try {
+              updatePortalScrub();
+              if (window.updateSolutionStageScrub) window.updateSolutionStageScrub();
+              if (window.updateGalleryScrub) window.updateGalleryScrub();
+              if (window.updateFlagshipScrub) window.updateFlagshipScrub();
+            } catch (err) {
+              console.error('Error during scroll listener:', err);
+            }
           }
         }, { passive: true });
 
@@ -6422,6 +6434,19 @@ function triggerHomeTransition(e) {
 
         // Ensure all gallery background videos play silently, automatically, and looped with no controls
         const galleryVideos = rail.querySelectorAll('.gallery-video');
+        function ensureGalleryVideosPlaying() {
+          galleryVideos.forEach(vid => {
+            vid.muted = true;
+            vid.defaultMuted = true;
+            vid.setAttribute('muted', '');
+            vid.setAttribute('playsinline', '');
+            vid.removeAttribute('controls');
+            if (vid.paused) {
+              const p = vid.play();
+              if (p && typeof p.catch === 'function') p.catch(() => {});
+            }
+          });
+        }
 
         // High-Performance Stream-on-Demand Video Observer
         // Only streams & plays videos that are active/visible in viewport to conserve bandwidth and prevent socket stalls
@@ -6646,7 +6671,9 @@ function triggerHomeTransition(e) {
           const currentX = startPinnedOffset - (scrubProgress * (startPinnedOffset + maxScrollX));
           rail.style.transform = `translate3d(${currentX.toFixed(2)}px, 0, 0)`;
           updateGalleryVeilAnimations(1.0);
-          ensureGalleryVideosPlaying();
+          if (typeof ensureGalleryVideosPlaying === 'function') {
+            ensureGalleryVideosPlaying();
+          }
 
           // Active photo counter 1 to 10 (Image 6 begins around progress = 0.50)
           const activeIdx = Math.min(10, Math.max(1, Math.floor(progress * 10) + 1));
