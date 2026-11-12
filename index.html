@@ -3670,52 +3670,87 @@
        12. BOLD CTA SECTION ("HAVE AN IDEA? LET'S BUILD IT.")
        ========================================================================== */
     .cta-section {
-      padding: 140px 0;
+      padding: 160px 0 160px 0;
       border-bottom: 1px solid var(--border-subtle);
       position: relative;
       z-index: 2;
       background: #FFFFFF;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 520px;
+    }
+
+    /* ASCII Hands Container */
+    .ascii-hands-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1;
+    }
+
+    .ascii-hand-wrap {
+      position: relative;
+      width: 40%;
+      max-width: 580px;
+      min-width: 240px;
+      will-change: transform;
+      pointer-events: auto;
+      transition: transform 0.1s ease-out;
+    }
+
+    .ascii-hand-canvas {
+      display: block;
+      width: 100%;
+      height: auto;
     }
 
     .cta-container {
       max-width: 1540px;
       margin: 0 auto;
       padding: 0 32px;
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 48px;
+      justify-content: center;
+      text-align: center;
+      gap: 36px;
+      position: relative;
+      z-index: 10;
     }
 
     .cta-title {
       font-family: var(--font-sans);
-      font-size: clamp(44px, 5.8vw, 84px);
+      font-size: clamp(38px, 5.2vw, 76px);
       font-weight: 800;
       letter-spacing: -0.035em;
-      line-height: 1.0;
+      line-height: 1.05;
       text-transform: uppercase;
-      color: var(--text-primary);
+      color: #111111 !important; /* All Black Text in Center as requested */
+      text-align: center;
+      margin: 0;
     }
 
-    .cta-right-box {
+    .cta-btn-wrap {
       display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .cta-desc {
-      font-size: 18px;
-      line-height: 1.55;
-      color: var(--text-secondary);
+      justify-content: center;
+      width: 100%;
     }
 
     .btn-cta-large {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      padding: 20px 44px;
-      background: var(--color-orange);
+      gap: 14px;
+      padding: 20px 48px;
+      background: var(--color-orange, #FF6600);
       color: #FFFFFF;
       font-family: var(--font-sans);
       font-size: 16px;
@@ -3723,16 +3758,58 @@
       letter-spacing: 0.04em;
       text-transform: uppercase;
       text-decoration: none;
-      border-radius: var(--radius-full);
-      transition: all 0.3s var(--ease-editorial);
+      border-radius: var(--radius-full, 9999px);
+      transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
       width: fit-content;
-      box-shadow: 0 10px 24px rgba(244, 119, 50, 0.28);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 24px rgba(255, 102, 0, 0.3);
     }
 
     .btn-cta-large:hover {
-      background: #E06422;
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 16px 36px rgba(244, 119, 50, 0.4);
+      background: #E65500;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(255, 102, 0, 0.4);
+    }
+
+    .btn-arrow-mask {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 16px;
+      overflow: hidden;
+    }
+
+    .btn-arrow-icon {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+
+    .btn-cta-large:hover .btn-arrow-icon {
+      animation: quickArrowSlideAcross 380ms cubic-bezier(0.2, 0, 0, 1) forwards;
+    }
+
+    @keyframes quickArrowSlideAcross {
+      0% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      40% {
+        transform: translateX(220%);
+        opacity: 0;
+      }
+      41% {
+        transform: translateX(-220%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
     }
 
     /* ==========================================================================
@@ -5021,19 +5098,34 @@
 
 
   <!-- ==========================================================================
-       10. BOLD CTA SECTION ("HAVE AN IDEA? LET'S BUILD IT.")
+       10. BOLD CTA SECTION ("HAVE AN IDEA? LET'S BUILD IT.") WITH ASCII HANDS
        ========================================================================== -->
   <section class="cta-section" id="cta">
+    <!-- ASCII Hands (glide in on scroll + cursor cluster glow) -->
+    <div class="ascii-hands-container" id="asciiHandsContainer" aria-hidden="true">
+      <div class="ascii-hand-wrap left" id="asciiHandLeftWrap">
+        <canvas class="ascii-hand-canvas" id="asciiHandLeftCanvas"></canvas>
+      </div>
+      <div class="ascii-hand-wrap right" id="asciiHandRightWrap">
+        <canvas class="ascii-hand-canvas" id="asciiHandRightCanvas"></canvas>
+      </div>
+    </div>
+
     <div class="cta-container">
       <h2 class="cta-title">
         HAVE AN IDEA?<br>
-        <span class="accent-orange">LET'S BUILD IT.</span>
+        LET'S BUILD IT.
       </h2>
-      <div class="cta-right-box">
-        <p class="cta-desc">
-          Whether you need a full enterprise software rebuild, a custom AI platform, or an unforgettable brand launch, our team is ready to deliver.
-        </p>
-        <a href="contact.html" class="btn-cta-large">START A CONVERSATION →</a>
+      <div class="cta-btn-wrap">
+        <a href="contact.html" class="btn-cta-large" aria-label="Start a conversation">
+          <span>START A CONVERSATION</span>
+          <span class="btn-arrow-mask" aria-hidden="true">
+            <svg class="btn-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </span>
+        </a>
       </div>
     </div>
   </section>
@@ -7192,6 +7284,231 @@ function triggerHomeTransition(e) {
         });
       });
     }
-  </script>
+  
+      /* ------------------------------------------------------------------------
+         ASCII HANDS ENGINE (Interactive Cluster Glow & Parallax for CTA)
+         ------------------------------------------------------------------------ */
+      (function initAsciiHands() {
+        const root = document.getElementById('cta');
+        const leftWrap = document.getElementById('asciiHandLeftWrap');
+        const rightWrap = document.getElementById('asciiHandRightWrap');
+        const leftCanvas = document.getElementById('asciiHandLeftCanvas');
+        const rightCanvas = document.getElementById('asciiHandRightCanvas');
+
+        if (!root || !leftWrap || !rightWrap || !leftCanvas || !rightCanvas) return;
+
+        const DEFAULT_ASCII_CHARS = "........:::=+xX#0369";
+        const HIGHLIGHT_LIFETIME = 350;
+        const CLUSTER_SIZE = 12;
+        const PARALLAX_EASE = 0.05;
+
+        const columns = window.innerWidth < 768 ? 45 : 70;
+        const cellSize = window.innerWidth < 768 ? 14 : 18;
+        const fontSize = window.innerWidth < 768 ? 12 : 16;
+        const parallaxStrength = 22;
+        const hoverRadius = 8;
+
+        const charColor = "#803500";
+        const hoverColor = "#FF6600";
+        const hoverCharColor = "#111111";
+
+        const hands = [];
+
+        function buildHandCells(image, cols, asciiChars) {
+          const rows = Math.max(1, Math.round(cols / (image.naturalWidth / image.naturalHeight || 1)));
+          const sampler = document.createElement("canvas");
+          sampler.width = cols;
+          sampler.height = rows;
+          const sampleCtx = sampler.getContext("2d");
+          const cells = new Map();
+          if (!sampleCtx) return { rows, cells };
+
+          sampleCtx.drawImage(image, 0, 0, cols, rows);
+          const pixels = sampleCtx.getImageData(0, 0, cols, rows).data;
+          const backgroundCharIndex = asciiChars.lastIndexOf(".");
+
+          for (let row = 0; row < rows; row++) {
+            for (let col = 0; col < cols; col++) {
+              const offset = (row * cols + col) * 4;
+              const brightness = (pixels[offset] * 0.299 + pixels[offset + 1] * 0.587 + pixels[offset + 2] * 0.114) / 255;
+              const charIndex = Math.min(asciiChars.length - 1, Math.floor((1 - brightness) * asciiChars.length));
+              if (charIndex <= backgroundCharIndex) continue;
+
+              cells.set(`${col},${row}`, {
+                col,
+                row,
+                char: asciiChars[charIndex],
+                highlightEndTime: 0
+              });
+            }
+          }
+          return { rows, cells };
+        }
+
+        function setupHand(image, canvas, direction) {
+          const { rows, cells } = buildHandCells(image, columns, DEFAULT_ASCII_CHARS);
+          if (cells.size === 0) return;
+
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          canvas.width = columns * cellSize * dpr;
+          canvas.height = rows * cellSize * dpr;
+
+          const ctx = canvas.getContext("2d");
+          if (!ctx) return;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          ctx.font = `${fontSize}px monospace`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "alphabetic";
+
+          const metrics = ctx.measureText("X");
+          const glyphHeight = (metrics.actualBoundingBoxAscent || fontSize * 0.8) + (metrics.actualBoundingBoxDescent || 2);
+          const baselineOffset = cellSize / 2 + glyphHeight / 2 - (metrics.actualBoundingBoxDescent || 2);
+
+          hands.push({
+            canvas,
+            ctx,
+            cells,
+            cellList: Array.from(cells.values()),
+            rows,
+            columns,
+            cellSize,
+            baselineOffset,
+            direction
+          });
+        }
+
+        function loadHand(src, canvas, direction) {
+          const img = new Image();
+          img.crossOrigin = "anonymous";
+          img.onload = () => setupHand(img, canvas, direction);
+          img.src = src;
+          if (img.complete && img.naturalWidth) setupHand(img, canvas, direction);
+        }
+
+        loadHand("hand-left.jpg", leftCanvas, 1);
+        loadHand("hand-right.jpg", rightCanvas, -1);
+
+        function highlightCluster(cells, startCell) {
+          const now = Date.now();
+          startCell.highlightEndTime = now + HIGHLIGHT_LIFETIME;
+
+          const steps = Math.floor(Math.random() * CLUSTER_SIZE) + 1;
+          const litCells = [startCell];
+          let current = startCell;
+
+          for (let step = 0; step < steps; step++) {
+            const neighbours = [];
+            for (let dy = -1; dy <= 1; dy++) {
+              for (let dx = -1; dx <= 1; dx++) {
+                if (dx === 0 && dy === 0) continue;
+                const neighbour = cells.get(`${current.col + dx},${current.row + dy}`);
+                if (neighbour && !litCells.includes(neighbour)) neighbours.push(neighbour);
+              }
+            }
+            if (neighbours.length === 0) break;
+            const next = neighbours[Math.floor(Math.random() * neighbours.length)];
+            next.highlightEndTime = now + HIGHLIGHT_LIFETIME + step * 10;
+            litCells.push(next);
+            current = next;
+          }
+        }
+
+        function hoverHand(hand, clientX, clientY) {
+          const rect = hand.canvas.getBoundingClientRect();
+          if (rect.width === 0 || rect.height === 0) return;
+          const mouseCol = ((clientX - rect.left) / rect.width) * hand.columns;
+          const mouseRow = ((clientY - rect.top) / rect.height) * hand.rows;
+
+          let closest = null;
+          let closestDist = Infinity;
+          for (let i = 0; i < hand.cellList.length; i++) {
+            const cell = hand.cellList[i];
+            const dx = mouseCol - cell.col;
+            const dy = mouseRow - cell.row;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < closestDist) {
+              closestDist = dist;
+              closest = cell;
+            }
+          }
+          if (closest && closestDist <= hoverRadius) {
+            highlightCluster(hand.cells, closest);
+          }
+        }
+
+        const pointer = { x: 0, y: 0 };
+        const drift = { x: 0, y: 0 };
+        let curtainOffset = 125;
+        let isRevealed = false;
+
+        function onMouseMove(event) {
+          const rect = root.getBoundingClientRect();
+          const w = rect.width || 1;
+          const h = rect.height || 1;
+          pointer.x = ((event.clientX - rect.left) / w - 0.5) * parallaxStrength * 2;
+          pointer.y = ((event.clientY - rect.top) / h - 0.5) * parallaxStrength * 2;
+          for (let i = 0; i < hands.length; i++) {
+            hoverHand(hands[i], event.clientX, event.clientY);
+          }
+        }
+
+        window.addEventListener("mousemove", onMouseMove);
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              isRevealed = true;
+            }
+          });
+        }, { threshold: 0.15 });
+        observer.observe(root);
+
+        function renderHand(hand, now) {
+          const { ctx, cellList, cellSize: cs, baselineOffset, columns: cols, rows } = hand;
+          ctx.clearRect(0, 0, cols * cs, rows * cs);
+
+          for (let i = 0; i < cellList.length; i++) {
+            const cell = cellList[i];
+            const x = cell.col * cs;
+            const y = cell.row * cs;
+            const isHighlighted = cell.highlightEndTime > now;
+
+            if (isHighlighted) {
+              ctx.fillStyle = hoverColor;
+              ctx.fillRect(x, y, cs, cs);
+              ctx.fillStyle = hoverCharColor;
+            } else {
+              ctx.fillStyle = charColor;
+            }
+            ctx.fillText(cell.char, x + cs / 2, y + baselineOffset);
+          }
+        }
+
+        function frame() {
+          const now = Date.now();
+          for (let i = 0; i < hands.length; i++) {
+            renderHand(hands[i], now);
+          }
+
+          if (isRevealed && curtainOffset > 0) {
+            curtainOffset = Math.max(0, curtainOffset - 2.8);
+          }
+
+          drift.x += (pointer.x - drift.x) * PARALLAX_EASE;
+          drift.y += (pointer.y - drift.y) * PARALLAX_EASE;
+
+          if (leftWrap) {
+            leftWrap.style.transform = `translateX(${-curtainOffset}%) translate(${drift.x}px, ${-drift.y}px)`;
+          }
+          if (rightWrap) {
+            rightWrap.style.transform = `translateX(${curtainOffset}%) translate(${-drift.x}px, ${-drift.y}px)`;
+          }
+
+          requestAnimationFrame(frame);
+        }
+
+        requestAnimationFrame(frame);
+      })();
+</script>
 </body>
 </html>

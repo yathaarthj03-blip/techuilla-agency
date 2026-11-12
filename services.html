@@ -10,7 +10,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
 
-  <!-- Google Fonts: Inter 800 & Support Fonts -->
+  <!-- Google Fonts: Inter 800, Archivo & Support Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800&family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
@@ -24,12 +24,14 @@
       --color-orange: #FF6600;
       --color-orange-glow: #FFA040;
       --bg-cream: #FAF8F5;
+      --bg-warm: #F7F6F2;
       --font-hero: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-display: 'Archivo', 'Inter', sans-serif;
       --font-mono: 'Space Grotesk', monospace;
       --font-serif-italic: 'Newsreader', 'Times New Roman', Georgia, serif;
       --text-primary: #111111;
+      --text-secondary: #555555;
       --border-subtle: rgba(17, 17, 17, 0.08);
       --border-medium: rgba(17, 17, 17, 0.16);
       --radius-full: 9999px;
@@ -93,7 +95,7 @@
     }
 
     /* -------------------------------------------------------------------------
-       ENQUIRE / FULL-PAGE TRANSITION OVERLAY (Exact Home & Contact Parity)
+       ENQUIRE / FULL-PAGE TRANSITION OVERLAY
        ------------------------------------------------------------------------- */
     .enquire-transition-overlay {
       position: fixed;
@@ -181,7 +183,7 @@
     }
 
     /* -------------------------------------------------------------------------
-       STICKY MINIMAL NAVBAR (Exact Home Parity + Adaptive Theme Modes)
+       STICKY MINIMAL NAVBAR
        ------------------------------------------------------------------------- */
     .site-nav {
       position: fixed;
@@ -304,20 +306,25 @@
       transition: stroke 0.3s ease;
     }
 
-    /* When Orange sheet expands over page: navbar adapts to charcoal */
-    .site-nav.theme-orange-bg .nav-brand-text {
+    /* When Orange sheet expands or Light Pulled Page active: navbar adapts to charcoal */
+    .site-nav.theme-orange-bg .nav-brand-text,
+    .site-nav.theme-light-bg .nav-brand-text {
       color: #111111 !important;
     }
-    .site-nav.theme-orange-bg .nav-brand-logo {
+    .site-nav.theme-orange-bg .nav-brand-logo,
+    .site-nav.theme-light-bg .nav-brand-logo {
       filter: brightness(0) !important;
     }
-    .site-nav.theme-orange-bg .btn-menu {
+    .site-nav.theme-orange-bg .btn-menu,
+    .site-nav.theme-light-bg .btn-menu {
       border-color: rgba(17, 17, 17, 0.45) !important;
     }
-    .site-nav.theme-orange-bg .menu-morph-stroke {
+    .site-nav.theme-orange-bg .menu-morph-stroke,
+    .site-nav.theme-light-bg .menu-morph-stroke {
       stroke: #111111 !important;
     }
-    .site-nav.theme-orange-bg .btn-enquire {
+    .site-nav.theme-orange-bg .btn-enquire,
+    .site-nav.theme-light-bg .btn-enquire {
       background: #111111 !important;
       color: #FFFFFF !important;
       border-color: #111111 !important;
@@ -325,18 +332,19 @@
     }
 
     /* -------------------------------------------------------------------------
-       HERO STAGE & 3S KINETIC ORANGE VEIL (Same as "Your team is a software")
+       HERO STAGE & 3S KINETIC ORANGE VEIL
        ------------------------------------------------------------------------- */
     .services-scroll-track {
       position: relative;
       width: 100%;
-      height: 550vh;
+      height: 480vh;
       background: #000000;
     }
 
     .services-sticky-stage {
-      position: fixed;
-      inset: 0;
+      position: sticky;
+      top: 0;
+      left: 0;
       width: 100vw;
       height: 100vh;
       overflow: hidden;
@@ -364,7 +372,7 @@
       z-index: 2;
     }
 
-    /* Center Text Container with Per-Line Kinetic Orange Veil */
+    /* Center Text Container with Per-Line Kinetic Orange Veil (Non-fading) */
     .hero-text-container {
       position: relative;
       z-index: 10;
@@ -375,7 +383,6 @@
       gap: 14px;
       user-select: none;
       max-width: 95vw;
-      will-change: opacity;
     }
 
     .hero-line-wrap {
@@ -478,7 +485,7 @@
     }
 
     /* -------------------------------------------------------------------------
-       SCROLL-EXPANDING 16PX ORANGE LINE (Center -> Vertical Stretch -> Horizontal Stretch)
+       SCROLL-EXPANDING 16PX ORANGE LINE
        ------------------------------------------------------------------------- */
     .scroll-orange-line {
       position: absolute;
@@ -496,7 +503,7 @@
     }
 
     /* -------------------------------------------------------------------------
-       CASCADING PROJECT ZOOM TUNNEL (Images 1 -> 2 -> 3 from Center)
+       CASCADING PROJECT ZOOM TUNNEL (Cards 1 -> 2 -> 3 -> 4)
        ------------------------------------------------------------------------- */
     .project-zoom-container {
       position: absolute;
@@ -529,16 +536,13 @@
       box-shadow: 0 25px 80px rgba(0, 0, 0, 0.65);
     }
 
-    #projectCard1 {
-      z-index: 61;
-    }
-
-    #projectCard2 {
-      z-index: 62;
-    }
-
-    #projectCard3 {
-      z-index: 63;
+    #projectCard1 { z-index: 61; }
+    #projectCard2 { z-index: 62; }
+    #projectCard3 { z-index: 63; }
+    #projectCard4 {
+      z-index: 64;
+      background: var(--color-orange, #FF6600);
+      color: #111111;
     }
 
     .project-zoom-img {
@@ -549,31 +553,441 @@
       display: block;
     }
 
+    /* Card 4 Content: Orange Background Card with Non-Fading Bold Black Text */
+    .orange-card-content {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px;
+      user-select: none;
+    }
+
+    .orange-card-headline {
+      font-family: var(--font-hero);
+      font-size: clamp(34px, 5.2vw, 82px);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+      color: #111111;
+      max-width: 1100px;
+      margin: 0 auto;
+      opacity: 1; /* Stays in the card all the time without fade */
+    }
+
+    /* -------------------------------------------------------------------------
+       PULLED-UP CONTENT SECTION (Warm Cream + 80px Grid Texture + 200px SERVICES)
+       ------------------------------------------------------------------------- */
+    .services-pulled-sheet {
+      position: relative;
+      z-index: 100;
+      width: 100%;
+      background-color: var(--bg-warm, #F7F6F2);
+      color: var(--color-charcoal, #111111);
+      box-shadow: 0 -30px 90px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+    }
+
+    /* Signature Bauhaus/Swiss 80px Grid Texture from Home Page */
+    .pulled-grid-texture {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image: 
+        linear-gradient(to right, rgba(0, 0, 0, 0.055) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.055) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+
+    .services-title-wrap {
+      position: relative;
+      z-index: 2;
+      padding: 130px 48px 40px 48px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    /* 200px Top-Left Title with Random Letter-by-Letter Bottom-to-Top Reveal */
+    .services-massive-title {
+      font-family: var(--font-hero);
+      font-size: clamp(72px, 14vw, 200px);
+      font-weight: 900;
+      line-height: 0.88;
+      letter-spacing: -0.04em;
+      color: #111111;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 1px;
+      margin: 0;
+      user-select: none;
+    }
+
+    .char-mask {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: bottom;
+    }
+
+    .char-inner {
+      display: inline-block;
+      transform: translateY(115%);
+      opacity: 0;
+      will-change: transform, opacity;
+      transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: var(--rand-delay, 0s);
+    }
+
+    .services-massive-title.is-revealed .char-inner {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* -------------------------------------------------------------------------
+       CENTERED CTA SECTION WITH ASCII HANDS ("HAVE AN IDEA? LET'S BUILD IT.")
+       ------------------------------------------------------------------------- */
+    .cta-section.cta-centered-variant {
+      position: relative;
+      padding: 140px 24px 160px 24px;
+      overflow: hidden;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 520px;
+      z-index: 2;
+    }
+
+    /* ASCII Hands Canvas Wrappers */
+    .ascii-hands-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1;
+    }
+
+    .ascii-hand-wrap {
+      position: relative;
+      width: 40%;
+      max-width: 580px;
+      min-width: 240px;
+      will-change: transform;
+      pointer-events: auto;
+      transition: transform 0.1s ease-out;
+    }
+
+    .ascii-hand-canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .cta-center-content {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 36px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .cta-title-center {
+      font-family: var(--font-sans);
+      font-size: clamp(38px, 5.2vw, 76px);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      text-transform: uppercase;
+      color: #111111 !important;
+      text-align: center;
+      margin: 0;
+    }
+
+    .cta-btn-wrap {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    /* Start A Conversation Button with Quick Arrow Slide Hover Effect */
+    .btn-cta-large {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 20px 48px;
+      background: var(--color-orange, #FF6600);
+      color: #FFFFFF;
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: var(--radius-full, 9999px);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 24px rgba(255, 102, 0, 0.3);
+      transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-cta-large:hover {
+      background: #E65500;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(255, 102, 0, 0.4);
+    }
+
+    .btn-arrow-mask {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 16px;
+      overflow: hidden;
+    }
+
+    .btn-arrow-icon {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+
+    .btn-cta-large:hover .btn-arrow-icon {
+      animation: quickArrowSlideAcross 380ms cubic-bezier(0.2, 0, 0, 1) forwards;
+    }
+
+    @keyframes quickArrowSlideAcross {
+      0% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      40% {
+        transform: translateX(220%);
+        opacity: 0;
+      }
+      41% {
+        transform: translateX(-220%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* -------------------------------------------------------------------------
+       COMPACT EDITORIAL FOOTER (Matching Home Page)
+       ------------------------------------------------------------------------- */
+    .site-footer {
+      padding: 72px 0 44px 0;
+      background: #141518 !important;
+      border-top: 1px solid rgba(255, 102, 0, 0.2);
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-container {
+      max-width: 1540px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      border-bottom: 1px solid rgba(255, 102, 0, 0.15);
+      padding-bottom: 56px;
+    }
+
+    .footer-brand-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .footer-brand-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #FF6600 !important;
+    }
+
+    .footer-brand-logo-wrap span {
+      font-family: var(--font-sans);
+      font-weight: 800;
+      font-size: 23px;
+      color: #FF6600 !important;
+      letter-spacing: -0.02em;
+    }
+
+    .footer-brand-logo-wrap img {
+      height: 42px;
+      width: auto;
+      object-fit: contain;
+      filter: none !important;
+    }
+
+    .footer-tagline {
+      font-size: 17px;
+      color: #FFA366 !important;
+      max-width: 380px;
+      line-height: 1.55;
+      font-weight: 500;
+    }
+
+    .footer-elastic-stack {
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 14px 0 6px 0;
+      margin-top: 4px;
+      user-select: none;
+      position: relative;
+    }
+
+    .elastic-stack-item {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1C1E23;
+      border: 2px solid rgba(255, 102, 0, 0.35);
+      color: #FF6600;
+      text-decoration: none;
+      margin-left: -20px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+      transform: translateX(0px) scale(1);
+      transition-property: transform, box-shadow, z-index, background-color, border-color, color;
+      transition-duration: 700ms, 700ms, 0ms, 300ms, 300ms, 300ms;
+      transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: transform, box-shadow;
+      isolation: isolate;
+    }
+
+    .elastic-stack-item:first-child {
+      margin-left: 0;
+    }
+
+    .elastic-stack-item svg {
+      width: 22px;
+      height: 22px;
+      display: block;
+    }
+
+    .elastic-stack-item:hover {
+      background: #252830;
+      border-color: #FF6600;
+      color: #FFFFFF;
+      box-shadow: 0 8px 24px rgba(255, 102, 0, 0.35);
+    }
+
+    .footer-col-title {
+      font-family: var(--font-mono);
+      font-size: 14.5px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #FF6600 !important;
+      margin-bottom: 24px;
+    }
+
+    .footer-links-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .footer-link {
+      color: #FFA366 !important;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      transition: color 0.25s ease, transform 0.25s ease;
+      display: inline-block;
+      width: fit-content;
+    }
+
+    .footer-link:hover {
+      color: #FFFFFF !important;
+      transform: translateX(4px);
+    }
+
+    .footer-bottom-row {
+      max-width: 1540px;
+      margin: 0 auto;
+      padding: 32px 32px 0 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #8C8E96;
+    }
+
+    .btn-back-to-top {
+      background: transparent;
+      border: none;
+      color: #FF6600 !important;
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: color 0.25s ease, transform 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-back-to-top:hover {
+      color: #FFFFFF !important;
+      transform: translateY(-2px);
+    }
+
     /* Mobile Responsive */
+    @media (max-width: 900px) {
+      .footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 36px;
+      }
+      .ascii-hand-wrap {
+        width: 48%;
+        min-width: 160px;
+      }
+    }
+
     @media (max-width: 768px) {
-      .nav-inner {
-        padding: 16px 20px;
-      }
-      .nav-brand-logo {
-        height: 48px;
-      }
-      .nav-brand-text {
-        font-size: 22px;
-      }
-      .btn-enquire {
-        padding: 8px 16px;
-        font-size: 13px;
-      }
-      .hero-text-container {
-        gap: 6px;
-      }
-      .kinetic-veil-wrap {
-        padding: 2px 6px;
-      }
-      .kinetic-veil-text {
-        font-size: clamp(31px, 9vw, 53px);
-        white-space: normal;
-      }
+      .nav-inner { padding: 16px 20px; }
+      .nav-brand-logo { height: 48px; }
+      .nav-brand-text { font-size: 22px; }
+      .btn-enquire { padding: 8px 16px; font-size: 13px; }
+      .hero-text-container { gap: 6px; }
+      .kinetic-veil-wrap { padding: 2px 6px; }
+      .kinetic-veil-text { font-size: clamp(31px, 9vw, 53px); white-space: normal; }
+      .footer-container { grid-template-columns: 1fr; gap: 32px; }
+      .footer-bottom-row { flex-direction: column; gap: 16px; align-items: flex-start; }
+      .services-title-wrap { padding: 80px 24px 30px 24px; }
+      .services-massive-title { font-size: clamp(52px, 16vw, 110px); }
+      .cta-section.cta-centered-variant { padding: 100px 20px 120px 20px; }
+      .ascii-hands-container { opacity: 0.6; }
     }
 
     /* -------------------------------------------------------------------------
@@ -1438,12 +1852,12 @@
   </style>
 </head>
 <body>
-  <!-- Floating Minimal In-Page Orange Scroller Indicator (Exact Parity with Home Page) -->
+  <!-- Floating Minimal In-Page Orange Scroller Indicator -->
   <div class="custom-scroll-indicator" id="customScrollIndicator" aria-hidden="true">
     <div class="custom-scroll-thumb" id="customScrollThumb"></div>
   </div>
 
-  <!-- Orange Enquire/Navigation Transition Curtain (Exact Parity) -->
+  <!-- Orange Enquire/Navigation Transition Curtain -->
   <div class="enquire-transition-overlay" id="enquireTransitionOverlay" aria-hidden="true">
     <div class="transition-brand-box">
       <img src="Techuilla_logo.png" alt="Techuilla Logo" class="enquire-transition-logo" />
@@ -1744,15 +2158,15 @@
     </div>
   </div>
 
-  <!-- MAIN SCROLL TRACK -->
+  <!-- MAIN SCROLL TRACK (Hero & 4-Card Picture-to-Picture Zoom Tunnel) -->
   <main>
     <div class="services-scroll-track" id="scrollTrack">
       <div class="services-sticky-stage" id="stickyStage">
-        <!-- Background Office Image (attached in chat) -->
+        <!-- Background Office Image -->
         <img src="services_hero_clean.jpg" class="hero-bg" alt="Techuilla Office Studio" id="heroBg" />
         <div class="hero-vignette"></div>
 
-        <!-- Center Text with Per-Line Kinetic Orange Veil (Same as "Your team is a software") -->
+        <!-- Center Text with Per-Line Kinetic Orange Veil (Non-fading) -->
         <div class="hero-text-container" id="heroTextContainer">
           <div class="hero-line-wrap line-1">
             <span class="kinetic-veil-wrap">
@@ -1771,7 +2185,7 @@
         <!-- Centered 16px Line that stretches vertically then opens horizontally into whole page -->
         <div class="scroll-orange-line" id="scrollOrangeLine"></div>
 
-        <!-- Zooming Project Images (Cascading Zoom Tunnel Sequence) -->
+        <!-- Zooming Project Images & Orange Statement Card (Picture to Picture Sequence) -->
         <div class="project-zoom-container" id="projectZoomContainer">
           <div class="project-zoom-card" id="projectCard1">
             <img src="services_project_1.jpg" alt="Aurora Coffee Roasters Project" class="project-zoom-img" />
@@ -1782,9 +2196,143 @@
           <div class="project-zoom-card" id="projectCard3">
             <img src="services_project_3.jpg" alt="UNTITLED Clothing Co Project" class="project-zoom-img" />
           </div>
+          <!-- Card 4: Orange Background Card with Non-Fading Bold Text -->
+          <div class="project-zoom-card" id="projectCard4">
+            <div class="orange-card-content">
+              <h2 class="orange-card-headline">
+                Ideas without limits.<br>Growth without boundaries.
+              </h2>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- PULLED-UP CONTENT SECTION (Warm Cream + 80px Grid Texture + 200px SERVICES Title) -->
+    <section class="services-pulled-sheet" id="servicesPulledSheet">
+      <!-- Signature 80px Architectural Grid Texture from Home Page -->
+      <div class="pulled-grid-texture" aria-hidden="true"></div>
+
+      <!-- Top-Left 200px Title with Random Letter-by-Letter Reveal -->
+      <div class="services-title-wrap">
+        <h1 class="services-massive-title" id="servicesTitle" aria-label="SERVICES">
+          <span class="char-mask"><span class="char-inner" style="--rand-delay: 0.18s;">S</span></span>
+          <span class="char-mask"><span class="char-inner" style="--rand-delay: 0.35s;">E</span></span>
+          <span class="char-mask"><span class="char-inner" style="--rand-delay: 0.08s;">R</span></span>
+          <span class="char-mask"><span class="char-inner" style="--rand-delay: 0.28s;">V</span></span>
+          <span class="char-mask"><span class="char-inner" style="--rand-delay: 0.12s;">I</span></span>
+          <span class="char-mask"><span class="char-inner" style="--rand-delay: 0.42s;">C</span></span>
+          <span class="char-mask"><span class="char-inner" style="--rand-delay: 0.22s;">E</span></span>
+          <span class="char-mask"><span class="char-inner" style="--rand-delay: 0.32s;">S</span></span>
+        </h1>
+      </div>
+
+      <!-- Centered CTA Section with ASCII Hands -->
+      <div class="cta-section cta-centered-variant" id="servicesCtaSection">
+        <!-- ASCII Hands Canvases (Left & Right glide in on scroll + cursor cluster glow) -->
+        <div class="ascii-hands-container" id="asciiHandsContainer" aria-hidden="true">
+          <div class="ascii-hand-wrap left" id="asciiHandLeftWrap">
+            <canvas class="ascii-hand-canvas" id="asciiHandLeftCanvas"></canvas>
+          </div>
+          <div class="ascii-hand-wrap right" id="asciiHandRightWrap">
+            <canvas class="ascii-hand-canvas" id="asciiHandRightCanvas"></canvas>
+          </div>
+        </div>
+
+        <div class="cta-center-content">
+          <h2 class="cta-title cta-title-center">
+            HAVE AN IDEA?<br>LET'S BUILD IT.
+          </h2>
+          <div class="cta-btn-wrap">
+            <a href="contact.html" class="btn-cta-large" aria-label="Start a conversation">
+              <span>START A CONVERSATION</span>
+              <span class="btn-arrow-mask" aria-hidden="true">
+                <svg class="btn-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Site Footer with Elastic Stack -->
+<footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-brand-col">
+        <a href="index.html" class="footer-brand-logo-wrap">
+          <img src="Techuilla_logo.png" alt="Techuilla Agency Logo" style="height: 42px; width: auto; object-fit: contain;">
+          <span style="font-family: var(--font-sans); font-weight: 800; font-size: 23px; color: #FF6600 !important; letter-spacing: -0.02em;">Techuilla Agency</span>
+        </a>
+        <p class="footer-tagline">
+          Creative Technology & Digital Marketing Agency. Turning ambitious ideas into high-impact systems.
+        </p>
+
+        <!-- ELASTIC STACK FOR SOCIAL MEDIAS (WhatsApp, Instagram, GitHub, LinkedIn) -->
+        <div class="footer-elastic-stack" id="footerElasticStack" aria-label="Social media channels">
+          <a href="https://wa.me/917700014486" target="_blank" rel="noopener noreferrer" class="elastic-stack-item" data-index="0" data-brand="whatsapp" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.42 0-2.82-.37-4.06-1.07l-.29-.17-3.12.82.83-3.04-.19-.3a8.212 8.212 0 0 1-1.25-4.47c0-4.54 3.7-8.24 8.24-8.24zm4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.25-1.5-1.4-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.13-.15.17-.25.25-.42.08-.17.04-.32-.02-.45s-.56-1.35-.77-1.85c-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.44.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.17-.47-.3z"/>
+            </svg>
+          </a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="elastic-stack-item" data-index="1" data-brand="instagram" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+          <a href="https://github.com/yathaarthj03-blip" target="_blank" rel="noopener noreferrer" class="elastic-stack-item" data-index="2" data-brand="github" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+          </a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="elastic-stack-item" data-index="3" data-brand="linkedin" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">NAVIGATION</div>
+        <ul class="footer-links-list">
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="services.html" class="footer-link">Services</a></li>
+          <li><a href="index.html#work" class="footer-link">Work</a></li>
+          <li><a href="index.html#about" class="footer-link">About</a></li>
+          <li><a href="contact.html" class="footer-link">Book a meeting</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">CAPABILITIES</div>
+        <ul class="footer-links-list">
+          <li><a href="services.html" class="footer-link">Headless Commerce</a></li>
+          <li><a href="services.html" class="footer-link">Full-Stack Web & Mobile</a></li>
+          <li><a href="services.html" class="footer-link">AI & Predictive Telemetry</a></li>
+          <li><a href="services.html" class="footer-link">Brand Identity & 3D</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">CONTACT</div>
+        <ul class="footer-links-list">
+          <li><a href="mailto:techuilla.co@gmail.com" class="footer-link">techuilla.co@gmail.com</a></li>
+          <li><a href="tel:+917700014486" class="footer-link">+91 7700014486</a></li>
+          <li><span class="footer-link" style="color: #2A2B30; font-weight: 500;">Mumbai, India</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom-row">
+      <span>© 2026 Techuilla Agency. All rights reserved.</span>
+      <button class="btn-back-to-top" id="btnBackToTop" aria-label="Back to Top">
+        BACK TO TOP ↑
+      </button>
+    </div>
+  </footer>
+    </section>
   </main>
 
   <script>
@@ -1792,7 +2340,7 @@
       'use strict';
 
       /* ------------------------------------------------------------------------
-         1. TRANSITION HANDLING (Exact Home & Contact Parity)
+         1. TRANSITION HANDLING
          ------------------------------------------------------------------------ */
       const urlParams = new URLSearchParams(window.location.search);
       const isTransition = urlParams.get('transition');
@@ -1805,13 +2353,11 @@
         overlay.style.setProperty('--wipe-y', `${originY}px`);
 
         if (isTransition) {
-          // Start 100% solid orange
           overlay.style.transition = 'none';
           overlay.classList.add('is-covering');
           overlay.classList.remove('is-closing');
           void overlay.offsetWidth;
 
-          // Shrink back into origin over 1000ms
           requestAnimationFrame(() => {
             overlay.style.transition = 'clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1), -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1)';
             overlay.classList.remove('is-covering', 'is-active');
@@ -1865,7 +2411,7 @@
       }
 
       /* ------------------------------------------------------------------------
-         2. FULLSCREEN NAVIGATION MENU ENGINE (Exact Home Parity)
+         2. FULLSCREEN NAVIGATION MENU ENGINE
          ------------------------------------------------------------------------ */
       const openMenuBtn = document.getElementById('open-menu-btn');
       const fullscreenMenu = document.getElementById('fullscreen-menu');
@@ -1893,7 +2439,6 @@
 
       let menuMorphT = 0;
       let menuMorphAnimId = null;
-      let isMenuCurrentlyOpen = false;
 
       function renderMenuMorph(t) {
         if (!menuStrokeTop || !menuStrokeBottom || !openMenuBtn) return;
@@ -1951,7 +2496,6 @@
         fullscreenMenu.classList.remove('is-closing');
         fullscreenMenu.classList.add('is-open');
         document.body.classList.add('menu-open');
-        isMenuCurrentlyOpen = true;
         animateMenuMorph(1, 600);
       }
 
@@ -1960,7 +2504,6 @@
         fullscreenMenu.classList.remove('is-open');
         fullscreenMenu.classList.add('is-closing');
         document.body.classList.remove('menu-open');
-        isMenuCurrentlyOpen = false;
         animateMenuMorph(0, 500);
         setTimeout(() => {
           fullscreenMenu.classList.remove('is-closing');
@@ -2061,27 +2604,32 @@
       });
 
       /* ------------------------------------------------------------------------
-         4. SCROLL-EXPANDING ORANGE LINE & CASCADING PROJECT ZOOM ENGINE
+         4. SCROLL-EXPANDING ORANGE LINE & 4-CARD PICTURE-TO-PICTURE ZOOM ENGINE
          ------------------------------------------------------------------------ */
       const scrollTrack = document.getElementById('scrollTrack');
       const orangeLine = document.getElementById('scrollOrangeLine');
       const card1 = document.getElementById('projectCard1');
       const card2 = document.getElementById('projectCard2');
       const card3 = document.getElementById('projectCard3');
+      const card4 = document.getElementById('projectCard4');
       const heroTextContainer = document.getElementById('heroTextContainer');
+      const servicesPulledSheet = document.getElementById('servicesPulledSheet');
+      const servicesTitle = document.getElementById('servicesTitle');
 
       let currentScrollProgress = 0;
       let targetScrollProgress = 0;
 
       function updateScrollProgress() {
-        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        if (maxScroll <= 0) return;
-        const scrolled = window.pageYOffset || document.documentElement.scrollTop || 0;
-        targetScrollProgress = Math.max(0, Math.min(1, scrolled / maxScroll));
+        if (!scrollTrack) return;
+        const trackRect = scrollTrack.getBoundingClientRect();
+        const maxTrackScroll = scrollTrack.offsetHeight - window.innerHeight;
+        if (maxTrackScroll <= 0) return;
+
+        const scrolledInsideTrack = -trackRect.top;
+        targetScrollProgress = Math.max(0, Math.min(1, scrolledInsideTrack / maxTrackScroll));
       }
 
       function tickScrollPhysics() {
-        // Silky 120fps lerp inertia
         currentScrollProgress += (targetScrollProgress - currentScrollProgress) * 0.15;
         const P = currentScrollProgress;
 
@@ -2103,7 +2651,7 @@
             orangeLine.style.height = `${h.toFixed(1)}px`;
             if (siteNav) siteNav.classList.remove('theme-orange-bg');
           } else if (P <= 0.35) {
-            const hProgress = (P - 0.15) / 0.20; // 0 to 1
+            const hProgress = (P - 0.15) / 0.20;
             const w = 16 + hProgress * (window.innerWidth - 16);
             orangeLine.style.opacity = '1';
             orangeLine.style.height = `${window.innerHeight}px`;
@@ -2125,19 +2673,20 @@
 
         // Background text remains as it is without fading away on scroll
 
-        // 2. Cascading Project Zoom Tunnel Sequence
-        // At 40% horizontal opening of the orange background: hProgress = 0.40 -> P = 0.15 + 0.40 * 0.20 = 0.23
+        // 2. Cascading 4-Card Picture-to-Picture Zoom Sequence
+        // Starts at 40% horizontal opening: hProgress = 0.40 -> P = 0.15 + 0.40 * 0.20 = 0.23
         const P_START = 0.23;
         if (P < P_START) {
           if (card1) { card1.style.visibility = 'hidden'; card1.style.opacity = '0'; card1.style.transform = 'translate(-50%, -50%) scale(0)'; }
           if (card2) { card2.style.visibility = 'hidden'; card2.style.opacity = '0'; card2.style.transform = 'translate(-50%, -50%) scale(0)'; }
           if (card3) { card3.style.visibility = 'hidden'; card3.style.opacity = '0'; card3.style.transform = 'translate(-50%, -50%) scale(0)'; }
+          if (card4) { card4.style.visibility = 'hidden'; card4.style.opacity = '0'; card4.style.transform = 'translate(-50%, -50%) scale(0)'; }
         } else {
           const u = Math.min(1, Math.max(0, (P - P_START) / (1.0 - P_START)));
-          // Master growth parameter X in [0, 1.80]
-          const X = u * 1.80;
+          // Master growth parameter X in [0, 2.20]
+          const X = u * 2.20;
 
-          // Card 1: starts at X = 0, continues enlarging until Card 2 covers it completely (X >= 1.40)
+          // Card 1: starts at X = 0, continues enlarging until Card 2 covers it completely (X >= 1.45)
           const s1 = X;
           if (card1) {
             if (s1 <= 0.001 || X >= 1.45) {
@@ -2154,7 +2703,7 @@
           }
 
           // Card 2: starts when Card 1 reaches 40% (X = 0.40)
-          // Enlarges until Card 3 covers it completely (X >= 1.80)
+          // Enlarges until Card 3 covers it completely (X >= 1.85)
           const s2 = X - 0.40;
           if (card2) {
             if (s2 <= 0.001 || X >= 1.85) {
@@ -2172,10 +2721,10 @@
           }
 
           // Card 3: starts when Card 2 reaches 40% (s2 = 0.40 -> X = 0.80)
-          // Enlarges until 100% full screen (X = 1.80 -> s3 = 1.0)
+          // Enlarges until Card 4 covers it completely (X >= 2.25)
           const s3 = X - 0.80;
           if (card3) {
-            if (s3 <= 0.001) {
+            if (s3 <= 0.001 || X >= 2.25) {
               card3.style.visibility = 'hidden';
               card3.style.opacity = '0';
               card3.style.transform = 'translate(-50%, -50%) scale(0)';
@@ -2189,12 +2738,39 @@
             }
           }
 
+          // Card 4: Orange Background Card with Non-Fading Text
+          // Starts when Card 3 reaches 40% (s3 = 0.40 -> X = 1.20)
+          // Enlarges until 100% full screen (X = 2.20 -> s4 = 1.0)
+          const s4 = X - 1.20;
+          if (card4) {
+            if (s4 <= 0.001) {
+              card4.style.visibility = 'hidden';
+              card4.style.opacity = '0';
+              card4.style.transform = 'translate(-50%, -50%) scale(0)';
+            } else {
+              card4.style.visibility = 'visible';
+              card4.style.opacity = `${Math.min(1, s4 / 0.04).toFixed(3)}`;
+              card4.style.transform = `translate(-50%, -50%) scale(${s4.toFixed(4)})`;
+              const br4 = Math.max(0, (1 - s4) * 20);
+              card4.style.borderRadius = `${br4.toFixed(1)}px`;
+              card4.style.boxShadow = `0 ${Math.round(s4 * 25)}px ${Math.round(s4 * 70)}px rgba(0, 0, 0, 0.75)`;
+            }
+          }
+
           // Navbar theme switching
           if (siteNav) {
-            if (s1 > 0.65 || s2 > 0.35 || s3 > 0.15) {
+            const pulledRect = servicesPulledSheet ? servicesPulledSheet.getBoundingClientRect() : null;
+            if (pulledRect && pulledRect.top <= 80) {
               siteNav.classList.remove('theme-orange-bg');
+              siteNav.classList.add('theme-light-bg');
+            } else if (s4 > 0.40) {
+              siteNav.classList.add('theme-orange-bg');
+              siteNav.classList.remove('theme-light-bg');
+            } else if (s1 > 0.65 || s2 > 0.35 || s3 > 0.15) {
+              siteNav.classList.remove('theme-orange-bg', 'theme-light-bg');
             } else if (P >= 0.22) {
               siteNav.classList.add('theme-orange-bg');
+              siteNav.classList.remove('theme-light-bg');
             }
           }
         }
@@ -2208,7 +2784,308 @@
       requestAnimationFrame(tickScrollPhysics);
 
       /* ------------------------------------------------------------------------
-         5. CUSTOM MINIMAL ORANGE SCROLLER (Exact Parity with Home Page)
+         5. RANDOM LETTER-BY-LETTER SERVICES TITLE OBSERVER
+         ------------------------------------------------------------------------ */
+      if (servicesTitle) {
+        const titleObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              servicesTitle.classList.add('is-revealed');
+            }
+          });
+        }, { threshold: 0.15 });
+        titleObserver.observe(servicesTitle);
+      }
+
+      /* ------------------------------------------------------------------------
+         6. ASCII HANDS ENGINE (Interactive Cluster Glow & Parallax)
+         ------------------------------------------------------------------------ */
+      function initAsciiHands() {
+        const root = document.getElementById('servicesCtaSection') || document.querySelector('.cta-section');
+        const leftWrap = document.getElementById('asciiHandLeftWrap');
+        const rightWrap = document.getElementById('asciiHandRightWrap');
+        const leftCanvas = document.getElementById('asciiHandLeftCanvas');
+        const rightCanvas = document.getElementById('asciiHandRightCanvas');
+
+        if (!root || !leftWrap || !rightWrap || !leftCanvas || !rightCanvas) return;
+
+        const DEFAULT_ASCII_CHARS = "........:::=+xX#0369";
+        const HIGHLIGHT_LIFETIME = 350;
+        const CLUSTER_SIZE = 12;
+        const PARALLAX_EASE = 0.05;
+
+        const columns = window.innerWidth < 768 ? 45 : 70;
+        const cellSize = window.innerWidth < 768 ? 14 : 18;
+        const fontSize = window.innerWidth < 768 ? 12 : 16;
+        const parallaxStrength = 22;
+        const hoverRadius = 8;
+
+        const charColor = "#803500";       // light orange / warm copper
+        const hoverColor = "#FF6600";      // brand vibrant orange
+        const hoverCharColor = "#111111";  // dark glyph on hover cell
+
+        const hands = [];
+
+        function buildHandCells(image, cols, asciiChars) {
+          const rows = Math.max(1, Math.round(cols / (image.naturalWidth / image.naturalHeight || 1)));
+          const sampler = document.createElement("canvas");
+          sampler.width = cols;
+          sampler.height = rows;
+          const sampleCtx = sampler.getContext("2d");
+          const cells = new Map();
+          if (!sampleCtx) return { rows, cells };
+
+          sampleCtx.drawImage(image, 0, 0, cols, rows);
+          const pixels = sampleCtx.getImageData(0, 0, cols, rows).data;
+          const backgroundCharIndex = asciiChars.lastIndexOf(".");
+
+          for (let row = 0; row < rows; row++) {
+            for (let col = 0; col < cols; col++) {
+              const offset = (row * cols + col) * 4;
+              const brightness = (pixels[offset] * 0.299 + pixels[offset + 1] * 0.587 + pixels[offset + 2] * 0.114) / 255;
+              const charIndex = Math.min(asciiChars.length - 1, Math.floor((1 - brightness) * asciiChars.length));
+              if (charIndex <= backgroundCharIndex) continue;
+
+              cells.set(`${col},${row}`, {
+                col,
+                row,
+                char: asciiChars[charIndex],
+                highlightEndTime: 0
+              });
+            }
+          }
+          return { rows, cells };
+        }
+
+        function setupHand(image, canvas, direction) {
+          const { rows, cells } = buildHandCells(image, columns, DEFAULT_ASCII_CHARS);
+          if (cells.size === 0) return;
+
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          canvas.width = columns * cellSize * dpr;
+          canvas.height = rows * cellSize * dpr;
+
+          const ctx = canvas.getContext("2d");
+          if (!ctx) return;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          ctx.font = `${fontSize}px monospace`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "alphabetic";
+
+          const metrics = ctx.measureText("X");
+          const glyphHeight = (metrics.actualBoundingBoxAscent || fontSize * 0.8) + (metrics.actualBoundingBoxDescent || 2);
+          const baselineOffset = cellSize / 2 + glyphHeight / 2 - (metrics.actualBoundingBoxDescent || 2);
+
+          hands.push({
+            canvas,
+            ctx,
+            cells,
+            cellList: Array.from(cells.values()),
+            rows,
+            columns,
+            cellSize,
+            baselineOffset,
+            direction
+          });
+        }
+
+        function loadHand(src, canvas, direction) {
+          const img = new Image();
+          img.crossOrigin = "anonymous";
+          img.onload = () => setupHand(img, canvas, direction);
+          img.src = src;
+          if (img.complete && img.naturalWidth) setupHand(img, canvas, direction);
+        }
+
+        loadHand("hand-left.jpg", leftCanvas, 1);
+        loadHand("hand-right.jpg", rightCanvas, -1);
+
+        function highlightCluster(cells, startCell) {
+          const now = Date.now();
+          startCell.highlightEndTime = now + HIGHLIGHT_LIFETIME;
+
+          const steps = Math.floor(Math.random() * CLUSTER_SIZE) + 1;
+          const litCells = [startCell];
+          let current = startCell;
+
+          for (let step = 0; step < steps; step++) {
+            const neighbours = [];
+            for (let dy = -1; dy <= 1; dy++) {
+              for (let dx = -1; dx <= 1; dx++) {
+                if (dx === 0 && dy === 0) continue;
+                const neighbour = cells.get(`${current.col + dx},${current.row + dy}`);
+                if (neighbour && !litCells.includes(neighbour)) neighbours.push(neighbour);
+              }
+            }
+            if (neighbours.length === 0) break;
+            const next = neighbours[Math.floor(Math.random() * neighbours.length)];
+            next.highlightEndTime = now + HIGHLIGHT_LIFETIME + step * 10;
+            litCells.push(next);
+            current = next;
+          }
+        }
+
+        function hoverHand(hand, clientX, clientY) {
+          const rect = hand.canvas.getBoundingClientRect();
+          if (rect.width === 0 || rect.height === 0) return;
+          const mouseCol = ((clientX - rect.left) / rect.width) * hand.columns;
+          const mouseRow = ((clientY - rect.top) / rect.height) * hand.rows;
+
+          let closest = null;
+          let closestDist = Infinity;
+          for (let i = 0; i < hand.cellList.length; i++) {
+            const cell = hand.cellList[i];
+            const dx = mouseCol - cell.col;
+            const dy = mouseRow - cell.row;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < closestDist) {
+              closestDist = dist;
+              closest = cell;
+            }
+          }
+          if (closest && closestDist <= hoverRadius) {
+            highlightCluster(hand.cells, closest);
+          }
+        }
+
+        const pointer = { x: 0, y: 0 };
+        const drift = { x: 0, y: 0 };
+        let curtainOffset = 125;
+        let isRevealed = false;
+
+        function onMouseMove(event) {
+          const rect = root.getBoundingClientRect();
+          const w = rect.width || 1;
+          const h = rect.height || 1;
+          pointer.x = ((event.clientX - rect.left) / w - 0.5) * parallaxStrength * 2;
+          pointer.y = ((event.clientY - rect.top) / h - 0.5) * parallaxStrength * 2;
+          for (let i = 0; i < hands.length; i++) {
+            hoverHand(hands[i], event.clientX, event.clientY);
+          }
+        }
+
+        window.addEventListener("mousemove", onMouseMove);
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              isRevealed = true;
+            }
+          });
+        }, { threshold: 0.15 });
+        observer.observe(root);
+
+        function renderHand(hand, now) {
+          const { ctx, cellList, cellSize: cs, baselineOffset, columns: cols, rows } = hand;
+          ctx.clearRect(0, 0, cols * cs, rows * cs);
+
+          for (let i = 0; i < cellList.length; i++) {
+            const cell = cellList[i];
+            const x = cell.col * cs;
+            const y = cell.row * cs;
+            const isHighlighted = cell.highlightEndTime > now;
+
+            if (isHighlighted) {
+              ctx.fillStyle = hoverColor;
+              ctx.fillRect(x, y, cs, cs);
+              ctx.fillStyle = hoverCharColor;
+            } else {
+              ctx.fillStyle = charColor;
+            }
+            ctx.fillText(cell.char, x + cs / 2, y + baselineOffset);
+          }
+        }
+
+        function frame() {
+          const now = Date.now();
+          for (let i = 0; i < hands.length; i++) {
+            renderHand(hands[i], now);
+          }
+
+          if (isRevealed && curtainOffset > 0) {
+            curtainOffset = Math.max(0, curtainOffset - 2.8);
+          }
+
+          drift.x += (pointer.x - drift.x) * PARALLAX_EASE;
+          drift.y += (pointer.y - drift.y) * PARALLAX_EASE;
+
+          if (leftWrap) {
+            leftWrap.style.transform = `translateX(${-curtainOffset}%) translate(${drift.x}px, ${ -drift.y }px)`;
+          }
+          if (rightWrap) {
+            rightWrap.style.transform = `translateX(${curtainOffset}%) translate(${ -drift.x }px, ${ -drift.y }px)`;
+          }
+
+          requestAnimationFrame(frame);
+        }
+
+        requestAnimationFrame(frame);
+      }
+
+      initAsciiHands();
+
+      /* ------------------------------------------------------------------------
+         7. FOOTER ELASTIC STACK ENGINE
+         ------------------------------------------------------------------------ */
+      function initFooterElasticStack() {
+        const stacks = document.querySelectorAll('.footer-elastic-stack');
+        stacks.forEach(stack => {
+          const items = Array.from(stack.querySelectorAll('.elastic-stack-item'));
+          const total = items.length;
+          const overlap = 20;
+          const pushForce = 14;
+
+          function applyTransforms(hoveredIdx) {
+            items.forEach((item, i) => {
+              let translateX = 0;
+              let scale = 1;
+              let zIndex = i;
+              const isHovered = hoveredIdx === i;
+
+              if (hoveredIdx !== null) {
+                if (i > hoveredIdx) {
+                  translateX = Math.max(
+                    Math.min(pushForce * (total - i - 1), overlap),
+                    overlap - pushForce * (i - hoveredIdx - 1)
+                  );
+                } else if (i < hoveredIdx) {
+                  translateX = -Math.min(pushForce * i, overlap);
+                } else {
+                  scale = 1.25;
+                  zIndex = 100;
+                }
+              }
+
+              item.style.transform = `translateX(${translateX}px) scale(${scale})`;
+              item.style.zIndex = zIndex;
+              if (isHovered) {
+                item.style.boxShadow = '0 8px 24px rgba(255, 102, 0, 0.45)';
+              } else {
+                item.style.boxShadow = '0 4px 14px rgba(0, 0, 0, 0.5)';
+              }
+            });
+          }
+
+          items.forEach((item, i) => {
+            item.addEventListener('mouseenter', () => applyTransforms(i));
+          });
+
+          stack.addEventListener('mouseleave', () => applyTransforms(null));
+        });
+      }
+
+      initFooterElasticStack();
+
+      // Back to top button
+      const btnBackToTop = document.getElementById('btnBackToTop');
+      if (btnBackToTop) {
+        btnBackToTop.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+      /* ------------------------------------------------------------------------
+         8. CUSTOM MINIMAL ORANGE SCROLLER (Exact Parity with Home Page)
          ------------------------------------------------------------------------ */
       (function initCustomOrangeScroller() {
         const indicator = document.getElementById('customScrollIndicator');
@@ -2225,7 +3102,7 @@
             return;
           }
 
-          const trackHeight = window.innerHeight - 36; // 18px top & bottom
+          const trackHeight = window.innerHeight - 36;
           const thumbHeight = Math.max(36, Math.min(110, (window.innerHeight / document.documentElement.scrollHeight) * trackHeight));
           thumb.style.height = `${thumbHeight}px`;
 
