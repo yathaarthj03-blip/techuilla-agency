@@ -3703,7 +3703,7 @@
       min-width: 240px;
       will-change: transform;
       pointer-events: auto;
-      transition: transform 0.1s ease-out;
+      transition: none;
     }
 
     .ascii-hand-canvas {
@@ -7440,19 +7440,37 @@ function triggerHomeTransition(e) {
         const drift = { x: 0, y: 0 };
         let currentOffset = 120;
         let targetOffset = 120;
+        let initialized = false;
 
-        // Interactive scroll-driven ease-in hand approach:
-        // Scroll down -> hands come closer together slowly
-        // Scroll up -> hands go backwards towards the edges
+        // Interactive scroll-driven hands:
+        // As this specific section's 10% is visible, hands are 25% revealed already.
+        // Remainder reveals smoothly in and out based on scrolling through the section.
         function updateHandScroll() {
           const rect = root.getBoundingClientRect();
           const vh = window.innerHeight;
-          const maxTravel = root.offsetHeight + vh * 0.6;
-          const rawProgress = Math.max(0, Math.min(1, (vh - rect.top) / maxTravel));
-          // Ease-in curve: starts very slowly and accelerates gradually as user scrolls into footer
-          const easeIn = Math.pow(rawProgress, 2.2);
-          // Moves from 120% (back at edges) down to -10% (close together)
-          targetOffset = 120 * (1 - easeIn) - (easeIn * 10);
+          const h = root.offsetHeight || 1;
+          const visiblePx = vh - rect.top;
+          const visibleFraction = visiblePx / h;
+
+          let reveal = 0;
+          if (visibleFraction <= 0) {
+            reveal = 0;
+          } else if (visibleFraction <= 0.10) {
+            // As 10% of this section is visible, hands are 25% revealed already
+            reveal = (visibleFraction / 0.10) * 0.25;
+          } else {
+            // Remaining 75% reveals smoothly based on scroll through the section
+            const restProgress = Math.min(1, Math.max(0, (visibleFraction - 0.10) / 0.85));
+            reveal = 0.25 + 0.75 * restProgress;
+          }
+
+          // Target offset moves from 120% (hidden outside) down to -10% (converged together)
+          targetOffset = 120 - reveal * 130;
+
+          if (!initialized) {
+            currentOffset = targetOffset;
+            initialized = true;
+          }
         }
 
         window.addEventListener('scroll', updateHandScroll, { passive: true });
