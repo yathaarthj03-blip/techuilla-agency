@@ -19,6 +19,41 @@
     /* -------------------------------------------------------------------------
        DESIGN TOKENS & RESET
        ------------------------------------------------------------------------- */
+    /* Disable blinking typing caret across entire document */
+    *, *::before, *::after {
+      caret-color: transparent !important;
+    }
+    input, textarea, [contenteditable="true"] {
+      caret-color: auto !important;
+    }
+
+    /* Prevent cursor from turning into text typing I-beam on text */
+    html, body, h1, h2, h3, h4, h5, h6, p, span, div, section, article, aside, header, footer, nav, label, strong, em, b, i, li, ul, ol {
+      cursor: default;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    /* Interactive elements keep pointer cursor */
+    a, button, [role="button"], .btn-cta-large, .btn-primary, .nav-item, .nav-action-btn, .nav-brand, .elastic-stack-item, .footer-brand-logo-wrap, select, summary {
+      cursor: pointer !important;
+    }
+
+    /* Form inputs keep text typing cursor and text selection */
+    input, textarea, [contenteditable="true"] {
+      cursor: text !important;
+      -webkit-user-select: text !important;
+      -moz-user-select: text !important;
+      -ms-user-select: text !important;
+      user-select: text !important;
+    }
+
+    *:focus:not(input):not(textarea):not([contenteditable="true"]) {
+      outline: none;
+    }
+
     :root {
       --color-charcoal: #111111;
       --color-orange: #FF6600;
@@ -2950,13 +2985,15 @@
 
         const pointer = { x: 0, y: 0 };
         const drift = { x: 0, y: 0 };
-        let currentOffset = 120;
-        let targetOffset = 120;
+        let currentOffset = 100;
+        let targetOffset = 100;
         let initialized = false;
 
         // Interactive scroll-driven hands:
         // As this specific section's 10% is visible, hands are 25% revealed already.
         // Remainder reveals smoothly in and out based on scrolling through the section.
+        // At complete scroll down, the hands stop right at the wrist edge (offset 0%)
+        // and stay anchored at the screen borders without floating inward.
         function updateHandScroll() {
           const rect = root.getBoundingClientRect();
           const vh = window.innerHeight;
@@ -2976,8 +3013,8 @@
             reveal = 0.25 + 0.75 * restProgress;
           }
 
-          // Target offset moves from 120% (hidden outside) down to -10% (converged together)
-          targetOffset = 120 - reveal * 130;
+          // Target offset moves from 100% (hidden outside) down to exactly 0% (anchored at wrist edge)
+          targetOffset = Math.max(0, 100 * (1 - reveal));
 
           if (!initialized) {
             currentOffset = targetOffset;
@@ -3035,11 +3072,15 @@
           drift.x += (pointer.x - drift.x) * PARALLAX_EASE;
           drift.y += (pointer.y - drift.y) * PARALLAX_EASE;
 
+          // Parallax never pulls the wrist away from the outer edge:
+          const leftDriftX = Math.min(0, drift.x);
+          const rightDriftX = Math.max(0, -drift.x);
+
           if (leftWrap) {
-            leftWrap.style.transform = `translateX(${-currentOffset.toFixed(2)}%) translate(${drift.x.toFixed(1)}px, ${ (-drift.y).toFixed(1) }px)`;
+            leftWrap.style.transform = `translateX(${-currentOffset.toFixed(2)}%) translate(${leftDriftX.toFixed(1)}px, ${ (-drift.y).toFixed(1) }px)`;
           }
           if (rightWrap) {
-            rightWrap.style.transform = `translateX(${currentOffset.toFixed(2)}%) translate(${ (-drift.x).toFixed(1) }px, ${ (-drift.y).toFixed(1) }px)`;
+            rightWrap.style.transform = `translateX(${currentOffset.toFixed(2)}%) translate(${rightDriftX.toFixed(1)}px, ${ (-drift.y).toFixed(1) }px)`;
           }
 
           requestAnimationFrame(frame);
@@ -3047,6 +3088,13 @@
 
         requestAnimationFrame(frame);
       }
+
+      // Prevent browser from setting text selection or caret on click
+      document.addEventListener('selectstart', function(e) {
+        if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA' && !e.target.isContentEditable) {
+          e.preventDefault();
+        }
+      });
 
       initAsciiHands();
 
