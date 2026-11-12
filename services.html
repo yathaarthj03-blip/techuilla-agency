@@ -13,20 +13,9 @@
   <!-- Google Fonts: Inter 800 & Support Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800&family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800&family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
 
   <style>
-    /* -------------------------------------------------------------------------
-       RITTERU DISPLAY TYPEFACE (Reference Match)
-       ------------------------------------------------------------------------- */
-    @font-face {
-      font-family: 'Plus Jakarta Sans';
-      src: url('fonts/Plus_Jakarta_Sans.ttf') format('truetype');
-      font-weight: 100 900;
-      font-style: normal;
-      font-display: swap;
-    }
-
     /* -------------------------------------------------------------------------
        DESIGN TOKENS & RESET
        ------------------------------------------------------------------------- */
@@ -35,7 +24,7 @@
       --color-orange: #FF6600;
       --color-orange-glow: #FFA040;
       --bg-cream: #FAF8F5;
-      --font-hero: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-hero: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-display: 'Archivo', 'Inter', sans-serif;
       --font-mono: 'Space Grotesk', monospace;
@@ -296,7 +285,7 @@
     }
 
     /* -------------------------------------------------------------------------
-       HERO STAGE & 3S ORANGE VEIL APPEARING ANIMATION
+       HERO STAGE & 3S KINETIC ORANGE VEIL (Same as "Your team is a software")
        ------------------------------------------------------------------------- */
     .services-scroll-track {
       position: relative;
@@ -335,85 +324,92 @@
       z-index: 2;
     }
 
-    /* Center Text Container */
+    /* Center Text Container with Kinetic Orange Veil */
     .hero-text-container {
       position: relative;
       z-index: 10;
-      display: inline-block;
-      padding: 24px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       user-select: none;
       max-width: 95vw;
     }
 
-    .hero-text {
+    .hero-kinetic-wrap {
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+      padding: 10px 18px;
+    }
+
+    .hero-kinetic-mask {
+      position: absolute;
+      inset: 0;
+      background: var(--color-orange, #FF6600);
+      transform: scaleX(0);
+      transform-origin: left center;
+      z-index: 15;
+      pointer-events: none;
+      animation: kineticVeilSweep 3.0s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+    }
+
+    .hero-kinetic-text {
+      position: relative;
+      display: block;
       font-family: var(--font-hero);
       font-size: clamp(34px, 5.2vw, 76px);
       font-weight: 800;
       line-height: 1.15;
-      letter-spacing: -0.025em;
+      letter-spacing: -0.03em;
+      text-transform: capitalize;
       color: #FAF8F5;
       text-align: center;
       white-space: nowrap;
-      text-transform: capitalize;
       text-shadow: 0 4px 30px rgba(0, 0, 0, 0.75);
-      clip-path: inset(0 100% 0 0);
-      -webkit-clip-path: inset(0 100% 0 0);
-      animation: veilUnveilText 3s cubic-bezier(0.25, 1, 0.35, 1) forwards;
+      z-index: 10;
+      opacity: 0;
+      transform: translate3d(0, 10px, 0);
+      animation: kineticTextReveal 3.0s cubic-bezier(0.76, 0, 0.24, 1) forwards;
     }
 
-    .hero-text .text-orange {
-      color: var(--color-orange);
+    .hero-kinetic-text .text-orange {
+      color: var(--color-orange, #FF6600);
       text-shadow: 0 4px 30px rgba(255, 102, 0, 0.45);
     }
 
-    /* 3s Orange Veil Blade */
-    .orange-veil-blade {
-      position: absolute;
-      top: -20%;
-      bottom: -20%;
-      left: 0;
-      width: 140px;
-      background: linear-gradient(90deg, rgba(255, 102, 0, 0) 0%, rgba(255, 102, 0, 0.65) 45%, #FF6600 85%, #FFA040 100%);
-      box-shadow: 
-        0 0 40px #FF6600,
-        0 0 80px rgba(255, 102, 0, 0.8),
-        inset 0 0 25px #FFA040;
-      filter: blur(1px);
-      pointer-events: none;
-      z-index: 12;
-      transform: translateX(-140px);
-      animation: veilSweepBlade 3s cubic-bezier(0.25, 1, 0.35, 1) forwards;
+    @keyframes kineticVeilSweep {
+      0% {
+        transform-origin: left center;
+        transform: scaleX(0);
+      }
+      45% {
+        transform-origin: left center;
+        transform: scaleX(1);
+      }
+      50% {
+        transform-origin: right center;
+        transform: scaleX(1);
+      }
+      100% {
+        transform-origin: right center;
+        transform: scaleX(0);
+      }
     }
 
-    /* Orange Veil Shimmer */
-    .orange-veil-shimmer {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent 0%, rgba(255, 102, 0, 0.25) 50%, rgba(255, 160, 64, 0.4) 100%);
-      mix-blend-mode: screen;
-      pointer-events: none;
-      z-index: 11;
-      clip-path: inset(0 100% 0 0);
-      -webkit-clip-path: inset(0 100% 0 0);
-      animation: veilShimmerFill 3s cubic-bezier(0.25, 1, 0.35, 1) forwards;
-    }
-
-    @keyframes veilUnveilText {
-      0% { clip-path: inset(0 100% 0 0); -webkit-clip-path: inset(0 100% 0 0); }
-      100% { clip-path: inset(0 0% 0 0); -webkit-clip-path: inset(0 0% 0 0); }
-    }
-
-    @keyframes veilSweepBlade {
-      0% { transform: translateX(-140px); opacity: 0; }
-      8% { opacity: 1; }
-      88% { opacity: 1; }
-      100% { transform: translateX(calc(100% + 160px)); opacity: 0; }
-    }
-
-    @keyframes veilShimmerFill {
-      0% { clip-path: inset(0 100% 0 0); -webkit-clip-path: inset(0 100% 0 0); opacity: 0.9; }
-      80% { clip-path: inset(0 0% 0 0); -webkit-clip-path: inset(0 0% 0 0); opacity: 0.6; }
-      100% { clip-path: inset(0 0% 0 0); -webkit-clip-path: inset(0 0% 0 0); opacity: 0; }
+    @keyframes kineticTextReveal {
+      0%, 45% {
+        opacity: 0;
+        transform: translate3d(0, 10px, 0);
+      }
+      48% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
     }
 
     /* -------------------------------------------------------------------------
@@ -449,7 +445,7 @@
         padding: 8px 16px;
         font-size: 13px;
       }
-      .hero-text {
+      .hero-kinetic-text {
         font-size: clamp(26px, 7.5vw, 44px);
         white-space: normal;
       }
@@ -1626,13 +1622,14 @@
         <img src="services_hero_clean.jpg" class="hero-bg" alt="Techuilla Office Studio" id="heroBg" />
         <div class="hero-vignette"></div>
 
-        <!-- Center Text with 3s Orange Veil Appearing Animation (Ritteru Typeface) -->
+        <!-- Center Text with 3s Kinetic Orange Veil Appearing Animation (Same as "Your team is a software") -->
         <div class="hero-text-container" id="heroTextContainer">
-          <div class="orange-veil-blade" id="veilBlade"></div>
-          <div class="orange-veil-shimmer" id="veilShimmer"></div>
-          <div class="hero-text" id="heroText">
-            <div>A Modern Approach To</div>
-            <div><span class="text-orange">Creatives</span> And <span class="text-orange">Growth</span></div>
+          <div class="hero-kinetic-wrap">
+            <div class="hero-kinetic-mask" id="heroVeilMask"></div>
+            <div class="hero-kinetic-text" id="heroText">
+              <div>A Modern Approach To</div>
+              <div><span class="text-orange">Creatives</span> And <span class="text-orange">Growth</span></div>
+            </div>
           </div>
         </div>
 
