@@ -2950,8 +2950,26 @@
 
         const pointer = { x: 0, y: 0 };
         const drift = { x: 0, y: 0 };
-        let curtainOffset = 125;
-        let isRevealed = false;
+        let currentOffset = 120;
+        let targetOffset = 120;
+
+        // Interactive scroll-driven ease-in hand approach:
+        // Scroll down -> hands come closer together slowly
+        // Scroll up -> hands go backwards towards the edges
+        function updateHandScroll() {
+          const rect = root.getBoundingClientRect();
+          const vh = window.innerHeight;
+          const maxTravel = root.offsetHeight + vh * 0.6;
+          const rawProgress = Math.max(0, Math.min(1, (vh - rect.top) / maxTravel));
+          // Ease-in curve: starts very slowly and accelerates gradually as user scrolls into footer
+          const easeIn = Math.pow(rawProgress, 2.2);
+          // Moves from 120% (back at edges) down to -10% (close together)
+          targetOffset = 120 * (1 - easeIn) - (easeIn * 10);
+        }
+
+        window.addEventListener('scroll', updateHandScroll, { passive: true });
+        window.addEventListener('resize', updateHandScroll);
+        updateHandScroll();
 
         function onMouseMove(event) {
           const rect = root.getBoundingClientRect();
@@ -2965,15 +2983,6 @@
         }
 
         window.addEventListener("mousemove", onMouseMove);
-
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              isRevealed = true;
-            }
-          });
-        }, { threshold: 0.15 });
-        observer.observe(root);
 
         function renderHand(hand, now) {
           const { ctx, cellList, cellSize: cs, baselineOffset, columns: cols, rows } = hand;
@@ -3002,18 +3011,17 @@
             renderHand(hands[i], now);
           }
 
-          if (isRevealed && curtainOffset > 0) {
-            curtainOffset = Math.max(0, curtainOffset - 2.8);
-          }
+          // Slow, smooth lerp inertia for gradual ease-in closing and backward movement
+          currentOffset += (targetOffset - currentOffset) * 0.08;
 
           drift.x += (pointer.x - drift.x) * PARALLAX_EASE;
           drift.y += (pointer.y - drift.y) * PARALLAX_EASE;
 
           if (leftWrap) {
-            leftWrap.style.transform = `translateX(${-curtainOffset}%) translate(${drift.x}px, ${ -drift.y }px)`;
+            leftWrap.style.transform = `translateX(${-currentOffset.toFixed(2)}%) translate(${drift.x.toFixed(1)}px, ${ (-drift.y).toFixed(1) }px)`;
           }
           if (rightWrap) {
-            rightWrap.style.transform = `translateX(${curtainOffset}%) translate(${ -drift.x }px, ${ -drift.y }px)`;
+            rightWrap.style.transform = `translateX(${currentOffset.toFixed(2)}%) translate(${ (-drift.x).toFixed(1) }px, ${ (-drift.y).toFixed(1) }px)`;
           }
 
           requestAnimationFrame(frame);
