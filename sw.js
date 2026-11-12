@@ -4,10 +4,10 @@
    - 3D Character Models (.fbx, .obj) & Textures
    - 4K/HD Video files (.mp4) with HTTP 206 Partial Content byte slicing
    - Core libraries (Three.js, fflate, FBXLoader)
-   - Fonts & Images
+   - Fonts & Images (including ASCII Hands & Services Zoom Images)
    ========================================================================== */
 
-const CACHE_NAME = 'techuilla-media-cache-v2';
+const CACHE_NAME = 'techuilla-media-cache-v3';
 
 // Priority static assets to pre-cache immediately upon activation
 const PRECACHE_ASSETS = [
@@ -18,6 +18,12 @@ const PRECACHE_ASSETS = [
   'Techuilla_logo.png',
   'Techuilla_logo_extreme.png',
   'favicon-32x32.png',
+  'hand-left.jpg',
+  'hand-right.jpg',
+  'services_hero_clean.jpg',
+  'services_project_1.jpg',
+  'services_project_2.jpg',
+  'services_project_3.jpg',
   'card_website_dev.mp4',
   'card_application_dev.mp4',
   'card_products_animation.mp4'
@@ -47,8 +53,10 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(
-        keys.map((k) => {
-          if (k !== CACHE_NAME) return caches.delete(k);
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
         })
       )
     ).then(() => self.clients.claim())
@@ -56,116 +64,103 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  const req = event.request;
-  const url = new URL(req.url);
+  const url = event.request.url;
 
-  // Only handle GET requests for our origin
-  if (req.method !== 'GET' || url.origin !== self.location.origin) {
+  // 1. Handle HTTP Range Requests (Critical for large .mp4 video seeking)
+  const rangeHeader = event.request.headers.get('range');
+  if (rangeHeader && url.endsWith('.mp4')) {
+    event.respondWith(handleRangeRequest(event.request));
     return;
   }
 
-  const pathname = url.pathname.toLowerCase();
-  const isMediaOr3D = (
-    pathname.endsWith('.mp4') ||
-    pathname.endsWith('.webm') ||
-    pathname.endsWith('.fbx') ||
-    pathname.endsWith('.obj') ||
-    pathname.endsWith('.mtl') ||
-    pathname.endsWith('.png') ||
-    pathname.endsWith('.jpg') ||
-    pathname.endsWith('.jpeg') ||
-    pathname.endsWith('.webp') ||
-    pathname.endsWith('.woff2') ||
-    pathname.endsWith('.woff') ||
-    pathname.endsWith('.js') ||
-    pathname.endsWith('.css')
-  );
-
-  // For HTML navigations: ALWAYS fetch live from network first, bypass cache
-  if (req.mode === 'navigate' || pathname.endsWith('.html') || pathname === '/' || pathname.endsWith('/techuilla-agency') || pathname.endsWith('/techuilla-agency/')) {
+  // 2. Cache-First Strategy for Images, Fonts, Scripts, 3D Assets
+  if (
+    url.endsWith('.jpg') ||
+    url.endsWith('.jpeg') ||
+    url.endsWith('.png') ||
+    url.endsWith('.webp') ||
+    url.endsWith('.woff2') ||
+    url.endsWith('.woff') ||
+    url.endsWith('.fbx') ||
+    url.endsWith('.obj') ||
+    url.endsWith('.js')
+  ) {
     event.respondWith(
-      fetch(req, { cache: 'no-cache' }).catch(() => caches.match(req))
-    );
-    return;
-  }
-
-  // Handle Range Requests (Video playback / seeking from cache)
-  const rangeHeader = req.headers.get('range');
-  if (rangeHeader && isMediaOr3D) {
-    event.respondWith(handleRangeRequest(req, rangeHeader));
-    return;
-  }
-
-  // Cache-First strategy for media, 3D character, textures, and scripts
-  if (isMediaOr3D) {
-    event.respondWith(
-      caches.match(req).then((cachedResponse) => {
+      caches.match(event.request).then((cachedResponse) => {
         if (cachedResponse) {
           return cachedResponse;
         }
-
-        return fetch(req).then((networkResponse) => {
+        return fetch(event.request).then((networkResponse) => {
           if (networkResponse && (networkResponse.status === 200 || networkResponse.type === 'opaque')) {
             const clone = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(req, clone);
-            });
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
           }
           return networkResponse;
         });
       })
     );
+    return;
   }
+
+  // 3. Stale-While-Revalidate for HTML Documents
+  if (event.request.mode === 'navigate' || url.endsWith('.html')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const clone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Default network pass-through
+  event.respondWith(
+    caches.match(event.request).then((cached) => cached || fetch(event.request))
+  );
 });
 
-// HTTP 206 Partial Content synthesizer for cached videos
-async function handleRangeRequest(request, rangeHeader) {
+/**
+ * Handle HTTP Range Requests for MP4 video scrubbing / slicing
+ */
+async function handleRangeRequest(request) {
   const cache = await caches.open(CACHE_NAME);
-  // Match clean URL without Range header
-  const cleanReq = new Request(request.url);
-  let response = await cache.match(cleanReq);
+  let response = await cache.match(request);
 
   if (!response) {
-    response = await fetch(request);
-    // If network returns 200 or 206, return it directly
-    if (response.status === 206 || !response.ok) {
-      return response;
+    // Fetch full video and store in cache
+    const netRes = await fetch(request);
+    if (netRes.status === 200 || netRes.type === 'opaque') {
+      await cache.put(request, netRes.clone());
     }
-    // Cache the full 200 response
-    const clone = response.clone();
-    cache.put(cleanReq, clone);
+    response = netRes;
   }
 
-  const arrayBuffer = await response.arrayBuffer();
-  const total = arrayBuffer.byteLength;
-
-  const match = rangeHeader.match(/bytes=(\d+)-(\d*)/);
-  if (!match) return response;
-
-  const start = parseInt(match[1], 10);
-  const end = match[2] ? parseInt(match[2], 10) : total - 1;
-
-  if (start >= total || end >= total || start > end) {
-    return new Response(null, {
-      status: 416,
-      headers: {
-        'Content-Range': `bytes */${total}`,
-        'Accept-Ranges': 'bytes'
-      }
-    });
+  const rangeHeader = request.headers.get('range');
+  if (!rangeHeader || !response || response.status !== 200) {
+    return response;
   }
 
-  const slicedData = arrayBuffer.slice(start, end + 1);
+  const buffer = await response.arrayBuffer();
+  const rangeMatch = rangeHeader.match(/bytes=(\d+)-(\d*)/);
+  if (!rangeMatch) return response;
 
-  return new Response(slicedData, {
+  const start = parseInt(rangeMatch[1], 10);
+  const end = rangeMatch[2] ? parseInt(rangeMatch[2], 10) : buffer.byteLength - 1;
+  const sliced = buffer.slice(start, end + 1);
+
+  return new Response(sliced, {
     status: 206,
     statusText: 'Partial Content',
     headers: {
-      'Content-Type': response.headers.get('Content-Type') || 'video/mp4',
-      'Content-Range': `bytes ${start}-${end}/${total}`,
-      'Content-Length': slicedData.byteLength.toString(),
-      'Accept-Ranges': 'bytes',
-      'Cache-Control': 'public, max-age=31536000, immutable'
+      'Content-Type': 'video/mp4',
+      'Content-Range': `bytes ${start}-${end}/${buffer.byteLength}`,
+      'Content-Length': sliced.byteLength,
+      'Accept-Ranges': 'bytes'
     }
   });
 }

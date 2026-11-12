@@ -7387,7 +7387,88 @@ function triggerHomeTransition(e) {
           return { rows, cells };
         }
 
-        function setupHand(image, canvas, direction) {
+        function setupHand(image, canvas, direction, storageKey) {
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          const handObj = {
+            canvas,
+            ctx: canvas.getContext("2d"),
+            cells: new Map(),
+            cellList: [],
+            rows: 0,
+            columns,
+            cellSize,
+            baselineOffset: 0,
+            direction
+          };
+
+          // Instant Hydration from sessionStorage Cache (0ms delay)
+          try {
+            const cached = sessionStorage.getItem(storageKey);
+            if (cached) {
+              const parsed = JSON.parse(cached);
+              handObj.rows = parsed.rows;
+              canvas.width = columns * cellSize * dpr;
+              canvas.height = parsed.rows * cellSize * dpr;
+              if (handObj.ctx) {
+                handObj.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                handObj.ctx.font = `${fontSize}px monospace`;
+                handObj.ctx.textAlign = "center";
+                handObj.ctx.textBaseline = "alphabetic";
+                const metrics = handObj.ctx.measureText("X");
+                const glyphHeight = (metrics.actualBoundingBoxAscent || fontSize * 0.8) + (metrics.actualBoundingBoxDescent || 2);
+                handObj.baselineOffset = cellSize / 2 + glyphHeight / 2 - (metrics.actualBoundingBoxDescent || 2);
+              }
+              parsed.cells.forEach(c => {
+                const cell = { col: c[0], row: c[1], char: c[2], highlightEndTime: 0 };
+                handObj.cells.set(`${c[0]},${c[1]}`, cell);
+                handObj.cellList.push(cell);
+              });
+            }
+          } catch(e) {}
+
+          function processImage() {
+            if (!image.naturalWidth) return;
+            const { rows, cells } = buildHandCells(image, columns, DEFAULT_ASCII_CHARS);
+            if (cells.size === 0) return;
+
+            canvas.width = columns * cellSize * dpr;
+            canvas.height = rows * cellSize * dpr;
+
+            const ctx = canvas.getContext("2d");
+            if (!ctx) return;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            ctx.font = `${fontSize}px monospace`;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "alphabetic";
+
+            const metrics = ctx.measureText("X");
+            const glyphHeight = (metrics.actualBoundingBoxAscent || fontSize * 0.8) + (metrics.actualBoundingBoxDescent || 2);
+            const baselineOffset = cellSize / 2 + glyphHeight / 2 - (metrics.actualBoundingBoxDescent || 2);
+
+            handObj.ctx = ctx;
+            handObj.cells = cells;
+            handObj.cellList = Array.from(cells.values());
+            handObj.rows = rows;
+            handObj.baselineOffset = baselineOffset;
+
+            // Cache in sessionStorage
+            try {
+              const serializable = {
+                rows,
+                cells: handObj.cellList.map(c => [c.col, c.row, c.char])
+              };
+              sessionStorage.setItem(storageKey, JSON.stringify(serializable));
+            } catch(e) {}
+          }
+
+          if (image.complete && image.naturalWidth) {
+            processImage();
+          } else {
+            image.onload = processImage;
+          }
+
+          hands.push(handObj);
+          return;
           const { rows, cells } = buildHandCells(image, columns, DEFAULT_ASCII_CHARS);
           if (cells.size === 0) return;
 
