@@ -7331,7 +7331,7 @@ function triggerHomeTransition(e) {
       });
 
       (function initAsciiHands() {
-        const root = document.getElementById('cta');
+        const root = document.getElementById('cta') || document.querySelector('.cta-section');
         const leftWrap = document.getElementById('asciiHandLeftWrap');
         const rightWrap = document.getElementById('asciiHandRightWrap');
         const leftCanvas = document.getElementById('asciiHandLeftCanvas');
@@ -7350,9 +7350,9 @@ function triggerHomeTransition(e) {
         const parallaxStrength = 22;
         const hoverRadius = 8;
 
-        const charColor = "#803500";
-        const hoverColor = "#FF6600";
-        const hoverCharColor = "#111111";
+        const charColor = "#803500";       // light orange / warm copper
+        const hoverColor = "#FF6600";      // brand vibrant orange
+        const hoverCharColor = "#111111";  // dark glyph on hover cell
 
         const hands = [];
 
@@ -7380,78 +7380,67 @@ function triggerHomeTransition(e) {
                 col,
                 row,
                 char: asciiChars[charIndex],
-                highlightEndTime: 0
+                highlightEndTime: 0,
               });
             }
           }
+
           return { rows, cells };
         }
 
-        function setupHand(image, canvas, direction, storageKey) {
-          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        function setupHand(canvas, imageSrc, direction, storageKey) {
+          const ctx = canvas.getContext("2d");
+          if (!ctx) return;
+
+          const baselineOffset = fontSize * 0.1;
           const handObj = {
             canvas,
-            ctx: canvas.getContext("2d"),
+            ctx,
             cells: new Map(),
             cellList: [],
             rows: 0,
             columns,
             cellSize,
-            baselineOffset: 0,
-            direction
+            baselineOffset,
+            direction,
           };
 
-          // Instant Hydration from sessionStorage Cache (0ms delay)
+          // INSTANT HYDRATION FROM SESSIONSTORAGE CACHE (0ms delay)
           try {
             const cached = sessionStorage.getItem(storageKey);
             if (cached) {
               const parsed = JSON.parse(cached);
               handObj.rows = parsed.rows;
-              canvas.width = columns * cellSize * dpr;
-              canvas.height = parsed.rows * cellSize * dpr;
-              if (handObj.ctx) {
-                handObj.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-                handObj.ctx.font = `${fontSize}px monospace`;
-                handObj.ctx.textAlign = "center";
-                handObj.ctx.textBaseline = "alphabetic";
-                const metrics = handObj.ctx.measureText("X");
-                const glyphHeight = (metrics.actualBoundingBoxAscent || fontSize * 0.8) + (metrics.actualBoundingBoxDescent || 2);
-                handObj.baselineOffset = cellSize / 2 + glyphHeight / 2 - (metrics.actualBoundingBoxDescent || 2);
-              }
+              canvas.width = columns * cellSize;
+              canvas.height = parsed.rows * cellSize;
               parsed.cells.forEach(c => {
                 const cell = { col: c[0], row: c[1], char: c[2], highlightEndTime: 0 };
                 handObj.cells.set(`${c[0]},${c[1]}`, cell);
                 handObj.cellList.push(cell);
               });
             }
-          } catch(e) {}
+          } catch (e) {}
+
+          // FETCH/DECODE IMAGE TO ENSURE UP-TO-DATE SAMPLING
+          const image = new Image();
+          image.src = imageSrc;
+          if (image.decode) {
+            image.decode().then(processImage).catch(processImage);
+          } else {
+            image.onload = processImage;
+          }
 
           function processImage() {
             if (!image.naturalWidth) return;
             const { rows, cells } = buildHandCells(image, columns, DEFAULT_ASCII_CHARS);
-            if (cells.size === 0) return;
-
-            canvas.width = columns * cellSize * dpr;
-            canvas.height = rows * cellSize * dpr;
-
-            const ctx = canvas.getContext("2d");
-            if (!ctx) return;
-            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            ctx.font = `${fontSize}px monospace`;
-            ctx.textAlign = "center";
-            ctx.textBaseline = "alphabetic";
-
-            const metrics = ctx.measureText("X");
-            const glyphHeight = (metrics.actualBoundingBoxAscent || fontSize * 0.8) + (metrics.actualBoundingBoxDescent || 2);
-            const baselineOffset = cellSize / 2 + glyphHeight / 2 - (metrics.actualBoundingBoxDescent || 2);
-
-            handObj.ctx = ctx;
+            handObj.rows = rows;
             handObj.cells = cells;
             handObj.cellList = Array.from(cells.values());
-            handObj.rows = rows;
-            handObj.baselineOffset = baselineOffset;
 
-            // Cache in sessionStorage
+            canvas.width = columns * cellSize;
+            canvas.height = rows * cellSize;
+
+            // Cache in sessionStorage for instant frame 0 rendering on next visit/reload
             try {
               const serializable = {
                 rows,
@@ -7461,55 +7450,11 @@ function triggerHomeTransition(e) {
             } catch(e) {}
           }
 
-          if (image.complete && image.naturalWidth) {
-            processImage();
-          } else {
-            image.onload = processImage;
-          }
-
           hands.push(handObj);
-          return;
-          const { rows, cells } = buildHandCells(image, columns, DEFAULT_ASCII_CHARS);
-          if (cells.size === 0) return;
-
-          const dpr = Math.min(window.devicePixelRatio || 1, 2);
-          canvas.width = columns * cellSize * dpr;
-          canvas.height = rows * cellSize * dpr;
-
-          const ctx = canvas.getContext("2d");
-          if (!ctx) return;
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          ctx.font = `${fontSize}px monospace`;
-          ctx.textAlign = "center";
-          ctx.textBaseline = "alphabetic";
-
-          const metrics = ctx.measureText("X");
-          const glyphHeight = (metrics.actualBoundingBoxAscent || fontSize * 0.8) + (metrics.actualBoundingBoxDescent || 2);
-          const baselineOffset = cellSize / 2 + glyphHeight / 2 - (metrics.actualBoundingBoxDescent || 2);
-
-          hands.push({
-            canvas,
-            ctx,
-            cells,
-            cellList: Array.from(cells.values()),
-            rows,
-            columns,
-            cellSize,
-            baselineOffset,
-            direction
-          });
         }
 
-        function loadHand(src, canvas, direction) {
-          const img = new Image();
-          img.crossOrigin = "anonymous";
-          img.onload = () => setupHand(img, canvas, direction);
-          img.src = src;
-          if (img.complete && img.naturalWidth) setupHand(img, canvas, direction);
-        }
-
-        loadHand("hand-left.jpg", leftCanvas, 1);
-        loadHand("hand-right.jpg", rightCanvas, -1);
+        setupHand(leftCanvas, "hand-left.jpg", 1, "techuilla_ascii_left_70");
+        setupHand(rightCanvas, "hand-right.jpg", -1, "techuilla_ascii_right_70");
 
         function highlightCluster(cells, startCell) {
           const now = Date.now();
@@ -7538,22 +7483,44 @@ function triggerHomeTransition(e) {
 
         function hoverHand(hand, clientX, clientY) {
           const rect = hand.canvas.getBoundingClientRect();
-          if (rect.width === 0 || rect.height === 0) return;
-          const mouseCol = ((clientX - rect.left) / rect.width) * hand.columns;
-          const mouseRow = ((clientY - rect.top) / rect.height) * hand.rows;
+          const x = clientX - rect.left;
+          const y = clientY - rect.top;
+
+          if (x < 0 || x > rect.width || y < 0 || y > rect.height) return;
+
+          const col = Math.floor(x / (hand.cellSize * (rect.width / (hand.columns * hand.cellSize))));
+          const row = Math.floor(y / (hand.cellSize * (rect.height / (hand.rows * hand.cellSize))));
 
           let closest = null;
           let closestDist = Infinity;
-          for (let i = 0; i < hand.cellList.length; i++) {
-            const cell = hand.cellList[i];
-            const dx = mouseCol - cell.col;
-            const dy = mouseRow - cell.row;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < closestDist) {
-              closestDist = dist;
-              closest = cell;
+
+          for (let dy = -1; dy <= 1; dy++) {
+            for (let dx = -1; dx <= 1; dx++) {
+              const checkCol = col + dx;
+              const checkRow = row + dy;
+              const cell = hand.cells.get(`${checkCol},${checkRow}`);
+              if (!cell) continue;
+              const dist = Math.hypot(checkCol - col, checkRow - row);
+              if (dist < closestDist) {
+                closestDist = dist;
+                closest = cell;
+              }
             }
           }
+
+          if (!closest) {
+            for (let r = 2; r <= hoverRadius; r++) {
+              for (const [key, cell] of hand.cells.entries()) {
+                const dist = Math.hypot(cell.col - col, cell.row - row);
+                if (dist <= r && dist < closestDist) {
+                  closestDist = dist;
+                  closest = cell;
+                }
+              }
+              if (closest) break;
+            }
+          }
+
           if (closest && closestDist <= hoverRadius) {
             highlightCluster(hand.cells, closest);
           }
@@ -7619,20 +7586,23 @@ function triggerHomeTransition(e) {
           const { ctx, cellList, cellSize: cs, baselineOffset, columns: cols, rows } = hand;
           ctx.clearRect(0, 0, cols * cs, rows * cs);
 
+          ctx.font = `${fontSize}px monospace`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+
           for (let i = 0; i < cellList.length; i++) {
             const cell = cellList[i];
-            const x = cell.col * cs;
-            const y = cell.row * cs;
-            const isHighlighted = cell.highlightEndTime > now;
+            const isLit = cell.highlightEndTime > now;
 
-            if (isHighlighted) {
+            if (isLit) {
               ctx.fillStyle = hoverColor;
-              ctx.fillRect(x, y, cs, cs);
+              ctx.fillRect(cell.col * cs, cell.row * cs, cs, cs);
               ctx.fillStyle = hoverCharColor;
             } else {
               ctx.fillStyle = charColor;
             }
-            ctx.fillText(cell.char, x + cs / 2, y + baselineOffset);
+
+            ctx.fillText(cell.char, cell.col * cs + cs / 2, cell.row * cs + cs / 2 + baselineOffset);
           }
         }
 
@@ -7642,7 +7612,7 @@ function triggerHomeTransition(e) {
             renderHand(hands[i], now);
           }
 
-          // Slow, smooth lerp inertia for gradual ease-in closing and backward movement
+          // Slow, smooth lerp inertia for gradual closing and backward movement
           currentOffset += (targetOffset - currentOffset) * 0.08;
 
           drift.x += (pointer.x - drift.x) * PARALLAX_EASE;
@@ -7664,6 +7634,6 @@ function triggerHomeTransition(e) {
 
         requestAnimationFrame(frame);
       })();
-</script>
+    </script>
 </body>
 </html>
