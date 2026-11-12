@@ -42,14 +42,54 @@
       padding: 0;
     }
 
+    /* Completely suppress native browser scrollbars to eliminate disappearing gray side gutters */
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+
     html, body {
       width: 100%;
       background: #000000;
       color: #FAF8F5;
       font-family: var(--font-sans);
       overflow-x: hidden;
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Floating Minimal In-Page Orange Scroller Indicator (Visible ONLY when actively scrolling) */
+    .custom-scroll-indicator {
+      position: fixed;
+      top: 18px;
+      right: 6px;
+      bottom: 18px;
+      width: 4px;
+      pointer-events: none;
+      z-index: 99990;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .custom-scroll-indicator.is-active {
+      opacity: 1;
+    }
+
+    .custom-scroll-thumb {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 48px;
+      background: var(--color-orange);
+      border-radius: 999px;
+      box-shadow: 0 0 10px rgba(255, 102, 0, 0.55);
+      will-change: transform;
     }
 
     /* -------------------------------------------------------------------------
@@ -290,7 +330,7 @@
     .services-scroll-track {
       position: relative;
       width: 100%;
-      height: 320vh;
+      height: 550vh;
       background: #000000;
     }
 
@@ -335,6 +375,7 @@
       gap: 14px;
       user-select: none;
       max-width: 95vw;
+      will-change: opacity;
     }
 
     .hero-line-wrap {
@@ -452,6 +493,60 @@
       box-shadow: 0 0 35px rgba(255, 102, 0, 0.6);
       opacity: 0;
       will-change: width, height, opacity;
+    }
+
+    /* -------------------------------------------------------------------------
+       CASCADING PROJECT ZOOM TUNNEL (Images 1 -> 2 -> 3 from Center)
+       ------------------------------------------------------------------------- */
+    .project-zoom-container {
+      position: absolute;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .project-zoom-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100vw;
+      height: 100vh;
+      transform: translate(-50%, -50%) scale(0);
+      transform-origin: center center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      will-change: transform, opacity, border-radius;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.65);
+    }
+
+    #projectCard1 {
+      z-index: 61;
+    }
+
+    #projectCard2 {
+      z-index: 62;
+    }
+
+    #projectCard3 {
+      z-index: 63;
+    }
+
+    .project-zoom-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
     }
 
     /* Mobile Responsive */
@@ -1343,6 +1438,11 @@
   </style>
 </head>
 <body>
+  <!-- Floating Minimal In-Page Orange Scroller Indicator (Exact Parity with Home Page) -->
+  <div class="custom-scroll-indicator" id="customScrollIndicator" aria-hidden="true">
+    <div class="custom-scroll-thumb" id="customScrollThumb"></div>
+  </div>
+
   <!-- Orange Enquire/Navigation Transition Curtain (Exact Parity) -->
   <div class="enquire-transition-overlay" id="enquireTransitionOverlay" aria-hidden="true">
     <div class="transition-brand-box">
@@ -1670,6 +1770,19 @@
 
         <!-- Centered 16px Line that stretches vertically then opens horizontally into whole page -->
         <div class="scroll-orange-line" id="scrollOrangeLine"></div>
+
+        <!-- Zooming Project Images (Cascading Zoom Tunnel Sequence) -->
+        <div class="project-zoom-container" id="projectZoomContainer">
+          <div class="project-zoom-card" id="projectCard1">
+            <img src="services_project_1.jpg" alt="Aurora Coffee Roasters Project" class="project-zoom-img" />
+          </div>
+          <div class="project-zoom-card" id="projectCard2">
+            <img src="services_project_2.jpg" alt="Cosmetics Packaging Project" class="project-zoom-img" />
+          </div>
+          <div class="project-zoom-card" id="projectCard3">
+            <img src="services_project_3.jpg" alt="UNTITLED Clothing Co Project" class="project-zoom-img" />
+          </div>
+        </div>
       </div>
     </div>
   </main>
@@ -1805,14 +1918,13 @@
         const startTime = performance.now();
         function step(now) {
           const elapsed = now - startTime;
-          const p = Math.min(1, elapsed / duration);
-          menuMorphT = startT + delta * easeCubic(p);
+          const p = Math.min(elapsed / duration, 1);
+          menuMorphT = startT + delta * p;
           renderMenuMorph(menuMorphT);
           if (p < 1) {
             menuMorphAnimId = requestAnimationFrame(step);
           } else {
-            menuMorphT = targetT;
-            renderMenuMorph(targetT);
+            menuMorphAnimId = null;
           }
         }
         menuMorphAnimId = requestAnimationFrame(step);
@@ -1820,88 +1932,51 @@
 
       renderMenuMorph(0);
 
-      function updateMenuWipeOrigin() {
-        const btn = document.getElementById('open-menu-btn');
-        if (btn && fullscreenMenu) {
-          const rect = btn.getBoundingClientRect();
-          const x = Math.round(rect.left + rect.width / 2);
-          const y = Math.round(rect.top + rect.height / 2);
-          fullscreenMenu.style.setProperty('--wipe-x', `${x}px`);
-          fullscreenMenu.style.setProperty('--wipe-y', `${y}px`);
+      function setMenuOrigin(triggerEl) {
+        if (!fullscreenMenu) return;
+        let x = window.innerWidth - 50;
+        let y = 50;
+        if (triggerEl) {
+          const r = triggerEl.getBoundingClientRect();
+          x = r.left + r.width / 2;
+          y = r.top + r.height / 2;
         }
+        fullscreenMenu.style.setProperty('--menu-wipe-x', `${Math.round(x)}px`);
+        fullscreenMenu.style.setProperty('--menu-wipe-y', `${Math.round(y)}px`);
       }
 
-      function openMenu() {
-        if (fullscreenMenu) {
-          isMenuCurrentlyOpen = true;
-          updateMenuWipeOrigin();
-          fullscreenMenu.classList.remove('is-closing');
-          fullscreenMenu.classList.add('is-open');
-          fullscreenMenu.setAttribute('aria-hidden', 'false');
-          if (openMenuBtn) {
-            openMenuBtn.classList.add('is-open');
-            openMenuBtn.setAttribute('aria-label', 'Close Navigation Menu');
-          }
-          animateMenuMorph(1.0, 600);
-          document.body.classList.add('menu-open');
-          document.body.style.overflow = 'hidden';
-        }
+      function openFullscreenMenu(triggerEl) {
+        if (!fullscreenMenu) return;
+        setMenuOrigin(triggerEl);
+        fullscreenMenu.classList.remove('is-closing');
+        fullscreenMenu.classList.add('is-open');
+        document.body.classList.add('menu-open');
+        isMenuCurrentlyOpen = true;
+        animateMenuMorph(1, 600);
       }
 
-      function closeMenu() {
-        if (!fullscreenMenu || !isMenuCurrentlyOpen) return;
-        isMenuCurrentlyOpen = false;
-        updateMenuWipeOrigin();
-        if (openMenuBtn) {
-          openMenuBtn.classList.remove('is-open');
-          openMenuBtn.setAttribute('aria-label', 'Open Navigation Menu');
-        }
+      function closeFullscreenMenu() {
+        if (!fullscreenMenu) return;
         fullscreenMenu.classList.remove('is-open');
         fullscreenMenu.classList.add('is-closing');
-        fullscreenMenu.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('menu-open');
-        document.body.style.overflow = '';
-        animateMenuMorph(0, 600);
+        isMenuCurrentlyOpen = false;
+        animateMenuMorph(0, 500);
         setTimeout(() => {
-          if (!isMenuCurrentlyOpen) {
-            fullscreenMenu.classList.remove('is-closing');
-          }
-        }, 600);
+          fullscreenMenu.classList.remove('is-closing');
+        }, 650);
       }
 
-      function toggleMenu() {
-        if (isMenuCurrentlyOpen) closeMenu();
-        else openMenu();
-      }
-
-      updateMenuWipeOrigin();
-      window.addEventListener('resize', updateMenuWipeOrigin);
-      if (openMenuBtn) openMenuBtn.addEventListener('click', toggleMenu);
-
-      menuLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-          const section = link.getAttribute('data-section');
-          menuLinks.forEach(l => l.classList.remove('is-active'));
-          link.classList.add('is-active');
-          if (section === 'home') {
-            closeMenu();
-            triggerPageTransition(e, 'index.html', link);
-          } else if (section === 'services') {
-            closeMenu();
-          } else if (section === 'work') {
-            closeMenu();
-            triggerPageTransition(e, 'index.html#work', link);
-          } else if (section === 'about') {
-            closeMenu();
-            triggerPageTransition(e, 'index.html#about', link);
-          } else if (section === 'contact') {
-            closeMenu();
-            triggerPageTransition(e, 'contact.html', link);
+      if (openMenuBtn) {
+        openMenuBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (fullscreenMenu && fullscreenMenu.classList.contains('is-open')) {
+            closeFullscreenMenu();
           } else {
-            closeMenu();
+            openFullscreenMenu(openMenuBtn);
           }
         });
-      });
+      }
 
       if (navBrandLink) {
         navBrandLink.addEventListener('click', (e) => {
@@ -1917,64 +1992,45 @@
 
       if (menuEnquiriesBtn) {
         menuEnquiriesBtn.addEventListener('click', (e) => {
-          closeMenu();
           triggerPageTransition(e, 'contact.html', menuEnquiriesBtn);
         });
       }
 
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && fullscreenMenu && fullscreenMenu.classList.contains('is-open')) {
-          closeMenu();
-        }
+      menuLinks.forEach((link) => {
+        link.addEventListener('click', (e) => {
+          const href = link.getAttribute('href');
+          if (!href) return;
+          if (href === 'services.html' || href === '#') {
+            e.preventDefault();
+            closeFullscreenMenu();
+            return;
+          }
+          e.preventDefault();
+          triggerPageTransition(e, href, link);
+        });
       });
 
       /* ------------------------------------------------------------------------
-         3. JACKPOT CHARACTER REEL ENGINE (Exact Home Parity)
+         3. JACKPOT SLOT MACHINE HOVER FOR MENU
          ------------------------------------------------------------------------ */
-      const JACKPOT_SYMBOLS = ['7', 'X', '9', 'K', 'Q', 'J', '8', '3', 'Z', 'W', 'V'];
-      const jackpotTargets = document.querySelectorAll('.menu-nav-link, .menu-channel-item, .menu-enquiries-btn');
-      
-      jackpotTargets.forEach(targetEl => {
-        const textWrap = targetEl.querySelector('.nav-text-wrap');
+      const JACKPOT_SYMBOLS = ['#', '!', '*', '&', '%', '$', '0', '1', 'X', '?', '@'];
+      document.querySelectorAll('.menu-nav-link').forEach(link => {
+        const textWrap = link.querySelector('.menu-nav-text-wrap');
+        const strikethrough = link.querySelector('.menu-nav-strikethrough');
+        const targetEl = link.querySelector('.menu-nav-link-inner') || link;
         if (!textWrap) return;
 
-        const strikethrough = textWrap.querySelector('.nav-strikethrough, .nav-creative-strikethrough');
-        let rawText = '';
-        textWrap.childNodes.forEach(node => {
-          if (node.nodeType === Node.TEXT_NODE) {
-            rawText += node.nodeValue;
-          }
-        });
-        rawText = rawText.trim();
-        if (!rawText) return;
-
+        const rawText = textWrap.textContent.trim();
         textWrap.innerHTML = '';
 
-        const chars = rawText.split('');
-        chars.forEach((char, idx) => {
-          if (char === ' ') {
-            const spaceSlot = document.createElement('span');
-            spaceSlot.className = 'jackpot-char-slot jackpot-char-space';
-            spaceSlot.innerHTML = '&nbsp;';
-            spaceSlot.style.display = 'inline-block';
-            spaceSlot.style.width = '0.38em';
-            textWrap.appendChild(spaceSlot);
-            return;
-          }
-
+        [...rawText].forEach(char => {
           const slot = document.createElement('span');
-          slot.className = 'jackpot-char-slot';
-          slot.style.setProperty('--char-idx', idx);
-
-          const isUpper = char === char.toUpperCase() && char !== char.toLowerCase();
-          const syms = isUpper ? ['7', 'X', 'K', 'Q', 'Z'] : ['7', 'x', 'k', 's', 'z'];
-          const r1 = syms[Math.floor(Math.random() * syms.length)];
-          const r2 = syms[Math.floor(Math.random() * syms.length)];
-
+          slot.className = 'jackpot-slot';
+          const r1 = JACKPOT_SYMBOLS[Math.floor(Math.random() * JACKPOT_SYMBOLS.length)];
+          const r2 = JACKPOT_SYMBOLS[Math.floor(Math.random() * JACKPOT_SYMBOLS.length)];
           slot.innerHTML = `
-            <span class="jackpot-char-sizer" aria-hidden="true">${char}</span>
-            <span class="jackpot-reel-ladder">
-              <span class="jackpot-rung original">${char}</span>
+            <span class="jackpot-strip">
+              <span class="jackpot-rung target">${char}</span>
               <span class="jackpot-rung rung-rand-1">${r1}</span>
               <span class="jackpot-rung rung-rand-2">${r2}</span>
               <span class="jackpot-rung target">${char}</span>
@@ -2005,13 +2061,14 @@
       });
 
       /* ------------------------------------------------------------------------
-         4. SCROLL-EXPANDING ORANGE LINE ENGINE
-         - Appears in center as a 16px wide line
-         - Stretches vertically on scroll until touching top and bottom
-         - Then opens horizontally on scroll, spreading into the whole page
+         4. SCROLL-EXPANDING ORANGE LINE & CASCADING PROJECT ZOOM ENGINE
          ------------------------------------------------------------------------ */
       const scrollTrack = document.getElementById('scrollTrack');
       const orangeLine = document.getElementById('scrollOrangeLine');
+      const card1 = document.getElementById('projectCard1');
+      const card2 = document.getElementById('projectCard2');
+      const card3 = document.getElementById('projectCard3');
+      const heroTextContainer = document.getElementById('heroTextContainer');
 
       let currentScrollProgress = 0;
       let targetScrollProgress = 0;
@@ -2026,36 +2083,127 @@
       function tickScrollPhysics() {
         // Silky 120fps lerp inertia
         currentScrollProgress += (targetScrollProgress - currentScrollProgress) * 0.15;
+        const P = currentScrollProgress;
 
+        // 1. Center Orange Line / Horizontal Sheet
+        // Phase 1: P in [0, 0.15] -> Vertical stretch from 0 to 100vh, width = 16px
+        // Phase 2: P in [0.15, 0.35] -> Horizontal expansion from 16px to 100vw, height = 100vh
+        // Phase 3: P > 0.35 -> Locked at full screen 100vw x 100vh
         if (orangeLine) {
-          if (currentScrollProgress <= 0.002) {
+          if (P <= 0.002) {
             orangeLine.style.opacity = '0';
             orangeLine.style.height = '0px';
             orangeLine.style.width = '16px';
             if (siteNav) siteNav.classList.remove('theme-orange-bg');
-          } else if (currentScrollProgress <= 0.5) {
-            // Phase 1: Vertical stretch from center point (0 to 100vh), width stays exactly 16px
-            const vProgress = currentScrollProgress / 0.5;
+          } else if (P <= 0.15) {
+            const vProgress = P / 0.15;
             const h = vProgress * window.innerHeight;
             orangeLine.style.opacity = '1';
             orangeLine.style.width = '16px';
             orangeLine.style.height = `${h.toFixed(1)}px`;
             if (siteNav) siteNav.classList.remove('theme-orange-bg');
-          } else {
-            // Phase 2: Horizontal stretch from 16px to 100vw, height locked at 100vh
-            const hProgress = (currentScrollProgress - 0.5) / 0.5;
+          } else if (P <= 0.35) {
+            const hProgress = (P - 0.15) / 0.20; // 0 to 1
             const w = 16 + hProgress * (window.innerWidth - 16);
             orangeLine.style.opacity = '1';
             orangeLine.style.height = `${window.innerHeight}px`;
             orangeLine.style.width = `${w.toFixed(1)}px`;
 
-            // Switch header contrast once orange spreads across substantial portion
             if (siteNav) {
-              if (hProgress > 0.6) {
+              if (hProgress > 0.5) {
                 siteNav.classList.add('theme-orange-bg');
               } else {
                 siteNav.classList.remove('theme-orange-bg');
               }
+            }
+          } else {
+            orangeLine.style.opacity = '1';
+            orangeLine.style.height = `${window.innerHeight}px`;
+            orangeLine.style.width = `${window.innerWidth}px`;
+          }
+        }
+
+        // Hero title text opacity fade on scroll
+        if (heroTextContainer) {
+          if (P <= 0.03) {
+            heroTextContainer.style.opacity = '1';
+          } else if (P <= 0.18) {
+            heroTextContainer.style.opacity = `${Math.max(0, 1 - (P - 0.03) / 0.15).toFixed(3)}`;
+          } else {
+            heroTextContainer.style.opacity = '0';
+          }
+        }
+
+        // 2. Cascading Project Zoom Tunnel Sequence
+        // At 60% horizontal opening: hProgress = 0.60 -> P = 0.15 + 0.60 * 0.20 = 0.27
+        const P_START = 0.27;
+        if (P < P_START) {
+          if (card1) { card1.style.visibility = 'hidden'; card1.style.opacity = '0'; card1.style.transform = 'translate(-50%, -50%) scale(0)'; }
+          if (card2) { card2.style.visibility = 'hidden'; card2.style.opacity = '0'; card2.style.transform = 'translate(-50%, -50%) scale(0)'; }
+          if (card3) { card3.style.visibility = 'hidden'; card3.style.opacity = '0'; card3.style.transform = 'translate(-50%, -50%) scale(0)'; }
+        } else {
+          const u = Math.min(1, Math.max(0, (P - P_START) / (1.0 - P_START)));
+          // Master growth parameter X in [0, 1.80]
+          const X = u * 1.80;
+
+          // Card 1: starts at X = 0, continues enlarging until Card 2 covers it completely (X >= 1.40)
+          const s1 = X;
+          if (card1) {
+            if (s1 <= 0.001 || X >= 1.45) {
+              card1.style.visibility = 'hidden';
+              card1.style.opacity = '0';
+            } else {
+              card1.style.visibility = 'visible';
+              card1.style.opacity = `${Math.min(1, s1 / 0.04).toFixed(3)}`;
+              card1.style.transform = `translate(-50%, -50%) scale(${s1.toFixed(4)})`;
+              const br1 = Math.max(0, (1 - s1) * 20);
+              card1.style.borderRadius = `${br1.toFixed(1)}px`;
+              card1.style.boxShadow = `0 ${Math.round(s1 * 25)}px ${Math.round(s1 * 70)}px rgba(0, 0, 0, 0.6)`;
+            }
+          }
+
+          // Card 2: starts when Card 1 reaches 40% (X = 0.40)
+          // Enlarges until Card 3 covers it completely (X >= 1.80)
+          const s2 = X - 0.40;
+          if (card2) {
+            if (s2 <= 0.001 || X >= 1.85) {
+              card2.style.visibility = 'hidden';
+              card2.style.opacity = '0';
+              card2.style.transform = 'translate(-50%, -50%) scale(0)';
+            } else {
+              card2.style.visibility = 'visible';
+              card2.style.opacity = `${Math.min(1, s2 / 0.04).toFixed(3)}`;
+              card2.style.transform = `translate(-50%, -50%) scale(${s2.toFixed(4)})`;
+              const br2 = Math.max(0, (1 - s2) * 20);
+              card2.style.borderRadius = `${br2.toFixed(1)}px`;
+              card2.style.boxShadow = `0 ${Math.round(s2 * 25)}px ${Math.round(s2 * 70)}px rgba(0, 0, 0, 0.65)`;
+            }
+          }
+
+          // Card 3: starts when Card 2 reaches 40% (s2 = 0.40 -> X = 0.80)
+          // Enlarges until 100% full screen (X = 1.80 -> s3 = 1.0)
+          const s3 = X - 0.80;
+          if (card3) {
+            if (s3 <= 0.001) {
+              card3.style.visibility = 'hidden';
+              card3.style.opacity = '0';
+              card3.style.transform = 'translate(-50%, -50%) scale(0)';
+            } else {
+              card3.style.visibility = 'visible';
+              card3.style.opacity = `${Math.min(1, s3 / 0.04).toFixed(3)}`;
+              card3.style.transform = `translate(-50%, -50%) scale(${s3.toFixed(4)})`;
+              const br3 = Math.max(0, (1 - s3) * 20);
+              card3.style.borderRadius = `${br3.toFixed(1)}px`;
+              card3.style.boxShadow = `0 ${Math.round(s3 * 25)}px ${Math.round(s3 * 70)}px rgba(0, 0, 0, 0.7)`;
+            }
+          }
+
+          // Navbar theme switching
+          if (siteNav) {
+            if (s1 > 0.65 || s2 > 0.35 || s3 > 0.15) {
+              siteNav.classList.remove('theme-orange-bg');
+            } else if (P >= 0.22) {
+              siteNav.classList.add('theme-orange-bg');
             }
           }
         }
@@ -2067,6 +2215,46 @@
       window.addEventListener('resize', updateScrollProgress);
       updateScrollProgress();
       requestAnimationFrame(tickScrollPhysics);
+
+      /* ------------------------------------------------------------------------
+         5. CUSTOM MINIMAL ORANGE SCROLLER (Exact Parity with Home Page)
+         ------------------------------------------------------------------------ */
+      (function initCustomOrangeScroller() {
+        const indicator = document.getElementById('customScrollIndicator');
+        const thumb = document.getElementById('customScrollThumb');
+        if (!indicator || !thumb) return;
+
+        let scrollTimer = null;
+
+        function updateScroller() {
+          const scrollY = window.scrollY || window.pageYOffset || 0;
+          const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+          if (maxScroll <= 0) {
+            indicator.classList.remove('is-active');
+            return;
+          }
+
+          const trackHeight = window.innerHeight - 36; // 18px top & bottom
+          const thumbHeight = Math.max(36, Math.min(110, (window.innerHeight / document.documentElement.scrollHeight) * trackHeight));
+          thumb.style.height = `${thumbHeight}px`;
+
+          const maxThumbTravel = trackHeight - thumbHeight;
+          const progress = Math.max(0, Math.min(1, scrollY / maxScroll));
+          const thumbTop = progress * maxThumbTravel;
+
+          thumb.style.transform = `translate3d(0, ${thumbTop.toFixed(1)}px, 0)`;
+
+          indicator.classList.add('is-active');
+
+          if (scrollTimer) clearTimeout(scrollTimer);
+          scrollTimer = setTimeout(() => {
+            indicator.classList.remove('is-active');
+          }, 700);
+        }
+
+        window.addEventListener('scroll', updateScroller, { passive: true });
+        window.addEventListener('resize', updateScroller, { passive: true });
+      })();
 
     })();
   </script>
