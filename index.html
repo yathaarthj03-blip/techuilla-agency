@@ -502,7 +502,12 @@ input, textarea, [contenteditable="true"] {
     }
 
     .site-nav.theme-dark-bg .btn-menu {
-      border-color: rgba(250, 248, 245, 0.35);
+      background: rgba(255, 255, 255, 0.14) !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.55) !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+    }
+    .site-nav.theme-dark-bg .btn-menu .menu-morph-stroke {
+      stroke: #FFFFFF !important;
     }
 
     /* 2. When background turns ORANGE:
@@ -520,7 +525,63 @@ input, textarea, [contenteditable="true"] {
     }
 
     .site-nav.theme-orange-bg .btn-menu {
-      border-color: rgba(17, 17, 17, 0.40);
+      background: rgba(0, 0, 0, 0.10) !important;
+      border: 1.5px solid rgba(17, 17, 17, 0.6) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    }
+    .site-nav.theme-orange-bg .btn-menu .menu-morph-stroke {
+      stroke: #111111 !important;
+    }
+
+    .btn-menu.is-open {
+      background: rgba(0, 0, 0, 0.06) !important;
+      border: 1.5px solid rgba(17, 17, 17, 0.55) !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    }
+    .btn-menu.is-open .menu-morph-stroke {
+      stroke: #111111 !important;
+    }
+
+    /* Fullscreen Menu: solid black text wherever white */
+    #fullscreen-menu {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-nav-link:not(.is-active) {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .jackpot-char-sizer,
+    #fullscreen-menu .jackpot-rung.original,
+    #fullscreen-menu .jackpot-rung.rung-rand-1,
+    #fullscreen-menu .jackpot-rung.rung-rand-2 {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-enquiries-btn {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-channel-item {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-channel-sep {
+      color: rgba(17, 17, 17, 0.45) !important;
+    }
+    #fullscreen-menu .reel-panel-card {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .reel-card-title {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .reel-card-niche-sub {
+      color: #555555 !important;
+    }
+    #fullscreen-menu .reel-card-num-badge {
+      color: #111111 !important;
+      background: rgba(255, 255, 255, 0.9) !important;
+      border: 1px solid rgba(17, 17, 17, 0.2) !important;
+    }
+    #fullscreen-menu .reel-panel-card:hover .reel-card-num-badge {
+      color: #FFFFFF !important;
+      background: #FF6600 !important;
+      border-color: #FF6600 !important;
     }
 
     .site-nav.theme-orange-bg .btn-enquire {

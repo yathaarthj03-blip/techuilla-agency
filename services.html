@@ -73,14 +73,24 @@
     }
 
     :root {
+      --bg-warm: #F7F6F2;
+      --bg-card: #FFFFFF;
+      --bg-dark: #111111;
+      --text-primary: #111111;
+      --text-secondary: #5E5E5E;
+      --text-muted: #8E8E8E;
       --color-charcoal: #111111;
       --color-orange: #FF6600;
       --color-orange-glow: #FFA040;
+      --color-orange-light: #F8B08A;
       --bg-cream: #FAF8F5;
-      --bg-warm: #F7F6F2;
+      --border-subtle: rgba(0, 0, 0, 0.08);
+      --border-medium: rgba(0, 0, 0, 0.14);
+      --grid-line: rgba(0, 0, 0, 0.085);
       --font-hero: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-sans: 'Archivo', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-display: 'Canela', Georgia, serif;
+      --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     *, *::before, *::after {
@@ -326,37 +336,196 @@
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
     }
 
-    .nav-action-btn.menu-toggle {
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      padding: 8px;
+    /* =========================================================================
+       HIGH-CONTRAST VISIBLE MENU BUTTON (.btn-menu)
+       ========================================================================= */
+    .btn-menu {
+      width: 44px !important;
+      height: 44px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      border-radius: 8px !important;
+      cursor: pointer !important;
+      padding: 0 !important;
+      flex-shrink: 0 !important;
+      position: relative !important;
+      overflow: hidden !important;
+      transition: border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease !important;
+      z-index: 10001 !important;
     }
 
-    .hamburger-icon {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      width: 26px;
+    .menu-infinity-svg {
+      width: 26px !important;
+      height: 18px !important;
+      overflow: visible !important;
+      display: block !important;
     }
 
-    .hamburger-line {
-      display: block;
-      height: 2px;
-      width: 100%;
-      background: #FAF8F5;
-      border-radius: 2px;
-      transition: background 0.3s ease, transform 0.3s ease;
+    .menu-morph-stroke {
+      fill: none !important;
+      stroke-width: 2.4px !important;
+      stroke-linecap: round !important;
+      stroke-linejoin: round !important;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.25s ease !important;
     }
 
-    .site-nav.theme-orange-bg .hamburger-line {
-      background: #111111;
+    /* 1. Theme Dark Background (Hero Stage): Crystal-clear white strokes with frosted glass pill */
+    .site-nav.theme-dark-bg .btn-menu {
+      background: rgba(255, 255, 255, 0.14) !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.55) !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+    }
+    .site-nav.theme-dark-bg .btn-menu .menu-morph-stroke {
+      stroke: #FFFFFF !important;
     }
 
-    .site-nav.theme-cream-bg .hamburger-line {
-      background: #111111;
+    /* 2. Theme Orange Background: High-contrast black strokes with dark glass pill */
+    .site-nav.theme-orange-bg .btn-menu {
+      background: rgba(0, 0, 0, 0.10) !important;
+      border: 1.5px solid rgba(17, 17, 17, 0.6) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    }
+    .site-nav.theme-orange-bg .btn-menu .menu-morph-stroke {
+      stroke: #111111 !important;
+    }
+
+    /* 3. Theme Cream Background: Crisp black strokes with subtle border */
+    .site-nav.theme-cream-bg .btn-menu,
+    .site-nav.theme-warm-bg .btn-menu {
+      background: rgba(0, 0, 0, 0.05) !important;
+      border: 1.5px solid rgba(17, 17, 17, 0.5) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+    }
+    .site-nav.theme-cream-bg .btn-menu .menu-morph-stroke,
+    .site-nav.theme-warm-bg .btn-menu .menu-morph-stroke {
+      stroke: #111111 !important;
+    }
+
+    /* 4. When Menu Is Open (Overlaying the cream fullscreen menu): Crisp black morphing cross X */
+    .btn-menu.is-open {
+      background: rgba(0, 0, 0, 0.06) !important;
+      border: 1.5px solid rgba(17, 17, 17, 0.55) !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    }
+    .btn-menu.is-open .menu-morph-stroke {
+      stroke: #111111 !important;
+    }
+
+    /* Hover State (All Themes): Orange accent glow and slight lift */
+    .btn-menu:hover {
+      border-color: #FF6600 !important;
+      background: rgba(255, 102, 0, 0.15) !important;
+      box-shadow: 0 0 16px rgba(255, 102, 0, 0.45), 0 2px 8px rgba(255, 102, 0, 0.25) !important;
+      transform: translateY(-1px) !important;
+    }
+    .btn-menu:not(.is-open):hover .menu-morph-stroke {
+      stroke: #FF6600 !important;
+    }
+
+    /* =========================================================================
+       NAVPANEL TEXT COLOR: SOLID BLACK WHEREVER IT WAS WHITE
+       (Preserving orange accents for active items and highlights)
+       ========================================================================= */
+    #fullscreen-menu {
+      color: #111111 !important;
+    }
+
+    /* Navigation Links (HOME, SERVICES, WORK, ABOUT) */
+    #fullscreen-menu .menu-nav-link {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-nav-link .nav-text-wrap {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-nav-link.is-active,
+    #fullscreen-menu .menu-nav-link:hover {
+      color: #FF6600 !important;
+    }
+    #fullscreen-menu .menu-nav-link.is-active .nav-text-wrap,
+    #fullscreen-menu .menu-nav-link:hover .nav-text-wrap {
+      color: #FF6600 !important;
+    }
+
+    /* Jackpot Text Ladder Rungs */
+    #fullscreen-menu .jackpot-char-sizer {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .jackpot-rung.original {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .jackpot-rung.rung-rand-1,
+    #fullscreen-menu .jackpot-rung.rung-rand-2 {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .jackpot-rung.target {
+      color: #FF6600 !important;
+    }
+
+    /* Enquiries Button & Mini-Brand Row */
+    #fullscreen-menu .menu-enquiries-btn {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-enquiries-btn span {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-enquiries-btn:hover {
+      color: #FF6600 !important;
+    }
+    #fullscreen-menu .menu-enquiries-btn:hover span {
+      color: #FF6600 !important;
+    }
+    #fullscreen-menu .menu-enquiries-row {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-mini-brand-row {
+      color: #111111 !important;
+    }
+
+    /* Social Channels (TWITTER, LINKEDIN, INSTAGRAM, GMAIL) */
+    #fullscreen-menu .menu-channel-item {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-channel-item:hover {
+      color: #FF6600 !important;
+    }
+    #fullscreen-menu .menu-channel-sep {
+      color: rgba(17, 17, 17, 0.45) !important;
+    }
+
+    /* Rotating Reel Carousel Cards */
+    #fullscreen-menu .reel-panel-card {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .reel-card-title {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .reel-card-niche-sub {
+      color: #555555 !important;
+    }
+    #fullscreen-menu .reel-card-niche-val {
+      color: #FF6600 !important;
+    }
+    #fullscreen-menu .reel-card-tag {
+      color: #FF6600 !important;
+    }
+    #fullscreen-menu .reel-card-num-badge {
+      color: #111111 !important;
+      background: rgba(255, 255, 255, 0.9) !important;
+      border: 1px solid rgba(17, 17, 17, 0.2) !important;
+    }
+    #fullscreen-menu .reel-panel-card:hover .reel-card-num-badge {
+      color: #FFFFFF !important;
+      background: #FF6600 !important;
+      border-color: #FF6600 !important;
+    }
+
+    /* Close Button (if present) */
+    #fullscreen-menu .menu-close-btn {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-close-btn:hover {
+      color: #FF6600 !important;
     }
 
     /* -------------------------------------------------------------------------
@@ -442,7 +611,12 @@
     }
 
     .site-nav.theme-dark-bg .btn-menu {
-      border-color: rgba(250, 248, 245, 0.35);
+      background: rgba(255, 255, 255, 0.14) !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.55) !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+    }
+    .site-nav.theme-dark-bg .btn-menu .menu-morph-stroke {
+      stroke: #FFFFFF !important;
     }
 
     /* 2. When background turns ORANGE:
@@ -460,7 +634,63 @@
     }
 
     .site-nav.theme-orange-bg .btn-menu {
-      border-color: rgba(17, 17, 17, 0.40);
+      background: rgba(0, 0, 0, 0.10) !important;
+      border: 1.5px solid rgba(17, 17, 17, 0.6) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    }
+    .site-nav.theme-orange-bg .btn-menu .menu-morph-stroke {
+      stroke: #111111 !important;
+    }
+
+    .btn-menu.is-open {
+      background: rgba(0, 0, 0, 0.06) !important;
+      border: 1.5px solid rgba(17, 17, 17, 0.55) !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    }
+    .btn-menu.is-open .menu-morph-stroke {
+      stroke: #111111 !important;
+    }
+
+    /* Fullscreen Menu: solid black text wherever white */
+    #fullscreen-menu {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-nav-link:not(.is-active) {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .jackpot-char-sizer,
+    #fullscreen-menu .jackpot-rung.original,
+    #fullscreen-menu .jackpot-rung.rung-rand-1,
+    #fullscreen-menu .jackpot-rung.rung-rand-2 {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-enquiries-btn {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-channel-item {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-channel-sep {
+      color: rgba(17, 17, 17, 0.45) !important;
+    }
+    #fullscreen-menu .reel-panel-card {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .reel-card-title {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .reel-card-niche-sub {
+      color: #555555 !important;
+    }
+    #fullscreen-menu .reel-card-num-badge {
+      color: #111111 !important;
+      background: rgba(255, 255, 255, 0.9) !important;
+      border: 1px solid rgba(17, 17, 17, 0.2) !important;
+    }
+    #fullscreen-menu .reel-panel-card:hover .reel-card-num-badge {
+      color: #FFFFFF !important;
+      background: #FF6600 !important;
+      border-color: #FF6600 !important;
     }
 
     .site-nav.theme-orange-bg .btn-enquire {
