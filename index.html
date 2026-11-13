@@ -15,6 +15,25 @@
   <title>Techuilla Agency — Creative Technology & Digital Marketing Studio</title>
 
   <!-- Google Fonts: Inter, Archivo, Caveat, Space Mono, Space Grotesk, Newsreader, Playfair Display -->
+    <!-- Skip Intro Immediately when Navigating from Subpages -->
+  <script>
+    (function() {
+      try {
+        var ref = document.referrer || '';
+        var params = new URLSearchParams(window.location.search);
+        var navEntries = performance.getEntriesByType('navigation');
+        var navType = (navEntries && navEntries.length > 0) ? navEntries[0].type : '';
+        // Intro should ONLY appear if refreshing on the home page (navType === 'reload')
+        if (navType !== 'reload' && (ref.indexOf('services.html') !== -1 || ref.indexOf('contact.html') !== -1 || params.get('skipIntro') === '1' || params.get('from') === 'subpage' || (navType === 'navigate' && ref && ref.indexOf(window.location.host) !== -1 && !ref.endsWith('/index.html') && !ref.endsWith('/')))) {
+          document.documentElement.classList.add('skip-intro-immediate');
+        }
+      } catch(e) {}
+    })();
+  </script>
+  <style>
+    .skip-intro-immediate #intro-container { display: none !important; pointer-events: none !important; }
+  </style>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800&family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -3705,7 +3724,7 @@ input, textarea, [contenteditable="true"] {
        12. BOLD CTA SECTION ("HAVE AN IDEA? LET'S BUILD IT.")
        ========================================================================== */
     .cta-section {
-      padding: 160px 0 160px 0;
+      padding: 135px 0 135px 0; /* Adjusted padding so section height remains unchanged with larger font */
       border-bottom: 1px solid var(--border-subtle);
       position: relative;
       z-index: 2;
@@ -3763,7 +3782,7 @@ input, textarea, [contenteditable="true"] {
 
     .cta-title {
       font-family: var(--font-sans);
-      font-size: clamp(38px, 5.2vw, 76px);
+      font-size: clamp(46px, 6.25vw, 92px); /* 20% increased font size */
       font-weight: 800;
       letter-spacing: -0.035em;
       line-height: 1.05;
@@ -5270,8 +5289,23 @@ input, textarea, [contenteditable="true"] {
       const isTransitionCurtain = urlParams.get('transition') === 'curtain' || urlParams.get('transition') === 'home' || urlParams.get('transition') === 'logo' || urlParams.get('transition') === 'enquire';
       const isBackForward = (navType === 'back_forward');
 
-      // The intro sequence should ONLY appear if refreshing the hero page (or direct first visit without transition)
-      const shouldBypassIntro = isTransitionCurtain || isBackForward;
+      const referrer = document.referrer || '';
+      const isFromOtherPage = referrer.includes('services.html') || 
+                              referrer.includes('contact.html') || 
+                              urlParams.get('from') === 'subpage' || 
+                              urlParams.get('skipIntro') === '1' ||
+                              document.documentElement.classList.contains('skip-intro-immediate') ||
+                              (navType === 'navigate' && referrer.includes(window.location.host) && !referrer.endsWith('/index.html') && !referrer.endsWith('/'));
+
+      // The intro sequence should ONLY appear if refreshing the hero page (never when travelling from subpages)
+      const shouldBypassIntro = !isReload && (isTransitionCurtain || isBackForward || isFromOtherPage);
+
+      // Clean up query param from URL so subsequent refresh is a clean home reload
+      if (urlParams.has('from') || urlParams.has('skipIntro')) {
+        try {
+          window.history.replaceState({}, '', window.location.pathname);
+        } catch(e) {}
+      }
 
       let introFinished = false;
       function finishIntro(instant = false) {
@@ -7571,10 +7605,18 @@ function triggerHomeTransition(e) {
 
         function onMouseMove(event) {
           const rect = root.getBoundingClientRect();
+          // If CTA is not in or near viewport, ignore mousemove to prevent huge offscreen drift
+          if (rect.bottom < -100 || rect.top > window.innerHeight + 100) return;
+
           const w = rect.width || 1;
           const h = rect.height || 1;
-          pointer.x = ((event.clientX - rect.left) / w - 0.5) * parallaxStrength * 2;
-          pointer.y = ((event.clientY - rect.top) / h - 0.5) * parallaxStrength * 2;
+          const relX = (event.clientX - rect.left) / w - 0.5;
+          const relY = (event.clientY - rect.top) / h - 0.5;
+
+          // Strictly clamp parallax pointer influence to [-parallaxStrength, parallaxStrength]
+          pointer.x = Math.max(-parallaxStrength, Math.min(parallaxStrength, relX * parallaxStrength * 2));
+          pointer.y = Math.max(-parallaxStrength, Math.min(parallaxStrength, relY * parallaxStrength * 2));
+
           for (let i = 0; i < hands.length; i++) {
             hoverHand(hands[i], event.clientX, event.clientY);
           }
@@ -7618,15 +7660,16 @@ function triggerHomeTransition(e) {
           drift.x += (pointer.x - drift.x) * PARALLAX_EASE;
           drift.y += (pointer.y - drift.y) * PARALLAX_EASE;
 
-          // Parallax never pulls the wrist away from the outer edge:
-          const leftDriftX = Math.min(0, drift.x);
-          const rightDriftX = Math.max(0, -drift.x);
+          // Parallax never pulls the wrist away from the outer edge, and Y drift is strictly clamped:
+          const leftDriftX = Math.min(0, Math.max(-parallaxStrength, drift.x));
+          const rightDriftX = Math.max(0, Math.min(parallaxStrength, -drift.x));
+          const safeDriftY = Math.max(-parallaxStrength, Math.min(parallaxStrength, drift.y));
 
           if (leftWrap) {
-            leftWrap.style.transform = `translateX(${-currentOffset.toFixed(2)}%) translate(${leftDriftX.toFixed(1)}px, ${(-drift.y).toFixed(1)}px)`;
+            leftWrap.style.transform = `translateX(${-currentOffset.toFixed(2)}%) translate(${leftDriftX.toFixed(1)}px, ${(-safeDriftY).toFixed(1)}px)`;
           }
           if (rightWrap) {
-            rightWrap.style.transform = `translateX(${currentOffset.toFixed(2)}%) translate(${rightDriftX.toFixed(1)}px, ${(-drift.y).toFixed(1)}px)`;
+            rightWrap.style.transform = `translateX(${currentOffset.toFixed(2)}%) translate(${rightDriftX.toFixed(1)}px, ${(-safeDriftY).toFixed(1)}px)`;
           }
 
           requestAnimationFrame(frame);
