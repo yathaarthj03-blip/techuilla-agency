@@ -1821,12 +1821,12 @@
 
 
     /* -------------------------------------------------------------------------
-       SCROLL TUNNEL & STICKY STAGE
+       SCROLL TUNNEL & STICKY STAGE (10% Decreased Scrolling Speed: 575vh)
        ------------------------------------------------------------------------- */
     .services-scroll-track {
       position: relative;
       width: 100%;
-      height: 520vh;
+      height: 575vh;
       background: #000000;
     }
 
@@ -2146,6 +2146,25 @@
 
     .services-massive-title.is-revealed .char-inner {
       transform: translateY(0);
+    }
+
+    /* Thin Architectural Line Below the Word SERVICES */
+    .services-title-divider {
+      width: 100%;
+      height: 1.5px;
+      background: #111111;
+      margin-top: 36px;
+      transform: scaleX(0);
+      transform-origin: left center;
+      opacity: 0;
+      transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.35s, opacity 0.8s ease 0.35s;
+      will-change: transform, opacity;
+    }
+
+    .services-massive-title.is-revealed ~ .services-title-divider,
+    .services-title-wrap.is-revealed .services-title-divider {
+      transform: scaleX(1);
+      opacity: 1;
     }
 
     /* -------------------------------------------------------------------------
@@ -2765,6 +2784,7 @@
           <span class="char-mask"><span class="char-inner" style="--rand-delay: 0.22s;">E</span></span>
           <span class="char-mask"><span class="char-inner" style="--rand-delay: 0.32s;">S</span></span>
         </h1>
+        <div class="services-title-divider" id="servicesTitleDivider" aria-hidden="true"></div>
       </div>
 
       <!-- 4 Placeholder Service Cards -->
@@ -3480,7 +3500,7 @@ function triggerHomeTransition(e) {
       }
 
       function tickScrollPhysics() {
-        currentScrollProgress += (targetScrollProgress - currentScrollProgress) * 0.16;
+        currentScrollProgress += (targetScrollProgress - currentScrollProgress) * 0.144;
         const P = currentScrollProgress;
 
         // 1. Center Orange Line / Horizontal Sheet
@@ -3657,6 +3677,53 @@ function triggerHomeTransition(e) {
       window.addEventListener('resize', updateScrollProgress);
       updateScrollProgress();
       requestAnimationFrame(tickScrollPhysics);
+
+      /* ------------------------------------------------------------------------
+         4B. LUXURIOUS CINEMATIC SMOOTH SCROLL (10% Decreased Scrolling Speed)
+         ------------------------------------------------------------------------ */
+      let currentY = window.scrollY;
+      let targetY = window.scrollY;
+      let isSmoothScrolling = false;
+      let smoothScrollRafId = null;
+
+      window.addEventListener('scroll', () => {
+        if (!isSmoothScrolling) {
+          currentY = window.scrollY;
+          targetY = window.scrollY;
+        }
+      }, { passive: true });
+
+      window.addEventListener('wheel', (e) => {
+        if (document.body.classList.contains('menu-open')) return;
+
+        e.preventDefault();
+        const maxScrollY = document.documentElement.scrollHeight - window.innerHeight;
+        if (maxScrollY <= 0) return;
+
+        // Clamped delta with 10% decreased travel speed (0.54 instead of 0.60)
+        const clampedDelta = Math.sign(e.deltaY) * Math.min(75, Math.abs(e.deltaY));
+        targetY = Math.max(0, Math.min(maxScrollY, targetY + clampedDelta * 0.54));
+
+        if (!isSmoothScrolling) {
+          isSmoothScrolling = true;
+          smoothScrollRafId = requestAnimationFrame(smoothScrollTick);
+        }
+      }, { passive: false });
+
+      function smoothScrollTick() {
+        const diff = targetY - currentY;
+        if (Math.abs(diff) > 0.4) {
+          currentY += diff * 0.088; // Slower, heavier cinematic inertia matching home page
+          window.scrollTo(0, currentY);
+          updateScrollProgress();
+          smoothScrollRafId = requestAnimationFrame(smoothScrollTick);
+        } else {
+          currentY = targetY;
+          window.scrollTo(0, currentY);
+          updateScrollProgress();
+          isSmoothScrolling = false;
+        }
+      }
 
       /* ------------------------------------------------------------------------
          5. BIDIRECTIONAL SERVICES TITLE CONTROLLER (Driven by Pull-Up Physics)
