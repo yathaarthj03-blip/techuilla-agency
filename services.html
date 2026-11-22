@@ -556,7 +556,6 @@
     /* -------------------------------------------------------------------------
        5. FULLSCREEN HAMBURGER MENU CSS (From Home Page)
        ------------------------------------------------------------------------- */
-
 /* ==========================================================================
        3. STICKY MINIMAL NAVBAR (15% Increased Logo & Brand Name)
        ========================================================================== */
@@ -1877,8 +1876,63 @@
       color: #0A66C2;
     }
 
-    
-
+    /* Ensure High-Contrast Menu Button & Black Navpanel Text Override Imported Menu CSS */
+    .site-nav.theme-dark-bg .btn-menu {
+      background: rgba(255, 255, 255, 0.14) !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.55) !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+    }
+    .site-nav.theme-dark-bg .btn-menu .menu-morph-stroke {
+      stroke: #FFFFFF !important;
+    }
+    .site-nav.theme-orange-bg .btn-menu {
+      background: rgba(0, 0, 0, 0.10) !important;
+      border: 1.5px solid rgba(17, 17, 17, 0.6) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    }
+    .site-nav.theme-orange-bg .btn-menu .menu-morph-stroke {
+      stroke: #111111 !important;
+    }
+    .site-nav.theme-cream-bg .btn-menu,
+    .site-nav.theme-warm-bg .btn-menu {
+      background: rgba(0, 0, 0, 0.05) !important;
+      border: 1.5px solid rgba(17, 17, 17, 0.5) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+    }
+    .site-nav.theme-cream-bg .btn-menu .menu-morph-stroke,
+    .site-nav.theme-warm-bg .btn-menu .menu-morph-stroke {
+      stroke: #111111 !important;
+    }
+    .btn-menu.is-open {
+      background: rgba(0, 0, 0, 0.06) !important;
+      border: 1.5px solid rgba(17, 17, 17, 0.55) !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    }
+    .btn-menu.is-open .menu-morph-stroke {
+      stroke: #111111 !important;
+    }
+    #fullscreen-menu .menu-nav-link:not(.is-active),
+    #fullscreen-menu .menu-nav-link:not(.is-active) .nav-text-wrap,
+    #fullscreen-menu .menu-nav-link:not(.is-active) .jackpot-char-sizer,
+    #fullscreen-menu .menu-nav-link:not(.is-active) .jackpot-rung.original,
+    #fullscreen-menu .menu-nav-link:not(.is-active) .jackpot-rung.rung-rand-1,
+    #fullscreen-menu .menu-nav-link:not(.is-active) .jackpot-rung.rung-rand-2 {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-nav-link.is-active,
+    #fullscreen-menu .menu-nav-link.is-active .nav-text-wrap,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-char-sizer,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-rung.original,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-rung.rung-rand-1,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-rung.rung-rand-2,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-rung.target,
+    #fullscreen-menu .menu-nav-link.is-active .nav-arrow,
+    #fullscreen-menu .menu-nav-link:hover,
+    #fullscreen-menu .menu-nav-link:hover .nav-text-wrap,
+    #fullscreen-menu .menu-nav-link:hover .jackpot-rung.target,
+    #fullscreen-menu .menu-nav-link:hover .nav-arrow {
+      color: #FF6600 !important;
+    }
 
     /* -------------------------------------------------------------------------
        SCROLL TUNNEL & STICKY STAGE (10% Decreased Scrolling Speed: 575vh)
@@ -2584,6 +2638,466 @@
       max-width: 96%;
     }
 
+    /* Make every service card clearly clickable */
+    .service-area-card {
+      cursor: pointer !important;
+    }
+
+    .service-area-card * {
+      cursor: pointer !important;
+    }
+
+    /* -------------------------------------------------------------------------
+       REPEATING IMAGE FRAME TRANSITION & INLINE DETAIL SHOWCASE STAGE
+       (Codrops / Shane Weber style staggered frame cascade + Right Carousel)
+       ------------------------------------------------------------------------- */
+    .repeating-frames-layer {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9500;
+      overflow: hidden;
+    }
+
+    .repeating-frame-mover {
+      position: fixed;
+      top: 0;
+      left: 0;
+      border-radius: 22px;
+      overflow: hidden;
+      background-color: #050202;
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
+      will-change: transform, width, height, opacity, border-radius;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 102, 0, 0.28);
+      pointer-events: none;
+    }
+
+    /* Detail Stage Container inside .services-pulled-sheet (Seamless Page View, Not a Box Popup) */
+    .services-areas-section {
+      transition: opacity 0.48s cubic-bezier(0.16, 1, 0.3, 1), transform 0.52s cubic-bezier(0.16, 1, 0.3, 1), filter 0.48s ease;
+    }
+
+    .services-areas-section.is-grid-Morphing-out {
+      opacity: 0;
+      transform: scale(0.975);
+      filter: blur(6px);
+      pointer-events: none;
+    }
+
+    .services-areas-section.is-grid-hidden-for-detail {
+      display: none !important;
+    }
+
+    .service-detail-stage {
+      position: relative;
+      z-index: 30;
+      max-width: 1600px;
+      margin: 0 auto 140px auto;
+      padding: 12px 48px 24px 48px;
+      display: none;
+      grid-template-columns: minmax(340px, 44%) minmax(460px, 56%);
+      gap: 64px;
+      align-items: center;
+      min-height: 640px;
+    }
+
+    .service-detail-stage.is-detail-visible {
+      display: grid;
+    }
+
+    /* Left Panel of Detail Stage: Top-Left Back Button, Title, ~200-char Description, 2 Buttons */
+    .service-detail-left {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      min-height: 540px;
+      padding: 8px 0;
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.52s cubic-bezier(0.16, 1, 0.3, 1), transform 0.56s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .service-detail-stage.is-content-revealed .service-detail-left {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Top-Left Back Button with Arrow */
+    .btn-detail-back {
+      appearance: none;
+      -webkit-appearance: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 22px 12px 16px;
+      border-radius: 999px;
+      background: #FFFFFF;
+      border: 1.5px solid rgba(17, 17, 17, 0.14);
+      color: #111111;
+      font-family: var(--font-hero);
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      cursor: pointer !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.28s ease;
+    }
+
+    .btn-detail-back * {
+      cursor: pointer !important;
+    }
+
+    .btn-detail-back-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(17, 17, 17, 0.07);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, color 0.25s ease;
+    }
+
+    .btn-detail-back-icon svg {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+      stroke-width: 2.3;
+    }
+
+    .btn-detail-back:hover {
+      background: #111111;
+      border-color: #111111;
+      color: #FFFFFF;
+      transform: translateX(-4px);
+      box-shadow: 0 14px 32px rgba(255, 102, 0, 0.24);
+    }
+
+    .btn-detail-back:hover .btn-detail-back-icon {
+      background: #FF6600;
+      color: #111111;
+      transform: translateX(-2px);
+    }
+
+    /* Middle Block: Category Tag, Large Service Title & ~200-Character Description */
+    .service-detail-body {
+      margin: 36px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 520px;
+    }
+
+    .service-detail-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono, monospace);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #FF6600;
+    }
+
+    .service-detail-meta-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #FF6600;
+      box-shadow: 0 0 10px rgba(255, 102, 0, 0.8);
+    }
+
+    .service-detail-title {
+      font-family: var(--font-hero);
+      font-size: clamp(38px, 4.4vw, 66px);
+      font-weight: 700;
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+      color: #111111;
+      margin: 0;
+    }
+
+    .service-detail-desc {
+      font-family: var(--font-hero);
+      font-size: clamp(15px, 1.18vw, 17.5px);
+      font-weight: 400;
+      line-height: 1.62;
+      color: #4A4A4A;
+      margin: 0;
+    }
+
+    /* Bottom Action Buttons: Book an Inquiry & View Work */
+    .service-detail-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .btn-detail-inquiry {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px 32px;
+      border-radius: 999px;
+      background: #FF6600;
+      color: #111111;
+      border: 1.5px solid #FF6600;
+      font-family: var(--font-hero);
+      font-size: 14.5px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      cursor: pointer !important;
+      box-shadow: 0 14px 34px rgba(255, 102, 0, 0.32);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, color 0.25s ease, box-shadow 0.28s ease, border-color 0.25s ease;
+    }
+
+    .btn-detail-inquiry * {
+      cursor: pointer !important;
+    }
+
+    .btn-detail-inquiry:hover {
+      background: #111111;
+      border-color: #111111;
+      color: #FFFFFF;
+      transform: translateY(-3px);
+      box-shadow: 0 18px 40px rgba(17, 17, 17, 0.28);
+    }
+
+    .btn-detail-viewwork {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 30px;
+      border-radius: 999px;
+      background: transparent;
+      color: #111111;
+      border: 1.5px solid rgba(17, 17, 17, 0.24);
+      font-family: var(--font-hero);
+      font-size: 14.5px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      cursor: pointer !important;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.28s ease;
+    }
+
+    .btn-detail-viewwork * {
+      cursor: pointer !important;
+    }
+
+    .btn-detail-viewwork:hover {
+      background: #111111;
+      border-color: #111111;
+      color: #FFFFFF;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(17, 17, 17, 0.16);
+    }
+
+    /* Right Side Showcase Stage & Sliding Carousel with Controls */
+    .service-detail-right {
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .service-detail-carousel-viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 11;
+      min-height: 460px;
+      max-height: 580px;
+      border-radius: 26px;
+      overflow: hidden;
+      background: #050202;
+      box-shadow: 0 28px 75px rgba(0, 0, 0, 0.24), 0 0 0 1px rgba(255, 102, 0, 0.22);
+      opacity: 0;
+      transition: opacity 0.22s ease;
+    }
+
+    .service-detail-stage.is-target-landed .service-detail-carousel-viewport {
+      opacity: 1;
+    }
+
+    .service-detail-carousel-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.78s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+
+    .service-detail-slide {
+      position: relative;
+      min-width: 100%;
+      width: 100%;
+      height: 100%;
+      flex-shrink: 0;
+      overflow: hidden;
+      background: #050202;
+    }
+
+    .service-detail-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .service-detail-slide.is-active-slide img {
+      transform: scale(1.02);
+    }
+
+    .service-detail-slide-caption {
+      position: absolute;
+      left: 24px;
+      bottom: 22px;
+      right: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      border-radius: 14px;
+      background: rgba(10, 8, 8, 0.68);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: #FFFFFF;
+      font-family: var(--font-hero);
+      font-size: 13px;
+      font-weight: 500;
+      pointer-events: none;
+    }
+
+    .service-detail-slide-tag {
+      font-family: var(--font-mono, monospace);
+      font-size: 11px;
+      font-weight: 600;
+      color: #FF8533;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* Carousel Controls Bar (Prev/Next Arrows + Interactive Progress Dots + Counter) */
+    .service-detail-carousel-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 6px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.45s ease 0.1s, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+    }
+
+    .service-detail-stage.is-content-revealed .service-detail-carousel-controls {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .carousel-dots-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .carousel-dot-btn {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 28px;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(17, 17, 17, 0.18);
+      border: none;
+      padding: 0;
+      cursor: pointer !important;
+      overflow: hidden;
+      position: relative;
+      transition: width 0.32s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease;
+    }
+
+    .carousel-dot-btn.is-active {
+      width: 48px;
+      background: #FF6600;
+    }
+
+    .carousel-arrows-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .carousel-counter-badge {
+      font-family: var(--font-mono, monospace);
+      font-size: 12px;
+      font-weight: 600;
+      color: #555555;
+      margin-right: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .carousel-nav-btn {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 1.5px solid rgba(17, 17, 17, 0.14);
+      color: #111111;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer !important;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .carousel-nav-btn * {
+      cursor: pointer !important;
+    }
+
+    .carousel-nav-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+    }
+
+    .carousel-nav-btn:hover {
+      background: #FF6600;
+      border-color: #FF6600;
+      color: #111111;
+      transform: scale(1.06);
+      box-shadow: 0 10px 24px rgba(255, 102, 0, 0.28);
+    }
+
+    @media (max-width: 1100px) {
+      .service-detail-stage {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+      .service-detail-left {
+        min-height: auto;
+      }
+      .service-detail-carousel-viewport {
+        min-height: 360px;
+      }
+    }
+
     @media (max-width: 1200px) {
       .services-areas-section {
         grid-template-columns: 1fr;
@@ -2781,23 +3295,22 @@
   <!-- Sticky Minimal Navbar -->
   <header class="site-nav theme-dark-bg" id="siteNav">
     <div class="nav-inner">
-      <a href="index.html?from=subpage" class="nav-brand" id="navBrandLink" aria-label="Techuilla Agency Home">
+      <a href="index.html" class="nav-brand" id="navBrandLink" aria-label="Techuilla Agency Home">
         <img src="Techuilla_logo.png" alt="Techuilla Logo" class="nav-brand-logo" id="navBrandLogo" />
         <span class="nav-brand-text" id="navBrandText">Techuilla Agency</span>
       </a>
-
       <div class="nav-actions">
-        <a href="contact.html" class="btn-enquire">
+        <a href="contact.html" class="btn-enquire" aria-label="Enquire with Techuilla Agency">
           <span>Enquire</span>
-          <svg class="btn-enquire-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
           </svg>
         </a>
-        <button class="btn-menu" id="open-menu-btn" aria-label="Open Navigation Menu">
-          <svg class="menu-infinity-svg" viewBox="0 0 28 20" aria-hidden="true">
-            <path class="menu-morph-stroke" id="menuStrokeTop" />
-            <path class="menu-morph-stroke" id="menuStrokeBottom" />
-          </svg>
+        <button class="nav-action-btn menu-toggle" id="menuToggleBtn" aria-label="Toggle Navigation Menu">
+          <span class="hamburger-icon">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </span>
         </button>
       </div>
     </div>
@@ -3426,6 +3939,76 @@
         </div>
       </div>
 
+      <!-- Inline Detail Showcase Stage (Opened via Repeating-Frame Grid Transition) -->
+      <div class="service-detail-stage" id="serviceDetailStage" aria-hidden="true">
+        <!-- Left Side: Back Button at Top-Left, Title, ~200-Char Description, Book an Inquiry & View Work -->
+        <div class="service-detail-left">
+          <button type="button" class="btn-detail-back" id="btnDetailBack" aria-label="Back to services grid">
+            <span class="btn-detail-back-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+            </span>
+            <span>Back to services</span>
+          </button>
+
+          <div class="service-detail-body">
+            <div class="service-detail-meta">
+              <span class="service-detail-meta-dot" aria-hidden="true"></span>
+              <span id="serviceDetailCategoryTag">01 / BUILD</span>
+            </div>
+            <h2 class="service-detail-title" id="serviceDetailTitle">Web Development</h2>
+            <p class="service-detail-desc" id="serviceDetailDesc">
+              We engineer ultra-fast, conversion-focused websites and custom web applications built on modern architectures, responsive UI systems, technical SEO foundations, and scalable cloud infrastructure.
+            </p>
+          </div>
+
+          <div class="service-detail-actions">
+            <a href="contact.html" class="btn-detail-inquiry" id="btnDetailInquiry">
+              <span>Book an Inquiry</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+            <a href="index.html?from=subpage#work" class="btn-detail-viewwork" id="btnDetailViewWork">
+              <span>View Work</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Side: Seamless Showcase Viewport + Auto-Sliding Carousel with Controls -->
+        <div class="service-detail-right">
+          <div class="service-detail-carousel-viewport" id="serviceDetailCarouselViewport">
+            <div class="service-detail-carousel-track" id="serviceDetailCarouselTrack">
+              <!-- Populated dynamically when a service card is clicked -->
+            </div>
+          </div>
+
+          <div class="service-detail-carousel-controls">
+            <div class="carousel-dots-wrap" id="serviceDetailCarouselDots" role="tablist" aria-label="Carousel slide indicators"></div>
+            <div class="carousel-arrows-wrap">
+              <span class="carousel-counter-badge" id="serviceDetailCarouselCounter">01 / 05</span>
+              <button type="button" class="carousel-nav-btn" id="btnCarouselPrev" aria-label="Previous sample image">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+              </button>
+              <button type="button" class="carousel-nav-btn" id="btnCarouselNext" aria-label="Next sample image">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Centered CTA Section with ASCII Hands -->
       <div class="cta-section cta-centered-variant" id="servicesCtaSection">
         <!-- ASCII Hands Canvases (Left & Right glide in on scroll + cursor cluster glow) -->
@@ -3532,6 +4115,9 @@
     </div>
   </footer>
     </section>
+
+    <!-- Fixed Repeating-Frame Transition Layer (Placed outside transformed section for true viewport-fixed coords) -->
+    <div class="repeating-frames-layer" id="repeatingFramesLayer" aria-hidden="true"></div>
   </main>
 
   <script>
@@ -4960,6 +5546,495 @@ Best regards,
       }
 
       initServicesFilterAndBlurEngine();
+
+      /* ------------------------------------------------------------------------
+         9. REPEATING-FRAME TRANSITION ENGINE + INLINE CAROUSEL SHOWCASE (ALL 12 CARDS)
+         ------------------------------------------------------------------------ */
+      function initServiceCardDetailShowcase() {
+        const areasSection = document.querySelector('.services-areas-section');
+        const grid = document.getElementById('servicesCardsGrid');
+        const detailStage = document.getElementById('serviceDetailStage');
+        const framesLayer = document.getElementById('repeatingFramesLayer');
+
+        const btnBack = document.getElementById('btnDetailBack');
+        const elCategoryTag = document.getElementById('serviceDetailCategoryTag');
+        const elTitle = document.getElementById('serviceDetailTitle');
+        const elDesc = document.getElementById('serviceDetailDesc');
+        const carouselViewport = document.getElementById('serviceDetailCarouselViewport');
+        const carouselTrack = document.getElementById('serviceDetailCarouselTrack');
+        const carouselDots = document.getElementById('serviceDetailCarouselDots');
+        const carouselCounter = document.getElementById('serviceDetailCarouselCounter');
+        const btnPrev = document.getElementById('btnCarouselPrev');
+        const btnNext = document.getElementById('btnCarouselNext');
+
+        if (!areasSection || !grid || !detailStage || !framesLayer || !carouselViewport || !carouselTrack) return;
+
+        // Data for all 12 service cards: ~200-char rich description + 5 sample images (Card image first, then 4 curated sample showcase frames)
+        const SERVICE_DETAILS = {
+          '1': {
+            num: '01',
+            category: 'BUILD',
+            title: 'Web Development',
+            desc: 'We engineer ultra-fast, conversion-focused websites and custom web platforms built on modern modular architectures, responsive UI design systems, technical SEO foundations, and scalable cloud hosting.',
+            cardImg: 'service_card_1.jpg',
+            samples: [
+              { src: 'service_card_1.jpg', title: 'Web Architecture & Core UI System', tag: '01 / OVERVIEW' },
+              { src: 'services_project_1.jpg', title: 'Enterprise Web Platform & Interactive Portal', tag: '02 / WEB PLATFORM' },
+              { src: 'card_techuilla_branding.jpg', title: 'Techuilla Flagship Digital Experience', tag: '03 / BESPOKE SITE' },
+              { src: 'card_hindustan_tyre.jpg', title: 'Industrial B2B E-Commerce & Catalog Engine', tag: '04 / E-COMMERCE' },
+              { src: 'services_project_2.jpg', title: 'High-Conversion Landing & Product Showcase', tag: '05 / DESIGN SYSTEM' }
+            ]
+          },
+          '2': {
+            num: '02',
+            category: 'BUILD',
+            title: 'Application Development',
+            desc: 'We design and build high-performance native and cross-platform mobile and web applications featuring intuitive user flows, real-time data synchronization, resilient APIs, and cloud-native scalability.',
+            cardImg: 'service_card_2.jpg',
+            samples: [
+              { src: 'service_card_2.jpg', title: 'Cross-Platform App Ecosystem', tag: '01 / OVERVIEW' },
+              { src: 'card_health_streak.png', title: 'Health Streak Mobile & Wearable Companion App', tag: '02 / MOBILE APP' },
+              { src: 'services_project_2.jpg', title: 'Real-Time SaaS Dashboard & Analytics Suite', tag: '03 / WEB APP' },
+              { src: 'card_audio_king.png', title: 'Audio King Connected Consumer Application', tag: '04 / CONSUMER APP' },
+              { src: 'services_project_3.jpg', title: 'Cloud API & Multi-Tenant Workflow Interface', tag: '05 / ENTERPRISE' }
+            ]
+          },
+          '3': {
+            num: '03',
+            category: 'BUILD',
+            title: 'AI Automations',
+            desc: 'We transform manual operations into autonomous growth engines using custom LLM agents, multi-step CRM workflows, intelligent lead qualification pipelines, and real-time internal data orchestration.',
+            cardImg: 'service_card_3.jpg',
+            samples: [
+              { src: 'service_card_3.jpg', title: 'Autonomous Agent & Pipeline Architecture', tag: '01 / OVERVIEW' },
+              { src: 'services_project_3.jpg', title: 'Multi-Agent CRM & Lead Routing Orchestrator', tag: '02 / AI WORKFLOW' },
+              { src: 'services_project_1.jpg', title: 'Automated Knowledge Base & Support Copilot', tag: '03 / LLM AGENT' },
+              { src: 'card_techuilla_branding.jpg', title: 'Real-Time Data Sync & BI Trigger Engine', tag: '04 / DATA PIPELINE' },
+              { src: 'services_project_2.jpg', title: 'Outbound Personalization & Qualification Bot', tag: '05 / REVENUE OPS' }
+            ]
+          },
+          '4': {
+            num: '04',
+            category: 'CREATE',
+            title: 'Video Editing',
+            desc: 'We craft high-retention editorial cuts engineered for modern attention spans—combining kinetic pacing, precision sound design, seamless VFX transitions, and narrative rhythm that drive brand recall.',
+            cardImg: 'service_card_4.jpg',
+            samples: [
+              { src: 'service_card_4.jpg', title: 'Multi-Track Timeline & Narrative Pacing', tag: '01 / OVERVIEW' },
+              { src: 'services_project_1.jpg', title: 'High-Retention Brand Anthem Editorial Cut', tag: '02 / COMMERCIAL CUT' },
+              { src: 'card_untitled_clothing.png', title: 'Fashion Campaign Rhythmic Montage & Sound', tag: '03 / CAMPAIGN EDIT' },
+              { src: 'card_audio_king.png', title: 'Dynamic Product Teaser & SFX Mastering', tag: '04 / PRODUCT REEL' },
+              { src: 'services_project_3.jpg', title: 'Social-First Short-Form Hook & Pacing System', tag: '05 / RETENTION EDIT' }
+            ]
+          },
+          '5': {
+            num: '05',
+            category: 'CREATE',
+            title: 'SaaS Videos',
+            desc: 'We turn complex software products into clear, high-converting launch films and interactive UI walkthroughs—handling the entire production cycle from scriptwriting and UI motion design to voice and score.',
+            cardImg: 'service_card_5.jpg',
+            samples: [
+              { src: 'service_card_5.jpg', title: 'Interactive SaaS Product Motion System', tag: '01 / OVERVIEW' },
+              { src: 'services_project_2.jpg', title: 'Flagship Product Launch & Feature Film', tag: '02 / LAUNCH FILM' },
+              { src: 'card_health_streak.png', title: 'UI Walkthrough & Onboarding Explainer', tag: '03 / UI WALKTHROUGH' },
+              { src: 'services_project_1.jpg', title: 'Enterprise Dashboard Workflow Demonstration', tag: '04 / PRODUCT DEMO' },
+              { src: 'card_techuilla_branding.jpg', title: 'Category-Defining SaaS Brand Story', tag: '05 / EXPLAINER' }
+            ]
+          },
+          '6': {
+            num: '06',
+            category: 'CREATE',
+            title: 'Graphic Designing',
+            desc: 'We craft unmistakable visual identities, cohesive brand design systems, tactile packaging, and high-impact campaign key visuals that elevate brand authority across every digital and physical touchpoint.',
+            cardImg: 'service_card_6.jpg',
+            samples: [
+              { src: 'service_card_6.jpg', title: 'Brand Identity & Visual System Architecture', tag: '01 / OVERVIEW' },
+              { src: 'card_techuilla_branding.jpg', title: 'Complete Corporate Identity & Typography Guide', tag: '02 / BRAND SYSTEM' },
+              { src: 'card_untitled_clothing.png', title: 'Apparel & Editorial Visual Direction', tag: '03 / KEY VISUALS' },
+              { src: 'card_rama_trichology.jpg', title: 'Clinical Luxury Packaging & Collateral Suite', tag: '04 / PACKAGING' },
+              { src: 'card_kaali_mata.png', title: 'Bespoke Key Art & Poster Design Series', tag: '05 / ART DIRECTION' }
+            ]
+          },
+          '7': {
+            num: '07',
+            category: 'CREATE',
+            title: 'Cinematography',
+            desc: 'We deliver cinema-grade commercial production from concept to final master—combining anamorphic lens work, expressive studio and on-location lighting, choreographed camera movement, and theatrical grading.',
+            cardImg: 'service_card_7.jpg',
+            samples: [
+              { src: 'service_card_7.jpg', title: 'Cinema Optics, Lighting & DaVinci Grading', tag: '01 / OVERVIEW' },
+              { src: 'card_client_meeting.jpg', title: 'On-Location Documentary & Executive Film', tag: '02 / PRODUCTION' },
+              { src: 'card_hindustan_tyre.jpg', title: 'Heavy Industrial Automotive Commercial Shoot', tag: '03 / AUTOMOTIVE' },
+              { src: 'services_project_1.jpg', title: 'Studio Macro Tabletop & Lighting Directing', tag: '04 / STUDIO SHOOT' },
+              { src: 'services_project_3.jpg', title: 'Theatrical Colour Grading & Finishing Suite', tag: '05 / COLOUR GRADE' }
+            ]
+          },
+          '8': {
+            num: '08',
+            category: 'CREATE',
+            title: '2D Animations',
+            desc: 'We bring complex ideas to life through expressive 2D motion graphics, frame-by-frame character animation, and bold kinetic typography engineered for instant comprehension and lasting visual memorability.',
+            cardImg: 'service_card_8.jpg',
+            samples: [
+              { src: 'service_card_8.jpg', title: 'Vector Motion Rigging & Kinetic Keyframes', tag: '01 / OVERVIEW' },
+              { src: 'services_project_2.jpg', title: 'Kinetic Typography & Brand Motion System', tag: '02 / KINETIC TYPE' },
+              { src: 'card_health_streak.png', title: 'Illustrated Product Story & Character Rig', tag: '03 / 2D STORYTELLING' },
+              { src: 'card_techuilla_branding.jpg', title: 'Dynamic Logo & UI Micro-Interaction Suite', tag: '04 / MOTION SYSTEM' },
+              { src: 'services_project_1.jpg', title: 'Frame-by-Frame Editorial Explainer Sequence', tag: '05 / CEL ANIMATION' }
+            ]
+          },
+          '9': {
+            num: '09',
+            category: 'CREATE',
+            title: '3D Animations',
+            desc: 'We produce photorealistic 3D product renders, dynamic fluid and cloth simulations, architectural visualizations, and cinematic CGI motion sequences that showcase every material detail with precision.',
+            cardImg: 'service_card_9.jpg',
+            samples: [
+              { src: 'service_card_9.jpg', title: '3D Viewport Simulation & Shader Pipeline', tag: '01 / OVERVIEW' },
+              { src: 'card_3d_product.png', title: 'Photorealistic Hardware & Material CGI Reveal', tag: '02 / 3D PRODUCT' },
+              { src: 'card_soap_dispenser.jpg', title: 'Industrial Design Exploded Teardown & Lighting', tag: '03 / CGI TEARDOWN' },
+              { src: 'card_audio_king.png', title: 'Acoustic Wave & Hard-Surface Motion Render', tag: '04 / SIMULATION' },
+              { src: 'services_project_3.jpg', title: 'Abstract Architectural & Volumetric Environment', tag: '05 / ENVIRONMENT' }
+            ]
+          },
+          '10': {
+            num: '10',
+            category: 'CREATE',
+            title: 'AI Creatives',
+            desc: 'We pioneer next-generation generative visual campaigns, bespoke diffusion workflows, custom-trained brand style models, and rapid AI concept films that unlock impossible worlds at production scale.',
+            cardImg: 'service_card_10.jpg',
+            samples: [
+              { src: 'service_card_10.jpg', title: 'Generative Visual Pipeline & Neural Direction', tag: '01 / OVERVIEW' },
+              { src: 'card_kaali_mata.png', title: 'Bespoke Mythological & Editorial AI Key Art', tag: '02 / NEURAL ART' },
+              { src: 'card_untitled_clothing.png', title: 'Generative Fashion Lookbook & Virtual Set', tag: '03 / VIRTUAL SHOOT' },
+              { src: 'card_3d_product.png', title: 'AI-Assisted Concept Environment & Product Staging', tag: '04 / AD CREATIVE' },
+              { src: 'services_project_1.jpg', title: 'High-Velocity Multi-Variant Ad Creative Matrix', tag: '05 / CAMPAIGN SCALE' }
+            ]
+          },
+          '11': {
+            num: '11',
+            category: 'GROWTH',
+            title: 'Meta Marketing',
+            desc: 'We scale profitable customer acquisition across Facebook and Instagram through full-funnel creative testing, precision first-party audience architecture, CAPI attribution, and disciplined ROAS optimization.',
+            cardImg: 'service_card_11.jpg',
+            samples: [
+              { src: 'service_card_11.jpg', title: 'Full-Funnel Meta Acquisition & ROAS Engine', tag: '01 / OVERVIEW' },
+              { src: 'card_untitled_clothing.png', title: 'D2C Apparel 4.8x ROAS Creative Testing Matrix', tag: '02 / D2C SCALING' },
+              { src: 'card_rama_trichology.jpg', title: 'High-Intent Lead Generation & Funnel System', tag: '03 / LEAD ENGINE' },
+              { src: 'card_audio_king.png', title: 'Dynamic Catalog Retargeting & Video Hook Suite', tag: '04 / CREATIVE ADS' },
+              { src: 'services_project_2.jpg', title: 'Real-Time Attribution & Cohort ROAS Dashboard', tag: '05 / ANALYTICS' }
+            ]
+          },
+          '12': {
+            num: '12',
+            category: 'GROWTH',
+            title: 'Google Ads Marketing',
+            desc: 'We capture high-intent search and shopping demand from day one—engineering granular Search, Performance Max, YouTube, and remarketing campaigns that maximize qualified conversions and lower CPA.',
+            cardImg: 'service_card_12.jpg',
+            samples: [
+              { src: 'service_card_12.jpg', title: 'High-Intent Search, PMax & YouTube Architecture', tag: '01 / OVERVIEW' },
+              { src: 'card_hindustan_tyre.jpg', title: 'National Search & Dealer Demand Capture System', tag: '02 / SEARCH ENGINE' },
+              { src: 'card_soap_dispenser.jpg', title: 'Google Shopping & Performance Max Feed Scaling', tag: '03 / PMAX E-COM' },
+              { src: 'services_project_1.jpg', title: 'YouTube In-Stream Direct-Response Video Funnel', tag: '04 / YOUTUBE ADS' },
+              { src: 'services_project_3.jpg', title: 'Conversion Rate & Bid Strategy Telemetry', tag: '05 / CPA OPTIMIZATION' }
+            ]
+          }
+        };
+
+        let activeCardEl = null;
+        let activeCardId = null;
+        let isTransitioning = false;
+        let isDetailOpen = false;
+        let currentSlideIndex = 0;
+        let totalSlides = 5;
+        let autoSlideTimer = null;
+        let initialSlideTimeout = null;
+
+        function clearCarouselTimers() {
+          if (initialSlideTimeout) {
+            clearTimeout(initialSlideTimeout);
+            initialSlideTimeout = null;
+          }
+          if (autoSlideTimer) {
+            clearInterval(autoSlideTimer);
+            autoSlideTimer = null;
+          }
+        }
+
+        function goToSlide(index, resetTimer = true) {
+          if (totalSlides <= 0) return;
+          currentSlideIndex = ((index % totalSlides) + totalSlides) % totalSlides;
+          carouselTrack.style.transform = `translate3d(-${currentSlideIndex * 100}%, 0, 0)`;
+
+          const slides = Array.from(carouselTrack.querySelectorAll('.service-detail-slide'));
+          slides.forEach((s, idx) => s.classList.toggle('is-active-slide', idx === currentSlideIndex));
+
+          const dots = Array.from(carouselDots.querySelectorAll('.carousel-dot-btn'));
+          dots.forEach((d, idx) => {
+            d.classList.toggle('is-active', idx === currentSlideIndex);
+            d.setAttribute('aria-selected', idx === currentSlideIndex ? 'true' : 'false');
+          });
+
+          if (carouselCounter) {
+            const curStr = String(currentSlideIndex + 1).padStart(2, '0');
+            const totStr = String(totalSlides).padStart(2, '0');
+            carouselCounter.textContent = `${curStr} / ${totStr}`;
+          }
+
+          if (resetTimer && isDetailOpen) {
+            if (autoSlideTimer) clearInterval(autoSlideTimer);
+            autoSlideTimer = setInterval(() => {
+              goToSlide(currentSlideIndex + 1, false);
+            }, 3400);
+          }
+        }
+
+        function populateDetailStage(cardId) {
+          const data = SERVICE_DETAILS[cardId] || SERVICE_DETAILS['1'];
+          if (elCategoryTag) elCategoryTag.textContent = `${data.num} / ${data.category}`;
+          if (elTitle) elTitle.textContent = data.title;
+          if (elDesc) elDesc.textContent = data.desc;
+
+          totalSlides = data.samples.length;
+          currentSlideIndex = 0;
+
+          carouselTrack.style.transition = 'none';
+          carouselTrack.style.transform = 'translate3d(0%, 0, 0)';
+          carouselTrack.innerHTML = data.samples.map((item, idx) => `
+            <div class="service-detail-slide${idx === 0 ? ' is-active-slide' : ''}" data-slide-index="${idx}">
+              <img src="${item.src}" alt="${item.title}" decoding="async" />
+              <div class="service-detail-slide-caption">
+                <span>${item.title}</span>
+                <span class="service-detail-slide-tag">${item.tag}</span>
+              </div>
+            </div>
+          `).join('');
+
+          carouselDots.innerHTML = data.samples.map((item, idx) => `
+            <button type="button" class="carousel-dot-btn${idx === 0 ? ' is-active' : ''}" data-slide-to="${idx}" role="tab" aria-selected="${idx === 0 ? 'true' : 'false'}" aria-label="Go to sample image ${idx + 1}"></button>
+          `).join('');
+
+          Array.from(carouselDots.querySelectorAll('.carousel-dot-btn')).forEach(dotBtn => {
+            dotBtn.addEventListener('click', () => {
+              const targetIdx = parseInt(dotBtn.getAttribute('data-slide-to') || '0', 10);
+              carouselTrack.style.transition = 'transform 0.78s cubic-bezier(0.22, 1, 0.36, 1)';
+              goToSlide(targetIdx, true);
+            });
+          });
+
+          if (carouselCounter) {
+            carouselCounter.textContent = `01 / ${String(totalSlides).padStart(2, '0')}`;
+          }
+
+          void carouselTrack.offsetWidth;
+          carouselTrack.style.transition = 'transform 0.78s cubic-bezier(0.22, 1, 0.36, 1)';
+        }
+
+        // Codrops "Animating in Frames: Repeating Image Transition" Engine
+        // Spawns N stepped ghost frames along the path from startRect -> endRect
+        function runRepeatingFramesTransition(startRect, endRect, imageUrl, onComplete) {
+          framesLayer.innerHTML = '';
+          const MOVER_COUNT = 6; // 5 repeating trail steps + 1 hero landing frame
+          const movers = [];
+
+          for (let i = 0; i < MOVER_COUNT; i++) {
+            const t = i / (MOVER_COUNT - 1); // 0.0 -> 1.0 along path
+            // Slight upward arc curve in the middle of the trajectory, just like the Shane Weber screen recording
+            const arcLift = Math.sin(t * Math.PI) * -28;
+
+            const frameLeft = startRect.left + (endRect.left - startRect.left) * t;
+            const frameTop = startRect.top + (endRect.top - startRect.top) * t + arcLift;
+            const frameWidth = startRect.width + (endRect.width - startRect.width) * t;
+            const frameHeight = startRect.height + (endRect.height - startRect.height) * t;
+            const frameRadius = 22 + (26 - 22) * t;
+
+            const mover = document.createElement('div');
+            mover.className = 'repeating-frame-mover';
+            mover.style.width = `${frameWidth.toFixed(1)}px`;
+            mover.style.height = `${frameHeight.toFixed(1)}px`;
+            mover.style.borderRadius = `${frameRadius.toFixed(1)}px`;
+            mover.style.transform = `translate3d(${frameLeft.toFixed(1)}px, ${frameTop.toFixed(1)}px, 0) scale(0.92)`;
+            mover.style.opacity = '0';
+            mover.style.zIndex = String(9510 + i);
+
+            if (i < MOVER_COUNT - 1) {
+              // Trail frame: tinted obsidian-orange echo with the card visual inside
+              mover.style.backgroundImage = `linear-gradient(135deg, rgba(255, 102, 0, ${0.32 - i * 0.04}), rgba(10, 5, 3, 0.45)), url("${imageUrl}")`;
+            } else {
+              // Final hero frame: crisp full-opacity card visual
+              mover.style.backgroundImage = `url("${imageUrl}")`;
+            }
+
+            framesLayer.appendChild(mover);
+            movers.push({ el: mover, left: frameLeft, top: frameTop, index: i, isLast: i === MOVER_COUNT - 1 });
+          }
+
+          void framesLayer.offsetWidth;
+
+          const STEP_STAGGER_MS = 55;
+          const ENTER_DURATION_MS = 260;
+          const EXIT_DURATION_MS = 240;
+
+          movers.forEach(m => {
+            const appearDelay = m.index * STEP_STAGGER_MS;
+            // Frame pops in along the stepped path
+            setTimeout(() => {
+              m.el.style.transition = `transform ${ENTER_DURATION_MS}ms cubic-bezier(0.16, 1, 0.3, 1), opacity ${ENTER_DURATION_MS}ms cubic-bezier(0.16, 1, 0.3, 1)`;
+              m.el.style.opacity = m.isLast ? '1' : String(0.45 + (m.index / MOVER_COUNT) * 0.42);
+              m.el.style.transform = `translate3d(${m.left.toFixed(1)}px, ${m.top.toFixed(1)}px, 0) scale(1)`;
+            }, appearDelay);
+
+            // Intermediate trail frames collapse/fade out sequentially as the wave advances
+            if (!m.isLast) {
+              const collapseDelay = appearDelay + ENTER_DURATION_MS + 45;
+              setTimeout(() => {
+                m.el.style.transition = `transform ${EXIT_DURATION_MS}ms cubic-bezier(0.7, 0, 0.84, 0), opacity ${EXIT_DURATION_MS}ms ease`;
+                m.el.style.opacity = '0';
+                m.el.style.transform = `translate3d(${(m.left + (endRect.left - m.left) * 0.25).toFixed(1)}px, ${(m.top + (endRect.top - m.top) * 0.25).toFixed(1)}px, 0) scale(0.94)`;
+              }, collapseDelay);
+            }
+          });
+
+          const totalWaveTime = (MOVER_COUNT - 1) * STEP_STAGGER_MS + ENTER_DURATION_MS + 90;
+          setTimeout(() => {
+            if (typeof onComplete === 'function') onComplete();
+            // Smoothly fade out the final landing mover once the real viewport underneath is visible
+            const lastMover = movers[movers.length - 1];
+            if (lastMover && lastMover.el) {
+              lastMover.el.style.transition = 'opacity 200ms ease';
+              lastMover.el.style.opacity = '0';
+            }
+            setTimeout(() => {
+              framesLayer.innerHTML = '';
+            }, 220);
+          }, totalWaveTime);
+        }
+
+        function openServiceCardDetail(cardEl) {
+          if (isTransitioning || isDetailOpen || !cardEl) return;
+          isTransitioning = true;
+          isDetailOpen = true;
+          activeCardEl = cardEl;
+          activeCardId = cardEl.getAttribute('data-card-id') || '1';
+          const data = SERVICE_DETAILS[activeCardId] || SERVICE_DETAILS['1'];
+
+          clearCarouselTimers();
+
+          // Clear any hover blur state on the grid
+          Array.from(grid.querySelectorAll('.service-area-card')).forEach(c => c.classList.remove('is-card-hovered'));
+          grid.classList.remove('has-hovered-card');
+
+          // 1. Measure clicked card's exact bounding rect BEFORE hiding the grid
+          const startRect = cardEl.getBoundingClientRect();
+
+          // 2. Populate detail content & slides (Slide 0 = Card's image so it lands seamlessly, then slides away)
+          populateDetailStage(activeCardId);
+
+          // 3. Fade/morph out the grid section and display detail stage in layout to measure target right-side viewport rect
+          areasSection.classList.add('is-grid-Morphing-out');
+          detailStage.classList.add('is-detail-visible');
+          detailStage.classList.remove('is-content-revealed', 'is-target-landed');
+          detailStage.setAttribute('aria-hidden', 'false');
+
+          // Temporarily position detailStage overlapping or swap layout so we get exact target coordinates
+          areasSection.classList.add('is-grid-hidden-for-detail');
+          areasSection.classList.remove('is-grid-Morphing-out');
+
+          const endRect = carouselViewport.getBoundingClientRect();
+
+          // 4. Run the Codrops repeating-frame cascade from the clicked card to the right-side showcase panel
+          runRepeatingFramesTransition(startRect, endRect, data.cardImg, () => {
+            detailStage.classList.add('is-target-landed');
+            detailStage.classList.add('is-content-revealed');
+            isTransitioning = false;
+
+            // As the card appears on the right-hand side, it pauses briefly and then slowly slides away to the sample images!
+            initialSlideTimeout = setTimeout(() => {
+              if (!isDetailOpen) return;
+              goToSlide(1, true);
+            }, 650);
+          });
+        }
+
+        function closeServiceCardDetail() {
+          if (isTransitioning || !isDetailOpen) return;
+          isTransitioning = true;
+          clearCarouselTimers();
+
+          const cardId = activeCardId || '1';
+          const data = SERVICE_DETAILS[cardId] || SERVICE_DETAILS['1'];
+
+          // 1. Measure current right-side carousel viewport rect as the starting point of the reverse transition
+          const startRect = carouselViewport.getBoundingClientRect();
+
+          // Hide detail left content & controls immediately as the frame begins returning
+          detailStage.classList.remove('is-content-revealed', 'is-target-landed');
+
+          // 2. Restore the services grid in layout (transparent initially) so we can measure the original card's exact target rect
+          detailStage.classList.remove('is-detail-visible');
+          detailStage.setAttribute('aria-hidden', 'true');
+          areasSection.classList.remove('is-grid-hidden-for-detail');
+          areasSection.classList.add('is-grid-Morphing-out');
+
+          const targetCard = activeCardEl || grid.querySelector(`.service-area-card[data-card-id="${cardId}"]`);
+          const endRect = targetCard ? targetCard.getBoundingClientRect() : startRect;
+
+          // 3. Run the exact same repeating-frame animation in reverse back to the card's original grid position
+          runRepeatingFramesTransition(startRect, endRect, data.cardImg, () => {
+            areasSection.classList.remove('is-grid-Morphing-out');
+            isDetailOpen = false;
+            isTransitioning = false;
+          });
+        }
+
+        // Attach click listeners to all 12 service cards
+        const allCards = Array.from(grid.querySelectorAll('.service-area-card'));
+        allCards.forEach(card => {
+          card.setAttribute('tabindex', '0');
+          card.setAttribute('role', 'button');
+          card.addEventListener('click', (e) => {
+            e.preventDefault();
+            openServiceCardDetail(card);
+          });
+          card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              openServiceCardDetail(card);
+            }
+          });
+        });
+
+        // Back button at top-left corner returns to original grid state via reverse repeating-frame animation
+        if (btnBack) {
+          btnBack.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeServiceCardDetail();
+          });
+        }
+
+        // Carousel Prev / Next controls
+        if (btnPrev) {
+          btnPrev.addEventListener('click', (e) => {
+            e.preventDefault();
+            goToSlide(currentSlideIndex - 1, true);
+          });
+        }
+        if (btnNext) {
+          btnNext.addEventListener('click', (e) => {
+            e.preventDefault();
+            goToSlide(currentSlideIndex + 1, true);
+          });
+        }
+
+        // Escape key also triggers the back button transition
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && isDetailOpen && !isTransitioning) {
+            closeServiceCardDetail();
+          }
+        });
+      }
+
+      initServiceCardDetailShowcase();
 
     })();
   </script>
