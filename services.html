@@ -2282,8 +2282,98 @@
       margin: 0;
     }
 
+    /* 4 Category Filter Options Below "Our main areas of work" */
+    .services-filter-nav {
+      margin-top: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+      max-width: 245px;
+    }
+
+    .service-filter-btn {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 16px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(17, 17, 17, 0.10);
+      color: #111111;
+      font-family: var(--font-hero);
+      font-size: 13.5px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      cursor: pointer !important;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+      text-align: left;
+    }
+
+    .filter-btn-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .filter-btn-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(17, 17, 17, 0.28);
+      transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .filter-btn-count {
+      font-family: var(--font-mono, monospace);
+      font-size: 11px;
+      font-weight: 600;
+      color: #7A7A7A;
+      letter-spacing: 0.04em;
+      transition: color 0.25s ease;
+    }
+
+    .service-filter-btn:hover {
+      background: #FFFFFF;
+      border-color: rgba(255, 102, 0, 0.55);
+      color: #FF6600;
+      transform: translateX(4px);
+      box-shadow: 0 6px 18px rgba(255, 102, 0, 0.12);
+    }
+
+    .service-filter-btn:hover .filter-btn-dot {
+      background: #FF6600;
+      transform: scale(1.2);
+    }
+
+    .service-filter-btn:hover .filter-btn-count {
+      color: #FF6600;
+    }
+
+    .service-filter-btn.is-active {
+      background: #111111;
+      border-color: #111111;
+      color: #FFFFFF;
+      box-shadow: 0 10px 24px rgba(17, 17, 17, 0.18), 0 0 0 1px rgba(255, 102, 0, 0.35);
+      transform: translateX(4px);
+    }
+
+    .service-filter-btn.is-active .filter-btn-dot {
+      background: #FF6600;
+      box-shadow: 0 0 8px #FF6600;
+      transform: scale(1.25);
+    }
+
+    .service-filter-btn.is-active .filter-btn-count {
+      color: #FF6600;
+    }
+
     .services-areas-cta-wrap {
-      margin-top: 36px;
+      margin-top: 32px;
     }
 
     .btn-view-cases {
@@ -2311,6 +2401,7 @@
 
     /* 3-Column Card Grid with Subtle Middle-Column Vertical Stagger */
     .services-cards-grid {
+      position: relative;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 20px;
@@ -2330,18 +2421,56 @@
       overflow: hidden;
       isolation: isolate;
       text-decoration: none;
-      transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.42s ease;
+      transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.38s cubic-bezier(0.16, 1, 0.3, 1), filter 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.38s ease;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      will-change: transform, filter, opacity, box-shadow;
     }
 
-    /* Stagger every middle card in the 3-card row just like the reference */
-    .service-area-card:nth-child(3n + 2) {
+    /* Stagger every middle visible card in the 3-card row just like the reference */
+    .service-area-card.is-staggered-col {
       margin-top: 28px;
     }
 
-    .service-area-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 24px 52px rgba(0, 0, 0, 0.22);
+    .service-area-card.is-filtered-hidden {
+      display: none !important;
+    }
+
+    /* On Hover: Vibrant Orange Box Shadow + Rest of Cards Blurred */
+    .service-area-card:hover,
+    .service-area-card.is-card-hovered {
+      transform: translateY(-8px) scale(1.015);
+      box-shadow: 0 22px 54px rgba(255, 102, 0, 0.48), 0 0 28px rgba(255, 102, 0, 0.36), 0 0 0 1.5px rgba(255, 102, 0, 0.75) !important;
+      z-index: 12;
+      filter: blur(0px) brightness(1.02) !important;
+      opacity: 1 !important;
+    }
+
+    .services-cards-grid.has-hovered-card .service-area-card:not(.is-card-hovered),
+    .services-cards-grid:has(.service-area-card:hover) .service-area-card:not(:hover) {
+      filter: blur(5px) brightness(0.82);
+      opacity: 0.65;
+      transform: scale(0.985);
+    }
+
+    /* Pixel Disappearing Dissolve Ghost & Pixel Re-Materialize Canvas */
+    .pixel-dissolve-ghost {
+      position: absolute;
+      border-radius: 22px;
+      pointer-events: none;
+      z-index: 25;
+      overflow: hidden;
+    }
+
+    .pixel-dissolve-canvas,
+    .card-pixel-enter-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      pointer-events: none;
+      z-index: 20;
+      border-radius: 22px;
     }
 
     /* Card Variant 1: Deep Obsidian with Dark Sculpted 3D Petals (#1, #6, #7, #11) */
@@ -3024,9 +3153,9 @@
         <div class="services-title-divider" id="servicesTitleDivider" aria-hidden="true"></div>
       </div>
 
-      <!-- OUR MAIN AREAS OF WORK + 3-COLUMN SERVICES GRID (11 Specified Cards Matching Reference) -->
+      <!-- OUR MAIN AREAS OF WORK + 3-COLUMN SERVICES GRID (12 Specified Cards Matching Reference + 4 Filters) -->
       <div class="services-areas-section" id="servicesAreasSection">
-        <!-- Left Sidebar: Heading, Subtext & Bottom View Cases Pill -->
+        <!-- Left Sidebar: Heading, Subtext, 4 Category Filters & Bottom View Cases Pill -->
         <aside class="services-areas-sidebar">
           <div class="services-areas-sidebar-sticky">
             <div class="services-areas-intro">
@@ -3036,6 +3165,38 @@
               <p class="services-areas-subtext">
                 From strategy and design to delivery and support, we provide tailored services that help your business grow.
               </p>
+
+              <!-- 4 Filter Options Below Our Main Areas of Work -->
+              <div class="services-filter-nav" id="servicesFilterNav" role="tablist" aria-label="Filter services by category">
+                <button type="button" class="service-filter-btn is-active" data-filter="all" role="tab" aria-selected="true">
+                  <span class="filter-btn-left">
+                    <span class="filter-btn-dot" aria-hidden="true"></span>
+                    <span class="filter-btn-label">All services</span>
+                  </span>
+                  <span class="filter-btn-count">12</span>
+                </button>
+                <button type="button" class="service-filter-btn" data-filter="build" role="tab" aria-selected="false">
+                  <span class="filter-btn-left">
+                    <span class="filter-btn-dot" aria-hidden="true"></span>
+                    <span class="filter-btn-label">Build</span>
+                  </span>
+                  <span class="filter-btn-count">03</span>
+                </button>
+                <button type="button" class="service-filter-btn" data-filter="create" role="tab" aria-selected="false">
+                  <span class="filter-btn-left">
+                    <span class="filter-btn-dot" aria-hidden="true"></span>
+                    <span class="filter-btn-label">Create</span>
+                  </span>
+                  <span class="filter-btn-count">07</span>
+                </button>
+                <button type="button" class="service-filter-btn" data-filter="growth" role="tab" aria-selected="false">
+                  <span class="filter-btn-left">
+                    <span class="filter-btn-dot" aria-hidden="true"></span>
+                    <span class="filter-btn-label">Growth</span>
+                  </span>
+                  <span class="filter-btn-count">02</span>
+                </button>
+              </div>
             </div>
             <div class="services-areas-cta-wrap">
               <a href="index.html?from=subpage#work" class="btn-view-cases">View cases</a>
@@ -3043,29 +3204,48 @@
           </div>
         </aside>
 
-        <!-- Right 3-Column Card Grid (11 Specified Cards) -->
+        <!-- Shared SVG Gradient Defs (Always rendered so filtered cards never lose gradient fills) -->
+        <svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden;pointer-events:none;" aria-hidden="true">
+          <defs>
+            <linearGradient id="obsP1" x1="20%" y1="0%" x2="90%" y2="100%">
+              <stop offset="0%" stop-color="#0E3442"/>
+              <stop offset="55%" stop-color="#071C24"/>
+              <stop offset="100%" stop-color="#02080B"/>
+            </linearGradient>
+            <linearGradient id="obsP2" x1="10%" y1="10%" x2="85%" y2="95%">
+              <stop offset="0%" stop-color="#134252"/>
+              <stop offset="50%" stop-color="#09242E"/>
+              <stop offset="100%" stop-color="#030B0F"/>
+            </linearGradient>
+            <linearGradient id="obsP3" x1="0%" y1="15%" x2="95%" y2="95%">
+              <stop offset="0%" stop-color="#184F61"/>
+              <stop offset="60%" stop-color="#0A2833"/>
+              <stop offset="100%" stop-color="#02090C"/>
+            </linearGradient>
+            <linearGradient id="lumA1" x1="85%" y1="5%" x2="10%" y2="85%">
+              <stop offset="0%" stop-color="#A8DCDE" stop-opacity="0.92"/>
+              <stop offset="48%" stop-color="#56979B" stop-opacity="0.85"/>
+              <stop offset="100%" stop-color="#174448" stop-opacity="0.9"/>
+            </linearGradient>
+            <linearGradient id="lumA2" x1="95%" y1="20%" x2="5%" y2="90%">
+              <stop offset="0%" stop-color="#BBE8EA" stop-opacity="0.95"/>
+              <stop offset="45%" stop-color="#64A5A8" stop-opacity="0.88"/>
+              <stop offset="100%" stop-color="#1D4E53" stop-opacity="0.92"/>
+            </linearGradient>
+            <linearGradient id="lumA3" x1="90%" y1="45%" x2="10%" y2="100%">
+              <stop offset="0%" stop-color="#8EC7C9" stop-opacity="0.9"/>
+              <stop offset="55%" stop-color="#448286" stop-opacity="0.86"/>
+              <stop offset="100%" stop-color="#113539" stop-opacity="0.94"/>
+            </linearGradient>
+          </defs>
+        </svg>
+
+        <!-- Right 3-Column Card Grid (12 Specified Cards) -->
         <div class="services-cards-grid" id="servicesCardsGrid">
-          <!-- #1: Web Development (Obsidian Sculpted Petals) -->
-          <article class="service-area-card variant-obsidian-petals">
+          <!-- #1: Web Development (Build — Obsidian Sculpted Petals) -->
+          <article class="service-area-card variant-obsidian-petals" data-category="build" data-card-id="1">
             <div class="card-petal-visual" aria-hidden="true">
               <svg class="card-petal-svg" viewBox="0 0 400 430" preserveAspectRatio="xMidYMid slice">
-                <defs>
-                  <linearGradient id="obsP1" x1="20%" y1="0%" x2="90%" y2="100%">
-                    <stop offset="0%" stop-color="#0E3442"/>
-                    <stop offset="55%" stop-color="#071C24"/>
-                    <stop offset="100%" stop-color="#02080B"/>
-                  </linearGradient>
-                  <linearGradient id="obsP2" x1="10%" y1="10%" x2="85%" y2="95%">
-                    <stop offset="0%" stop-color="#134252"/>
-                    <stop offset="50%" stop-color="#09242E"/>
-                    <stop offset="100%" stop-color="#030B0F"/>
-                  </linearGradient>
-                  <linearGradient id="obsP3" x1="0%" y1="15%" x2="95%" y2="95%">
-                    <stop offset="0%" stop-color="#184F61"/>
-                    <stop offset="60%" stop-color="#0A2833"/>
-                    <stop offset="100%" stop-color="#02090C"/>
-                  </linearGradient>
-                </defs>
                 <path d="M165,-15 C215,65 245,180 235,340 C170,280 120,175 165,-15 Z" fill="url(#obsP1)" stroke="rgba(95,180,190,0.12)" stroke-width="1"/>
                 <path d="M250,10 C295,115 305,245 275,410 C195,335 160,200 250,10 Z" fill="url(#obsP2)" stroke="rgba(115,205,215,0.15)" stroke-width="1"/>
                 <path d="M335,55 C375,165 375,305 320,445 C225,365 205,220 335,55 Z" fill="url(#obsP3)" stroke="rgba(140,220,230,0.16)" stroke-width="1"/>
@@ -3086,27 +3266,10 @@
             </div>
           </article>
 
-          <!-- #2: Application Development (Luminous Glass Petals) -->
-          <article class="service-area-card variant-luminous-petals">
+          <!-- #2: Application Development (Build — Luminous Glass Petals) -->
+          <article class="service-area-card variant-luminous-petals is-staggered-col" data-category="build" data-card-id="2">
             <div class="card-petal-visual" aria-hidden="true">
               <svg class="card-petal-svg" viewBox="0 0 400 430" preserveAspectRatio="xMidYMid slice">
-                <defs>
-                  <linearGradient id="lumA1" x1="85%" y1="5%" x2="10%" y2="85%">
-                    <stop offset="0%" stop-color="#A8DCDE" stop-opacity="0.92"/>
-                    <stop offset="48%" stop-color="#56979B" stop-opacity="0.85"/>
-                    <stop offset="100%" stop-color="#174448" stop-opacity="0.9"/>
-                  </linearGradient>
-                  <linearGradient id="lumA2" x1="95%" y1="20%" x2="5%" y2="90%">
-                    <stop offset="0%" stop-color="#BBE8EA" stop-opacity="0.95"/>
-                    <stop offset="45%" stop-color="#64A5A8" stop-opacity="0.88"/>
-                    <stop offset="100%" stop-color="#1D4E53" stop-opacity="0.92"/>
-                  </linearGradient>
-                  <linearGradient id="lumA3" x1="90%" y1="45%" x2="10%" y2="100%">
-                    <stop offset="0%" stop-color="#8EC7C9" stop-opacity="0.9"/>
-                    <stop offset="55%" stop-color="#448286" stop-opacity="0.86"/>
-                    <stop offset="100%" stop-color="#113539" stop-opacity="0.94"/>
-                  </linearGradient>
-                </defs>
                 <path d="M235,-30 L420,-30 L420,160 C275,185 110,225 -25,210 C45,115 155,20 235,-30 Z" fill="url(#lumA1)" stroke="rgba(225,252,253,0.55)" stroke-width="1.2"/>
                 <path d="M425,75 L425,275 C265,305 115,325 -25,285 C65,195 245,115 425,75 Z" fill="url(#lumA2)" stroke="rgba(235,254,255,0.62)" stroke-width="1.2"/>
                 <path d="M425,195 L425,385 C270,395 115,380 -25,335 C85,265 260,215 425,195 Z" fill="url(#lumA3)" stroke="rgba(215,248,250,0.48)" stroke-width="1.1"/>
@@ -3127,8 +3290,8 @@
             </div>
           </article>
 
-          <!-- #3: AI Automations (Calm Solid Matte Teal) -->
-          <article class="service-area-card variant-matte-teal">
+          <!-- #3: AI Automations (Build — Calm Solid Matte Teal) -->
+          <article class="service-area-card variant-matte-teal" data-category="build" data-card-id="3">
             <div class="card-bottom-scrim" aria-hidden="true"></div>
             <div class="service-card-top">
               <span class="service-card-num">#3</span>
@@ -3143,8 +3306,8 @@
             </div>
           </article>
 
-          <!-- #4: Video Editing (Luminous Glass Petals) -->
-          <article class="service-area-card variant-luminous-petals">
+          <!-- #4: Video Editing (Create — Luminous Glass Petals) -->
+          <article class="service-area-card variant-luminous-petals" data-category="create" data-card-id="4">
             <div class="card-petal-visual" aria-hidden="true">
               <svg class="card-petal-svg" viewBox="0 0 400 430" preserveAspectRatio="xMidYMid slice">
                 <path d="M225,-30 L420,-30 L420,165 C270,190 105,230 -25,215 C45,120 150,25 225,-30 Z" fill="url(#lumA1)" stroke="rgba(225,252,253,0.55)" stroke-width="1.2"/>
@@ -3167,8 +3330,8 @@
             </div>
           </article>
 
-          <!-- #5: SaaS Videos (Calm Solid Matte Teal) -->
-          <article class="service-area-card variant-matte-teal">
+          <!-- #5: SaaS Videos (Create — Calm Solid Matte Teal) -->
+          <article class="service-area-card variant-matte-teal is-staggered-col" data-category="create" data-card-id="5">
             <div class="card-bottom-scrim" aria-hidden="true"></div>
             <div class="service-card-top">
               <span class="service-card-num">#5</span>
@@ -3183,8 +3346,8 @@
             </div>
           </article>
 
-          <!-- #6: Graphic Designing (Obsidian Sculpted Petals) -->
-          <article class="service-area-card variant-obsidian-petals">
+          <!-- #6: Graphic Designing (Create — Obsidian Sculpted Petals) -->
+          <article class="service-area-card variant-obsidian-petals" data-category="create" data-card-id="6">
             <div class="card-petal-visual" aria-hidden="true">
               <svg class="card-petal-svg" viewBox="0 0 400 430" preserveAspectRatio="xMidYMid slice">
                 <path d="M165,-15 C215,65 245,180 235,340 C170,280 120,175 165,-15 Z" fill="url(#obsP1)" stroke="rgba(95,180,190,0.12)" stroke-width="1"/>
@@ -3207,8 +3370,8 @@
             </div>
           </article>
 
-          <!-- #7: Cinematography (Obsidian Sculpted Petals) -->
-          <article class="service-area-card variant-obsidian-petals">
+          <!-- #7: Cinematography (Create — Obsidian Sculpted Petals) -->
+          <article class="service-area-card variant-obsidian-petals" data-category="create" data-card-id="7">
             <div class="card-petal-visual" aria-hidden="true">
               <svg class="card-petal-svg" viewBox="0 0 400 430" preserveAspectRatio="xMidYMid slice">
                 <path d="M165,-15 C215,65 245,180 235,340 C170,280 120,175 165,-15 Z" fill="url(#obsP1)" stroke="rgba(95,180,190,0.12)" stroke-width="1"/>
@@ -3231,8 +3394,8 @@
             </div>
           </article>
 
-          <!-- #8: 2D Animations (Luminous Glass Petals) -->
-          <article class="service-area-card variant-luminous-petals">
+          <!-- #8: 2D Animations (Create — Luminous Glass Petals) -->
+          <article class="service-area-card variant-luminous-petals is-staggered-col" data-category="create" data-card-id="8">
             <div class="card-petal-visual" aria-hidden="true">
               <svg class="card-petal-svg" viewBox="0 0 400 430" preserveAspectRatio="xMidYMid slice">
                 <path d="M235,-30 L420,-30 L420,160 C275,185 110,225 -25,210 C45,115 155,20 235,-30 Z" fill="url(#lumA1)" stroke="rgba(225,252,253,0.55)" stroke-width="1.2"/>
@@ -3255,8 +3418,8 @@
             </div>
           </article>
 
-          <!-- #9: 3D Animations (Calm Solid Matte Teal) -->
-          <article class="service-area-card variant-matte-teal">
+          <!-- #9: 3D Animations (Create — Calm Solid Matte Teal) -->
+          <article class="service-area-card variant-matte-teal" data-category="create" data-card-id="9">
             <div class="card-bottom-scrim" aria-hidden="true"></div>
             <div class="service-card-top">
               <span class="service-card-num">#9</span>
@@ -3271,8 +3434,8 @@
             </div>
           </article>
 
-          <!-- #10: AI Creatives (Luminous Glass Petals + NEW Badge) -->
-          <article class="service-area-card variant-luminous-petals">
+          <!-- #10: AI Creatives (Create — Luminous Glass Petals + NEW Badge) -->
+          <article class="service-area-card variant-luminous-petals" data-category="create" data-card-id="10">
             <div class="card-petal-visual" aria-hidden="true">
               <svg class="card-petal-svg" viewBox="0 0 400 430" preserveAspectRatio="xMidYMid slice">
                 <path d="M235,-30 L420,-30 L420,160 C275,185 110,225 -25,210 C45,115 155,20 235,-30 Z" fill="url(#lumA1)" stroke="rgba(225,252,253,0.55)" stroke-width="1.2"/>
@@ -3296,8 +3459,8 @@
             </div>
           </article>
 
-          <!-- #11: Performance Marketing (Obsidian Sculpted Petals) -->
-          <article class="service-area-card variant-obsidian-petals">
+          <!-- #11: Meta Marketing (Growth — Obsidian Sculpted Petals) -->
+          <article class="service-area-card variant-obsidian-petals is-staggered-col" data-category="growth" data-card-id="11">
             <div class="card-petal-visual" aria-hidden="true">
               <svg class="card-petal-svg" viewBox="0 0 400 430" preserveAspectRatio="xMidYMid slice">
                 <path d="M165,-15 C215,65 245,180 235,340 C170,280 120,175 165,-15 Z" fill="url(#obsP1)" stroke="rgba(95,180,190,0.12)" stroke-width="1"/>
@@ -3312,10 +3475,26 @@
             </div>
             <div class="service-card-bottom">
               <div class="service-card-title-row">
-                <h3 class="service-card-title">Performance Marketing</h3>
+                <h3 class="service-card-title">Meta Marketing</h3>
               </div>
               <p class="service-card-desc">
-                Data-driven acquisition across Google, Meta, and YouTube: precise targeting, creative testing, attribution, and ROAS scaling.
+                We bring high-intent leads from Facebook and Instagram: precision audience targeting, thumb-stopping creatives, A/B testing, and profitable ROAS scaling.
+              </p>
+            </div>
+          </article>
+
+          <!-- #12: Google Ads Marketing (Growth — Calm Solid Matte Teal) -->
+          <article class="service-area-card variant-matte-teal" data-category="growth" data-card-id="12">
+            <div class="card-bottom-scrim" aria-hidden="true"></div>
+            <div class="service-card-top">
+              <span class="service-card-num">#12</span>
+            </div>
+            <div class="service-card-bottom">
+              <div class="service-card-title-row">
+                <h3 class="service-card-title">Google Ads Marketing</h3>
+              </div>
+              <p class="service-card-desc">
+                We launch high-converting campaigns that capture demand from day one. Search, Performance Max, retargeting, display banners, and YouTube ads.
               </p>
             </div>
           </article>
@@ -4540,6 +4719,328 @@ Best regards,
       }
 
       initFooterElasticStack();
+
+      /* ------------------------------------------------------------------------
+         8. SERVICES CATEGORY FILTER (PIXEL DISAPPEAR + FLIP SHIFT) & HOVER BLUR
+         ------------------------------------------------------------------------ */
+      function initServicesFilterAndBlurEngine() {
+        const grid = document.getElementById('servicesCardsGrid');
+        const filterNav = document.getElementById('servicesFilterNav');
+        if (!grid || !filterNav) return;
+
+        const cards = Array.from(grid.querySelectorAll('.service-area-card'));
+        const filterBtns = Array.from(filterNav.querySelectorAll('.service-filter-btn'));
+        let activeFilter = 'all';
+
+        // 1. Hover Orange Box Shadow + Rest-of-Cards Blur Controller
+        cards.forEach(card => {
+          card.addEventListener('mouseenter', () => {
+            if (card.classList.contains('is-filtered-hidden')) return;
+            cards.forEach(c => c.classList.remove('is-card-hovered'));
+            card.classList.add('is-card-hovered');
+            grid.classList.add('has-hovered-card');
+          });
+
+          card.addEventListener('mouseleave', () => {
+            card.classList.remove('is-card-hovered');
+            if (!grid.querySelector('.service-area-card.is-card-hovered')) {
+              grid.classList.remove('has-hovered-card');
+            }
+          });
+        });
+
+        grid.addEventListener('mouseleave', () => {
+          cards.forEach(c => c.classList.remove('is-card-hovered'));
+          grid.classList.remove('has-hovered-card');
+        });
+
+        // Helper: get pixel palette for a card variant
+        function getCardPixelPalette(card) {
+          if (card.classList.contains('variant-matte-teal')) {
+            return ['#5C9598', '#548D90', '#4E8689', '#6CA5A8', '#3F7376', '#FF6600'];
+          } else if (card.classList.contains('variant-luminous-petals')) {
+            return ['#07181C', '#164247', '#2D676B', '#5E9FA2', '#95CFD1', '#03080A', '#FF6600'];
+          } else {
+            return ['#020608', '#051319', '#09232D', '#0E3442', '#15485A', '#030A0E', '#FF6600'];
+          }
+        }
+
+        // 2. Smooth Pixel Disappearing Ghost Overlay for Leaving Cards
+        function spawnPixelDissolveGhost(card, cardRect, gridRect) {
+          const ghost = document.createElement('div');
+          ghost.className = 'pixel-dissolve-ghost';
+          const left = cardRect.left - gridRect.left;
+          const top = cardRect.top - gridRect.top;
+          const w = Math.max(1, Math.round(cardRect.width));
+          const h = Math.max(1, Math.round(cardRect.height));
+
+          ghost.style.left = `${left}px`;
+          ghost.style.top = `${top}px`;
+          ghost.style.width = `${w}px`;
+          ghost.style.height = `${h}px`;
+
+          const canvas = document.createElement('canvas');
+          canvas.className = 'pixel-dissolve-canvas';
+          canvas.width = w;
+          canvas.height = h;
+          ghost.appendChild(canvas);
+          grid.appendChild(ghost);
+
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            ghost.remove();
+            return;
+          }
+
+          const cols = 16;
+          const rows = 18;
+          const cellW = w / cols;
+          const cellH = h / rows;
+          const palette = getCardPixelPalette(card);
+          const cells = [];
+
+          for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+              const isAccentSpark = Math.random() < 0.07;
+              const color = isAccentSpark
+                ? palette[palette.length - 1]
+                : palette[(r + c + Math.floor(Math.random() * 3)) % (palette.length - 1)];
+              // Diagonal + organic random stagger so pixels evaporate in a smooth wave
+              const normDiag = (r / rows) * 0.45 + (c / cols) * 0.25;
+              const delay = normDiag * 0.38 + Math.random() * 0.34;
+              const duration = 0.28 + Math.random() * 0.22;
+              const driftX = (Math.random() - 0.5) * 18;
+              const driftY = -6 - Math.random() * 18;
+              cells.push({ r, c, color, delay, duration, driftX, driftY });
+            }
+          }
+
+          const startTime = performance.now();
+          const totalDuration = 520;
+
+          function tickDissolve(now) {
+            const elapsed = Math.min(1, (now - startTime) / totalDuration);
+            ctx.clearRect(0, 0, w, h);
+
+            let anyAlive = false;
+            for (let i = 0; i < cells.length; i++) {
+              const cell = cells[i];
+              const localP = (elapsed - cell.delay) / cell.duration;
+              if (localP >= 1) continue;
+              anyAlive = true;
+
+              const p = Math.max(0, localP);
+              const ease = 1 - Math.pow(1 - p, 2);
+              const scale = 1 - ease * 0.92;
+              const alpha = 1 - ease;
+
+              const cx = (cell.c + 0.5) * cellW + cell.driftX * ease;
+              const cy = (cell.r + 0.5) * cellH + cell.driftY * ease;
+              const drawW = Math.ceil(cellW * scale) + 0.6;
+              const drawH = Math.ceil(cellH * scale) + 0.6;
+
+              ctx.globalAlpha = alpha;
+              ctx.fillStyle = cell.color;
+              ctx.fillRect(cx - drawW / 2, cy - drawH / 2, drawW, drawH);
+            }
+
+            if (elapsed < 1 && anyAlive) {
+              requestAnimationFrame(tickDissolve);
+            } else {
+              ghost.remove();
+            }
+          }
+
+          requestAnimationFrame(tickDissolve);
+        }
+
+        // 3. Reverse Pixel Re-Materialize Overlay for Entering Cards
+        function spawnPixelEnterOverlay(card) {
+          const oldCanvas = card.querySelector('.card-pixel-enter-canvas');
+          if (oldCanvas) oldCanvas.remove();
+
+          const rect = card.getBoundingClientRect();
+          const w = Math.max(1, Math.round(rect.width || 380));
+          const h = Math.max(1, Math.round(rect.height || 400));
+
+          const canvas = document.createElement('canvas');
+          canvas.className = 'card-pixel-enter-canvas';
+          canvas.width = w;
+          canvas.height = h;
+          card.appendChild(canvas);
+
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            canvas.remove();
+            return;
+          }
+
+          const cols = 15;
+          const rows = 17;
+          const cellW = w / cols;
+          const cellH = h / rows;
+          const palette = getCardPixelPalette(card);
+          const cells = [];
+
+          for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+              const color = palette[(r + c + Math.floor(Math.random() * 2)) % (palette.length - 1)];
+              const delay = ((r / rows) * 0.35) + Math.random() * 0.35;
+              const duration = 0.30 + Math.random() * 0.22;
+              cells.push({ r, c, color, delay, duration });
+            }
+          }
+
+          const startTime = performance.now();
+          const totalDuration = 480;
+
+          function tickEnter(now) {
+            const elapsed = Math.min(1, (now - startTime) / totalDuration);
+            ctx.clearRect(0, 0, w, h);
+
+            let anyAlive = false;
+            for (let i = 0; i < cells.length; i++) {
+              const cell = cells[i];
+              const localP = (elapsed - cell.delay) / cell.duration;
+              if (localP >= 1) continue;
+              anyAlive = true;
+
+              const p = Math.max(0, localP);
+              const alpha = (1 - p) * 0.85;
+              const scale = 1 - p * 0.65;
+              const cx = (cell.c + 0.5) * cellW;
+              const cy = (cell.r + 0.5) * cellH;
+              const drawW = Math.ceil(cellW * scale) + 0.5;
+              const drawH = Math.ceil(cellH * scale) + 0.5;
+
+              ctx.globalAlpha = alpha;
+              ctx.fillStyle = cell.color;
+              ctx.fillRect(cx - drawW / 2, cy - drawH / 2, drawW, drawH);
+            }
+
+            if (elapsed < 1 && anyAlive) {
+              requestAnimationFrame(tickEnter);
+            } else {
+              canvas.remove();
+            }
+          }
+
+          requestAnimationFrame(tickEnter);
+        }
+
+        // 4. Update Dynamic Middle-Column Stagger on Visible Cards
+        function updateVisibleColumnStagger() {
+          const visibleCards = cards.filter(c => !c.classList.contains('is-filtered-hidden'));
+          visibleCards.forEach((card, visIdx) => {
+            if (visIdx % 3 === 1) {
+              card.classList.add('is-staggered-col');
+            } else {
+              card.classList.remove('is-staggered-col');
+            }
+          });
+        }
+
+        // 5. Filter Execution: Pixel Disappear Non-Required + FLIP Smooth Shift Required to Top
+        function applyServiceFilter(newFilter) {
+          if (newFilter === activeFilter) return;
+          activeFilter = newFilter;
+
+          filterBtns.forEach(btn => {
+            const isMatch = btn.getAttribute('data-filter') === newFilter;
+            btn.classList.toggle('is-active', isMatch);
+            btn.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+          });
+
+          // Clear hover blur during filter transition
+          cards.forEach(c => c.classList.remove('is-card-hovered'));
+          grid.classList.remove('has-hovered-card');
+
+          const gridRect = grid.getBoundingClientRect();
+          const firstRects = new Map();
+          const leavingCards = [];
+          const stayingCards = [];
+          const enteringCards = [];
+
+          cards.forEach(card => {
+            const wasHidden = card.classList.contains('is-filtered-hidden');
+            const category = card.getAttribute('data-category');
+            const shouldShow = (newFilter === 'all' || category === newFilter);
+
+            if (!wasHidden) {
+              firstRects.set(card, card.getBoundingClientRect());
+            }
+
+            if (!wasHidden && !shouldShow) {
+              leavingCards.push(card);
+            } else if (!wasHidden && shouldShow) {
+              stayingCards.push(card);
+            } else if (wasHidden && shouldShow) {
+              enteringCards.push(card);
+            }
+          });
+
+          // Spawn smooth pixel disappearing ghosts for leaving cards, then hide them from flow
+          leavingCards.forEach(card => {
+            const rect = firstRects.get(card);
+            if (rect) {
+              spawnPixelDissolveGhost(card, rect, gridRect);
+            }
+            card.classList.add('is-filtered-hidden');
+            card.classList.remove('is-staggered-col');
+          });
+
+          // Reveal entering cards in the DOM flow
+          enteringCards.forEach(card => {
+            card.classList.remove('is-filtered-hidden');
+          });
+
+          // Re-calculate middle column stagger (visIdx % 3 === 1)
+          updateVisibleColumnStagger();
+
+          // Measure LAST rects and apply FLIP smooth top shift to staying cards
+          stayingCards.forEach(card => {
+            const first = firstRects.get(card);
+            const last = card.getBoundingClientRect();
+            if (!first || !last) return;
+
+            const dx = first.left - last.left;
+            const dy = first.top - last.top;
+
+            if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+              card.style.transition = 'none';
+              card.style.transform = `translate3d(${dx.toFixed(1)}px, ${dy.toFixed(1)}px, 0)`;
+              void card.offsetWidth;
+              card.style.transition = 'transform 580ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.38s ease, filter 0.38s ease, opacity 0.38s ease';
+              card.style.transform = '';
+            }
+          });
+
+          // Animate entering cards shifting smoothly into their top positions with pixel materialization
+          enteringCards.forEach((card, idx) => {
+            card.style.transition = 'none';
+            card.style.opacity = '0';
+            card.style.transform = 'translate3d(0, 28px, 0) scale(0.96)';
+            void card.offsetWidth;
+
+            const delayMs = idx * 45;
+            setTimeout(() => {
+              spawnPixelEnterOverlay(card);
+              card.style.transition = 'transform 560ms cubic-bezier(0.16, 1, 0.3, 1), opacity 460ms ease, box-shadow 0.38s ease, filter 0.38s ease';
+              card.style.opacity = '';
+              card.style.transform = '';
+            }, delayMs);
+          });
+        }
+
+        filterBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const targetFilter = btn.getAttribute('data-filter') || 'all';
+            applyServiceFilter(targetFilter);
+          });
+        });
+      }
+
+      initServicesFilterAndBlurEngine();
 
     })();
   </script>
