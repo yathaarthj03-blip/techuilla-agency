@@ -54,8 +54,20 @@
       user-select: none;
     }
 
-    /* Interactive elements keep pointer cursor */
-    a, button, [role="button"], .btn-cta-large, .btn-primary, .nav-item, .nav-action-btn, .nav-brand, .elastic-stack-item, .footer-brand-logo-wrap, .service-card-item, select, summary {
+    /* Interactive elements and all their child nodes keep pointer cursor */
+    a, a *, button, button *, [role="button"], [role="button"] *,
+    .btn-cta-large, .btn-cta-large *, .btn-primary, .btn-primary *,
+    .nav-item, .nav-item *, .nav-action-btn, .nav-action-btn *,
+    .nav-brand, .nav-brand *, .nav-brand-logo, .nav-brand-text,
+    .nav-extreme-left-logo-wrap, .nav-extreme-left-logo-wrap *,
+    .elastic-stack-item, .elastic-stack-item *,
+    .footer-brand-logo-wrap, .footer-brand-logo-wrap *,
+    .menu-nav-link, .menu-nav-link *, .menu-enquiries-btn, .menu-enquiries-btn *,
+    .menu-channel-item, .menu-channel-item *,
+    .service-card-item, .service-card-item *,
+    .service-area-card, .service-area-card *,
+    .btn-view-cases, .btn-view-cases *,
+    select, summary {
       cursor: pointer !important;
     }
 
@@ -432,47 +444,56 @@
     }
 
     /* Navigation Links (HOME, SERVICES, WORK, ABOUT) */
-    #fullscreen-menu .menu-nav-link {
+    #fullscreen-menu .menu-nav-link:not(.is-active) {
       color: #111111 !important;
     }
-    #fullscreen-menu .menu-nav-link .nav-text-wrap {
+    #fullscreen-menu .menu-nav-link:not(.is-active) .nav-text-wrap {
       color: #111111 !important;
     }
+    #fullscreen-menu .menu-nav-link:not(.is-active) .jackpot-char-sizer,
+    #fullscreen-menu .menu-nav-link:not(.is-active) .jackpot-rung.original,
+    #fullscreen-menu .menu-nav-link:not(.is-active) .jackpot-rung.rung-rand-1,
+    #fullscreen-menu .menu-nav-link:not(.is-active) .jackpot-rung.rung-rand-2 {
+      color: #111111 !important;
+    }
+
+    /* Active Page Option & Hover State: Always Vibrant Orange (#FF6600) */
     #fullscreen-menu .menu-nav-link.is-active,
-    #fullscreen-menu .menu-nav-link:hover {
+    #fullscreen-menu .menu-nav-link.is-active .nav-text-wrap,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-char-sizer,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-rung.original,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-rung.rung-rand-1,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-rung.rung-rand-2,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-rung.target,
+    #fullscreen-menu .menu-nav-link.is-active .nav-arrow {
       color: #FF6600 !important;
     }
-    #fullscreen-menu .menu-nav-link.is-active .nav-text-wrap,
-    #fullscreen-menu .menu-nav-link:hover .nav-text-wrap {
+    #fullscreen-menu .menu-nav-link:hover,
+    #fullscreen-menu .menu-nav-link:hover .nav-text-wrap,
+    #fullscreen-menu .menu-nav-link:hover .jackpot-rung.target,
+    #fullscreen-menu .menu-nav-link:hover .nav-arrow {
       color: #FF6600 !important;
     }
 
-    /* Jackpot Text Ladder Rungs */
-    #fullscreen-menu .jackpot-char-sizer {
-      color: #111111 !important;
-    }
-    #fullscreen-menu .jackpot-rung.original {
-      color: #111111 !important;
-    }
-    #fullscreen-menu .jackpot-rung.rung-rand-1,
-    #fullscreen-menu .jackpot-rung.rung-rand-2 {
-      color: #111111 !important;
-    }
+    /* Jackpot Text Ladder Target Rung */
     #fullscreen-menu .jackpot-rung.target {
       color: #FF6600 !important;
     }
 
     /* Enquiries Button & Mini-Brand Row */
-    #fullscreen-menu .menu-enquiries-btn {
+    #fullscreen-menu .menu-enquiries-btn:not(.is-active) {
       color: #111111 !important;
     }
-    #fullscreen-menu .menu-enquiries-btn span {
+    #fullscreen-menu .menu-enquiries-btn:not(.is-active) .jackpot-rung.original {
       color: #111111 !important;
     }
-    #fullscreen-menu .menu-enquiries-btn:hover {
-      color: #FF6600 !important;
-    }
-    #fullscreen-menu .menu-enquiries-btn:hover span {
+    #fullscreen-menu .menu-enquiries-btn.is-active,
+    #fullscreen-menu .menu-enquiries-btn.is-active .nav-text-wrap,
+    #fullscreen-menu .menu-enquiries-btn.is-active .jackpot-rung.original,
+    #fullscreen-menu .menu-enquiries-btn.is-active .jackpot-rung.target,
+    #fullscreen-menu .menu-enquiries-btn:hover,
+    #fullscreen-menu .menu-enquiries-btn:hover .nav-text-wrap,
+    #fullscreen-menu .menu-enquiries-btn:hover .jackpot-rung.target {
       color: #FF6600 !important;
     }
     #fullscreen-menu .menu-enquiries-row {
@@ -486,7 +507,11 @@
     #fullscreen-menu .menu-channel-item {
       color: #111111 !important;
     }
-    #fullscreen-menu .menu-channel-item:hover {
+    #fullscreen-menu .menu-channel-item .jackpot-rung.original {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-channel-item:hover,
+    #fullscreen-menu .menu-channel-item:hover .jackpot-rung.target {
       color: #FF6600 !important;
     }
     #fullscreen-menu .menu-channel-sep {
@@ -651,24 +676,59 @@
       stroke: #111111 !important;
     }
 
-    /* Fullscreen Menu: solid black text wherever white */
+    /* Fullscreen Menu: solid black text wherever white, orange for active page & on hover */
     #fullscreen-menu {
       color: #111111 !important;
     }
     #fullscreen-menu .menu-nav-link:not(.is-active) {
       color: #111111 !important;
     }
-    #fullscreen-menu .jackpot-char-sizer,
-    #fullscreen-menu .jackpot-rung.original,
-    #fullscreen-menu .jackpot-rung.rung-rand-1,
-    #fullscreen-menu .jackpot-rung.rung-rand-2 {
+    #fullscreen-menu .menu-nav-link:not(.is-active) .jackpot-char-sizer,
+    #fullscreen-menu .menu-nav-link:not(.is-active) .jackpot-rung.original,
+    #fullscreen-menu .menu-nav-link:not(.is-active) .jackpot-rung.rung-rand-1,
+    #fullscreen-menu .menu-nav-link:not(.is-active) .jackpot-rung.rung-rand-2 {
       color: #111111 !important;
     }
-    #fullscreen-menu .menu-enquiries-btn {
+    #fullscreen-menu .menu-nav-link.is-active,
+    #fullscreen-menu .menu-nav-link.is-active .nav-text-wrap,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-char-sizer,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-rung.original,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-rung.rung-rand-1,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-rung.rung-rand-2,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-rung.target,
+    #fullscreen-menu .menu-nav-link.is-active .nav-arrow {
+      color: var(--color-orange, #FF6600) !important;
+    }
+    #fullscreen-menu .menu-nav-link:hover,
+    #fullscreen-menu .menu-nav-link:hover .nav-text-wrap,
+    #fullscreen-menu .menu-nav-link:hover .jackpot-rung.target,
+    #fullscreen-menu .menu-nav-link:hover .nav-arrow {
+      color: var(--color-orange, #FF6600) !important;
+    }
+    #fullscreen-menu .menu-enquiries-btn:not(.is-active) {
       color: #111111 !important;
+    }
+    #fullscreen-menu .menu-enquiries-btn:not(.is-active) .jackpot-rung.original {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-enquiries-btn.is-active,
+    #fullscreen-menu .menu-enquiries-btn.is-active .nav-text-wrap,
+    #fullscreen-menu .menu-enquiries-btn.is-active .jackpot-rung.original,
+    #fullscreen-menu .menu-enquiries-btn.is-active .jackpot-rung.target,
+    #fullscreen-menu .menu-enquiries-btn:hover,
+    #fullscreen-menu .menu-enquiries-btn:hover .nav-text-wrap,
+    #fullscreen-menu .menu-enquiries-btn:hover .jackpot-rung.target {
+      color: var(--color-orange, #FF6600) !important;
     }
     #fullscreen-menu .menu-channel-item {
       color: #111111 !important;
+    }
+    #fullscreen-menu .menu-channel-item .jackpot-rung.original {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-channel-item:hover,
+    #fullscreen-menu .menu-channel-item:hover .jackpot-rung.target {
+      color: var(--color-orange, #FF6600) !important;
     }
     #fullscreen-menu .menu-channel-sep {
       color: rgba(17, 17, 17, 0.45) !important;
@@ -2070,7 +2130,7 @@
       background-color: var(--bg-warm, #F7F6F2);
       color: var(--color-charcoal, #111111);
       box-shadow: 0 -30px 90px rgba(0, 0, 0, 0.55);
-      overflow: hidden;
+      overflow-x: clip;
       margin-top: -100vh;
       will-change: transform;
     }
@@ -2168,114 +2228,291 @@
     }
 
     /* -------------------------------------------------------------------------
-       PLACEHOLDER SERVICE CARDS (4 Sleek Editorial Architecture Cards)
+       OUR MAIN AREAS OF WORK — ASYMMETRIC SIDEBAR + 3-COLUMN SERVICES GRID
+       (Exact Clean Reference Layout & Sculpted Petal Card Treatments)
        ------------------------------------------------------------------------- */
-    .services-cards-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 32px;
-      max-width: 1500px;
-      margin: 0 auto 120px auto;
-      padding: 0 48px;
+    .services-areas-section {
       position: relative;
       z-index: 2;
+      max-width: 1600px;
+      margin: 0 auto 140px auto;
+      padding: 12px 48px 0 48px;
+      display: grid;
+      grid-template-columns: 290px 1fr;
+      gap: 56px;
+      align-items: stretch;
     }
 
-    @media (max-width: 900px) {
-      .services-cards-grid {
-        grid-template-columns: 1fr;
-        padding: 0 24px;
-        gap: 24px;
-      }
-    }
-
-    .service-card-item {
-      background: #FFFFFF;
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      border-radius: 8px;
-      padding: 48px;
+    .services-areas-sidebar {
+      position: relative;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-height: 380px;
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .services-areas-sidebar-sticky {
+      position: sticky;
+      top: 112px;
+      min-height: 620px;
+      height: calc(100vh - 160px);
+      max-height: 760px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px 0 12px 0;
+    }
+
+    .services-areas-heading {
+      font-family: var(--font-hero);
+      font-size: clamp(34px, 3.1vw, 46px);
+      font-weight: 500;
+      line-height: 1.06;
+      letter-spacing: -0.035em;
+      color: #111111;
+      margin: 0 0 22px 0;
+    }
+
+    .services-areas-subtext {
+      font-family: var(--font-hero);
+      font-size: 13.5px;
+      font-weight: 400;
+      line-height: 1.52;
+      color: #7A7A7A;
+      max-width: 245px;
+      margin: 0;
+    }
+
+    .services-areas-cta-wrap {
+      margin-top: 36px;
+    }
+
+    .btn-view-cases {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 30px;
+      background: #0B0B0B;
+      color: #FFFFFF;
+      font-family: var(--font-hero);
+      font-size: 13.5px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, color 0.25s ease, box-shadow 0.28s ease;
+    }
+
+    .btn-view-cases:hover {
+      transform: translateY(-2px);
+      background: #FF6600;
+      color: #111111;
+      box-shadow: 0 10px 26px rgba(255, 102, 0, 0.32);
+    }
+
+    /* 3-Column Card Grid with Subtle Middle-Column Vertical Stagger */
+    .services-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      align-items: start;
+      width: 100%;
+    }
+
+    .service-area-card {
       position: relative;
+      border-radius: 22px;
+      min-height: 390px;
+      aspect-ratio: 1 / 1.07;
+      padding: 26px 26px 28px 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      isolation: isolate;
+      text-decoration: none;
+      transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.42s ease;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Stagger every middle card in the 3-card row just like the reference */
+    .service-area-card:nth-child(3n + 2) {
+      margin-top: 28px;
+    }
+
+    .service-area-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 52px rgba(0, 0, 0, 0.22);
+    }
+
+    /* Card Variant 1: Deep Obsidian with Dark Sculpted 3D Petals (#1, #6, #7, #11) */
+    .service-area-card.variant-obsidian-petals {
+      background: radial-gradient(circle at 85% 25%, #0B252E 0%, #051319 42%, #020507 100%);
+    }
+
+    /* Card Variant 2: Luminous Translucent Glass Petals on Obsidian (#2, #4, #8, #10) */
+    .service-area-card.variant-luminous-petals {
+      background: radial-gradient(circle at 70% 35%, #2D676B 0%, #0D292D 58%, #030709 100%);
+    }
+
+    /* Card Variant 3: Calm Solid Matte Slate-Teal Surface (#3, #5, #9) */
+    .service-area-card.variant-matte-teal {
+      background: linear-gradient(165deg, #5C9598 0%, #4E8689 100%);
+    }
+
+    /* Sculpted 3D Petal SVG Background Artwork */
+    .card-petal-visual {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
       overflow: hidden;
     }
 
-    .service-card-item:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.08);
-      border-color: rgba(255, 102, 0, 0.35);
+    .card-petal-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
     }
 
-    .service-card-header {
+    .service-area-card:hover .card-petal-svg {
+      transform: scale(1.055);
+    }
+
+    /* Soft Bottom Vignette Scrim for Effortless White Typography Contrast */
+    .card-bottom-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.08) 45%, rgba(2, 8, 10, 0.62) 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .service-area-card.variant-matte-teal .card-bottom-scrim {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(0, 0, 0, 0.06) 100%);
+    }
+
+    .service-card-top {
+      position: relative;
+      z-index: 3;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 24px;
     }
 
     .service-card-num {
-      font-family: var(--font-mono, monospace);
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      color: #888888;
+      font-family: var(--font-hero);
+      font-size: 13.5px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      color: rgba(255, 255, 255, 0.82);
     }
 
-    .service-card-badge {
-      display: inline-flex;
+    .service-card-bottom {
+      position: relative;
+      z-index: 3;
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .service-card-title-row {
+      display: flex;
       align-items: center;
-      padding: 5px 14px;
-      border-radius: 100px;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background: rgba(255, 102, 0, 0.1);
-      color: #FF6600;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .service-card-title {
       font-family: var(--font-hero);
-      font-size: clamp(26px, 2.6vw, 36px);
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -0.03em;
-      color: #111111;
-      margin-bottom: 16px;
+      font-size: clamp(21px, 1.8vw, 27px);
+      font-weight: 500;
+      line-height: 1.16;
+      letter-spacing: -0.025em;
+      color: #FFFFFF;
+      margin: 0;
+    }
+
+    .service-card-pill-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: var(--font-hero);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.92);
+      background: rgba(58, 114, 140, 0.48);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
 
     .service-card-desc {
-      font-family: var(--font-sans);
-      font-size: 16px;
-      line-height: 1.6;
-      color: #555555;
-      margin-bottom: 32px;
-    }
-
-    .service-card-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      padding-top: 24px;
-      border-top: 1px solid rgba(0, 0, 0, 0.06);
-    }
-
-    .service-tag-chip {
+      font-family: var(--font-hero);
       font-size: 13px;
-      font-weight: 600;
-      color: #333333;
-      background: #F4F3EF;
-      padding: 6px 14px;
-      border-radius: 4px;
-      transition: background 0.2s, color 0.2s;
+      font-weight: 400;
+      line-height: 1.46;
+      color: rgba(255, 255, 255, 0.74);
+      margin: 0;
+      max-width: 96%;
     }
 
-    .service-card-item:hover .service-tag-chip {
-      background: rgba(255, 102, 0, 0.08);
-      color: #FF6600;
+    @media (max-width: 1200px) {
+      .services-areas-section {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .services-areas-sidebar-sticky {
+        position: relative;
+        top: 0;
+        height: auto;
+        min-height: 0;
+        max-height: none;
+        flex-direction: row;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        gap: 24px;
+      }
+      .services-areas-subtext {
+        max-width: 380px;
+      }
+      .services-areas-cta-wrap {
+        margin-top: 0;
+      }
+    }
+
+    @media (max-width: 960px) {
+      .services-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .service-area-card:nth-child(3n + 2) {
+        margin-top: 0;
+      }
+      .service-area-card:nth-child(2n) {
+        margin-top: 22px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .services-areas-section {
+        padding: 0 24px;
+      }
+      .services-cards-grid {
+        grid-template-columns: 1fr;
+      }
+      .service-area-card:nth-child(2n),
+      .service-area-card:nth-child(3n + 2) {
+        margin-top: 0;
+      }
     }
 
     /* -------------------------------------------------------------------------
@@ -2787,74 +3024,301 @@
         <div class="services-title-divider" id="servicesTitleDivider" aria-hidden="true"></div>
       </div>
 
-      <!-- 4 Placeholder Service Cards -->
-      <div class="services-cards-grid">
-        <div class="service-card-item">
-          <div class="service-card-header">
-            <span class="service-card-num">01 / ARCHITECTURE</span>
-            <span class="service-card-badge">Build</span>
+      <!-- OUR MAIN AREAS OF WORK + 3-COLUMN SERVICES GRID (11 Specified Cards Matching Reference) -->
+      <div class="services-areas-section" id="servicesAreasSection">
+        <!-- Left Sidebar: Heading, Subtext & Bottom View Cases Pill -->
+        <aside class="services-areas-sidebar">
+          <div class="services-areas-sidebar-sticky">
+            <div class="services-areas-intro">
+              <h2 class="services-areas-heading">
+                Our<br>main areas<br>of work
+              </h2>
+              <p class="services-areas-subtext">
+                From strategy and design to delivery and support, we provide tailored services that help your business grow.
+              </p>
+            </div>
+            <div class="services-areas-cta-wrap">
+              <a href="index.html?from=subpage#work" class="btn-view-cases">View cases</a>
+            </div>
           </div>
-          <h3 class="service-card-title">Software & Cloud Systems</h3>
-          <p class="service-card-desc">
-            High-throughput web applications, cloud infrastructure, distributed microservices, and reactive APIs built for enterprise reliability and extreme speed.
-          </p>
-          <div class="service-card-tags">
-            <span class="service-tag-chip">Full-Stack Web</span>
-            <span class="service-tag-chip">Cloud Scale</span>
-            <span class="service-tag-chip">API Integrations</span>
-            <span class="service-tag-chip">Reactive UI</span>
-          </div>
-        </div>
+        </aside>
 
-        <div class="service-card-item">
-          <div class="service-card-header">
-            <span class="service-card-num">02 / VISUALS</span>
-            <span class="service-card-badge">Create</span>
-          </div>
-          <h3 class="service-card-title">Creative Direction & 3D Motion</h3>
-          <p class="service-card-desc">
-            Cinematic 3D product animations, kinetic typography, interactive WebGL experiences, and brand launch films that capture undivided audience attention.
-          </p>
-          <div class="service-card-tags">
-            <span class="service-tag-chip">3D Animation</span>
-            <span class="service-tag-chip">Kinetic Type</span>
-            <span class="service-tag-chip">Brand Films</span>
-            <span class="service-tag-chip">Art Direction</span>
-          </div>
-        </div>
+        <!-- Right 3-Column Card Grid (11 Specified Cards) -->
+        <div class="services-cards-grid" id="servicesCardsGrid">
+          <!-- #1: Web Development (Obsidian Sculpted Petals) -->
+          <article class="service-area-card variant-obsidian-petals">
+            <div class="card-petal-visual" aria-hidden="true">
+              <svg class="card-petal-svg" viewBox="0 0 400 430" preserveAspectRatio="xMidYMid slice">
+                <defs>
+                  <linearGradient id="obsP1" x1="20%" y1="0%" x2="90%" y2="100%">
+                    <stop offset="0%" stop-color="#0E3442"/>
+                    <stop offset="55%" stop-color="#071C24"/>
+                    <stop offset="100%" stop-color="#02080B"/>
+                  </linearGradient>
+                  <linearGradient id="obsP2" x1="10%" y1="10%" x2="85%" y2="95%">
+                    <stop offset="0%" stop-color="#134252"/>
+                    <stop offset="50%" stop-color="#09242E"/>
+                    <stop offset="100%" stop-color="#030B0F"/>
+                  </linearGradient>
+                  <linearGradient id="obsP3" x1="0%" y1="15%" x2="95%" y2="95%">
+                    <stop offset="0%" stop-color="#184F61"/>
+                    <stop offset="60%" stop-color="#0A2833"/>
+                    <stop offset="100%" stop-color="#02090C"/>
+                  </linearGradient>
+                </defs>
+                <path d="M165,-15 C215,65 245,180 235,340 C170,280 120,175 165,-15 Z" fill="url(#obsP1)" stroke="rgba(95,180,190,0.12)" stroke-width="1"/>
+                <path d="M250,10 C295,115 305,245 275,410 C195,335 160,200 250,10 Z" fill="url(#obsP2)" stroke="rgba(115,205,215,0.15)" stroke-width="1"/>
+                <path d="M335,55 C375,165 375,305 320,445 C225,365 205,220 335,55 Z" fill="url(#obsP3)" stroke="rgba(140,220,230,0.16)" stroke-width="1"/>
+                <path d="M95,120 C165,195 225,315 245,450 L35,450 C35,320 55,200 95,120 Z" fill="url(#obsP1)" opacity="0.88" stroke="rgba(95,180,190,0.1)" stroke-width="1"/>
+              </svg>
+            </div>
+            <div class="card-bottom-scrim" aria-hidden="true"></div>
+            <div class="service-card-top">
+              <span class="service-card-num">#1</span>
+            </div>
+            <div class="service-card-bottom">
+              <div class="service-card-title-row">
+                <h3 class="service-card-title">Web Development</h3>
+              </div>
+              <p class="service-card-desc">
+                We build high-performance websites and web platforms from day one. Custom architecture, responsive UI, SEO structure, and cloud scalability.
+              </p>
+            </div>
+          </article>
 
-        <div class="service-card-item">
-          <div class="service-card-header">
-            <span class="service-card-num">03 / IDENTITY</span>
-            <span class="service-card-badge">Create</span>
-          </div>
-          <h3 class="service-card-title">Brand Identity & Packaging</h3>
-          <p class="service-card-desc">
-            Design tokens, corporate identity systems, bespoke typography guidelines, luxury packaging mockups, and comprehensive brand playbooks.
-          </p>
-          <div class="service-card-tags">
-            <span class="service-tag-chip">Design Systems</span>
-            <span class="service-tag-chip">Packaging</span>
-            <span class="service-tag-chip">Brand Strategy</span>
-            <span class="service-tag-chip">Corporate Identity</span>
-          </div>
-        </div>
+          <!-- #2: Application Development (Luminous Glass Petals) -->
+          <article class="service-area-card variant-luminous-petals">
+            <div class="card-petal-visual" aria-hidden="true">
+              <svg class="card-petal-svg" viewBox="0 0 400 430" preserveAspectRatio="xMidYMid slice">
+                <defs>
+                  <linearGradient id="lumA1" x1="85%" y1="5%" x2="10%" y2="85%">
+                    <stop offset="0%" stop-color="#A8DCDE" stop-opacity="0.92"/>
+                    <stop offset="48%" stop-color="#56979B" stop-opacity="0.85"/>
+                    <stop offset="100%" stop-color="#174448" stop-opacity="0.9"/>
+                  </linearGradient>
+                  <linearGradient id="lumA2" x1="95%" y1="20%" x2="5%" y2="90%">
+                    <stop offset="0%" stop-color="#BBE8EA" stop-opacity="0.95"/>
+                    <stop offset="45%" stop-color="#64A5A8" stop-opacity="0.88"/>
+                    <stop offset="100%" stop-color="#1D4E53" stop-opacity="0.92"/>
+                  </linearGradient>
+                  <linearGradient id="lumA3" x1="90%" y1="45%" x2="10%" y2="100%">
+                    <stop offset="0%" stop-color="#8EC7C9" stop-opacity="0.9"/>
+                    <stop offset="55%" stop-color="#448286" stop-opacity="0.86"/>
+                    <stop offset="100%" stop-color="#113539" stop-opacity="0.94"/>
+                  </linearGradient>
+                </defs>
+                <path d="M235,-30 L420,-30 L420,160 C275,185 110,225 -25,210 C45,115 155,20 235,-30 Z" fill="url(#lumA1)" stroke="rgba(225,252,253,0.55)" stroke-width="1.2"/>
+                <path d="M425,75 L425,275 C265,305 115,325 -25,285 C65,195 245,115 425,75 Z" fill="url(#lumA2)" stroke="rgba(235,254,255,0.62)" stroke-width="1.2"/>
+                <path d="M425,195 L425,385 C270,395 115,380 -25,335 C85,265 260,215 425,195 Z" fill="url(#lumA3)" stroke="rgba(215,248,250,0.48)" stroke-width="1.1"/>
+                <path d="M-20,330 C115,355 215,390 295,445 L-20,445 Z" fill="url(#lumA1)" opacity="0.78" stroke="rgba(210,245,247,0.4)" stroke-width="1"/>
+              </svg>
+            </div>
+            <div class="card-bottom-scrim" aria-hidden="true"></div>
+            <div class="service-card-top">
+              <span class="service-card-num">#2</span>
+            </div>
+            <div class="service-card-bottom">
+              <div class="service-card-title-row">
+                <h3 class="service-card-title">Application Development</h3>
+              </div>
+              <p class="service-card-desc">
+                We build native and cross-platform mobile and web applications: intuitive UX, real-time sync, robust APIs, and seamless scaling.
+              </p>
+            </div>
+          </article>
 
-        <div class="service-card-item">
-          <div class="service-card-header">
-            <span class="service-card-num">04 / EXPANSION</span>
-            <span class="service-card-badge">Grow</span>
-          </div>
-          <h3 class="service-card-title">Performance & Growth Scale</h3>
-          <p class="service-card-desc">
-            Conversion funnel optimization, automated marketing architectures, retention loop engineering, and data-driven customer acquisition engines.
-          </p>
-          <div class="service-card-tags">
-            <span class="service-tag-chip">Growth Engineering</span>
-            <span class="service-tag-chip">CRO Analytics</span>
-            <span class="service-tag-chip">Performance Media</span>
-            <span class="service-tag-chip">Scale Strategy</span>
-          </div>
+          <!-- #3: AI Automations (Calm Solid Matte Teal) -->
+          <article class="service-area-card variant-matte-teal">
+            <div class="card-bottom-scrim" aria-hidden="true"></div>
+            <div class="service-card-top">
+              <span class="service-card-num">#3</span>
+            </div>
+            <div class="service-card-bottom">
+              <div class="service-card-title-row">
+                <h3 class="service-card-title">AI Automations</h3>
+              </div>
+              <p class="service-card-desc">
+                We automate workflows and operations with custom AI agents: structure, CRM integrations, lead qualification, and autonomous pipelines.
+              </p>
+            </div>
+          </article>
+
+          <!-- #4: Video Editing (Luminous Glass Petals) -->
+          <article class="service-area-card variant-luminous-petals">
+            <div class="card-petal-visual" aria-hidden="true">
+              <svg class="card-petal-svg" viewBox="0 0 400 430" preserveAspectRatio="xMidYMid slice">
+                <path d="M225,-30 L420,-30 L420,165 C270,190 105,230 -25,215 C45,120 150,25 225,-30 Z" fill="url(#lumA1)" stroke="rgba(225,252,253,0.55)" stroke-width="1.2"/>
+                <path d="M425,80 L425,280 C260,310 110,330 -25,290 C65,200 245,120 425,80 Z" fill="url(#lumA2)" stroke="rgba(235,254,255,0.62)" stroke-width="1.2"/>
+                <path d="M425,200 L425,390 C265,400 110,385 -25,340 C85,270 255,220 425,200 Z" fill="url(#lumA3)" stroke="rgba(215,248,250,0.48)" stroke-width="1.1"/>
+                <path d="M-20,335 C115,360 215,395 295,445 L-20,445 Z" fill="url(#lumA1)" opacity="0.78" stroke="rgba(210,245,247,0.4)" stroke-width="1"/>
+              </svg>
+            </div>
+            <div class="card-bottom-scrim" aria-hidden="true"></div>
+            <div class="service-card-top">
+              <span class="service-card-num">#4</span>
+            </div>
+            <div class="service-card-bottom">
+              <div class="service-card-title-row">
+                <h3 class="service-card-title">Video Editing</h3>
+              </div>
+              <p class="service-card-desc">
+                We craft high-retention cuts, dynamic pacing, sound design, and narrative rhythm that boost engagement and brand recognition.
+              </p>
+            </div>
+          </article>
+
+          <!-- #5: SaaS Videos (Calm Solid Matte Teal) -->
+          <article class="service-area-card variant-matte-teal">
+            <div class="card-bottom-scrim" aria-hidden="true"></div>
+            <div class="service-card-top">
+              <span class="service-card-num">#5</span>
+            </div>
+            <div class="service-card-bottom">
+              <div class="service-card-title-row">
+                <h3 class="service-card-title">SaaS Videos</h3>
+              </div>
+              <p class="service-card-desc">
+                Product launch films, interactive UI walkthroughs, and explainers for software brands. Full cycle: script → design → animate.
+              </p>
+            </div>
+          </article>
+
+          <!-- #6: Graphic Designing (Obsidian Sculpted Petals) -->
+          <article class="service-area-card variant-obsidian-petals">
+            <div class="card-petal-visual" aria-hidden="true">
+              <svg class="card-petal-svg" viewBox="0 0 400 430" preserveAspectRatio="xMidYMid slice">
+                <path d="M165,-15 C215,65 245,180 235,340 C170,280 120,175 165,-15 Z" fill="url(#obsP1)" stroke="rgba(95,180,190,0.12)" stroke-width="1"/>
+                <path d="M250,10 C295,115 305,245 275,410 C195,335 160,200 250,10 Z" fill="url(#obsP2)" stroke="rgba(115,205,215,0.15)" stroke-width="1"/>
+                <path d="M335,55 C375,165 375,305 320,445 C225,365 205,220 335,55 Z" fill="url(#obsP3)" stroke="rgba(140,220,230,0.16)" stroke-width="1"/>
+                <path d="M95,120 C165,195 225,315 245,450 L35,450 C35,320 55,200 95,120 Z" fill="url(#obsP1)" opacity="0.88" stroke="rgba(95,180,190,0.1)" stroke-width="1"/>
+              </svg>
+            </div>
+            <div class="card-bottom-scrim" aria-hidden="true"></div>
+            <div class="service-card-top">
+              <span class="service-card-num">#6</span>
+            </div>
+            <div class="service-card-bottom">
+              <div class="service-card-title-row">
+                <h3 class="service-card-title">Graphic Designing</h3>
+              </div>
+              <p class="service-card-desc">
+                We create visual identities, brand systems, packaging, and campaign assets that elevate authority across every customer touchpoint.
+              </p>
+            </div>
+          </article>
+
+          <!-- #7: Cinematography (Obsidian Sculpted Petals) -->
+          <article class="service-area-card variant-obsidian-petals">
+            <div class="card-petal-visual" aria-hidden="true">
+              <svg class="card-petal-svg" viewBox="0 0 400 430" preserveAspectRatio="xMidYMid slice">
+                <path d="M165,-15 C215,65 245,180 235,340 C170,280 120,175 165,-15 Z" fill="url(#obsP1)" stroke="rgba(95,180,190,0.12)" stroke-width="1"/>
+                <path d="M250,10 C295,115 305,245 275,410 C195,335 160,200 250,10 Z" fill="url(#obsP2)" stroke="rgba(115,205,215,0.15)" stroke-width="1"/>
+                <path d="M335,55 C375,165 375,305 320,445 C225,365 205,220 335,55 Z" fill="url(#obsP3)" stroke="rgba(140,220,230,0.16)" stroke-width="1"/>
+                <path d="M95,120 C165,195 225,315 245,450 L35,450 C35,320 55,200 95,120 Z" fill="url(#obsP1)" opacity="0.88" stroke="rgba(95,180,190,0.1)" stroke-width="1"/>
+              </svg>
+            </div>
+            <div class="card-bottom-scrim" aria-hidden="true"></div>
+            <div class="service-card-top">
+              <span class="service-card-num">#7</span>
+            </div>
+            <div class="service-card-bottom">
+              <div class="service-card-title-row">
+                <h3 class="service-card-title">Cinematography</h3>
+              </div>
+              <p class="service-card-desc">
+                Cinema-grade commercial production, on-location direction, studio lighting, and colour grading for flagship brand stories.
+              </p>
+            </div>
+          </article>
+
+          <!-- #8: 2D Animations (Luminous Glass Petals) -->
+          <article class="service-area-card variant-luminous-petals">
+            <div class="card-petal-visual" aria-hidden="true">
+              <svg class="card-petal-svg" viewBox="0 0 400 430" preserveAspectRatio="xMidYMid slice">
+                <path d="M235,-30 L420,-30 L420,160 C275,185 110,225 -25,210 C45,115 155,20 235,-30 Z" fill="url(#lumA1)" stroke="rgba(225,252,253,0.55)" stroke-width="1.2"/>
+                <path d="M425,75 L425,275 C265,305 115,325 -25,285 C65,195 245,115 425,75 Z" fill="url(#lumA2)" stroke="rgba(235,254,255,0.62)" stroke-width="1.2"/>
+                <path d="M425,195 L425,385 C270,395 115,380 -25,335 C85,265 260,215 425,195 Z" fill="url(#lumA3)" stroke="rgba(215,248,250,0.48)" stroke-width="1.1"/>
+                <path d="M-20,330 C115,355 215,390 295,445 L-20,445 Z" fill="url(#lumA1)" opacity="0.78" stroke="rgba(210,245,247,0.4)" stroke-width="1"/>
+              </svg>
+            </div>
+            <div class="card-bottom-scrim" aria-hidden="true"></div>
+            <div class="service-card-top">
+              <span class="service-card-num">#8</span>
+            </div>
+            <div class="service-card-bottom">
+              <div class="service-card-title-row">
+                <h3 class="service-card-title">2D Animations</h3>
+              </div>
+              <p class="service-card-desc">
+                Expressive motion graphics, kinetic typography, and illustrated brand storytelling engineered for clarity and memorability.
+              </p>
+            </div>
+          </article>
+
+          <!-- #9: 3D Animations (Calm Solid Matte Teal) -->
+          <article class="service-area-card variant-matte-teal">
+            <div class="card-bottom-scrim" aria-hidden="true"></div>
+            <div class="service-card-top">
+              <span class="service-card-num">#9</span>
+            </div>
+            <div class="service-card-bottom">
+              <div class="service-card-title-row">
+                <h3 class="service-card-title">3D Animations</h3>
+              </div>
+              <p class="service-card-desc">
+                Photorealistic product renders, physics simulations, architectural visualizations, and immersive 3D motion sequences.
+              </p>
+            </div>
+          </article>
+
+          <!-- #10: AI Creatives (Luminous Glass Petals + NEW Badge) -->
+          <article class="service-area-card variant-luminous-petals">
+            <div class="card-petal-visual" aria-hidden="true">
+              <svg class="card-petal-svg" viewBox="0 0 400 430" preserveAspectRatio="xMidYMid slice">
+                <path d="M235,-30 L420,-30 L420,160 C275,185 110,225 -25,210 C45,115 155,20 235,-30 Z" fill="url(#lumA1)" stroke="rgba(225,252,253,0.55)" stroke-width="1.2"/>
+                <path d="M425,75 L425,275 C265,305 115,325 -25,285 C65,195 245,115 425,75 Z" fill="url(#lumA2)" stroke="rgba(235,254,255,0.62)" stroke-width="1.2"/>
+                <path d="M425,195 L425,385 C270,395 115,380 -25,335 C85,265 260,215 425,195 Z" fill="url(#lumA3)" stroke="rgba(215,248,250,0.48)" stroke-width="1.1"/>
+                <path d="M-20,330 C115,355 215,390 295,445 L-20,445 Z" fill="url(#lumA1)" opacity="0.78" stroke="rgba(210,245,247,0.4)" stroke-width="1"/>
+              </svg>
+            </div>
+            <div class="card-bottom-scrim" aria-hidden="true"></div>
+            <div class="service-card-top">
+              <span class="service-card-num">#10</span>
+            </div>
+            <div class="service-card-bottom">
+              <div class="service-card-title-row">
+                <h3 class="service-card-title">AI Creatives</h3>
+                <span class="service-card-pill-badge">NEW</span>
+              </div>
+              <p class="service-card-desc">
+                Next-generation generative visuals, bespoke AI ad campaigns, and rapid concept films pushing creative boundaries.
+              </p>
+            </div>
+          </article>
+
+          <!-- #11: Performance Marketing (Obsidian Sculpted Petals) -->
+          <article class="service-area-card variant-obsidian-petals">
+            <div class="card-petal-visual" aria-hidden="true">
+              <svg class="card-petal-svg" viewBox="0 0 400 430" preserveAspectRatio="xMidYMid slice">
+                <path d="M165,-15 C215,65 245,180 235,340 C170,280 120,175 165,-15 Z" fill="url(#obsP1)" stroke="rgba(95,180,190,0.12)" stroke-width="1"/>
+                <path d="M250,10 C295,115 305,245 275,410 C195,335 160,200 250,10 Z" fill="url(#obsP2)" stroke="rgba(115,205,215,0.15)" stroke-width="1"/>
+                <path d="M335,55 C375,165 375,305 320,445 C225,365 205,220 335,55 Z" fill="url(#obsP3)" stroke="rgba(140,220,230,0.16)" stroke-width="1"/>
+                <path d="M95,120 C165,195 225,315 245,450 L35,450 C35,320 55,200 95,120 Z" fill="url(#obsP1)" opacity="0.88" stroke="rgba(95,180,190,0.1)" stroke-width="1"/>
+              </svg>
+            </div>
+            <div class="card-bottom-scrim" aria-hidden="true"></div>
+            <div class="service-card-top">
+              <span class="service-card-num">#11</span>
+            </div>
+            <div class="service-card-bottom">
+              <div class="service-card-title-row">
+                <h3 class="service-card-title">Performance Marketing</h3>
+              </div>
+              <p class="service-card-desc">
+                Data-driven acquisition across Google, Meta, and YouTube: precise targeting, creative testing, attribution, and ROAS scaling.
+              </p>
+            </div>
+          </article>
         </div>
       </div>
 
@@ -2930,8 +3394,8 @@
         <ul class="footer-links-list">
           <li><a href="index.html?from=subpage" class="footer-link">Home</a></li>
           <li><a href="services.html" class="footer-link">Services</a></li>
-          <li><a href="#work" class="footer-link">Work</a></li>
-          <li><a href="#about" class="footer-link">About</a></li>
+          <li><a href="index.html?from=subpage#work" class="footer-link">Work</a></li>
+          <li><a href="index.html?from=subpage#about" class="footer-link">About</a></li>
           <li><a href="contact.html" class="footer-link">Book a meeting</a></li>
         </ul>
       </div>
@@ -3314,37 +3778,11 @@ Best regards,
       const btnBackToTop = document.getElementById('btnBackToTop');
       if (btnBackToTop) {
         btnBackToTop.addEventListener('click', (e) => {
-          // Orange bloom transition returning to top-left logo, identical to clicking top-left logo
-          triggerHomeTransition(e);
+          triggerServicesTransition(e);
         });
       }
 
-            function triggerServicesTransition(e) {
-        if (e) e.preventDefault();
-        // Do NOT call closeMenu() here! Keeps menu open under the blooming overlay to eliminate any home page flash/jerk
-        const overlay = document.getElementById('enquireTransitionOverlay');
-        if (!overlay) {
-          window.location.href = 'services.html';
-          return;
-        }
-
-        const linkEl = (e && e.currentTarget) || document.querySelector('[data-section="services"]') || document.querySelector('.nav-brand');
-        const origin = setTransitionOrigin(linkEl, overlay);
-
-        overlay.style.transition = 'none';
-        overlay.classList.remove('is-closing', 'is-dissolving');
-        overlay.classList.remove('is-covering', 'is-active');
-        void overlay.offsetWidth;
-
-        overlay.style.transition = 'clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1), -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1)';
-        overlay.classList.add('is-covering');
-
-        setTimeout(() => {
-          window.location.href = `services.html?transition=services&t=${Date.now()}&x=${origin.x}&y=${origin.y}`;
-        }, 1000);
-      }
-
-function triggerHomeTransition(e) {
+      function triggerHomeTransition(e) {
         if (e) e.preventDefault();
         if (typeof closeMenu === 'function') closeMenu();
         const overlay = document.getElementById('enquireTransitionOverlay');
@@ -3368,7 +3806,11 @@ function triggerHomeTransition(e) {
       function triggerServicesTransition(e) {
         if (e) e.preventDefault();
         if (typeof closeMenu === 'function') closeMenu();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (typeof window.resetServicesScrollToTop === 'function') {
+          window.resetServicesScrollToTop();
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
       }
 
       menuLinks.forEach(link => {
@@ -3630,17 +4072,17 @@ function triggerHomeTransition(e) {
             if (servicesTitle) {
               servicesTitle.classList.remove('is-revealed');
             }
-          } else if (P <= 1.0) {
+          } else if (P < 0.999) {
             const pullProgress = (P - 0.72) / 0.28;
             const yOffset = (1 - pullProgress) * 100;
-            servicesPulledSheet.style.transform = `translateY(${yOffset.toFixed(2)}vh)`;
+            servicesPulledSheet.style.transform = yOffset < 0.05 ? 'none' : `translateY(${yOffset.toFixed(2)}vh)`;
             if (pullProgress > 0.35) {
               if (servicesTitle) servicesTitle.classList.add('is-revealed');
             } else if (pullProgress <= 0.15) {
               if (servicesTitle) servicesTitle.classList.remove('is-revealed');
             }
           } else {
-            servicesPulledSheet.style.transform = 'translateY(0vh)';
+            servicesPulledSheet.style.transform = 'none';
             if (servicesTitle) {
               servicesTitle.classList.add('is-revealed');
             }
@@ -3724,6 +4166,20 @@ function triggerHomeTransition(e) {
           isSmoothScrolling = false;
         }
       }
+
+      window.resetServicesScrollToTop = function() {
+        isSmoothScrolling = false;
+        if (smoothScrollRafId) {
+          cancelAnimationFrame(smoothScrollRafId);
+          smoothScrollRafId = null;
+        }
+        targetY = 0;
+        currentY = 0;
+        targetScrollProgress = 0;
+        currentScrollProgress = 0;
+        window.scrollTo(0, 0);
+        updateScrollProgress();
+      };
 
       /* ------------------------------------------------------------------------
          5. BIDIRECTIONAL SERVICES TITLE CONTROLLER (Driven by Pull-Up Physics)
@@ -4035,7 +4491,7 @@ function triggerHomeTransition(e) {
       initAsciiHands();
 
       /* ------------------------------------------------------------------------
-         7. FOOTER ELASTIC STACK ENGINE
+         7. FOOTER ELASTIC STACK ENGINE (Exact Parity with Home & Contact Pages)
          ------------------------------------------------------------------------ */
       function initFooterElasticStack() {
         const stacks = document.querySelectorAll('.footer-elastic-stack');
@@ -4043,24 +4499,43 @@ function triggerHomeTransition(e) {
           const items = Array.from(stack.querySelectorAll('.elastic-stack-item'));
           const total = items.length;
           const overlap = 20;
-          const spreadFactor = 32;
+          const pushForce = 14;
 
-          items.forEach((item, index) => {
-            item.style.zIndex = total - index;
-            item.style.transform = `translateX(${index * overlap}px)`;
-          });
+          function applyTransforms(hoveredIdx) {
+            items.forEach((item, i) => {
+              let translateX = 0;
+              let scale = 1;
+              let zIndex = i;
+              const isHovered = hoveredIdx === i;
 
-          stack.addEventListener('mouseenter', () => {
-            items.forEach((item, index) => {
-              item.style.transform = `translateX(${index * spreadFactor}px) scale(1.05)`;
+              if (hoveredIdx !== null) {
+                if (i > hoveredIdx) {
+                  translateX = Math.max(
+                    Math.min(pushForce * (total - i - 1), overlap),
+                    overlap - pushForce * (i - hoveredIdx - 1)
+                  );
+                } else if (i < hoveredIdx) {
+                  translateX = -Math.min(pushForce * i, overlap);
+                } else {
+                  scale = 1.25;
+                  zIndex = 100;
+                }
+              }
+
+              item.style.transform = `translateX(${translateX}px) scale(${scale})`;
+              item.style.zIndex = zIndex;
+              item.style.transitionDelay = isHovered ? '0ms, 0ms, 150ms' : '0ms';
+              item.classList.toggle('is-hovered', isHovered);
             });
+          }
+
+          items.forEach((item, i) => {
+            item.addEventListener('mouseenter', () => applyTransforms(i));
+            item.addEventListener('touchstart', () => applyTransforms(i), { passive: true });
           });
 
-          stack.addEventListener('mouseleave', () => {
-            items.forEach((item, index) => {
-              item.style.transform = `translateX(${index * overlap}px) scale(1)`;
-            });
-          });
+          stack.addEventListener('mouseleave', () => applyTransforms(null));
+          applyTransforms(null);
         });
       }
 

@@ -92,8 +92,17 @@ html, body, h1, h2, h3, h4, h5, h6, p, span, div, section, article, aside, heade
   user-select: none;
 }
 
-/* Interactive elements keep pointer cursor */
-a, button, [role="button"], .btn-cta-large, .btn-primary, .nav-item, .nav-action-btn, .nav-brand, .elastic-stack-item, .footer-brand-logo-wrap, select, summary {
+/* Interactive elements and all their child nodes keep pointer cursor */
+a, a *, button, button *, [role="button"], [role="button"] *,
+.btn-cta-large, .btn-cta-large *, .btn-primary, .btn-primary *,
+.nav-item, .nav-item *, .nav-action-btn, .nav-action-btn *,
+.nav-brand, .nav-brand *, .nav-brand-logo, .nav-brand-text,
+.nav-extreme-left-logo-wrap, .nav-extreme-left-logo-wrap *,
+.elastic-stack-item, .elastic-stack-item *,
+.footer-brand-logo-wrap, .footer-brand-logo-wrap *,
+.menu-nav-link, .menu-nav-link *, .menu-enquiries-btn, .menu-enquiries-btn *,
+.menu-channel-item, .menu-channel-item *,
+select, summary {
   cursor: pointer !important;
 }
 
@@ -542,24 +551,59 @@ input, textarea, [contenteditable="true"] {
       stroke: #111111 !important;
     }
 
-    /* Fullscreen Menu: solid black text wherever white */
+    /* Fullscreen Menu: solid black text wherever white, orange for active page & on hover */
     #fullscreen-menu {
       color: #111111 !important;
     }
     #fullscreen-menu .menu-nav-link:not(.is-active) {
       color: #111111 !important;
     }
-    #fullscreen-menu .jackpot-char-sizer,
-    #fullscreen-menu .jackpot-rung.original,
-    #fullscreen-menu .jackpot-rung.rung-rand-1,
-    #fullscreen-menu .jackpot-rung.rung-rand-2 {
+    #fullscreen-menu .menu-nav-link:not(.is-active) .jackpot-char-sizer,
+    #fullscreen-menu .menu-nav-link:not(.is-active) .jackpot-rung.original,
+    #fullscreen-menu .menu-nav-link:not(.is-active) .jackpot-rung.rung-rand-1,
+    #fullscreen-menu .menu-nav-link:not(.is-active) .jackpot-rung.rung-rand-2 {
       color: #111111 !important;
     }
-    #fullscreen-menu .menu-enquiries-btn {
+    #fullscreen-menu .menu-nav-link.is-active,
+    #fullscreen-menu .menu-nav-link.is-active .nav-text-wrap,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-char-sizer,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-rung.original,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-rung.rung-rand-1,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-rung.rung-rand-2,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-rung.target,
+    #fullscreen-menu .menu-nav-link.is-active .nav-arrow {
+      color: var(--color-orange, #FF6600) !important;
+    }
+    #fullscreen-menu .menu-nav-link:hover,
+    #fullscreen-menu .menu-nav-link:hover .nav-text-wrap,
+    #fullscreen-menu .menu-nav-link:hover .jackpot-rung.target,
+    #fullscreen-menu .menu-nav-link:hover .nav-arrow {
+      color: var(--color-orange, #FF6600) !important;
+    }
+    #fullscreen-menu .menu-enquiries-btn:not(.is-active) {
       color: #111111 !important;
+    }
+    #fullscreen-menu .menu-enquiries-btn:not(.is-active) .jackpot-rung.original {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-enquiries-btn.is-active,
+    #fullscreen-menu .menu-enquiries-btn.is-active .nav-text-wrap,
+    #fullscreen-menu .menu-enquiries-btn.is-active .jackpot-rung.original,
+    #fullscreen-menu .menu-enquiries-btn.is-active .jackpot-rung.target,
+    #fullscreen-menu .menu-enquiries-btn:hover,
+    #fullscreen-menu .menu-enquiries-btn:hover .nav-text-wrap,
+    #fullscreen-menu .menu-enquiries-btn:hover .jackpot-rung.target {
+      color: var(--color-orange, #FF6600) !important;
     }
     #fullscreen-menu .menu-channel-item {
       color: #111111 !important;
+    }
+    #fullscreen-menu .menu-channel-item .jackpot-rung.original {
+      color: #111111 !important;
+    }
+    #fullscreen-menu .menu-channel-item:hover,
+    #fullscreen-menu .menu-channel-item:hover .jackpot-rung.target {
+      color: var(--color-orange, #FF6600) !important;
     }
     #fullscreen-menu .menu-channel-sep {
       color: rgba(17, 17, 17, 0.45) !important;

@@ -1149,6 +1149,42 @@
       user-select: none;
     }
 
+    /* Interactive elements and child nodes keep pointer cursor */
+    a, a *, button, button *, [role="button"], [role="button"] *,
+    .nav-brand, .nav-brand *, .nav-brand-logo, .nav-brand-text,
+    .nav-extreme-left-logo-wrap, .nav-extreme-left-logo-wrap *,
+    .footer-brand-logo-wrap, .footer-brand-logo-wrap *,
+    .menu-nav-link, .menu-nav-link *, .menu-enquiries-btn, .menu-enquiries-btn *,
+    .menu-channel-item, .menu-channel-item *, .elastic-stack-item, .elastic-stack-item * {
+      cursor: pointer !important;
+    }
+
+    /* Active & Hover Orange States in Fullscreen Navigation Panel */
+    #fullscreen-menu .menu-nav-link.is-active,
+    #fullscreen-menu .menu-nav-link.is-active .nav-text-wrap,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-char-sizer,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-rung.original,
+    #fullscreen-menu .menu-nav-link.is-active .jackpot-rung.target,
+    #fullscreen-menu .menu-nav-link.is-active .nav-arrow,
+    #fullscreen-menu .menu-enquiries-btn.is-active,
+    #fullscreen-menu .menu-enquiries-btn.is-active .nav-text-wrap,
+    #fullscreen-menu .menu-enquiries-btn.is-active .jackpot-char-sizer,
+    #fullscreen-menu .menu-enquiries-btn.is-active .jackpot-rung.original,
+    #fullscreen-menu .menu-enquiries-btn.is-active .jackpot-rung.target {
+      color: var(--color-orange, #FF6600) !important;
+    }
+    #fullscreen-menu .menu-nav-link:hover,
+    #fullscreen-menu .menu-nav-link:hover .nav-text-wrap,
+    #fullscreen-menu .menu-nav-link:hover .jackpot-rung.target,
+    #fullscreen-menu .menu-nav-link:hover .nav-arrow,
+    #fullscreen-menu .menu-enquiries-btn:hover,
+    #fullscreen-menu .menu-enquiries-btn:hover .nav-text-wrap,
+    #fullscreen-menu .menu-enquiries-btn:hover .jackpot-rung.target,
+    #fullscreen-menu .menu-channel-item:hover,
+    #fullscreen-menu .menu-channel-item:hover .jackpot-rung.target {
+      color: var(--color-orange, #FF6600) !important;
+    }
+
 
 
     /* ==========================================================================
@@ -2875,7 +2911,7 @@
 
           <!-- Row 3: Business Enquiries (Shifted lower down below mini logo) -->
           <div class="menu-enquiries-row">
-            <div class="menu-enquiries-btn" id="menuEnquiriesBtn" role="button" tabindex="0">
+            <div class="menu-enquiries-btn is-active" id="menuEnquiriesBtn" role="button" tabindex="0">
               <span class="nav-text-wrap enquiry-text">Business Enquiries</span>
             </div>
           </div>
