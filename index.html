@@ -3401,6 +3401,373 @@ input, textarea, [contenteditable="true"] {
     }
 
     /* ==========================================================================
+       9C. TESTIMONIALS SECTION ("WHAT PEOPLE SAY ABOUT US" — VengeanceUI 3D Card Stack)
+       ========================================================================== */
+    .testimonials-section {
+      position: relative;
+      z-index: 8;
+      background: var(--bg-warm, #FAF8F5);
+      padding: 130px 0 140px 0;
+      border-top: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.08));
+      border-bottom: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.08));
+      overflow: hidden;
+    }
+
+    /* Architectural Orange & Black Checks Texture Backdrop (Matching Agency Theme) */
+    .testimonials-grid-backdrop {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.75;
+      background-image:
+        linear-gradient(to right, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+        linear-gradient(to right, rgba(255, 102, 0, 0.16) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 102, 0, 0.16) 1px, transparent 1px);
+      background-size: 80px 80px, 80px 80px, 160px 160px, 160px 160px;
+    }
+
+    .testimonials-ambient-glow {
+      position: absolute;
+      top: 52%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 760px;
+      height: 460px;
+      background: radial-gradient(circle, rgba(255, 102, 0, 0.11) 0%, rgba(255, 102, 0, 0.03) 48%, transparent 72%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .testimonials-container {
+      position: relative;
+      z-index: 3;
+      max-width: 1340px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .testimonials-header {
+      text-align: center;
+      max-width: 860px;
+      margin: 0 auto 64px auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .testimonials-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono, monospace);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-orange, #FF6600);
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: rgba(255, 102, 0, 0.09);
+      border: 1px solid rgba(255, 102, 0, 0.25);
+    }
+
+    .testimonials-eyebrow-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-orange, #FF6600);
+      box-shadow: 0 0 8px rgba(255, 102, 0, 0.8);
+    }
+
+    .testimonials-main-title {
+      font-family: var(--font-sans);
+      font-size: clamp(38px, 5.2vw, 74px);
+      font-weight: 800;
+      line-height: 0.98;
+      letter-spacing: -0.035em;
+      text-transform: uppercase;
+      color: #111111;
+      margin: 0;
+    }
+
+    .testimonials-main-title .accent-orange {
+      color: var(--color-orange, #FF6600);
+    }
+
+    /* VengeanceUI TestimonialsCard Wrapper & 3D Perspective Grid */
+    .vengeance-testimonials-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 40px 24px;
+    }
+
+    .vengeance-testimonials-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      grid-template-rows: auto 1fr auto;
+      column-gap: 72px;
+      row-gap: 16px;
+      width: 100%;
+      max-width: 960px;
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(17, 17, 17, 0.09);
+      border-radius: 28px;
+      padding: 64px 64px;
+      box-shadow: 0 24px 70px rgba(17, 17, 17, 0.06), 0 0 0 1px rgba(255, 102, 0, 0.12);
+    }
+
+    /* Counter (row-start-1 col-start-2 text-right font-mono) */
+    .vengeance-tc-counter {
+      grid-column: 2;
+      grid-row: 1;
+      text-align: right;
+      font-family: var(--font-mono, monospace);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #7A7A7A;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      user-select: none;
+    }
+
+    .vengeance-tc-counter .tc-active-num {
+      color: var(--color-orange, #FF6600);
+    }
+
+    /* Image Card Stack (col-start-1 row-start-1 row-span-3 aspect-square) */
+    .vengeance-tc-stack {
+      grid-column: 1;
+      grid-row: 1 / span 3;
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      perspective: 1400px;
+      -webkit-perspective: 1400px;
+    }
+
+    .vengeance-tc-card {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border: 6px solid #FFFFFF;
+      background: #141210;
+      border-radius: 16px;
+      box-shadow: 0 24px 50px rgba(17, 17, 17, 0.22), 0 0 0 1px rgba(17, 17, 17, 0.08);
+      will-change: transform, opacity;
+      transform-origin: center center;
+      transition:
+        transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.45s ease,
+        box-shadow 0.45s ease;
+      user-select: none;
+    }
+
+    .vengeance-tc-card.is-active {
+      border-color: #FFFFFF;
+      box-shadow: 0 28px 60px rgba(17, 17, 17, 0.26), 0 12px 32px rgba(255, 102, 0, 0.22), 0 0 0 1.5px rgba(255, 102, 0, 0.45);
+    }
+
+    .vengeance-tc-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .vengeance-tc-card-badge {
+      position: absolute;
+      left: 14px;
+      bottom: 14px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(17, 17, 17, 0.76);
+      border: 1px solid rgba(255, 102, 0, 0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      font-family: var(--font-mono, monospace);
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #FFA040;
+      pointer-events: none;
+    }
+
+    /* Text Area (col-start-2 row-start-2 flex flex-col justify-center) */
+    .vengeance-tc-text-area {
+      grid-column: 2;
+      grid-row: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 210px;
+      position: relative;
+    }
+
+    .vengeance-tc-text-content {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      will-change: transform, opacity;
+      transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1), transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .vengeance-tc-quote-icon {
+      width: 34px;
+      height: 34px;
+      color: var(--color-orange, #FF6600);
+      opacity: 0.85;
+      margin-bottom: 2px;
+    }
+
+    .vengeance-tc-title-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .vengeance-tc-title {
+      font-family: var(--font-sans);
+      font-size: clamp(22px, 2.1vw, 28px);
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      color: #111111;
+      margin: 0;
+    }
+
+    .vengeance-tc-role {
+      font-family: var(--font-mono, monospace);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-orange, #FF6600);
+    }
+
+    .vengeance-tc-desc {
+      font-family: var(--font-sans);
+      font-size: clamp(15px, 1.15vw, 17px);
+      font-weight: 400;
+      line-height: 1.66;
+      color: #4A4A4A;
+      margin: 4px 0 0 0;
+    }
+
+    /* Navigation Controls (col-start-2 row-start-3 flex gap-2) */
+    .vengeance-tc-nav {
+      grid-column: 2;
+      grid-row: 3;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .vengeance-tc-nav-btn {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(17, 17, 17, 0.16);
+      background: #FFFFFF;
+      color: #111111;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer !important;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, opacity 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .vengeance-tc-nav-btn * {
+      cursor: pointer !important;
+    }
+
+    .vengeance-tc-nav-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+    }
+
+    .vengeance-tc-nav-btn:not(:disabled):hover {
+      background: var(--color-orange, #FF6600);
+      border-color: var(--color-orange, #FF6600);
+      color: #111111;
+      transform: scale(1.06);
+      box-shadow: 0 10px 24px rgba(255, 102, 0, 0.30);
+    }
+
+    .vengeance-tc-nav-btn:disabled {
+      opacity: 0.42;
+      cursor: not-allowed !important;
+      box-shadow: none;
+    }
+
+    @media (max-width: 900px) {
+      .testimonials-section {
+        padding: 90px 0 100px 0;
+      }
+      .vengeance-testimonials-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto;
+        padding: 32px 24px;
+        row-gap: 24px;
+      }
+      .vengeance-tc-counter {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      .vengeance-tc-stack {
+        grid-column: 1;
+        grid-row: 2;
+        max-width: 310px;
+        margin: 0 auto;
+      }
+      .vengeance-tc-text-area {
+        grid-column: 1;
+        grid-row: 3;
+        min-height: 160px;
+        text-align: center;
+        align-items: center;
+      }
+      .vengeance-tc-text-content {
+        align-items: center;
+      }
+      .vengeance-tc-nav {
+        grid-column: 1;
+        grid-row: 4;
+        justify-content: center;
+        margin: 0 auto;
+      }
+    }
+
+    /* ==========================================================================
        10. FLAGSHIP SHOWCASE: 3D ANIMATION & AI CREATIVES
        ========================================================================== */
     .flagship-showcase-track {
@@ -5145,6 +5512,84 @@ input, textarea, [contenteditable="true"] {
         </span>
       </div>
 
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       7C. TESTIMONIALS SECTION ("WHAT PEOPLE SAY ABOUT US" — VengeanceUI 3D Card Stack)
+       ========================================================================== -->
+  <section class="testimonials-section" id="testimonialsSection" aria-label="What People Say About Us">
+    <div class="testimonials-grid-backdrop" aria-hidden="true"></div>
+    <div class="testimonials-ambient-glow" aria-hidden="true"></div>
+
+    <div class="testimonials-container">
+      <div class="testimonials-header">
+        <div class="testimonials-eyebrow">
+          <span class="testimonials-eyebrow-dot" aria-hidden="true"></span>
+          <span>CLIENT TESTIMONIALS</span>
+        </div>
+        <h2 class="testimonials-main-title">
+          WHAT PEOPLE <span class="accent-orange">SAY ABOUT US</span>
+        </h2>
+      </div>
+
+      <!-- VengeanceUI TestimonialsCard Component Structure -->
+      <div class="vengeance-testimonials-wrap">
+        <div class="vengeance-testimonials-grid" id="vengeanceTestimonialsCard">
+          <!-- Counter (row-start-1 md:col-start-2 md:row-start-1 text-right font-mono) -->
+          <div class="vengeance-tc-counter" id="vengeanceTcCounter" aria-live="polite">
+            <span class="tc-active-num" id="vengeanceTcActiveNum">1</span> / <span id="vengeanceTcTotalNum">5</span>
+          </div>
+
+          <!-- Image Card Stack (row-start-2 col-start-1 md:row-start-1 row-span-3 relative w-full aspect-square) -->
+          <div class="vengeance-tc-stack" id="vengeanceTcStack">
+            <!-- Populated & animated with 3D perspective keyframes by TestimonialsCard controller -->
+          </div>
+
+          <!-- Text Area (col-start-1 md:col-start-2 md:row-start-2 flex flex-col justify-center) -->
+          <div class="vengeance-tc-text-area">
+            <div class="vengeance-tc-text-content" id="vengeanceTcTextContent">
+              <svg class="vengeance-tc-quote-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+              </svg>
+              <div class="vengeance-tc-title-row">
+                <h3 class="vengeance-tc-title" id="vengeanceTcTitle">Rohan Mehta</h3>
+                <span class="vengeance-tc-role" id="vengeanceTcRole">Founder & CEO — Audio King</span>
+              </div>
+              <p class="vengeance-tc-desc" id="vengeanceTcDesc">
+                “Techuilla completely re-engineered our digital storefront and product experience. From custom 3D audio visualizations to sub-second page speeds, our online conversion rate jumped by 180% within the first six weeks of launch.”
+              </p>
+            </div>
+          </div>
+
+          <!-- Navigation Controls (col-start-1 md:col-start-2 md:row-start-3 flex gap-2) -->
+          <div class="vengeance-tc-nav">
+            <button
+              type="button"
+              class="vengeance-tc-nav-btn"
+              id="vengeanceTcPrevBtn"
+              disabled
+              aria-label="Previous card"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+            </button>
+            <button
+              type="button"
+              class="vengeance-tc-nav-btn"
+              id="vengeanceTcNextBtn"
+              aria-label="Next card"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -7781,6 +8226,216 @@ function triggerHomeTransition(e) {
         }
 
         requestAnimationFrame(frame);
+      })();
+
+      /* ------------------------------------------------------------------------
+         VENGEANCE UI 3D TESTIMONIALS CARD ENGINE ("WHAT PEOPLE SAY ABOUT US")
+         Exact implementation of TestimonialsCard (perspective: 1400px, rotations [4, -2, -9, 7],
+         3-keyframe active card swoop, AnimatePresence text fade/slide, counter & prev/next)
+         ------------------------------------------------------------------------ */
+      (function initVengeanceTestimonialsCard() {
+        const stackEl = document.getElementById('vengeanceTcStack');
+        const activeNumEl = document.getElementById('vengeanceTcActiveNum');
+        const totalNumEl = document.getElementById('vengeanceTcTotalNum');
+        const textContentEl = document.getElementById('vengeanceTcTextContent');
+        const titleEl = document.getElementById('vengeanceTcTitle');
+        const roleEl = document.getElementById('vengeanceTcRole');
+        const descEl = document.getElementById('vengeanceTcDesc');
+        const prevBtn = document.getElementById('vengeanceTcPrevBtn');
+        const nextBtn = document.getElementById('vengeanceTcNextBtn');
+
+        if (!stackEl || !titleEl || !descEl || !prevBtn || !nextBtn) return;
+
+        const TESTIMONIAL_ITEMS = [
+          {
+            id: 1,
+            title: "Rohan Mehta",
+            role: "Founder & CEO — Audio King",
+            badge: "BUILD / WEB & 3D",
+            description: "“Techuilla completely re-engineered our digital storefront and product experience. From custom 3D audio visualizations to sub-second page speeds, our online conversion rate jumped by 180% within the first six weeks of launch.”",
+            image: "card_audio_king.png"
+          },
+          {
+            id: 2,
+            title: "Dr. Ananya Sharma",
+            role: "Clinical Director — Rama Trichology",
+            badge: "CREATE / BRANDING",
+            description: "“They transformed our clinical identity into a luxury authority brand. The cohesive packaging, editorial design system, and high-intent Meta acquisition funnels doubled our qualified consultation bookings month over month.”",
+            image: "card_rama_trichology.jpg"
+          },
+          {
+            id: 3,
+            title: "Vikramaditya Singh",
+            role: "Co-Founder — Health Streak",
+            badge: "BUILD / FULL-STACK",
+            description: "“Working with Techuilla felt like having an elite product engineering team in-house. They delivered our web platform, interactive habit-tracking UI, and onboarding motion films ahead of schedule with zero compromise on craft.”",
+            image: "card_health_streak.png"
+          },
+          {
+            id: 4,
+            title: "Kabir Malhotra",
+            role: "Creative Director — Untitled Clothing Co.",
+            badge: "CREATE / AI & FILM",
+            description: "“Their AI creatives and 3D product films gave our seasonal drop a cinematic scale we didn't think was possible on our timeline. The campaign achieved a 4.8x ROAS and set a new benchmark for our visual identity.”",
+            image: "card_untitled_clothing.png"
+          },
+          {
+            id: 5,
+            title: "Siddharth Deshmukh",
+            role: "Managing Director — Hindustan Tyre",
+            badge: "GROWTH / PERFORMANCE",
+            description: "“From B2B catalog architecture to national Google Search and Performance Max campaigns, Techuilla built a predictable demand engine that consistently delivers our highest-value commercial dealer inquiries.”",
+            image: "card_hindustan_tyre.jpg"
+          }
+        ];
+
+        const rotations = [4, -2, -9, 7];
+        let activeIndex = 0;
+        let direction = 1;
+        let isAnimating = false;
+
+        if (totalNumEl) totalNumEl.textContent = String(TESTIMONIAL_ITEMS.length);
+
+        // Build the 3D stacked card elements
+        stackEl.innerHTML = TESTIMONIAL_ITEMS.map((item, idx) => `
+          <div class="vengeance-tc-card${idx === 0 ? ' is-active' : ''}" data-tc-index="${idx}">
+            <img src="${item.image}" alt="${item.title}" draggable="false" decoding="async" />
+            <span class="vengeance-tc-card-badge">${item.badge}</span>
+          </div>
+        `).join('');
+
+        const cardEls = Array.from(stackEl.querySelectorAll('.vengeance-tc-card'));
+
+        function applyRestingStackTransforms(currentIdx, skipCardIdx = -1) {
+          cardEls.forEach((cardEl, index) => {
+            if (index === skipCardIdx) return;
+            const isActive = index === currentIdx;
+            const offset = index - currentIdx;
+            const rot = rotations[index % 4];
+
+            cardEl.classList.toggle('is-active', isActive);
+
+            if (isActive) {
+              cardEl.style.zIndex = '100';
+              cardEl.style.opacity = '1';
+              cardEl.style.transform = 'translate3d(0px, 0px, 40px) scale(1) rotateZ(0deg)';
+            } else {
+              const x = offset * 16;
+              const y = Math.abs(offset) * 7;
+              const z = -90 * Math.abs(offset);
+              const scale = Math.max(0.68, 0.88 - Math.abs(offset) * 0.045);
+              cardEl.style.zIndex = String(10 - Math.abs(offset));
+              cardEl.style.opacity = '0.58';
+              cardEl.style.transform = `translate3d(${x}px, ${y}px, ${z}px) scale(${scale.toFixed(3)}) rotateZ(${rot}deg)`;
+            }
+          });
+        }
+
+        function transitionToIndex(newIndex, dir) {
+          if (isAnimating || newIndex === activeIndex || newIndex < 0 || newIndex >= TESTIMONIAL_ITEMS.length) return;
+          isAnimating = true;
+          const prevIndex = activeIndex;
+          activeIndex = newIndex;
+          direction = dir;
+
+          const incomingCard = cardEls[activeIndex];
+          const prevOffset = activeIndex - prevIndex;
+          const baseRot = rotations[activeIndex % 4];
+
+          // Update counter & nav button disabled states immediately
+          if (activeNumEl) activeNumEl.textContent = String(activeIndex + 1);
+          prevBtn.disabled = activeIndex === 0;
+          nextBtn.disabled = activeIndex === TESTIMONIAL_ITEMS.length - 1;
+
+          // Update non-active cards to their new stack positions
+          applyRestingStackTransforms(activeIndex, activeIndex);
+
+          // Exact VengeanceUI active card 3-keyframe motion:
+          // x: [offset * 15, direction === 1 ? -200 : 200, 0]
+          // y: [Math.abs(offset) * 6, 0, 0]
+          // z: [-200, 150, 250]
+          // scale: [0.85, 1.05, 1]
+          // rotateZ: [rotations[index % 4], -5, 0]
+          if (incomingCard) {
+            incomingCard.classList.add('is-active');
+            incomingCard.style.zIndex = '100';
+            incomingCard.style.opacity = '1';
+
+            if (typeof incomingCard.animate === 'function') {
+              const startX = prevOffset * 16;
+              const startY = Math.abs(prevOffset) * 7;
+              const midX = direction === 1 ? -190 : 190;
+
+              const anim = incomingCard.animate([
+                {
+                  transform: `translate3d(${startX}px, ${startY}px, -120px) scale(0.86) rotateZ(${baseRot}deg)`,
+                  opacity: 0.65
+                },
+                {
+                  transform: `translate3d(${midX}px, 0px, 30px) scale(1.05) rotateZ(-5deg)`,
+                  opacity: 1,
+                  offset: 0.48
+                },
+                {
+                  transform: 'translate3d(0px, 0px, 40px) scale(1) rotateZ(0deg)',
+                  opacity: 1
+                }
+              ], {
+                duration: 750,
+                easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+                fill: 'forwards'
+              });
+
+              anim.onfinish = () => {
+                incomingCard.style.transform = 'translate3d(0px, 0px, 40px) scale(1) rotateZ(0deg)';
+                anim.cancel();
+              };
+            } else {
+              incomingCard.style.transform = 'translate3d(0px, 0px, 40px) scale(1) rotateZ(0deg)';
+            }
+          }
+
+          // AnimatePresence mode="wait" for Text Area (exit y: -25, enter from y: 25, 350ms)
+          const item = TESTIMONIAL_ITEMS[activeIndex];
+          if (textContentEl) {
+            textContentEl.style.transition = 'opacity 170ms ease, transform 170ms ease';
+            textContentEl.style.opacity = '0';
+            textContentEl.style.transform = 'translate3d(0, -22px, 0)';
+
+            setTimeout(() => {
+              titleEl.textContent = item.title;
+              if (roleEl) roleEl.textContent = item.role;
+              descEl.textContent = item.description;
+
+              textContentEl.style.transition = 'none';
+              textContentEl.style.transform = 'translate3d(0, 22px, 0)';
+              void textContentEl.offsetWidth;
+
+              textContentEl.style.transition = 'opacity 280ms cubic-bezier(0.22, 1, 0.36, 1), transform 280ms cubic-bezier(0.22, 1, 0.36, 1)';
+              textContentEl.style.opacity = '1';
+              textContentEl.style.transform = 'translate3d(0, 0, 0)';
+            }, 175);
+          }
+
+          setTimeout(() => {
+            isAnimating = false;
+          }, 520);
+        }
+
+        prevBtn.addEventListener('click', () => {
+          if (activeIndex > 0) {
+            transitionToIndex(activeIndex - 1, -1);
+          }
+        });
+
+        nextBtn.addEventListener('click', () => {
+          if (activeIndex < TESTIMONIAL_ITEMS.length - 1) {
+            transitionToIndex(activeIndex + 1, 1);
+          }
+        });
+
+        // Initial resting render
+        applyRestingStackTransforms(0);
       })();
     </script>
 </body>
