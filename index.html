@@ -3406,7 +3406,7 @@ input, textarea, [contenteditable="true"] {
        ========================================================================== */
     .testimonials-pin-track {
       position: relative;
-      height: 560vh; /* 6 scroll chapters: Intro -> Healthstreak -> Audioking -> Rama Trichology -> his YT story -> Outro */
+      height: 560vh; /* 6 scroll chapters: Intro -> Health Streak -> AudioKing -> Rama Hair Clinic -> HisYtStory -> Outro */
       background: var(--bg-warm, #FAF8F5);
       z-index: 8;
       border-top: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.08));
@@ -3453,81 +3453,7 @@ input, textarea, [contenteditable="true"] {
       z-index: 1;
     }
 
-    /* Left-Side Minimal Client Chapter List (Matches reference video left indicator) */
-    .testimonials-side-index {
-      position: absolute;
-      left: 44px;
-      bottom: 52px;
-      z-index: 25;
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .testimonials-side-label {
-      font-family: var(--font-mono, monospace);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba(17, 17, 17, 0.42);
-      margin-bottom: 6px;
-    }
-
-    .testimonials-side-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-family: var(--font-mono, monospace);
-      font-size: 11.5px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(17, 17, 17, 0.36);
-      transition: color 0.32s ease, transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .testimonials-side-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: rgba(17, 17, 17, 0.25);
-      transition: background-color 0.32s ease, transform 0.32s ease, box-shadow 0.32s ease;
-    }
-
-    .testimonials-side-item.is-active {
-      color: #111111;
-      transform: translateX(6px);
-    }
-
-    .testimonials-side-item.is-active .testimonials-side-dot {
-      background: var(--color-orange, #FF6600);
-      transform: scale(1.4);
-      box-shadow: 0 0 8px rgba(255, 102, 0, 0.8);
-    }
-
-    /* Right-Bottom Scroll Chapter Counter */
-    .testimonials-corner-progress {
-      position: absolute;
-      right: 44px;
-      bottom: 52px;
-      z-index: 25;
-      font-family: var(--font-mono, monospace);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: rgba(17, 17, 17, 0.48);
-      user-select: none;
-      pointer-events: none;
-    }
-
-    .testimonials-corner-progress .tc-prog-active {
-      color: var(--color-orange, #FF6600);
-    }
-
-    /* 3-Image Collage Stage (Clustered around the center text like Studio Grafixo reference) */
+    /* 3-Image Collage Stage (Clustered around the center text like Studio Grafixo reference, enlarged by +20%) */
     .testimonials-images-stage {
       position: absolute;
       inset: 0;
@@ -3556,21 +3482,26 @@ input, textarea, [contenteditable="true"] {
       border-radius: 6px;
       background: #141210;
       box-shadow: 0 26px 64px rgba(17, 17, 17, 0.18), 0 0 0 1px rgba(17, 17, 17, 0.10);
-      will-change: clip-path, -webkit-clip-path, transform;
+      will-change: clip-path, -webkit-clip-path;
       clip-path: inset(0% 100% 0% 0%);
       -webkit-clip-path: inset(0% 100% 0% 0%);
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
     }
 
     .t-collage-card img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center;
+      object-position: top center;
       display: block;
       will-change: transform;
-      transform: scale(1.15);
+      transform: scale(1.08);
       user-select: none;
       -webkit-user-drag: none;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
     }
 
     /* Orange Accent Edge Line on each collage frame during reveal/wipe */
@@ -3584,49 +3515,95 @@ input, textarea, [contenteditable="true"] {
       z-index: 3;
     }
 
-    /* Layout Variant A (Client 1 — Healthstreak & Client 3 — Rama Trichology) */
-    .cluster-layout-a .card-slot-1 {
-      top: 9vh;
-      left: 17vw;
-      width: clamp(270px, 27vw, 430px);
-      height: clamp(185px, 27vh, 290px);
+    /* Client 1 — Health Streak (Enlarged >15%, Aspect Ratios: 1=16:9, 2=9:16, 3=16:9) */
+    .cluster-client-0 .card-slot-1 {
+      top: 9.5vh;
+      left: 8vw;
+      width: clamp(340px, 33vw, 520px);
+      aspect-ratio: 16 / 9;
       z-index: 7;
     }
-    .cluster-layout-a .card-slot-2 {
-      bottom: 8vh;
-      left: 34vw;
-      width: clamp(220px, 20vw, 320px);
-      height: clamp(175px, 26vh, 275px);
+    .cluster-client-0 .card-slot-2 {
+      top: 10vh;
+      right: 8vw;
+      width: clamp(215px, 19vw, 300px);
+      aspect-ratio: 9 / 16;
       z-index: 8;
     }
-    .cluster-layout-a .card-slot-3 {
-      top: 26vh;
-      right: 11vw;
-      width: clamp(260px, 24vw, 385px);
-      height: clamp(270px, 44vh, 450px);
+    .cluster-client-0 .card-slot-3 {
+      bottom: 6vh;
+      left: 24vw;
+      width: clamp(340px, 32vw, 505px);
+      aspect-ratio: 16 / 9;
       z-index: 7;
     }
 
-    /* Layout Variant B (Client 2 — Audioking & Client 4 — his YT story) */
-    .cluster-layout-b .card-slot-1 {
-      top: 12vh;
-      left: 23vw;
-      width: clamp(210px, 18vw, 290px);
-      height: clamp(160px, 24vh, 250px);
+    /* Client 2 — AudioKing (Enlarged >15%, Aspect Ratios: 1=16:9, 2=16:9, 3=4:5) */
+    .cluster-client-1 .card-slot-1 {
+      top: 9.5vh;
+      left: 9vw;
+      width: clamp(335px, 31vw, 490px);
+      aspect-ratio: 16 / 9;
       z-index: 8;
     }
-    .cluster-layout-b .card-slot-2 {
-      top: 18vh;
-      right: 13vw;
-      width: clamp(320px, 33vw, 520px);
-      height: clamp(220px, 36vh, 370px);
-      z-index: 6;
+    .cluster-client-1 .card-slot-2 {
+      bottom: 6vh;
+      left: 21vw;
+      width: clamp(360px, 34.5vw, 540px);
+      aspect-ratio: 16 / 9;
+      z-index: 7;
     }
-    .cluster-layout-b .card-slot-3 {
-      bottom: 9vh;
-      left: 38vw;
-      width: clamp(250px, 23vw, 365px);
-      height: clamp(175px, 26vh, 275px);
+    .cluster-client-1 .card-slot-3 {
+      top: 12vh;
+      right: 7vw;
+      width: clamp(265px, 23.5vw, 370px);
+      aspect-ratio: 4 / 5;
+      z-index: 9;
+    }
+
+    /* Client 3 — Rama Hair Clinic (Enlarged >15%, Aspect Ratios: 1=16:9, 2=4:5, 3=16:9) */
+    .cluster-client-2 .card-slot-1 {
+      top: 9.5vh;
+      left: 8vw;
+      width: clamp(340px, 32vw, 505px);
+      aspect-ratio: 16 / 9;
+      z-index: 7;
+    }
+    .cluster-client-2 .card-slot-2 {
+      top: 12vh;
+      right: 7vw;
+      width: clamp(265px, 23.5vw, 370px);
+      aspect-ratio: 4 / 5;
+      z-index: 8;
+    }
+    .cluster-client-2 .card-slot-3 {
+      bottom: 6vh;
+      left: 24vw;
+      width: clamp(350px, 33vw, 520px);
+      aspect-ratio: 16 / 9;
+      z-index: 7;
+    }
+
+    /* Client 4 — HisYtStory (Enlarged >15%, Aspect Ratios: 1=4:5, 2=9:16, 3=4:5) */
+    .cluster-client-3 .card-slot-1 {
+      top: 9.5vh;
+      left: 9vw;
+      width: clamp(265px, 23vw, 365px);
+      aspect-ratio: 4 / 5;
+      z-index: 8;
+    }
+    .cluster-client-3 .card-slot-2 {
+      top: 9vh;
+      right: 9vw;
+      width: clamp(215px, 19vw, 300px);
+      aspect-ratio: 9 / 16;
+      z-index: 7;
+    }
+    .cluster-client-3 .card-slot-3 {
+      bottom: 6vh;
+      left: 33vw;
+      width: clamp(260px, 22.5vw, 355px);
+      aspect-ratio: 4 / 5;
       z-index: 9;
     }
 
@@ -3635,7 +3612,7 @@ input, textarea, [contenteditable="true"] {
       position: relative;
       z-index: 18;
       width: 100%;
-      max-width: 1440px;
+      max-width: 1560px;
       padding: 0 32px;
       display: flex;
       align-items: center;
@@ -3664,71 +3641,77 @@ input, textarea, [contenteditable="true"] {
       pointer-events: none;
     }
 
-    /* Starting & Ending Title: WHAT PEOPLE SAY ABOUT US */
+    /* Starting & Ending Title: WHAT PEOPLE SAY ABOUT US (+15% Larger with Kinetic Orange Veil Typography) */
     .testimonial-stage-headline.is-bookend-title {
-      font-size: clamp(48px, 7.2vw, 114px);
+      font-size: clamp(56px, 8.4vw, 132px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.04em;
     }
 
-    /* Client Name Headline in the Middle: Healthstreak, Audioking, Rama Trichology, his YT story */
+    .testimonial-stage-headline.is-bookend-title .kinetic-veil-wrap {
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+      padding: 0.03em 0.06em;
+    }
+
+    .testimonial-stage-headline.is-bookend-title .kinetic-veil-mask {
+      position: absolute;
+      inset: 0;
+      background: var(--color-orange, #FF6600);
+      transform: scaleX(0);
+      transform-origin: left center;
+      z-index: 3;
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    .testimonial-stage-headline.is-bookend-title .kinetic-veil-text {
+      display: inline-block;
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      position: relative;
+      z-index: 1;
+      will-change: transform, opacity;
+    }
+
+    /* Client Name Headline in the Middle: Health Streak, AudioKing, Rama Hair Clinic, HisYtStory */
     .testimonial-stage-headline.is-client-title {
       font-size: clamp(54px, 8.2vw, 128px);
-      text-shadow: 0 12px 42px rgba(250, 248, 245, 0.85), 0 2px 12px rgba(250, 248, 245, 0.92);
+      text-shadow: none !important;
     }
 
+    /* Pure Orange Font Color with Zero White Shadow or Highlight Behind */
     .testimonial-stage-headline .accent-orange {
       color: var(--color-orange, #FF6600);
-    }
-
-    .testimonial-client-subquote {
-      display: block;
-      font-family: var(--font-mono, monospace);
-      font-size: clamp(11px, 1.0vw, 13.5px);
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--color-orange, #FF6600);
-      margin-top: 18px;
-      background: rgba(250, 248, 245, 0.88);
-      border: 1px solid rgba(255, 102, 0, 0.30);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      padding: 7px 18px;
-      border-radius: 999px;
-      width: max-content;
-      max-width: 90vw;
-      margin-left: auto;
-      margin-right: auto;
-      box-shadow: 0 8px 24px rgba(17, 17, 17, 0.06);
+      text-shadow: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      filter: none !important;
     }
 
     @media (max-width: 900px) {
-      .cluster-layout-a .card-slot-1,
-      .cluster-layout-b .card-slot-1 {
-        top: 10vh;
-        left: 8vw;
-        width: 58vw;
-        height: 22vh;
+      .testimonial-client-cluster .card-slot-1 {
+        top: 8vh;
+        left: 6vw;
+        width: 60vw;
       }
-      .cluster-layout-a .card-slot-2,
-      .cluster-layout-b .card-slot-2 {
-        top: 24vh;
-        right: 6vw;
+      .testimonial-client-cluster .card-slot-2 {
+        top: 22vh;
+        right: 5vw;
         left: auto;
-        width: 56vw;
-        height: 24vh;
+        width: 46vw;
       }
-      .cluster-layout-a .card-slot-3,
-      .cluster-layout-b .card-slot-3 {
-        bottom: 12vh;
-        left: 14vw;
+      .testimonial-client-cluster .card-slot-3 {
+        bottom: 9vh;
+        left: 12vw;
         right: auto;
         top: auto;
         width: 62vw;
-        height: 22vh;
-      }
-      .testimonials-side-index {
-        left: 20px;
-        bottom: 24px;
       }
     }
 
@@ -5489,117 +5472,93 @@ input, textarea, [contenteditable="true"] {
       <div class="testimonials-grid-backdrop" aria-hidden="true"></div>
       <div class="testimonials-ambient-glow" aria-hidden="true"></div>
 
-      <!-- Left-Side Client Chapter Indicator (Matches reference recording left index) -->
-      <div class="testimonials-side-index" id="testimonialsSideIndex" aria-hidden="true">
-        <div class="testimonials-side-label">CLIENT STORIES</div>
-        <div class="testimonials-side-item" data-side-client="0">
-          <span class="testimonials-side-dot"></span>
-          <span>HEALTHSTREAK</span>
-        </div>
-        <div class="testimonials-side-item" data-side-client="1">
-          <span class="testimonials-side-dot"></span>
-          <span>AUDIOKING</span>
-        </div>
-        <div class="testimonials-side-item" data-side-client="2">
-          <span class="testimonials-side-dot"></span>
-          <span>RAMA TRICHOLOGY</span>
-        </div>
-        <div class="testimonials-side-item" data-side-client="3">
-          <span class="testimonials-side-dot"></span>
-          <span>HIS YT STORY</span>
-        </div>
-      </div>
-
-      <!-- Right-Bottom Chapter Progress Badge -->
-      <div class="testimonials-corner-progress" id="testimonialsCornerProgress" aria-hidden="true">
-        <span class="tc-prog-active" id="tcDraft2StepLabel">INTRO</span> / <span>04 CLIENTS</span>
-      </div>
-
-      <!-- 3-Image Collage Stage (4 Client Clusters of 3 Images Each) -->
+      <!-- 3-Image Collage Stage (4 Client Clusters of 3 Images Each, Enlarged >15%) -->
       <div class="testimonials-images-stage" id="testimonialsImagesStage" aria-hidden="true">
-        <!-- Client 1: Healthstreak (Layout A — 3 Images) -->
-        <div class="testimonial-client-cluster cluster-layout-a" data-cluster-idx="0">
+        <!-- Client 1: Health Streak (1: card_health_streak.png 16:9, 2: t_healthstreak_2.jpg 9:16, 3: t_healthstreak_3.jpg 16:9) -->
+        <div class="testimonial-client-cluster cluster-client-0" data-cluster-idx="0">
           <div class="t-collage-card card-slot-1" data-wipe-axis="horizontal">
-            <img src="card_health_streak.png" alt="Healthstreak Web Platform" decoding="async" />
+            <img src="card_health_streak.png" alt="Health Streak Web Platform" decoding="async" />
           </div>
           <div class="t-collage-card card-slot-2" data-wipe-axis="vertical">
-            <img src="services_project_2.jpg" alt="Healthstreak UI System" decoding="async" />
+            <img src="t_healthstreak_2.jpg" alt="Health Streak Mobile View" decoding="async" />
           </div>
           <div class="t-collage-card card-slot-3" data-wipe-axis="horizontal">
-            <img src="service_card_2.jpg" alt="Healthstreak Mobile App" decoding="async" />
+            <img src="t_healthstreak_3.jpg" alt="Health Streak Programs & Services" decoding="async" />
           </div>
         </div>
 
-        <!-- Client 2: Audioking (Layout B — 3 Images) -->
-        <div class="testimonial-client-cluster cluster-layout-b" data-cluster-idx="1">
+        <!-- Client 2: AudioKing (1: t_audioking_1.png 16:9, 2: card_audio_king.png 16:9, 3: t_audioking_3.jpg 4:5) -->
+        <div class="testimonial-client-cluster cluster-client-1" data-cluster-idx="1">
           <div class="t-collage-card card-slot-1" data-wipe-axis="vertical">
-            <img src="service_card_1.jpg" alt="Audioking Storefront Architecture" decoding="async" />
+            <img src="t_audioking_1.png" alt="AudioKing Product Catalog" decoding="async" />
           </div>
           <div class="t-collage-card card-slot-2" data-wipe-axis="horizontal">
-            <img src="card_audio_king.png" alt="Audioking Flagship E-Commerce" decoding="async" />
+            <img src="card_audio_king.png" alt="AudioKing Flagship Storefront" decoding="async" />
           </div>
           <div class="t-collage-card card-slot-3" data-wipe-axis="vertical">
-            <img src="card_3d_product.png" alt="Audioking 3D Product Render" decoding="async" />
+            <img src="t_audioking_3.jpg" alt="AudioKing Brand Store" decoding="async" />
           </div>
         </div>
 
-        <!-- Client 3: Rama Trichology (Layout A — 3 Images) -->
-        <div class="testimonial-client-cluster cluster-layout-a" data-cluster-idx="2">
+        <!-- Client 3: Rama Hair Clinic (1: card_rama_trichology.jpg 16:9, 2: t_rama_2.jpg 4:5, 3: t_rama_3.jpg 16:9) -->
+        <div class="testimonial-client-cluster cluster-client-2" data-cluster-idx="2">
           <div class="t-collage-card card-slot-1" data-wipe-axis="horizontal">
-            <img src="card_rama_trichology.jpg" alt="Rama Trichology Brand Identity" decoding="async" />
+            <img src="card_rama_trichology.jpg" alt="Rama Hair Clinic Website" decoding="async" />
           </div>
           <div class="t-collage-card card-slot-2" data-wipe-axis="vertical">
-            <img src="service_card_6.jpg" alt="Rama Trichology Packaging Design" decoding="async" />
+            <img src="t_rama_2.jpg" alt="Rama Hair Clinic Online Video Consultation" decoding="async" />
           </div>
           <div class="t-collage-card card-slot-3" data-wipe-axis="horizontal">
-            <img src="services_project_1.jpg" alt="Rama Trichology Visual Campaign" decoding="async" />
+            <img src="t_rama_3.jpg" alt="Rama Hair Clinic About & Clinical Expertise" decoding="async" />
           </div>
         </div>
 
-        <!-- Client 4: his YT story (Layout B — 3 Images) -->
-        <div class="testimonial-client-cluster cluster-layout-b" data-cluster-idx="3">
+        <!-- Client 4: HisYtStory (1: t_hisyt_1.jpg 4:5, 2: t_hisyt_2.jpg 9:16, 3: t_hisyt_3.jpg 4:5) -->
+        <div class="testimonial-client-cluster cluster-client-3" data-cluster-idx="3">
           <div class="t-collage-card card-slot-1" data-wipe-axis="vertical">
-            <img src="service_card_4.jpg" alt="his YT story Editorial Timeline" decoding="async" />
+            <img src="t_hisyt_1.jpg" alt="HisYtStory Campaign Reel 1" decoding="async" />
           </div>
           <div class="t-collage-card card-slot-2" data-wipe-axis="horizontal">
-            <img src="card_client_meeting.jpg" alt="his YT story Documentary Production" decoding="async" />
+            <img src="t_hisyt_2.jpg" alt="HisYtStory Vertical Story" decoding="async" />
           </div>
           <div class="t-collage-card card-slot-3" data-wipe-axis="vertical">
-            <img src="service_card_7.jpg" alt="his YT story Cinematography" decoding="async" />
+            <img src="t_hisyt_3.jpg" alt="HisYtStory Campaign Reel 3" decoding="async" />
           </div>
         </div>
       </div>
 
-      <!-- Center Big Typography Stage (Starts & Ends with "WHAT PEOPLE SAY ABOUT US", transitions through 4 Client Names) -->
+      <!-- Center Big Typography Stage (Starts & Ends with "WHAT PEOPLE SAY ABOUT US" with Orange Veil Typography, transitions through 4 Client Names) -->
       <div class="testimonials-center-typo-stage" id="testimonialsCenterTypoStage">
         <!-- State 0 (Intro) & State 5 (Outro): WHAT PEOPLE SAY ABOUT US -->
         <h2 class="testimonial-stage-headline is-bookend-title" id="testimonialBookendTitle" style="opacity: 1;">
-          WHAT PEOPLE <span class="accent-orange">SAY</span><br>
-          <span class="accent-orange">ABOUT US</span>
+          <span class="kinetic-veil-wrap">
+            <span class="kinetic-veil-mask" aria-hidden="true"></span>
+            <span class="kinetic-veil-text">WHAT PEOPLE <span class="accent-orange">SAY</span></span>
+          </span>
+          <span class="kinetic-veil-wrap">
+            <span class="kinetic-veil-mask" aria-hidden="true"></span>
+            <span class="kinetic-veil-text"><span class="accent-orange">ABOUT US</span></span>
+          </span>
         </h2>
 
-        <!-- State 1: Healthstreak -->
+        <!-- State 1: Health Streak -->
         <h3 class="testimonial-stage-headline is-client-title" data-client-headline="0">
-          Health<span class="accent-orange">streak</span>
-          <span class="testimonial-client-subquote">01 / FULL-STACK HEALTH PLATFORM &bull; &ldquo;ELITE PRODUCT ENGINEERING WITH ZERO COMPROMISE&rdquo;</span>
+          Health <span class="accent-orange">Streak</span>
         </h3>
 
-        <!-- State 2: Audioking -->
+        <!-- State 2: AudioKing -->
         <h3 class="testimonial-stage-headline is-client-title" data-client-headline="1">
-          Audio<span class="accent-orange">king</span>
-          <span class="testimonial-client-subquote">02 / 3D COMMERCE &amp; WEB ARCHITECTURE &bull; &ldquo;180% CONVERSION LIFT IN SIX WEEKS&rdquo;</span>
+          Audio<span class="accent-orange">King</span>
         </h3>
 
-        <!-- State 3: Rama Trichology -->
+        <!-- State 3: Rama Hair Clinic -->
         <h3 class="testimonial-stage-headline is-client-title" data-client-headline="2">
-          Rama <span class="accent-orange">Trichology</span>
-          <span class="testimonial-client-subquote">03 / LUXURY CLINICAL BRANDING &amp; GROWTH &bull; &ldquo;DOUBLED QUALIFIED CONSULTATIONS&rdquo;</span>
+          Rama <span class="accent-orange">Hair Clinic</span>
         </h3>
 
-        <!-- State 4: his YT story -->
+        <!-- State 4: HisYtStory -->
         <h3 class="testimonial-stage-headline is-client-title" data-client-headline="3">
-          his YT <span class="accent-orange">story</span>
-          <span class="testimonial-client-subquote">04 / HIGH-RETENTION CINEMATOGRAPHY &amp; EDITING &bull; &ldquo;NARRATIVE RHYTHM THAT SCALES&rdquo;</span>
+          HisYt<span class="accent-orange">Story</span>
         </h3>
       </div>
     </div>
@@ -8244,31 +8203,70 @@ function triggerHomeTransition(e) {
          TESTIMONIAL DRAFT TWO — SCROLL-PINNED 3-IMAGE SLICE WIPE & CLIENT NAME STAGE
          (Note: Testimonial Draft One is backed up in testimonial_draft_1_backup.json & index_testimonial_draft_1.html)
          Chapters along scroll progress P in [0, 1]:
-           - State 0 (Intro):   "WHAT PEOPLE SAY ABOUT US" centered in bold
-           - State 1 (Client 1): "Healthstreak" + 3-image collage slice wipe in/out
-           - State 2 (Client 2): "Audioking" + 3-image collage slice wipe in/out
-           - State 3 (Client 3): "Rama Trichology" + 3-image collage slice wipe in/out
-           - State 4 (Client 4): "his YT story" + 3-image collage slice wipe in/out
-           - State 5 (Outro):   "WHAT PEOPLE SAY ABOUT US" returns centered at end
+           - State 0 (Intro):    "WHAT PEOPLE SAY ABOUT US" centered in bold with Kinetic Orange Veil Reveal
+           - State 1 (Client 1): "Health Streak" + 3-image collage slice wipe in/out
+           - State 2 (Client 2): "AudioKing" + 3-image collage slice wipe in/out
+           - State 3 (Client 3): "Rama Hair Clinic" + 3-image collage slice wipe in/out
+           - State 4 (Client 4): "HisYtStory" + 3-image collage slice wipe in/out
+           - State 5 (Outro):    "WHAT PEOPLE SAY ABOUT US" returns centered at end with Kinetic Orange Veil Reveal
          ------------------------------------------------------------------------ */
       (function initTestimonialsDraftTwoScrollStage() {
         const trackEl = document.getElementById('testimonialsSection');
         const bookendTitleEl = document.getElementById('testimonialBookendTitle');
-        const stepLabelEl = document.getElementById('tcDraft2StepLabel');
         const clusters = Array.from(document.querySelectorAll('#testimonialsImagesStage .testimonial-client-cluster'));
         const clientHeadlines = Array.from(document.querySelectorAll('#testimonialsCenterTypoStage .testimonial-stage-headline.is-client-title'));
-        const sideItems = Array.from(document.querySelectorAll('#testimonialsSideIndex .testimonials-side-item'));
 
         if (!trackEl || !bookendTitleEl || clusters.length === 0) return;
+
+        const bookendVeilWraps = Array.from(bookendTitleEl.querySelectorAll('.kinetic-veil-wrap'));
 
         // Smooth cubic-bezier-like ease in/out helper
         function easeInOutCubic(x) {
           return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
         }
 
+        // Signature Kinetic Orange Veil Reveal on bookend title lines
+        function applySingleVeilLine(mask, text, p) {
+          if (!mask || !text) return;
+          if (p <= 0) {
+            mask.style.transformOrigin = 'left center';
+            mask.style.transform = 'scaleX(0)';
+            text.style.opacity = '0';
+            text.style.transform = 'translate3d(0, 10px, 0)';
+          } else if (p < 0.48) {
+            const sweepIn = Math.sin(((p / 0.48) * Math.PI) / 2);
+            mask.style.transformOrigin = 'left center';
+            mask.style.transform = `scaleX(${sweepIn.toFixed(4)})`;
+            text.style.opacity = '0';
+            text.style.transform = 'translate3d(0, 10px, 0)';
+          } else if (p < 1.0) {
+            const sweepOut = (p - 0.48) / 0.52;
+            const easeOut = Math.sin((sweepOut * Math.PI) / 2);
+            mask.style.transformOrigin = 'right center';
+            mask.style.transform = `scaleX(${(1 - easeOut).toFixed(4)})`;
+            text.style.opacity = '1';
+            text.style.transform = 'translate3d(0, 0, 0)';
+          } else {
+            mask.style.transformOrigin = 'right center';
+            mask.style.transform = 'scaleX(0)';
+            text.style.opacity = '1';
+            text.style.transform = 'translate3d(0, 0, 0)';
+          }
+        }
+
+        function applyBookendVeilProgress(veilP) {
+          const clamped = Math.max(0, Math.min(1, veilP));
+          bookendVeilWraps.forEach((wrap, idx) => {
+            const mask = wrap.querySelector('.kinetic-veil-mask');
+            const text = wrap.querySelector('.kinetic-veil-text');
+            const stagger = idx * 0.16;
+            const lineP = Math.max(0, Math.min(1, (clamped - stagger) / (1 - stagger)));
+            applySingleVeilLine(mask, text, lineP);
+          });
+        }
+
         // Apply Studio Grafixo-style directional clip-path wipe + inner image scale to a 3-card cluster
-        // phase: 'hidden' | 'enter' | 'hold' | 'exit'
-        // t: normalized 0..1 within enter or exit phase
+        // Keeps outer card transform stationary at translate3d(0, 0, 0) so images NEVER shake or jump while scrolling
         function applyClusterWipe(clusterEl, phase, t) {
           if (!clusterEl) return;
           const cards = Array.from(clusterEl.querySelectorAll('.t-collage-card'));
@@ -8278,6 +8276,7 @@ function triggerHomeTransition(e) {
             cards.forEach(card => {
               card.style.clipPath = 'inset(0% 100% 0% 0%)';
               card.style.webkitClipPath = 'inset(0% 100% 0% 0%)';
+              card.style.transform = 'translate3d(0, 0, 0)';
             });
             return;
           }
@@ -8287,51 +8286,44 @@ function triggerHomeTransition(e) {
           cards.forEach((card, cardIdx) => {
             const axis = card.getAttribute('data-wipe-axis') || (cardIdx % 2 === 0 ? 'horizontal' : 'vertical');
             const img = card.querySelector('img');
-            // Slight per-card stagger (0.00, 0.10, 0.20) so the 3 images slice in/out sequentially like the screen recording
             const stagger = cardIdx * 0.10;
             const localT = Math.max(0, Math.min(1, (t - stagger) / (1 - 0.20)));
             const e = easeInOutCubic(localT);
 
+            // Outer frame stays locked on pixel grid to eliminate any shake or jitter
+            card.style.transform = 'translate3d(0, 0, 0)';
+
             if (phase === 'enter') {
               if (axis === 'horizontal') {
-                // Opens from left to right: inset(0% (100 - e*100)% 0% 0%)
                 const rightClip = (100 - e * 100).toFixed(2);
                 card.style.clipPath = `inset(0% ${rightClip}% 0% 0%)`;
                 card.style.webkitClipPath = `inset(0% ${rightClip}% 0% 0%)`;
               } else {
-                // Opens from bottom to top: inset((100 - e*100)% 0% 0% 0%)
                 const topClip = (100 - e * 100).toFixed(2);
                 card.style.clipPath = `inset(${topClip}% 0% 0% 0%)`;
                 card.style.webkitClipPath = `inset(${topClip}% 0% 0% 0%)`;
               }
-              card.style.transform = `translate3d(0, ${((1 - e) * 18).toFixed(1)}px, 0)`;
-              if (img) img.style.transform = `scale(${(1.18 - e * 0.18).toFixed(3)})`;
+              if (img) img.style.transform = `scale(${(1.08 - e * 0.08).toFixed(3)})`;
             } else if (phase === 'hold') {
               card.style.clipPath = 'inset(0% 0% 0% 0%)';
               card.style.webkitClipPath = 'inset(0% 0% 0% 0%)';
-              // Subtle floating parallax during hold
-              const floatY = ((0.5 - t) * (cardIdx % 2 === 0 ? 12 : -12)).toFixed(1);
-              card.style.transform = `translate3d(0, ${floatY}px, 0)`;
-              if (img) img.style.transform = 'scale(1.0)';
+              if (img) img.style.transform = 'scale(1.000)';
             } else if (phase === 'exit') {
               if (axis === 'horizontal') {
-                // Closes/slices out toward the right edge: inset(0% 0% 0% (e*100)%)
                 const leftClip = (e * 100).toFixed(2);
                 card.style.clipPath = `inset(0% 0% 0% ${leftClip}%)`;
                 card.style.webkitClipPath = `inset(0% 0% 0% ${leftClip}%)`;
               } else {
-                // Closes/slices out toward the top edge: inset(0% 0% (e*100)% 0%)
                 const bottomClip = (e * 100).toFixed(2);
                 card.style.clipPath = `inset(0% 0% ${bottomClip}% 0%)`;
                 card.style.webkitClipPath = `inset(0% 0% ${bottomClip}% 0%)`;
               }
-              card.style.transform = `translate3d(0, ${(-e * 18).toFixed(1)}px, 0)`;
-              if (img) img.style.transform = `scale(${(1.0 + e * 0.14).toFixed(3)})`;
+              if (img) img.style.transform = `scale(${(1.00 + e * 0.08).toFixed(3)})`;
             }
           });
         }
 
-        // Apply crossfade + vertical slide + subtle blur to a center headline (matches reference video text overlap)
+        // Apply crossfade + vertical slide + subtle blur to a center headline
         function applyHeadlineState(el, opacity, offsetY, blurPx = 0) {
           if (!el) return;
           const clampedOp = Math.max(0, Math.min(1, opacity));
@@ -8341,63 +8333,76 @@ function triggerHomeTransition(e) {
         }
 
         // Timeline definition across scroll progress P in [0, 1]:
-        // - Intro Bookend ("WHAT PEOPLE SAY ABOUT US"): full hold [0.00..0.11], exits [0.11..0.18]
-        // - Client 0 ("Healthstreak"):     enters [0.13..0.21], holds [0.21..0.29], exits [0.29..0.36]
-        // - Client 1 ("Audioking"):        enters [0.31..0.39], holds [0.39..0.47], exits [0.47..0.54]
-        // - Client 2 ("Rama Trichology"):  enters [0.49..0.57], holds [0.57..0.65], exits [0.65..0.72]
-        // - Client 3 ("his YT story"):     enters [0.67..0.75], holds [0.75..0.83], exits [0.83..0.90]
-        // - Outro Bookend ("WHAT PEOPLE SAY ABOUT US"): enters [0.85..0.92], holds [0.92..1.00]
+        // - Intro Bookend ("WHAT PEOPLE SAY ABOUT US"): veil reveal + hold [0.00..0.11], exits [0.11..0.18]
+        // - Client 0 ("Health Streak"):     enters [0.13..0.21], holds [0.21..0.29], exits [0.29..0.36]
+        // - Client 1 ("AudioKing"):         enters [0.31..0.39], holds [0.39..0.47], exits [0.47..0.54]
+        // - Client 2 ("Rama Hair Clinic"):  enters [0.49..0.57], holds [0.57..0.65], exits [0.65..0.72]
+        // - Client 3 ("HisYtStory"):        enters [0.67..0.75], holds [0.75..0.83], exits [0.83..0.90]
+        // - Outro Bookend ("WHAT PEOPLE SAY ABOUT US"): enters with orange veil [0.84..0.93], holds [0.93..1.00]
         const CLIENT_WINDOWS = [
-          { enterStart: 0.13, enterEnd: 0.21, holdEnd: 0.29, exitEnd: 0.36, label: '01 / HEALTHSTREAK' },
-          { enterStart: 0.31, enterEnd: 0.39, holdEnd: 0.47, exitEnd: 0.54, label: '02 / AUDIOKING' },
-          { enterStart: 0.49, enterEnd: 0.57, holdEnd: 0.65, exitEnd: 0.72, label: '03 / RAMA TRICHOLOGY' },
-          { enterStart: 0.67, enterEnd: 0.75, holdEnd: 0.83, exitEnd: 0.90, label: '04 / HIS YT STORY' }
+          { enterStart: 0.13, enterEnd: 0.21, holdEnd: 0.29, exitEnd: 0.36 },
+          { enterStart: 0.31, enterEnd: 0.39, holdEnd: 0.47, exitEnd: 0.54 },
+          { enterStart: 0.49, enterEnd: 0.57, holdEnd: 0.65, exitEnd: 0.72 },
+          { enterStart: 0.67, enterEnd: 0.75, holdEnd: 0.83, exitEnd: 0.90 }
         ];
 
-        function updateTestimonialsScrollStage() {
+        let targetP = 0;
+        let currentP = 0;
+        let targetEntryVeilP = 0;
+        let currentEntryVeilP = 0;
+        let rafId = null;
+
+        function computeScrollTargets() {
           const rect = trackEl.getBoundingClientRect();
           const winH = window.innerHeight || 900;
           const maxScroll = Math.max(1, trackEl.offsetHeight - winH);
           const scrolled = -rect.top;
-          const P = Math.max(0, Math.min(1, scrolled / maxScroll));
+          targetP = Math.max(0, Math.min(1, scrolled / maxScroll));
 
+          // Entry orange veil progress: sweeps 0 -> 1 as section enters from rect.top = winH * 0.82 down through P = 0.055
+          const veilStartTop = winH * 0.82;
+          const veilEndTop = -maxScroll * 0.055;
+          const rawVeil = (veilStartTop - rect.top) / Math.max(1, veilStartTop - veilEndTop);
+          targetEntryVeilP = Math.max(0, Math.min(1, rawVeil));
+        }
+
+        function renderStageAt(P, entryVeilP) {
           // 1. Intro & Outro Bookend Title ("WHAT PEOPLE SAY ABOUT US")
           let bookendOp = 0;
           let bookendY = 0;
           let bookendBlur = 0;
+          let veilP = 1;
 
           if (P <= 0.11) {
-            // Starting point: WHAT PEOPLE SAY ABOUT US centered in bold
             bookendOp = 1;
             bookendY = 0;
             bookendBlur = 0;
+            veilP = entryVeilP;
           } else if (P < 0.18) {
-            // Transitions out as Client 1 (Healthstreak) enters
             const t = (P - 0.11) / (0.18 - 0.11);
             const e = easeInOutCubic(t);
             bookendOp = 1 - e;
             bookendY = -28 * e;
             bookendBlur = 6 * e;
-          } else if (P >= 0.92) {
-            // Ending point: Back to WHAT PEOPLE SAY ABOUT US centered in bold
+            veilP = 1;
+          } else if (P >= 0.93) {
             bookendOp = 1;
             bookendY = 0;
             bookendBlur = 0;
-          } else if (P > 0.85) {
-            // Transitions back in as Client 4 (his YT story) exits
-            const t = (P - 0.85) / (0.92 - 0.85);
+            veilP = 1;
+          } else if (P > 0.84) {
+            const t = (P - 0.84) / (0.93 - 0.84);
             const e = easeInOutCubic(t);
-            bookendOp = e;
-            bookendY = 28 * (1 - e);
-            bookendBlur = 6 * (1 - e);
+            bookendOp = 1;
+            bookendY = 18 * (1 - e);
+            bookendBlur = 0;
+            veilP = t;
           }
 
           applyHeadlineState(bookendTitleEl, bookendOp, bookendY, bookendBlur);
+          applyBookendVeilProgress(veilP);
 
           // 2. Evaluate each of the 4 Client Chapters (3-image cluster wipe + center client name)
-          let activeClientIdx = -1;
-          let currentStepText = P < 0.5 ? 'INTRO' : 'OUTRO';
-
           CLIENT_WINDOWS.forEach((win, idx) => {
             const cluster = clusters[idx];
             const headline = clientHeadlines[idx];
@@ -8409,43 +8414,68 @@ function triggerHomeTransition(e) {
               const t = (P - win.enterStart) / (win.enterEnd - win.enterStart);
               const e = easeInOutCubic(t);
               applyClusterWipe(cluster, 'enter', t);
-              applyHeadlineState(headline, e, (1 - e) * 32, (1 - e) * 5);
-              if (t >= 0.35) {
-                activeClientIdx = idx;
-                currentStepText = win.label;
-              }
+              applyHeadlineState(headline, e, (1 - e) * 28, (1 - e) * 4);
             } else if (P <= win.holdEnd) {
               const t = (P - win.enterEnd) / Math.max(0.001, win.holdEnd - win.enterEnd);
               applyClusterWipe(cluster, 'hold', t);
               applyHeadlineState(headline, 1, 0, 0);
-              activeClientIdx = idx;
-              currentStepText = win.label;
             } else {
               const t = (P - win.holdEnd) / (win.exitEnd - win.holdEnd);
               const e = easeInOutCubic(t);
               applyClusterWipe(cluster, 'exit', t);
-              applyHeadlineState(headline, 1 - e, -e * 32, e * 5);
-              if (t < 0.35 && activeClientIdx === -1) {
-                activeClientIdx = idx;
-                currentStepText = win.label;
-              }
+              applyHeadlineState(headline, 1 - e, -e * 28, e * 4);
             }
           });
+        }
 
-          // 3. Update Left-Side Client List Indicator & Corner Progress Badge
-          sideItems.forEach((item, idx) => {
-            item.classList.toggle('is-active', idx === activeClientIdx);
-          });
+        function tickLerp() {
+          const dp = targetP - currentP;
+          const dv = targetEntryVeilP - currentEntryVeilP;
 
-          if (stepLabelEl) {
-            stepLabelEl.textContent = currentStepText;
+          if (window.__TESTIMONIALS_INSTANT_SCRUB__ || (Math.abs(dp) < 0.0003 && Math.abs(dv) < 0.0005)) {
+            currentP = targetP;
+            currentEntryVeilP = targetEntryVeilP;
+            renderStageAt(currentP, currentEntryVeilP);
+            rafId = null;
+            return;
+          }
+
+          currentP += dp * 0.18;
+          currentEntryVeilP += dv * 0.18;
+          renderStageAt(currentP, currentEntryVeilP);
+          rafId = requestAnimationFrame(tickLerp);
+        }
+
+        function onScrollOrResize() {
+          computeScrollTargets();
+          if (window.__TESTIMONIALS_INSTANT_SCRUB__) {
+            currentP = targetP;
+            currentEntryVeilP = targetEntryVeilP;
+            renderStageAt(currentP, currentEntryVeilP);
+            return;
+          }
+          if (!rafId) {
+            rafId = requestAnimationFrame(tickLerp);
           }
         }
 
-        window.updateTestimonialsDraftTwoScrub = updateTestimonialsScrollStage;
-        window.addEventListener('scroll', updateTestimonialsScrollStage, { passive: true });
-        window.addEventListener('resize', updateTestimonialsScrollStage, { passive: true });
-        updateTestimonialsScrollStage();
+        window.updateTestimonialsDraftTwoScrub = function(instant) {
+          computeScrollTargets();
+          if (instant || window.__TESTIMONIALS_INSTANT_SCRUB__) {
+            currentP = targetP;
+            currentEntryVeilP = targetEntryVeilP;
+            renderStageAt(currentP, currentEntryVeilP);
+          } else if (!rafId) {
+            rafId = requestAnimationFrame(tickLerp);
+          }
+        };
+
+        window.addEventListener('scroll', onScrollOrResize, { passive: true });
+        window.addEventListener('resize', onScrollOrResize, { passive: true });
+        computeScrollTargets();
+        currentP = targetP;
+        currentEntryVeilP = targetEntryVeilP;
+        renderStageAt(currentP, currentEntryVeilP);
       })();
     </script>
 </body>
