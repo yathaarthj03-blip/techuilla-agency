@@ -2854,7 +2854,7 @@
       margin: 0;
     }
 
-    /* Bottom Action Buttons: Book an Inquiry & View Work */
+    /* Bottom Action Buttons: Enlarged Book an Enquiry Button (View Work Removed) */
     .service-detail-actions {
       display: flex;
       align-items: center;
@@ -2867,19 +2867,19 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      padding: 15px 30px;
+      gap: 14px;
+      padding: 19px 44px;
       border-radius: 999px;
       background: #FF6600;
       color: #111111;
-      border: 1.5px solid #FF6600;
+      border: 2px solid #FF6600;
       font-family: var(--font-hero);
-      font-size: 14px;
-      font-weight: 600;
+      font-size: 16px;
+      font-weight: 700;
       letter-spacing: -0.01em;
       text-decoration: none;
       cursor: pointer !important;
-      box-shadow: 0 14px 34px rgba(255, 102, 0, 0.30);
+      box-shadow: 0 16px 38px rgba(255, 102, 0, 0.34);
       transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, color 0.25s ease, box-shadow 0.28s ease, border-color 0.25s ease;
     }
 
@@ -2891,39 +2891,88 @@
       background: #111111;
       border-color: #111111;
       color: #FFFFFF;
-      transform: translateY(-2px);
-      box-shadow: 0 18px 40px rgba(17, 17, 17, 0.25);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 20px 44px rgba(17, 17, 17, 0.28);
     }
 
-    .btn-detail-viewwork {
+    /* 3D Portfolio Lifetime Views Block (Below Description on 3D Animations Card) */
+    .service-detail-lifetime-views {
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+      padding: 18px 22px;
+      border-radius: 18px;
+      background: #111111;
+      border: 1.5px solid rgba(255, 102, 0, 0.45);
+      box-shadow: 0 16px 36px rgba(17, 17, 17, 0.14);
+      color: #FAF8F5;
+      max-width: 520px;
+    }
+
+    .service-detail-lifetime-views.is-visible {
+      display: flex;
+    }
+
+    .lifetime-views-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .lifetime-views-title {
+      font-family: var(--font-hero);
+      font-size: clamp(18px, 1.55vw, 23px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #FAF8F5;
+      margin: 0;
+    }
+
+    .lifetime-views-live-badge {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 15px 28px;
+      gap: 6px;
+      padding: 4px 10px;
       border-radius: 999px;
-      background: transparent;
-      color: #111111;
-      border: 1.5px solid rgba(17, 17, 17, 0.24);
+      background: rgba(255, 102, 0, 0.18);
+      border: 1px solid rgba(255, 102, 0, 0.45);
+      font-family: var(--font-mono, monospace);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #FF8533;
+    }
+
+    .lifetime-views-live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #FF6600;
+      box-shadow: 0 0 8px #FF6600;
+      animation: livePulseDot 1.6s infinite ease-in-out;
+    }
+
+    @keyframes livePulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.35); }
+    }
+
+    .lifetime-views-count {
       font-family: var(--font-hero);
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      text-decoration: none;
-      cursor: pointer !important;
-      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.28s ease;
+      font-size: clamp(30px, 2.9vw, 44px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: #FF6600;
     }
 
-    .btn-detail-viewwork * {
-      cursor: pointer !important;
-    }
-
-    .btn-detail-viewwork:hover {
-      background: #111111;
-      border-color: #111111;
-      color: #FFFFFF;
-      transform: translateY(-2px);
-      box-shadow: 0 12px 28px rgba(17, 17, 17, 0.16);
+    .lifetime-views-sub {
+      font-family: var(--font-hero);
+      font-size: 12px;
+      color: rgba(250, 248, 245, 0.65);
     }
 
     /* Right Side Showcase Stage: Controls at the Left/Right Sides & Count Inside the Carousel */
@@ -2931,14 +2980,16 @@
       position: relative;
       width: 100%;
       display: flex;
-      align-items: flex-start;
-      justify-content: center;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      gap: 14px;
     }
 
     .service-detail-carousel-viewport {
       position: relative;
       width: 100%;
-      height: clamp(420px, 64vh, 580px);
+      height: clamp(410px, 60vh, 550px);
       border-radius: 24px;
       overflow: hidden;
       background: #050202;
@@ -2969,29 +3020,30 @@
       background: #050202;
     }
 
-    .service-detail-slide img {
+    .service-detail-slide > img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center;
+      object-position: top center;
       display: block;
       transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .service-detail-slide.is-active-slide img {
+    .service-detail-slide.is-active-slide > img {
       transform: scale(1.02);
     }
 
-    /* Carousel Count Badge INSIDE the Carousel (Top-Right Overlay Pill) */
+    /* Carousel Count Badge INSIDE the Carousel (Top-Left Overlay Pill so Top-Right is free for Visit Website button) */
     .carousel-inside-counter {
       position: absolute;
-      top: 20px;
-      right: 22px;
-      z-index: 15;
+      top: 18px;
+      left: 20px;
+      right: auto;
+      z-index: 22;
       padding: 7px 14px;
       border-radius: 999px;
-      background: rgba(10, 8, 8, 0.68);
-      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(10, 8, 8, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       font-family: var(--font-mono, monospace);
@@ -3000,6 +3052,367 @@
       color: #FFFFFF;
       letter-spacing: 0.08em;
       pointer-events: none;
+    }
+
+    /* Top-Right Redirect Button on Website / Prototype Cards */
+    .slide-visit-site-btn {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      z-index: 24;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 999px;
+      background: #FF6600;
+      color: #111111;
+      border: 1.5px solid #FF6600;
+      font-family: var(--font-hero);
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      cursor: pointer !important;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.38), 0 0 16px rgba(255, 102, 0, 0.35);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.22s ease, color 0.22s ease, border-color 0.22s ease;
+    }
+
+    .slide-visit-site-btn * {
+      cursor: pointer !important;
+    }
+
+    .slide-visit-site-btn:hover {
+      background: #111111;
+      border-color: #FF6600;
+      color: #FFFFFF;
+      transform: translateY(-2px) scale(1.03);
+    }
+
+    /* Custom Techuilla Palette Video Stage & Controls (For HTML5 Videos & Chromeless YouTube 3D Videos) */
+    .custom-video-stage {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #050202;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .custom-service-video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #050202;
+      display: block;
+      cursor: pointer !important;
+    }
+
+    /* Chromeless YouTube Wrapper — Completely blocks YouTube native controls & links */
+    .yt-chromeless-stage {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #050202;
+      overflow: hidden;
+    }
+
+    .yt-iframe-shield {
+      position: absolute;
+      inset: -60px -2px -60px -2px;
+      pointer-events: none !important;
+    }
+
+    .yt-iframe-shield iframe,
+    .yt-iframe-target {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      pointer-events: none !important;
+      display: block;
+    }
+
+    .yt-click-catcher {
+      position: absolute;
+      inset: 0;
+      z-index: 11;
+      cursor: pointer !important;
+      background: transparent;
+    }
+
+    .yt-poster-cover {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: opacity 0.32s ease;
+      pointer-events: none;
+    }
+
+    .custom-video-stage.is-playing .yt-poster-cover {
+      opacity: 0;
+    }
+
+    /* Top Title Pill on Video Slides */
+    .video-slide-top-title {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      z-index: 21;
+      padding: 7px 15px;
+      border-radius: 999px;
+      background: rgba(12, 10, 10, 0.78);
+      border: 1px solid rgba(255, 102, 0, 0.42);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      font-family: var(--font-hero);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #FAF8F5;
+      letter-spacing: -0.01em;
+      pointer-events: none;
+    }
+
+    /* Center Floating Play Indicator Button */
+    .cv-center-play-btn {
+      position: absolute;
+      top: 46%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 18;
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: rgba(255, 102, 0, 0.92);
+      border: 2px solid #FAF8F5;
+      color: #111111;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer !important;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55), 0 0 24px rgba(255, 102, 0, 0.55);
+      transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.22s ease;
+    }
+
+    .cv-center-play-btn:hover {
+      transform: translate(-50%, -50%) scale(1.08);
+      background: #FF8533;
+    }
+
+    .custom-video-stage.is-playing .cv-center-play-btn {
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(0.85);
+    }
+
+    /* Bottom Custom Video Controls Bar in Techuilla Color Palette (#111111 Obsidian + #FF6600 Orange + #FAF8F5 Cream) */
+    .custom-video-controls {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 14px;
+      z-index: 24;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 16px;
+      background: rgba(14, 12, 11, 0.88);
+      border: 1.5px solid rgba(255, 102, 0, 0.42);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.48);
+    }
+
+    .cv-ctrl-btn {
+      appearance: none;
+      -webkit-appearance: none;
+      height: 34px;
+      min-width: 34px;
+      padding: 0 9px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #FAF8F5;
+      font-family: var(--font-mono, monospace);
+      font-size: 11px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer !important;
+      flex-shrink: 0;
+      transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .cv-ctrl-btn * {
+      cursor: pointer !important;
+    }
+
+    .cv-ctrl-btn:hover {
+      background: #FF6600;
+      border-color: #FF6600;
+      color: #111111;
+      transform: translateY(-1px);
+    }
+
+    .cv-ctrl-btn.cv-btn-play {
+      background: #FF6600;
+      border-color: #FF6600;
+      color: #111111;
+      width: 38px;
+      padding: 0;
+    }
+
+    .cv-ctrl-btn.cv-btn-play:hover {
+      background: #FFA040;
+      border-color: #FFA040;
+    }
+
+    .cv-progress-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 80px;
+    }
+
+    .cv-progress-bar {
+      position: relative;
+      flex: 1;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(250, 248, 245, 0.20);
+      cursor: pointer !important;
+      overflow: hidden;
+    }
+
+    .cv-progress-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 0%;
+      background: linear-gradient(90deg, #FF6600, #FFA040);
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .cv-time-label {
+      font-family: var(--font-mono, monospace);
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(250, 248, 245, 0.82);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .cv-vol-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      flex-shrink: 0;
+    }
+
+    .cv-vol-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 64px;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(250, 248, 245, 0.24);
+      outline: none;
+      cursor: pointer !important;
+      accent-color: #FF6600;
+    }
+
+    .cv-vol-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #FF6600;
+      border: 2px solid #FAF8F5;
+      cursor: pointer !important;
+    }
+
+    /* Below-Video YouTube Engagement Telemetry Bar (Views, Likes, Uploaded On — Shown for 3D Animations) */
+    .service-detail-yt-meta-bar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 13px 20px;
+      border-radius: 16px;
+      background: #111111;
+      border: 1.5px solid rgba(255, 102, 0, 0.38);
+      color: #FAF8F5;
+      box-shadow: 0 12px 28px rgba(17, 17, 17, 0.14);
+    }
+
+    .service-detail-yt-meta-bar.is-visible {
+      display: flex;
+    }
+
+    .yt-meta-video-title {
+      font-family: var(--font-hero);
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #FAF8F5;
+      letter-spacing: -0.01em;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .yt-meta-channel-tag {
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 102, 0, 0.2);
+      border: 1px solid rgba(255, 102, 0, 0.45);
+      color: #FF8533;
+      font-family: var(--font-mono, monospace);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .yt-meta-stats-group {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    .yt-meta-stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono, monospace);
+      font-size: 12px;
+      font-weight: 600;
+      color: #FAF8F5;
+    }
+
+    .yt-meta-stat-pill svg {
+      width: 14px;
+      height: 14px;
+      stroke: #FF6600;
+      stroke-width: 2.2;
+      flex-shrink: 0;
+    }
+
+    .yt-meta-stat-label {
+      color: rgba(250, 248, 245, 0.56);
+      font-size: 11px;
     }
 
     /* Carousel Controls at the Left and Right SIDES of the Carousel */
@@ -3523,9 +3936,9 @@
                 </a>
               </li>
               <li>
-                <a href="index.html?from=subpage#work" class="menu-nav-link" data-section="work">
+                <a href="index.html?from=subpage#about" class="menu-nav-link" data-section="about">
                   <span class="nav-text-wrap">
-                    WORK
+                    ABOUT
                     <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
                       <path class="stroke-cut" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
                       <path class="stroke-ribbon" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
@@ -3535,9 +3948,9 @@
                 </a>
               </li>
               <li>
-                <a href="index.html?from=subpage#about" class="menu-nav-link" data-section="about">
+                <a href="contact.html" class="menu-nav-link" data-section="contact">
                   <span class="nav-text-wrap">
-                    ABOUT
+                    CONTACT US
                     <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
                       <path class="stroke-cut" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
                       <path class="stroke-ribbon" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
@@ -3676,14 +4089,14 @@
                     <span class="filter-btn-dot" aria-hidden="true"></span>
                     <span class="filter-btn-label">All services</span>
                   </span>
-                  <span class="filter-btn-count">12</span>
+                  <span class="filter-btn-count">11</span>
                 </button>
                 <button type="button" class="service-filter-btn" data-filter="build" role="tab" aria-selected="false">
                   <span class="filter-btn-left">
                     <span class="filter-btn-dot" aria-hidden="true"></span>
                     <span class="filter-btn-label">Build</span>
                   </span>
-                  <span class="filter-btn-count">03</span>
+                  <span class="filter-btn-count">02</span>
                 </button>
                 <button type="button" class="service-filter-btn" data-filter="create" role="tab" aria-selected="false">
                   <span class="filter-btn-left">
@@ -3701,15 +4114,12 @@
                 </button>
               </div>
             </div>
-            <div class="services-areas-cta-wrap">
-              <a href="index.html?from=subpage#work" class="btn-view-cases">View cases</a>
-            </div>
           </div>
         </aside>
 
-        <!-- Right 3-Column Card Grid (12 Specified Cards with Custom 3D Visuals) -->
+        <!-- Right 3-Column Card Grid (11 Specified Cards with Custom 3D Visuals & Flagship Tags) -->
         <div class="services-cards-grid" id="servicesCardsGrid">
-          <!-- #1: Web Development (image1 -> service_card_1.jpg) -->
+          <!-- #1: Web Development (FLAGSHIP) -->
           <article class="service-area-card" data-category="build" data-card-id="1">
             <div class="card-petal-visual" aria-hidden="true">
               <img src="service_card_1.jpg" alt="Web Development" class="card-bg-img" decoding="async" />
@@ -3721,6 +4131,7 @@
             <div class="service-card-bottom">
               <div class="service-card-title-row">
                 <h3 class="service-card-title">Web Development</h3>
+                <span class="service-card-pill-badge">FLAGSHIP</span>
               </div>
               <p class="service-card-desc">
                 We build high-performance websites and web platforms from day one. Custom architecture, responsive UI, SEO structure, and cloud scalability.
@@ -3728,33 +4139,14 @@
             </div>
           </article>
 
-          <!-- #2: Application Development (image2 -> service_card_2.jpg) -->
-          <article class="service-area-card is-staggered-col" data-category="build" data-card-id="2">
-            <div class="card-petal-visual" aria-hidden="true">
-              <img src="service_card_2.jpg" alt="Application Development" class="card-bg-img" decoding="async" />
-            </div>
-            <div class="card-bottom-scrim" aria-hidden="true"></div>
-            <div class="service-card-top">
-              <span class="service-card-num">#2</span>
-            </div>
-            <div class="service-card-bottom">
-              <div class="service-card-title-row">
-                <h3 class="service-card-title">Application Development</h3>
-              </div>
-              <p class="service-card-desc">
-                We build native and cross-platform mobile and web applications: intuitive UX, real-time sync, robust APIs, and seamless scaling.
-              </p>
-            </div>
-          </article>
-
-          <!-- #3: AI Automations (image3 -> service_card_3.jpg) -->
-          <article class="service-area-card" data-category="build" data-card-id="3">
+          <!-- #2: AI Automations -->
+          <article class="service-area-card is-staggered-col" data-category="build" data-card-id="3">
             <div class="card-petal-visual" aria-hidden="true">
               <img src="service_card_3.jpg" alt="AI Automations" class="card-bg-img" decoding="async" />
             </div>
             <div class="card-bottom-scrim" aria-hidden="true"></div>
             <div class="service-card-top">
-              <span class="service-card-num">#3</span>
+              <span class="service-card-num">#2</span>
             </div>
             <div class="service-card-bottom">
               <div class="service-card-title-row">
@@ -3766,14 +4158,14 @@
             </div>
           </article>
 
-          <!-- #4: Video Editing (image4 -> service_card_4.jpg) -->
+          <!-- #3: Video Editing -->
           <article class="service-area-card" data-category="create" data-card-id="4">
             <div class="card-petal-visual" aria-hidden="true">
               <img src="service_card_4.jpg" alt="Video Editing" class="card-bg-img" decoding="async" />
             </div>
             <div class="card-bottom-scrim" aria-hidden="true"></div>
             <div class="service-card-top">
-              <span class="service-card-num">#4</span>
+              <span class="service-card-num">#3</span>
             </div>
             <div class="service-card-bottom">
               <div class="service-card-title-row">
@@ -3785,14 +4177,14 @@
             </div>
           </article>
 
-          <!-- #5: SaaS Videos (image5 -> service_card_5.jpg) -->
-          <article class="service-area-card is-staggered-col" data-category="create" data-card-id="5">
+          <!-- #4: SaaS Videos -->
+          <article class="service-area-card" data-category="create" data-card-id="5">
             <div class="card-petal-visual" aria-hidden="true">
               <img src="service_card_5.jpg" alt="SaaS Videos" class="card-bg-img" decoding="async" />
             </div>
             <div class="card-bottom-scrim" aria-hidden="true"></div>
             <div class="service-card-top">
-              <span class="service-card-num">#5</span>
+              <span class="service-card-num">#4</span>
             </div>
             <div class="service-card-bottom">
               <div class="service-card-title-row">
@@ -3804,14 +4196,14 @@
             </div>
           </article>
 
-          <!-- #6: Graphic Designing (image6 -> service_card_6.jpg) -->
-          <article class="service-area-card" data-category="create" data-card-id="6">
+          <!-- #5: Graphic Designing -->
+          <article class="service-area-card is-staggered-col" data-category="create" data-card-id="6">
             <div class="card-petal-visual" aria-hidden="true">
               <img src="service_card_6.jpg" alt="Graphic Designing" class="card-bg-img" decoding="async" />
             </div>
             <div class="card-bottom-scrim" aria-hidden="true"></div>
             <div class="service-card-top">
-              <span class="service-card-num">#6</span>
+              <span class="service-card-num">#5</span>
             </div>
             <div class="service-card-bottom">
               <div class="service-card-title-row">
@@ -3823,14 +4215,14 @@
             </div>
           </article>
 
-          <!-- #7: Cinematography (image7 -> service_card_7.jpg) -->
+          <!-- #6: Cinematography -->
           <article class="service-area-card" data-category="create" data-card-id="7">
             <div class="card-petal-visual" aria-hidden="true">
               <img src="service_card_7.jpg" alt="Cinematography" class="card-bg-img" decoding="async" />
             </div>
             <div class="card-bottom-scrim" aria-hidden="true"></div>
             <div class="service-card-top">
-              <span class="service-card-num">#7</span>
+              <span class="service-card-num">#6</span>
             </div>
             <div class="service-card-bottom">
               <div class="service-card-title-row">
@@ -3842,14 +4234,14 @@
             </div>
           </article>
 
-          <!-- #8: 2D Animations (image8 -> service_card_8.jpg) -->
-          <article class="service-area-card is-staggered-col" data-category="create" data-card-id="8">
+          <!-- #7: 2D Animations -->
+          <article class="service-area-card" data-category="create" data-card-id="8">
             <div class="card-petal-visual" aria-hidden="true">
               <img src="service_card_8.jpg" alt="2D Animations" class="card-bg-img" decoding="async" />
             </div>
             <div class="card-bottom-scrim" aria-hidden="true"></div>
             <div class="service-card-top">
-              <span class="service-card-num">#8</span>
+              <span class="service-card-num">#7</span>
             </div>
             <div class="service-card-bottom">
               <div class="service-card-title-row">
@@ -3861,18 +4253,19 @@
             </div>
           </article>
 
-          <!-- #9: 3D Animations (image9 -> service_card_9.jpg) -->
-          <article class="service-area-card" data-category="create" data-card-id="9">
+          <!-- #8: 3D Animations (FLAGSHIP) -->
+          <article class="service-area-card is-staggered-col" data-category="create" data-card-id="9">
             <div class="card-petal-visual" aria-hidden="true">
               <img src="service_card_9.jpg" alt="3D Animations" class="card-bg-img" decoding="async" />
             </div>
             <div class="card-bottom-scrim" aria-hidden="true"></div>
             <div class="service-card-top">
-              <span class="service-card-num">#9</span>
+              <span class="service-card-num">#8</span>
             </div>
             <div class="service-card-bottom">
               <div class="service-card-title-row">
                 <h3 class="service-card-title">3D Animations</h3>
+                <span class="service-card-pill-badge">FLAGSHIP</span>
               </div>
               <p class="service-card-desc">
                 Photorealistic product renders, physics simulations, architectural visualizations, and immersive 3D motion sequences.
@@ -3880,19 +4273,19 @@
             </div>
           </article>
 
-          <!-- #10: AI Creatives (image10 -> service_card_10.jpg) -->
+          <!-- #9: AI Creatives (FLAGSHIP) -->
           <article class="service-area-card" data-category="create" data-card-id="10">
             <div class="card-petal-visual" aria-hidden="true">
               <img src="service_card_10.jpg" alt="AI Creatives" class="card-bg-img" decoding="async" />
             </div>
             <div class="card-bottom-scrim" aria-hidden="true"></div>
             <div class="service-card-top">
-              <span class="service-card-num">#10</span>
+              <span class="service-card-num">#9</span>
             </div>
             <div class="service-card-bottom">
               <div class="service-card-title-row">
                 <h3 class="service-card-title">AI Creatives</h3>
-                <span class="service-card-pill-badge">NEW</span>
+                <span class="service-card-pill-badge">FLAGSHIP</span>
               </div>
               <p class="service-card-desc">
                 Next-generation generative visuals, bespoke AI ad campaigns, and rapid concept films pushing creative boundaries.
@@ -3900,14 +4293,14 @@
             </div>
           </article>
 
-          <!-- #11: Meta Marketing (image11 -> service_card_11.jpg) -->
-          <article class="service-area-card is-staggered-col" data-category="growth" data-card-id="11">
+          <!-- #10: Meta Marketing -->
+          <article class="service-area-card" data-category="growth" data-card-id="11">
             <div class="card-petal-visual" aria-hidden="true">
               <img src="service_card_11.jpg" alt="Meta Marketing" class="card-bg-img" decoding="async" />
             </div>
             <div class="card-bottom-scrim" aria-hidden="true"></div>
             <div class="service-card-top">
-              <span class="service-card-num">#11</span>
+              <span class="service-card-num">#10</span>
             </div>
             <div class="service-card-bottom">
               <div class="service-card-title-row">
@@ -3919,14 +4312,14 @@
             </div>
           </article>
 
-          <!-- #12: Google Ads Marketing (image12 -> service_card_12.jpg) -->
-          <article class="service-area-card" data-category="growth" data-card-id="12">
+          <!-- #11: Google Ads Marketing -->
+          <article class="service-area-card is-staggered-col" data-category="growth" data-card-id="12">
             <div class="card-petal-visual" aria-hidden="true">
               <img src="service_card_12.jpg" alt="Google Ads Marketing" class="card-bg-img" decoding="async" />
             </div>
             <div class="card-bottom-scrim" aria-hidden="true"></div>
             <div class="service-card-top">
-              <span class="service-card-num">#12</span>
+              <span class="service-card-num">#11</span>
             </div>
             <div class="service-card-bottom">
               <div class="service-card-title-row">
@@ -4050,7 +4443,7 @@
     <!-- Dedicated Single-Page Non-Scrollable Detail Popup (Opens in-place at any scroll position) -->
     <div class="service-detail-stage" id="serviceDetailStage" aria-hidden="true">
       <div class="service-detail-inner">
-        <!-- Left Side: Small Low-Opacity Back Button Above Title, Title Aligned with Carousel Top, Longer Paragraph, 2 Buttons -->
+        <!-- Left Side: Small Low-Opacity Back Button Above Title, Title Aligned with Carousel Top, Longer Paragraph, Lifetime Views (3D), Enlarged Book an Enquiry Button -->
         <div class="service-detail-left">
           <button type="button" class="btn-detail-back" id="btnDetailBack" aria-label="Back to services grid">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -4065,39 +4458,45 @@
             <p class="service-detail-desc" id="serviceDetailDesc">
               We engineer ultra-fast, conversion-focused websites and custom web applications built on modern modular architectures, responsive UI design systems, technical SEO foundations, and scalable cloud hosting. From interactive brand flagships to complex enterprise portals, every build is crafted for sub-second performance, seamless accessibility, and measurable business growth.
             </p>
+
+            <!-- 3D Portfolio Lifetime Views Block (Shown automatically on 3D Animations Card) -->
+            <div class="service-detail-lifetime-views" id="serviceDetailLifetimeViewsBlock" aria-live="polite">
+              <div class="lifetime-views-header">
+                <h3 class="lifetime-views-title">3D Portfolio Lifetime Views</h3>
+                <span class="lifetime-views-live-badge">
+                  <span class="lifetime-views-live-dot" aria-hidden="true"></span>
+                  <span>LIVE YOUTUBE SYNC</span>
+                </span>
+              </div>
+              <div class="lifetime-views-count" id="lifetimeViewsCountValue">16,631,102</div>
+              <div class="lifetime-views-sub">Combined real-time views across all 5 featured HisYtStory 3D productions</div>
+            </div>
           </div>
 
           <div class="service-detail-actions">
             <a href="contact.html" class="btn-detail-inquiry" id="btnDetailInquiry">
-              <span>Book an Inquiry</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <span>Book an Enquiry</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-            <a href="index.html?from=subpage#work" class="btn-detail-viewwork" id="btnDetailViewWork">
-              <span>View Work</span>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <line x1="7" y1="17" x2="17" y2="7"></line>
-                <polyline points="7 7 17 7 17 17"></polyline>
               </svg>
             </a>
           </div>
         </div>
 
-        <!-- Right Side: Carousel Viewport with Side Controls & Count Inside Carousel -->
+        <!-- Right Side: Carousel Viewport with Side Controls, Count Inside Carousel & Below-Video YouTube Telemetry Bar -->
         <div class="service-detail-right">
           <div class="service-detail-carousel-viewport" id="serviceDetailCarouselViewport">
-            <!-- Count Badge INSIDE the Carousel -->
-            <span class="carousel-inside-counter" id="serviceDetailCarouselCounter">01 / 05</span>
+            <!-- Count Badge INSIDE the Carousel (Top-Left) -->
+            <span class="carousel-inside-counter" id="serviceDetailCarouselCounter">01 / 06</span>
 
             <!-- Left & Right Side Controls INSIDE the Carousel -->
-            <button type="button" class="carousel-side-btn prev-side" id="btnCarouselPrev" aria-label="Previous sample image">
+            <button type="button" class="carousel-side-btn prev-side" id="btnCarouselPrev" aria-label="Previous project">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="15 18 9 12 15 6"></polyline>
               </svg>
             </button>
-            <button type="button" class="carousel-side-btn next-side" id="btnCarouselNext" aria-label="Next sample image">
+            <button type="button" class="carousel-side-btn next-side" id="btnCarouselNext" aria-label="Next project">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
@@ -4105,6 +4504,41 @@
 
             <div class="service-detail-carousel-track" id="serviceDetailCarouselTrack">
               <!-- Populated dynamically when a service card is clicked -->
+            </div>
+          </div>
+
+          <!-- Below-Video YouTube Stats Bar (Views, Likes, Uploaded On — Shown below every 3D Animations YouTube video) -->
+          <div class="service-detail-yt-meta-bar" id="serviceDetailYtMetaBar" aria-live="polite">
+            <div class="yt-meta-video-title">
+              <span class="yt-meta-channel-tag">HisYtStory</span>
+              <span id="ytMetaVideoTitleText">The Game that lasted Fifty Years</span>
+            </div>
+            <div class="yt-meta-stats-group">
+              <div class="yt-meta-stat-pill" title="Video Views">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <span id="ytMetaViewsVal">1,523,998</span>
+                <span class="yt-meta-stat-label">Views</span>
+              </div>
+              <div class="yt-meta-stat-pill" title="Video Likes">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                </svg>
+                <span id="ytMetaLikesVal">47,510</span>
+                <span class="yt-meta-stat-label">Likes</span>
+              </div>
+              <div class="yt-meta-stat-pill" title="Upload Date">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span class="yt-meta-stat-label">Uploaded:</span>
+                <span id="ytMetaDateVal">Jul 17, 2024</span>
+              </div>
             </div>
           </div>
         </div>
@@ -4507,6 +4941,9 @@ Best regards,
             triggerHomeTransition(e);
           } else if (section === 'services') {
             triggerServicesTransition(e);
+          } else if (section === 'contact') {
+            closeMenu();
+            triggerEnquireTransition(e, 'contact.html');
           } else {
             closeMenu();
           }
@@ -5546,7 +5983,7 @@ Best regards,
       initServicesFilterAndBlurEngine();
 
       /* ------------------------------------------------------------------------
-         9. REPEATING-FRAME TRANSITION ENGINE + FULL-VIEWPORT POPUP SHOWCASE (ALL 12 CARDS)
+         9. REPEATING-FRAME TRANSITION ENGINE + FULL-VIEWPORT POPUP SHOWCASE (ALL 11 CARDS)
          ------------------------------------------------------------------------ */
       function initServiceCardDetailShowcase() {
         const areasSection = document.querySelector('.services-areas-section');
@@ -5557,6 +5994,14 @@ Best regards,
         const btnBack = document.getElementById('btnDetailBack');
         const elTitle = document.getElementById('serviceDetailTitle');
         const elDesc = document.getElementById('serviceDetailDesc');
+        const elLifetimeViewsBlock = document.getElementById('serviceDetailLifetimeViewsBlock');
+        const elLifetimeViewsCount = document.getElementById('lifetimeViewsCountValue');
+        const elYtMetaBar = document.getElementById('serviceDetailYtMetaBar');
+        const elYtMetaTitle = document.getElementById('ytMetaVideoTitleText');
+        const elYtMetaViews = document.getElementById('ytMetaViewsVal');
+        const elYtMetaLikes = document.getElementById('ytMetaLikesVal');
+        const elYtMetaDate = document.getElementById('ytMetaDateVal');
+
         const carouselViewport = document.getElementById('serviceDetailCarouselViewport');
         const carouselTrack = document.getElementById('serviceDetailCarouselTrack');
         const carouselCounter = document.getElementById('serviceDetailCarouselCounter');
@@ -5565,174 +6010,230 @@ Best regards,
 
         if (!areasSection || !grid || !detailStage || !framesLayer || !carouselViewport || !carouselTrack) return;
 
-        // Data for all 12 service cards: Longer ~340-380 char description + 5 sample images (Card image first, then 4 curated sample showcase frames)
+        // Live YouTube Telemetry Store for HisYtStory 3D Animations (Seeded with real YouTube numbers & updated live)
+        const YT_LIVE_STATS = {
+          'CKjlKvKTz0s': { title: 'The Game that lasted Fifty Years', views: 1523998, likes: 47510, uploadDate: 'Jul 17, 2024' },
+          'Y09ReaDyEuw': { title: 'My School Nurse Iced My Broken Leg', views: 8833935, likes: 146593, uploadDate: 'Sep 1, 2024' },
+          'JXiwxn6VpwM': { title: 'Dad Refused to Lose', views: 1746035, likes: 42632, uploadDate: 'Jun 22, 2024' },
+          'gFy3TamJNkg': { title: 'She Hated my Gift', views: 3872771, likes: 80338, uploadDate: 'Jul 6, 2024' },
+          'Tf3wVEpn8wU': { title: 'What was clapping', views: 654363, likes: 22199, uploadDate: 'Nov 14, 2024' }
+        };
+
+        function formatNumberCommas(n) {
+          return Number(n || 0).toLocaleString('en-US');
+        }
+
+        function computeCombined3DLifetimeViews() {
+          return Object.values(YT_LIVE_STATS).reduce((acc, item) => acc + (Number(item.views) || 0), 0);
+        }
+
+        function refresh3DViewsUI() {
+          if (elLifetimeViewsCount) {
+            elLifetimeViewsCount.textContent = formatNumberCommas(computeCombined3DLifetimeViews());
+          }
+          if (activeCardId === '9') {
+            updateYtMetaBarForCurrentSlide();
+          }
+        }
+
+        // Automatically sync live YouTube views & likes from both local server endpoint and CORS-enabled public API
+        async function syncLiveYouTubeEngagement() {
+          const videoIds = Object.keys(YT_LIVE_STATS);
+          // 1. Try local server real-time YouTube scraper endpoint if available
+          try {
+            const resp = await fetch('/api/youtube-stats', { cache: 'no-store' });
+            if (resp.ok) {
+              const json = await resp.json();
+              if (json && json.stats) {
+                Object.keys(json.stats).forEach(vid => {
+                  const st = json.stats[vid];
+                  if (YT_LIVE_STATS[vid] && st) {
+                    if (st.views > 0) YT_LIVE_STATS[vid].views = Math.max(YT_LIVE_STATS[vid].views, st.views);
+                    if (st.likes > 0) YT_LIVE_STATS[vid].likes = Math.max(YT_LIVE_STATS[vid].likes, st.likes);
+                  }
+                });
+                refresh3DViewsUI();
+              }
+            }
+          } catch (e) {}
+
+          // 2. Also query CORS-enabled public YouTube engagement API per video (works on static GitHub Pages too)
+          await Promise.all(videoIds.map(async (vid) => {
+            try {
+              const r = await fetch(`https://returnyoutubedislikeapi.com/votes?videoId=${vid}`, { mode: 'cors' });
+              if (!r.ok) return;
+              const d = await r.json();
+              if (d && YT_LIVE_STATS[vid]) {
+                if (typeof d.viewCount === 'number' && d.viewCount > 0) {
+                  YT_LIVE_STATS[vid].views = Math.max(YT_LIVE_STATS[vid].views, d.viewCount);
+                }
+                if (typeof d.likes === 'number' && d.likes > 0) {
+                  YT_LIVE_STATS[vid].likes = Math.max(YT_LIVE_STATS[vid].likes, d.likes);
+                }
+              }
+            } catch (err) {}
+          }));
+          refresh3DViewsUI();
+        }
+
+        // Trigger initial live YouTube engagement sync and periodic refresh every 90s
+        syncLiveYouTubeEngagement();
+        setInterval(syncLiveYouTubeEngagement, 90000);
+
+        // Data for all 11 service cards
         const SERVICE_DETAILS = {
           '1': {
             num: '01',
             category: 'BUILD',
             title: 'Web Development',
-            desc: 'We engineer ultra-fast, conversion-focused websites and custom web platforms built on modern modular architectures, responsive UI design systems, technical SEO foundations, and scalable cloud infrastructure. From interactive brand flagships to complex enterprise portals, every build is crafted for sub-second performance, seamless accessibility, and measurable business growth.',
+            desc: 'We engineer ultra-fast, conversion-focused websites and custom web platforms built on modern modular architectures, responsive UI design systems, technical SEO foundations, and scalable cloud infrastructure. Explore our live deployed websites below and click the top-right button on any project to visit it directly.',
             cardImg: 'service_card_1.jpg',
             samples: [
-              { src: 'service_card_1.jpg', title: 'Web Architecture & Core UI System', tag: '01 / OVERVIEW' },
-              { src: 'services_project_1.jpg', title: 'Enterprise Web Platform & Interactive Portal', tag: '02 / WEB PLATFORM' },
-              { src: 'card_techuilla_branding.jpg', title: 'Techuilla Flagship Digital Experience', tag: '03 / BESPOKE SITE' },
-              { src: 'card_hindustan_tyre.jpg', title: 'Industrial B2B E-Commerce & Catalog Engine', tag: '04 / E-COMMERCE' },
-              { src: 'services_project_2.jpg', title: 'High-Conversion Landing & Product Showcase', tag: '05 / DESIGN SYSTEM' }
-            ]
-          },
-          '2': {
-            num: '02',
-            category: 'BUILD',
-            title: 'Application Development',
-            desc: 'We design and build high-performance native and cross-platform mobile and web applications featuring intuitive user flows, real-time data synchronization, resilient APIs, and cloud-native scalability. Every product is engineered from the ground up for fluid 60fps interaction, offline reliability, enterprise-grade security, and effortless multi-device continuity.',
-            cardImg: 'service_card_2.jpg',
-            samples: [
-              { src: 'service_card_2.jpg', title: 'Cross-Platform App Ecosystem', tag: '01 / OVERVIEW' },
-              { src: 'card_health_streak.png', title: 'Health Streak Mobile & Wearable Companion App', tag: '02 / MOBILE APP' },
-              { src: 'services_project_2.jpg', title: 'Real-Time SaaS Dashboard & Analytics Suite', tag: '03 / WEB APP' },
-              { src: 'card_audio_king.png', title: 'Audio King Connected Consumer Application', tag: '04 / CONSUMER APP' },
-              { src: 'services_project_3.jpg', title: 'Cloud API & Multi-Tenant Workflow Interface', tag: '05 / ENTERPRISE' }
+              { type: 'image', src: 'service_card_1.jpg', title: 'Web Development Flagship Overview', tag: '01 / COVER' },
+              { type: 'image', src: 'card_health_streak.png', title: 'Health Streak', tag: '02 / HEALTHSTREAK.IN', url: 'https://healthstreak.in/' },
+              { type: 'image', src: 't_rama_3.jpg', title: 'Rama Health Care', tag: '03 / RAMAHAIRCLINIC.COM', url: 'https://ramahairclinic.com/' },
+              { type: 'image', src: 'card_audio_king.png', title: 'AudioKing', tag: '04 / AUDIOKING.CO.IN', url: 'https://audioking.co.in/' },
+              { type: 'image', src: 'webdev_yathaarth_portfolio.jpg', title: 'Yathaarth Jaju Portfolio', tag: '05 / PORTFOLIO', url: 'https://yathaarthj03-blip.github.io/Yathaarth-Jaju-Portfolio./' },
+              { type: 'image', src: 'webdev_rca_code_vault.jpg', title: 'RCA Code Vault', tag: '06 / CODE VAULT', url: 'https://rca-code-vault.lovable.app/templates' }
             ]
           },
           '3': {
-            num: '03',
+            num: '02',
             category: 'BUILD',
             title: 'AI Automations',
-            desc: 'We transform manual business operations into autonomous growth engines using custom LLM agents, multi-step CRM workflows, intelligent lead qualification pipelines, and real-time internal data orchestration. Our tailored automation systems eliminate repetitive bottlenecks, respond to prospects in seconds, and connect your entire software stack into one self-running pipeline.',
+            descHtml: 'Meet <strong>Kabir</strong> — an AI calling receptionist and appointment scheduling assistant for Raj Computers Academy available as a prototype in the Services section of <a href="https://yathaarthj03-blip.github.io/Yathaarth-Jaju-Portfolio./" target="_blank" rel="noopener noreferrer" style="color: #FF6600; font-weight: 700; text-decoration: underline;">https://yathaarthj03-blip.github.io/Yathaarth-Jaju-Portfolio./</a>.',
             cardImg: 'service_card_3.jpg',
             samples: [
-              { src: 'service_card_3.jpg', title: 'Autonomous Agent & Pipeline Architecture', tag: '01 / OVERVIEW' },
-              { src: 'services_project_3.jpg', title: 'Multi-Agent CRM & Lead Routing Orchestrator', tag: '02 / AI WORKFLOW' },
-              { src: 'services_project_1.jpg', title: 'Automated Knowledge Base & Support Copilot', tag: '03 / LLM AGENT' },
-              { src: 'card_techuilla_branding.jpg', title: 'Real-Time Data Sync & BI Trigger Engine', tag: '04 / DATA PIPELINE' },
-              { src: 'services_project_2.jpg', title: 'Outbound Personalization & Qualification Bot', tag: '05 / REVENUE OPS' }
+              { type: 'image', src: 'service_card_3.jpg', title: 'AI Automations Overview', tag: '01 / COVER' },
+              { type: 'image', src: 'ai_auto_kabir_1.png', title: 'Kabir — AI Calling Receptionist', tag: '02 / KABIR AI', url: 'https://yathaarthj03-blip.github.io/Yathaarth-Jaju-Portfolio./' },
+              { type: 'image', src: 'ai_auto_kabir_2.jpg', title: 'AI Agentic & Workflow Automation Services', tag: '03 / SERVICES PROTOTYPE', url: 'https://yathaarthj03-blip.github.io/Yathaarth-Jaju-Portfolio./' },
+              { type: 'image', src: 'ai_auto_kabir_3.png', title: 'Kabir Live Call & Appointment Assistant', tag: '04 / CALL INTERFACE', url: 'https://yathaarthj03-blip.github.io/Yathaarth-Jaju-Portfolio./' }
             ]
           },
           '4': {
-            num: '04',
+            num: '03',
             category: 'CREATE',
             title: 'Video Editing',
-            desc: 'We craft high-retention editorial cuts engineered for modern attention spans—combining kinetic pacing, precision sound design, seamless VFX transitions, and narrative rhythm that drive brand recall. Whether cutting flagship commercial anthems or high-velocity social reels, every frame is structured to hook viewers immediately and convert attention into action.',
+            desc: 'We craft high-retention editorial cuts engineered for modern attention spans—combining kinetic pacing, precision sound design, seamless VFX transitions, and narrative rhythm that drive brand recall and conversion.',
             cardImg: 'service_card_4.jpg',
+            hasVideos: true,
             samples: [
-              { src: 'service_card_4.jpg', title: 'Multi-Track Timeline & Narrative Pacing', tag: '01 / OVERVIEW' },
-              { src: 'services_project_1.jpg', title: 'High-Retention Brand Anthem Editorial Cut', tag: '02 / COMMERCIAL CUT' },
-              { src: 'card_untitled_clothing.png', title: 'Fashion Campaign Rhythmic Montage & Sound', tag: '03 / CAMPAIGN EDIT' },
-              { src: 'card_audio_king.png', title: 'Dynamic Product Teaser & SFX Mastering', tag: '04 / PRODUCT REEL' },
-              { src: 'services_project_3.jpg', title: 'Social-First Short-Form Hook & Pacing System', tag: '05 / RETENTION EDIT' }
+              { type: 'image', src: 'service_card_4.jpg', title: 'Video Editing Overview', tag: '01 / COVER' },
+              { type: 'video', src: 'vid_ve_email_id_tips.mp4', title: 'Email Id tips', tag: '02 / VIDEO EDITING' },
+              { type: 'video', src: 'vid_ve_business_ads.mp4', title: 'Business ads', tag: '03 / VIDEO EDITING' },
+              { type: 'video', src: 'vid_ve_flipkart_goodies.mp4', title: 'Flipkart Goodies', tag: '04 / VIDEO EDITING' },
+              { type: 'video', src: 'vid_ve_storylabs.mp4', title: 'Storylabs', tag: '05 / VIDEO EDITING' }
             ]
           },
           '5': {
-            num: '05',
+            num: '04',
             category: 'CREATE',
             title: 'SaaS Videos',
-            desc: 'We turn complex software products into clear, high-converting launch films and interactive UI walkthroughs—handling the entire production cycle from scriptwriting and UI motion design to voiceover and bespoke sound scoring. We abstract intricate workflows into crisp visual stories that accelerate user onboarding, boost demo bookings, and elevate product launches.',
+            desc: 'We turn complex software products into clear, high-converting launch films and interactive UI walkthroughs—handling the entire production cycle from scriptwriting and UI motion design to voiceover and bespoke sound scoring.',
             cardImg: 'service_card_5.jpg',
+            hasVideos: true,
             samples: [
-              { src: 'service_card_5.jpg', title: 'Interactive SaaS Product Motion System', tag: '01 / OVERVIEW' },
-              { src: 'services_project_2.jpg', title: 'Flagship Product Launch & Feature Film', tag: '02 / LAUNCH FILM' },
-              { src: 'card_health_streak.png', title: 'UI Walkthrough & Onboarding Explainer', tag: '03 / UI WALKTHROUGH' },
-              { src: 'services_project_1.jpg', title: 'Enterprise Dashboard Workflow Demonstration', tag: '04 / PRODUCT DEMO' },
-              { src: 'card_techuilla_branding.jpg', title: 'Category-Defining SaaS Brand Story', tag: '05 / EXPLAINER' }
+              { type: 'image', src: 'service_card_5.jpg', title: 'SaaS Videos Overview', tag: '01 / COVER' },
+              { type: 'video', src: 'vid_saas_interviews.mp4', title: 'SaaS explainer for interviews', tag: '02 / SAAS VIDEO' },
+              { type: 'video', src: 'vid_saas_phonepe.mp4', title: 'Phonepe', tag: '03 / SAAS VIDEO' },
+              { type: 'video', src: 'vid_saas_strivio.mp4', title: 'Strivio', tag: '04 / SAAS VIDEO' }
             ]
           },
           '6': {
-            num: '06',
+            num: '05',
             category: 'CREATE',
             title: 'Graphic Designing',
-            desc: 'We craft unmistakable visual identities, cohesive brand design systems, tactile packaging, and high-impact campaign key visuals that elevate brand authority across every digital and physical touchpoint. By uniting strategic positioning with bold typographic and editorial craft, we build visual languages that command instant recognition in crowded markets.',
+            desc: 'We craft unmistakable visual identities, cohesive brand design systems, tactile packaging, and high-impact campaign key visuals that elevate brand authority across every digital and physical touchpoint.',
             cardImg: 'service_card_6.jpg',
             samples: [
-              { src: 'service_card_6.jpg', title: 'Brand Identity & Visual System Architecture', tag: '01 / OVERVIEW' },
-              { src: 'card_techuilla_branding.jpg', title: 'Complete Corporate Identity & Typography Guide', tag: '02 / BRAND SYSTEM' },
-              { src: 'card_untitled_clothing.png', title: 'Apparel & Editorial Visual Direction', tag: '03 / KEY VISUALS' },
-              { src: 'card_rama_trichology.jpg', title: 'Clinical Luxury Packaging & Collateral Suite', tag: '04 / PACKAGING' },
-              { src: 'card_kaali_mata.png', title: 'Bespoke Key Art & Poster Design Series', tag: '05 / ART DIRECTION' }
+              { type: 'image', src: 'service_card_6.jpg', title: 'Graphic Designing Overview', tag: '01 / COVER' },
+              { type: 'image', src: 'services_project_2.jpg', title: 'Soap Dispenser Packaging Design', tag: '02 / PACKAGING' },
+              { type: 'image', src: 'services_project_3.jpg', title: 'UNTITLED Clothing Co.', tag: '03 / BRAND IDENTITY' },
+              { type: 'image', src: 'services_project_1.jpg', title: 'Aurora Coffee Roasters', tag: '04 / VISUAL SYSTEM' }
             ]
           },
           '7': {
-            num: '07',
+            num: '06',
             category: 'CREATE',
             title: 'Cinematography',
-            desc: 'We deliver cinema-grade commercial production from concept to final master—combining anamorphic lens work, expressive studio and on-location lighting, choreographed camera movement, and theatrical colour grading. Our directors and DPs craft visceral visual narratives that give ambitious brands the texture, scale, and emotional weight of cinema.',
+            desc: 'We deliver cinema-grade commercial production from concept to final master—combining anamorphic lens work, expressive studio and on-location lighting, choreographed camera movement, and theatrical colour grading.',
             cardImg: 'service_card_7.jpg',
+            hasVideos: true,
             samples: [
-              { src: 'service_card_7.jpg', title: 'Cinema Optics, Lighting & DaVinci Grading', tag: '01 / OVERVIEW' },
-              { src: 'card_client_meeting.jpg', title: 'On-Location Documentary & Executive Film', tag: '02 / PRODUCTION' },
-              { src: 'card_hindustan_tyre.jpg', title: 'Heavy Industrial Automotive Commercial Shoot', tag: '03 / AUTOMOTIVE' },
-              { src: 'services_project_1.jpg', title: 'Studio Macro Tabletop & Lighting Directing', tag: '04 / STUDIO SHOOT' },
-              { src: 'services_project_3.jpg', title: 'Theatrical Colour Grading & Finishing Suite', tag: '05 / COLOUR GRADE' }
+              { type: 'image', src: 'service_card_7.jpg', title: 'Cinematography Overview', tag: '01 / COVER' },
+              { type: 'video', src: 'vid_cinema_ganesh_chaturthi.mp4', title: 'Ganesh Chaturthi', tag: '02 / CINEMATOGRAPHY' }
             ]
           },
           '8': {
-            num: '08',
+            num: '07',
             category: 'CREATE',
             title: '2D Animations',
-            desc: 'We bring complex ideas to life through expressive 2D motion graphics, frame-by-frame character animation, and bold kinetic typography engineered for instant comprehension and lasting visual memorability. Every transition and keyframe is choreographed with custom curves and sound accents to keep audiences captivated from the first second to the final call to action.',
+            desc: 'We bring complex ideas to life through expressive 2D motion graphics, frame-by-frame character animation, and bold kinetic typography engineered for instant comprehension and lasting visual memorability.',
             cardImg: 'service_card_8.jpg',
+            hasVideos: true,
             samples: [
-              { src: 'service_card_8.jpg', title: 'Vector Motion Rigging & Kinetic Keyframes', tag: '01 / OVERVIEW' },
-              { src: 'services_project_2.jpg', title: 'Kinetic Typography & Brand Motion System', tag: '02 / KINETIC TYPE' },
-              { src: 'card_health_streak.png', title: 'Illustrated Product Story & Character Rig', tag: '03 / 2D STORYTELLING' },
-              { src: 'card_techuilla_branding.jpg', title: 'Dynamic Logo & UI Micro-Interaction Suite', tag: '04 / MOTION SYSTEM' },
-              { src: 'services_project_1.jpg', title: 'Frame-by-Frame Editorial Explainer Sequence', tag: '05 / CEL ANIMATION' }
+              { type: 'image', src: 'service_card_8.jpg', title: '2D Animations Overview', tag: '01 / COVER' },
+              { type: 'video', src: 'vid_2d_animation.mp4', title: '2D video', tag: '02 / 2D ANIMATION' }
             ]
           },
           '9': {
-            num: '09',
+            num: '08',
             category: 'CREATE',
             title: '3D Animations',
-            desc: 'We produce photorealistic 3D product renders, dynamic fluid and cloth simulations, exploded hardware teardowns, architectural visualizations, and cinematic CGI motion sequences that showcase every material detail with precision. Our physically based lighting and custom shader pipelines let customers experience your product from impossible angles before it ever ships.',
+            desc: 'We produce high-retention 3D animated storytelling and cinematic CGI episodes for HisYtStory—combining expressive character rigging, atmospheric lighting, and viral narrative pacing.',
             cardImg: 'service_card_9.jpg',
+            hasVideos: true,
+            isYouTube3D: true,
             samples: [
-              { src: 'service_card_9.jpg', title: '3D Viewport Simulation & Shader Pipeline', tag: '01 / OVERVIEW' },
-              { src: 'card_3d_product.png', title: 'Photorealistic Hardware & Material CGI Reveal', tag: '02 / 3D PRODUCT' },
-              { src: 'card_soap_dispenser.jpg', title: 'Industrial Design Exploded Teardown & Lighting', tag: '03 / CGI TEARDOWN' },
-              { src: 'card_audio_king.png', title: 'Acoustic Wave & Hard-Surface Motion Render', tag: '04 / SIMULATION' },
-              { src: 'services_project_3.jpg', title: 'Abstract Architectural & Volumetric Environment', tag: '05 / ENVIRONMENT' }
+              { type: 'image', src: 'service_card_9.jpg', title: '3D Animations Flagship Overview', tag: '01 / COVER' },
+              { type: 'youtube', videoId: 'CKjlKvKTz0s', title: 'The Game that lasted Fifty Years', tag: '02 / HISYTSTORY' },
+              { type: 'youtube', videoId: 'Y09ReaDyEuw', title: 'My School Nurse Iced My Broken Leg', tag: '03 / HISYTSTORY' },
+              { type: 'youtube', videoId: 'JXiwxn6VpwM', title: 'Dad Refused to Lose', tag: '04 / HISYTSTORY' },
+              { type: 'youtube', videoId: 'gFy3TamJNkg', title: 'She Hated my Gift', tag: '05 / HISYTSTORY' },
+              { type: 'youtube', videoId: 'Tf3wVEpn8wU', title: 'What was clapping', tag: '06 / HISYTSTORY' }
             ]
           },
           '10': {
-            num: '10',
+            num: '09',
             category: 'CREATE',
             title: 'AI Creatives',
-            desc: 'We pioneer next-generation generative visual campaigns, bespoke diffusion workflows, custom-trained brand style models, and rapid AI concept films that unlock impossible worlds at production scale. By blending art direction and compositing craft with frontier generative models, we deliver studio-grade campaign visuals in a fraction of traditional production timelines.',
+            desc: 'We pioneer next-generation generative visual campaigns, bespoke diffusion workflows, mythological and editorial AI films, and rapid concept productions that unlock impossible worlds at production scale.',
             cardImg: 'service_card_10.jpg',
+            hasVideos: true,
             samples: [
-              { src: 'service_card_10.jpg', title: 'Generative Visual Pipeline & Neural Direction', tag: '01 / OVERVIEW' },
-              { src: 'card_kaali_mata.png', title: 'Bespoke Mythological & Editorial AI Key Art', tag: '02 / NEURAL ART' },
-              { src: 'card_untitled_clothing.png', title: 'Generative Fashion Lookbook & Virtual Set', tag: '03 / VIRTUAL SHOOT' },
-              { src: 'card_3d_product.png', title: 'AI-Assisted Concept Environment & Product Staging', tag: '04 / AD CREATIVE' },
-              { src: 'services_project_1.jpg', title: 'High-Velocity Multi-Variant Ad Creative Matrix', tag: '05 / CAMPAIGN SCALE' }
+              { type: 'image', src: 'service_card_10.jpg', title: 'AI Creatives Flagship Overview', tag: '01 / COVER' },
+              { type: 'video', src: 'vid_ai_hungama_ho_gaya.mp4', title: 'Hungama Ho gaya', tag: '02 / AI CREATIVES' },
+              { type: 'video', src: 'vid_ai_kaali_maa.mp4', title: 'Kaali Maa', tag: '03 / AI CREATIVES' },
+              { type: 'video', src: 'vid_ai_varaha.mp4', title: 'Varaha', tag: '04 / AI CREATIVES' },
+              { type: 'video', src: 'vid_ai_dd_blessings.mp4', title: 'DD Blessings', tag: '05 / AI CREATIVES' }
             ]
           },
           '11': {
-            num: '11',
+            num: '10',
             category: 'GROWTH',
             title: 'Meta Marketing',
-            desc: 'We scale profitable customer acquisition across Facebook and Instagram through full-funnel creative testing, precision first-party audience architecture, CAPI server-side attribution, and disciplined ROAS optimization. We pair thumb-stopping direct-response video and static ad variations with rigorous media buying to turn paid social into a predictable revenue channel.',
+            desc: 'We scale profitable customer acquisition across Facebook and Instagram through full-funnel creative testing, precision first-party audience architecture, CAPI server-side attribution, and disciplined ROAS optimization.',
             cardImg: 'service_card_11.jpg',
             samples: [
-              { src: 'service_card_11.jpg', title: 'Full-Funnel Meta Acquisition & ROAS Engine', tag: '01 / OVERVIEW' },
-              { src: 'card_untitled_clothing.png', title: 'D2C Apparel 4.8x ROAS Creative Testing Matrix', tag: '02 / D2C SCALING' },
-              { src: 'card_rama_trichology.jpg', title: 'High-Intent Lead Generation & Funnel System', tag: '03 / LEAD ENGINE' },
-              { src: 'card_audio_king.png', title: 'Dynamic Catalog Retargeting & Video Hook Suite', tag: '04 / CREATIVE ADS' },
-              { src: 'services_project_2.jpg', title: 'Real-Time Attribution & Cohort ROAS Dashboard', tag: '05 / ANALYTICS' }
+              { type: 'image', src: 'service_card_11.jpg', title: 'Full-Funnel Meta Acquisition & ROAS Engine', tag: '01 / OVERVIEW' },
+              { type: 'image', src: 'card_untitled_clothing.png', title: 'D2C Apparel 4.8x ROAS Creative Testing Matrix', tag: '02 / D2C SCALING' },
+              { type: 'image', src: 'card_rama_trichology.jpg', title: 'High-Intent Lead Generation & Funnel System', tag: '03 / LEAD ENGINE' },
+              { type: 'image', src: 'card_audio_king.png', title: 'Dynamic Catalog Retargeting & Video Hook Suite', tag: '04 / CREATIVE ADS' },
+              { type: 'image', src: 'services_project_2.jpg', title: 'Real-Time Attribution & Cohort ROAS Dashboard', tag: '05 / ANALYTICS' }
             ]
           },
           '12': {
-            num: '12',
+            num: '11',
             category: 'GROWTH',
             title: 'Google Ads Marketing',
-            desc: 'We capture high-intent search and shopping demand from day one—engineering granular Search, Performance Max, YouTube in-stream, and remarketing campaigns that maximize qualified conversions and lower CPA. Through continuous query mining, feed optimization, and conversion value bidding, we ensure your brand dominates every bottom-of-funnel buying moment.',
+            desc: 'We capture high-intent search and shopping demand from day one—engineering granular Search, Performance Max, YouTube in-stream, and remarketing campaigns that maximize qualified conversions and lower CPA.',
             cardImg: 'service_card_12.jpg',
             samples: [
-              { src: 'service_card_12.jpg', title: 'High-Intent Search, PMax & YouTube Architecture', tag: '01 / OVERVIEW' },
-              { src: 'card_hindustan_tyre.jpg', title: 'National Search & Dealer Demand Capture System', tag: '02 / SEARCH ENGINE' },
-              { src: 'card_soap_dispenser.jpg', title: 'Google Shopping & Performance Max Feed Scaling', tag: '03 / PMAX E-COM' },
-              { src: 'services_project_1.jpg', title: 'YouTube In-Stream Direct-Response Video Funnel', tag: '04 / YOUTUBE ADS' },
-              { src: 'services_project_3.jpg', title: 'Conversion Rate & Bid Strategy Telemetry', tag: '05 / CPA OPTIMIZATION' }
+              { type: 'image', src: 'service_card_12.jpg', title: 'High-Intent Search, PMax & YouTube Architecture', tag: '01 / OVERVIEW' },
+              { type: 'image', src: 'card_hindustan_tyre.jpg', title: 'National Search & Dealer Demand Capture System', tag: '02 / SEARCH ENGINE' },
+              { type: 'image', src: 'card_soap_dispenser.jpg', title: 'Google Shopping & Performance Max Feed Scaling', tag: '03 / PMAX E-COM' },
+              { type: 'image', src: 'services_project_1.jpg', title: 'YouTube In-Stream Direct-Response Video Funnel', tag: '04 / YOUTUBE ADS' },
+              { type: 'image', src: 'services_project_3.jpg', title: 'Conversion Rate & Bid Strategy Telemetry', tag: '05 / CPA OPTIMIZATION' }
             ]
           }
         };
@@ -5745,6 +6246,58 @@ Best regards,
         let totalSlides = 5;
         let autoSlideTimer = null;
         let initialSlideTimeout = null;
+        let ytPlayersMap = {};
+        let ytProgressPollTimer = null;
+        let ytApiReady = false;
+
+        // Load YouTube IFrame API once for chromeless 3D video playback
+        if (!window.YT) {
+          const tag = document.createElement('script');
+          tag.src = 'https://www.youtube.com/iframe_api';
+          document.head.appendChild(tag);
+        } else if (window.YT && window.YT.Player) {
+          ytApiReady = true;
+        }
+        window.onYouTubeIframeAPIReady = function() {
+          ytApiReady = true;
+        };
+
+        function formatSeconds(sec) {
+          if (!sec || isNaN(sec) || sec < 0) return '0:00';
+          const m = Math.floor(sec / 60);
+          const s = Math.floor(sec % 60);
+          return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        function pauseAllMediaInCarousel() {
+          // Pause all native HTML5 videos
+          const vids = Array.from(carouselTrack.querySelectorAll('video.custom-service-video'));
+          vids.forEach(v => {
+            try { v.pause(); } catch (e) {}
+          });
+          // Pause all YouTube players
+          Object.values(ytPlayersMap).forEach(entry => {
+            if (entry && entry.player && typeof entry.player.pauseVideo === 'function') {
+              try { entry.player.pauseVideo(); } catch (e) {}
+            }
+            if (entry && entry.stage) {
+              entry.stage.classList.remove('is-playing');
+            }
+          });
+        }
+
+        function destroyYouTubePlayers() {
+          if (ytProgressPollTimer) {
+            clearInterval(ytProgressPollTimer);
+            ytProgressPollTimer = null;
+          }
+          Object.values(ytPlayersMap).forEach(entry => {
+            if (entry && entry.player && typeof entry.player.destroy === 'function') {
+              try { entry.player.destroy(); } catch (e) {}
+            }
+          });
+          ytPlayersMap = {};
+        }
 
         function clearCarouselTimers() {
           if (initialSlideTimeout) {
@@ -5757,8 +6310,42 @@ Best regards,
           }
         }
 
+        function updateYtMetaBarForCurrentSlide() {
+          if (!elYtMetaBar) return;
+          const data = SERVICE_DETAILS[activeCardId];
+          if (!data || !data.isYouTube3D) {
+            elYtMetaBar.classList.remove('is-visible');
+            return;
+          }
+          const sample = data.samples[currentSlideIndex];
+          // Even on slide 0 (cover), show the first 3D video's telemetry or active video's telemetry
+          const activeYtSample = (sample && sample.type === 'youtube')
+            ? sample
+            : data.samples.find(s => s.type === 'youtube');
+
+          if (!activeYtSample) {
+            elYtMetaBar.classList.remove('is-visible');
+            return;
+          }
+
+          const stat = YT_LIVE_STATS[activeYtSample.videoId] || {
+            title: activeYtSample.title,
+            views: 1500000,
+            likes: 45000,
+            uploadDate: 'Jul 17, 2024'
+          };
+
+          elYtMetaBar.classList.add('is-visible');
+          if (elYtMetaTitle) elYtMetaTitle.textContent = activeYtSample.title;
+          if (elYtMetaViews) elYtMetaViews.textContent = formatNumberCommas(stat.views);
+          if (elYtMetaLikes) elYtMetaLikes.textContent = formatNumberCommas(stat.likes);
+          if (elYtMetaDate) elYtMetaDate.textContent = stat.uploadDate;
+        }
+
         function goToSlide(index, resetTimer = true) {
           if (totalSlides <= 0) return;
+          pauseAllMediaInCarousel();
+
           currentSlideIndex = ((index % totalSlides) + totalSlides) % totalSlides;
           carouselTrack.style.transform = `translate3d(-${currentSlideIndex * 100}%, 0, 0)`;
 
@@ -5771,37 +6358,445 @@ Best regards,
             carouselCounter.textContent = `${curStr} / ${totStr}`;
           }
 
-          if (resetTimer && isDetailOpen) {
+          updateYtMetaBarForCurrentSlide();
+
+          const data = SERVICE_DETAILS[activeCardId];
+          // Do not auto-advance slides on video cards so video playback is never interrupted
+          if (resetTimer && isDetailOpen && (!data || !data.hasVideos)) {
             if (autoSlideTimer) clearInterval(autoSlideTimer);
             autoSlideTimer = setInterval(() => {
               goToSlide(currentSlideIndex + 1, false);
-            }, 3400);
+            }, 3800);
           }
         }
 
+        function getPlayIconSvg() {
+          return `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>`;
+        }
+
+        function getPauseIconSvg() {
+          return `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="5" height="16" rx="1"></rect><rect x="14" y="4" width="5" height="16" rx="1"></rect></svg>`;
+        }
+
+        function getVolIconSvg(isMuted) {
+          if (isMuted) {
+            return `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
+          }
+          return `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>`;
+        }
+
+        function buildCustomControlsMarkup() {
+          return `
+            <button type="button" class="cv-center-play-btn" aria-label="Play video">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <polygon points="7 4 21 12 7 20 7 4"></polygon>
+              </svg>
+            </button>
+            <div class="custom-video-controls">
+              <button type="button" class="cv-ctrl-btn cv-btn-play" aria-label="Play or Pause">
+                ${getPlayIconSvg()}
+              </button>
+              <button type="button" class="cv-ctrl-btn cv-btn-rew" aria-label="Rewind 10 seconds" title="Rewind 10s">
+                <span>-10s</span>
+              </button>
+              <button type="button" class="cv-ctrl-btn cv-btn-fwd" aria-label="Forward 10 seconds" title="Forward 10s">
+                <span>+10s</span>
+              </button>
+              <div class="cv-progress-wrap">
+                <div class="cv-progress-bar" role="slider" aria-label="Seek timeline">
+                  <div class="cv-progress-fill"></div>
+                </div>
+                <span class="cv-time-label">0:00 / 0:00</span>
+              </div>
+              <div class="cv-vol-wrap">
+                <button type="button" class="cv-ctrl-btn cv-btn-vol" aria-label="Mute or Unmute" title="Volume">
+                  ${getVolIconSvg(false)}
+                </button>
+                <input type="range" class="cv-vol-slider" min="0" max="1" step="0.05" value="1" aria-label="Volume level" />
+              </div>
+            </div>
+          `;
+        }
+
+        function bindHtml5VideoControls(slideEl) {
+          const stage = slideEl.querySelector('.custom-video-stage');
+          const video = slideEl.querySelector('video.custom-service-video');
+          if (!stage || !video) return;
+
+          const centerPlayBtn = stage.querySelector('.cv-center-play-btn');
+          const btnPlay = stage.querySelector('.cv-btn-play');
+          const btnRew = stage.querySelector('.cv-btn-rew');
+          const btnFwd = stage.querySelector('.cv-btn-fwd');
+          const progBar = stage.querySelector('.cv-progress-bar');
+          const progFill = stage.querySelector('.cv-progress-fill');
+          const timeLabel = stage.querySelector('.cv-time-label');
+          const btnVol = stage.querySelector('.cv-btn-vol');
+          const volSlider = stage.querySelector('.cv-vol-slider');
+
+          function togglePlay(e) {
+            if (e) e.stopPropagation();
+            if (video.paused || video.ended) {
+              pauseAllMediaInCarousel();
+              video.play().catch(() => {});
+            } else {
+              video.pause();
+            }
+          }
+
+          function syncTimeUI() {
+            const cur = video.currentTime || 0;
+            const dur = (video.duration && isFinite(video.duration)) ? video.duration : 0;
+            const pct = dur > 0 ? Math.min(100, Math.max(0, (cur / dur) * 100)) : 0;
+            if (progFill) progFill.style.width = `${pct.toFixed(2)}%`;
+            if (timeLabel) timeLabel.textContent = `${formatSeconds(cur)} / ${formatSeconds(dur)}`;
+          }
+
+          video.addEventListener('play', () => {
+            stage.classList.add('is-playing');
+            if (btnPlay) btnPlay.innerHTML = getPauseIconSvg();
+            clearCarouselTimers();
+          });
+
+          video.addEventListener('pause', () => {
+            stage.classList.remove('is-playing');
+            if (btnPlay) btnPlay.innerHTML = getPlayIconSvg();
+          });
+
+          video.addEventListener('ended', () => {
+            stage.classList.remove('is-playing');
+            if (btnPlay) btnPlay.innerHTML = getPlayIconSvg();
+          });
+
+          video.addEventListener('loadedmetadata', syncTimeUI);
+          video.addEventListener('timeupdate', syncTimeUI);
+
+          video.addEventListener('click', togglePlay);
+          if (centerPlayBtn) centerPlayBtn.addEventListener('click', togglePlay);
+          if (btnPlay) btnPlay.addEventListener('click', togglePlay);
+
+          if (btnRew) {
+            btnRew.addEventListener('click', (e) => {
+              e.stopPropagation();
+              video.currentTime = Math.max(0, (video.currentTime || 0) - 10);
+              syncTimeUI();
+            });
+          }
+
+          if (btnFwd) {
+            btnFwd.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const dur = (video.duration && isFinite(video.duration)) ? video.duration : 9999;
+              video.currentTime = Math.min(dur, (video.currentTime || 0) + 10);
+              syncTimeUI();
+            });
+          }
+
+          if (progBar) {
+            progBar.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const rect = progBar.getBoundingClientRect();
+              const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / Math.max(1, rect.width)));
+              if (video.duration && isFinite(video.duration)) {
+                video.currentTime = ratio * video.duration;
+                syncTimeUI();
+              }
+            });
+          }
+
+          if (btnVol) {
+            btnVol.addEventListener('click', (e) => {
+              e.stopPropagation();
+              video.muted = !video.muted;
+              btnVol.innerHTML = getVolIconSvg(video.muted || video.volume === 0);
+              if (volSlider) volSlider.value = video.muted ? '0' : String(video.volume);
+            });
+          }
+
+          if (volSlider) {
+            volSlider.addEventListener('input', (e) => {
+              e.stopPropagation();
+              const val = parseFloat(volSlider.value);
+              video.volume = val;
+              video.muted = (val === 0);
+              if (btnVol) btnVol.innerHTML = getVolIconSvg(video.muted);
+            });
+          }
+        }
+
+        function bindChromelessYouTubeControls(slideEl, videoId, slideIdx) {
+          const stage = slideEl.querySelector('.custom-video-stage');
+          const targetDiv = slideEl.querySelector('.yt-iframe-target');
+          const clickCatcher = slideEl.querySelector('.yt-click-catcher');
+          if (!stage || !targetDiv) return;
+
+          const centerPlayBtn = stage.querySelector('.cv-center-play-btn');
+          const btnPlay = stage.querySelector('.cv-btn-play');
+          const btnRew = stage.querySelector('.cv-btn-rew');
+          const btnFwd = stage.querySelector('.cv-btn-fwd');
+          const progBar = stage.querySelector('.cv-progress-bar');
+          const progFill = stage.querySelector('.cv-progress-fill');
+          const timeLabel = stage.querySelector('.cv-time-label');
+          const btnVol = stage.querySelector('.cv-btn-vol');
+          const volSlider = stage.querySelector('.cv-vol-slider');
+
+          let playerInstance = null;
+          let isReady = false;
+          let wantPlayOnReady = false;
+
+          function ensurePlayerCreated() {
+            if (playerInstance || !window.YT || !window.YT.Player) return;
+            playerInstance = new window.YT.Player(targetDiv, {
+              videoId: videoId,
+              playerVars: {
+                autoplay: 0,
+                controls: 0,
+                disablekb: 1,
+                rel: 0,
+                modestbranding: 1,
+                iv_load_policy: 3,
+                fs: 0,
+                playsinline: 1,
+                origin: window.location.origin
+              },
+              events: {
+                onReady: function(ev) {
+                  isReady = true;
+                  syncYtUI();
+                  if (wantPlayOnReady) {
+                    wantPlayOnReady = false;
+                    ev.target.playVideo();
+                  }
+                },
+                onStateChange: function(ev) {
+                  // YT.PlayerState.PLAYING === 1
+                  if (ev.data === 1) {
+                    stage.classList.add('is-playing');
+                    if (btnPlay) btnPlay.innerHTML = getPauseIconSvg();
+                    clearCarouselTimers();
+                  } else if (ev.data === 2 || ev.data === 0) {
+                    stage.classList.remove('is-playing');
+                    if (btnPlay) btnPlay.innerHTML = getPlayIconSvg();
+                  }
+                  syncYtUI();
+                }
+              }
+            });
+            ytPlayersMap[slideIdx] = { player: playerInstance, stage, sync: syncYtUI };
+          }
+
+          function syncYtUI() {
+            if (!isReady || !playerInstance || typeof playerInstance.getCurrentTime !== 'function') return;
+            try {
+              const cur = playerInstance.getCurrentTime() || 0;
+              const dur = playerInstance.getDuration() || 0;
+              const pct = dur > 0 ? Math.min(100, Math.max(0, (cur / dur) * 100)) : 0;
+              if (progFill) progFill.style.width = `${pct.toFixed(2)}%`;
+              if (timeLabel) timeLabel.textContent = `${formatSeconds(cur)} / ${formatSeconds(dur)}`;
+            } catch (e) {}
+          }
+
+          function toggleYtPlay(e) {
+            if (e) e.stopPropagation();
+            if (!playerInstance) {
+              wantPlayOnReady = true;
+              ensurePlayerCreated();
+              return;
+            }
+            if (!isReady) {
+              wantPlayOnReady = true;
+              return;
+            }
+            const state = playerInstance.getPlayerState();
+            if (state === 1) {
+              playerInstance.pauseVideo();
+            } else {
+              pauseAllMediaInCarousel();
+              playerInstance.playVideo();
+            }
+          }
+
+          if (clickCatcher) clickCatcher.addEventListener('click', toggleYtPlay);
+          if (centerPlayBtn) centerPlayBtn.addEventListener('click', toggleYtPlay);
+          if (btnPlay) btnPlay.addEventListener('click', toggleYtPlay);
+
+          if (btnRew) {
+            btnRew.addEventListener('click', (e) => {
+              e.stopPropagation();
+              if (!isReady || !playerInstance) return;
+              const cur = playerInstance.getCurrentTime() || 0;
+              playerInstance.seekTo(Math.max(0, cur - 10), true);
+              syncYtUI();
+            });
+          }
+
+          if (btnFwd) {
+            btnFwd.addEventListener('click', (e) => {
+              e.stopPropagation();
+              if (!isReady || !playerInstance) return;
+              const cur = playerInstance.getCurrentTime() || 0;
+              const dur = playerInstance.getDuration() || (cur + 10);
+              playerInstance.seekTo(Math.min(dur, cur + 10), true);
+              syncYtUI();
+            });
+          }
+
+          if (progBar) {
+            progBar.addEventListener('click', (e) => {
+              e.stopPropagation();
+              if (!isReady || !playerInstance) return;
+              const rect = progBar.getBoundingClientRect();
+              const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / Math.max(1, rect.width)));
+              const dur = playerInstance.getDuration() || 0;
+              if (dur > 0) {
+                playerInstance.seekTo(ratio * dur, true);
+                syncYtUI();
+              }
+            });
+          }
+
+          if (btnVol) {
+            btnVol.addEventListener('click', (e) => {
+              e.stopPropagation();
+              if (!isReady || !playerInstance) return;
+              if (playerInstance.isMuted()) {
+                playerInstance.unMute();
+                btnVol.innerHTML = getVolIconSvg(false);
+                if (volSlider) volSlider.value = String((playerInstance.getVolume() || 100) / 100);
+              } else {
+                playerInstance.mute();
+                btnVol.innerHTML = getVolIconSvg(true);
+                if (volSlider) volSlider.value = '0';
+              }
+            });
+          }
+
+          if (volSlider) {
+            volSlider.addEventListener('input', (e) => {
+              e.stopPropagation();
+              if (!isReady || !playerInstance) return;
+              const val = parseFloat(volSlider.value);
+              const vol100 = Math.round(val * 100);
+              playerInstance.setVolume(vol100);
+              if (vol100 === 0) {
+                playerInstance.mute();
+              } else if (playerInstance.isMuted()) {
+                playerInstance.unMute();
+              }
+              if (btnVol) btnVol.innerHTML = getVolIconSvg(vol100 === 0);
+            });
+          }
+
+          // Initialize player immediately if YT API is ready, or poll until ready
+          const initCheck = setInterval(() => {
+            if (window.YT && window.YT.Player) {
+              clearInterval(initCheck);
+              ensurePlayerCreated();
+            }
+          }, 150);
+        }
+
         function populateDetailStage(cardId) {
+          destroyYouTubePlayers();
           const data = SERVICE_DETAILS[cardId] || SERVICE_DETAILS['1'];
           if (elTitle) elTitle.textContent = data.title;
-          if (elDesc) elDesc.textContent = data.desc;
+          if (elDesc) {
+            if (data.descHtml) {
+              elDesc.innerHTML = data.descHtml;
+            } else {
+              elDesc.textContent = data.desc;
+            }
+          }
+
+          if (elLifetimeViewsBlock) {
+            if (data.isYouTube3D) {
+              elLifetimeViewsBlock.classList.add('is-visible');
+              refresh3DViewsUI();
+            } else {
+              elLifetimeViewsBlock.classList.remove('is-visible');
+            }
+          }
 
           totalSlides = data.samples.length;
           currentSlideIndex = 0;
 
           carouselTrack.style.transition = 'none';
           carouselTrack.style.transform = 'translate3d(0%, 0, 0)';
-          carouselTrack.innerHTML = data.samples.map((item, idx) => `
-            <div class="service-detail-slide${idx === 0 ? ' is-active-slide' : ''}" data-slide-index="${idx}">
-              <img src="${item.src}" alt="${item.title}" decoding="async" />
-              <div class="service-detail-slide-caption">
-                <span>${item.title}</span>
-                <span class="service-detail-slide-tag">${item.tag}</span>
-              </div>
-            </div>
-          `).join('');
+
+          carouselTrack.innerHTML = data.samples.map((item, idx) => {
+            const activeCls = idx === 0 ? ' is-active-slide' : '';
+            if (item.type === 'video') {
+              return `
+                <div class="service-detail-slide${activeCls}" data-slide-index="${idx}" data-slide-type="video">
+                  <div class="custom-video-stage">
+                    <span class="video-slide-top-title">${item.title}</span>
+                    <video class="custom-service-video" src="${item.src}" playsinline preload="metadata"></video>
+                    ${buildCustomControlsMarkup()}
+                  </div>
+                </div>
+              `;
+            } else if (item.type === 'youtube') {
+              const thumbUrl = `https://i.ytimg.com/vi/${item.videoId}/hqdefault.jpg`;
+              return `
+                <div class="service-detail-slide${activeCls}" data-slide-index="${idx}" data-slide-type="youtube" data-yt-id="${item.videoId}">
+                  <div class="custom-video-stage yt-chromeless-stage">
+                    <span class="video-slide-top-title">${item.title}</span>
+                    <div class="yt-iframe-shield">
+                      <div class="yt-iframe-target" id="ytPlayerTarget_${cardId}_${idx}"></div>
+                    </div>
+                    <img class="yt-poster-cover" src="${thumbUrl}" alt="${item.title}" decoding="async" />
+                    <div class="yt-click-catcher" aria-label="Play or pause ${item.title}"></div>
+                    ${buildCustomControlsMarkup()}
+                  </div>
+                </div>
+              `;
+            } else {
+              const visitBtnHtml = item.url ? `
+                <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="slide-visit-site-btn" aria-label="Visit ${item.title}">
+                  <span>Visit Website</span>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="7" y1="17" x2="17" y2="7"></line>
+                    <polyline points="7 7 17 7 17 17"></polyline>
+                  </svg>
+                </a>
+              ` : '';
+              return `
+                <div class="service-detail-slide${activeCls}" data-slide-index="${idx}" data-slide-type="image">
+                  ${visitBtnHtml}
+                  <img src="${item.src}" alt="${item.title}" decoding="async" />
+                  <div class="service-detail-slide-caption">
+                    <span>${item.title}</span>
+                    <span class="service-detail-slide-tag">${item.tag}</span>
+                  </div>
+                </div>
+              `;
+            }
+          }).join('');
+
+          // Bind custom video & YouTube controls
+          const slideEls = Array.from(carouselTrack.querySelectorAll('.service-detail-slide'));
+          slideEls.forEach((slideEl, idx) => {
+            const stype = slideEl.getAttribute('data-slide-type');
+            if (stype === 'video') {
+              bindHtml5VideoControls(slideEl);
+            } else if (stype === 'youtube') {
+              const vid = slideEl.getAttribute('data-yt-id');
+              bindChromelessYouTubeControls(slideEl, vid, idx);
+            }
+          });
+
+          if (data.isYouTube3D) {
+            ytProgressPollTimer = setInterval(() => {
+              Object.values(ytPlayersMap).forEach(entry => {
+                if (entry && typeof entry.sync === 'function') entry.sync();
+              });
+            }, 250);
+          }
 
           if (carouselCounter) {
             carouselCounter.textContent = `01 / ${String(totalSlides).padStart(2, '0')}`;
           }
+
+          updateYtMetaBarForCurrentSlide();
 
           void carouselTrack.offsetWidth;
           carouselTrack.style.transition = 'transform 0.78s cubic-bezier(0.22, 1, 0.36, 1)';
@@ -5947,6 +6942,8 @@ Best regards,
           if (isTransitioning || !isDetailOpen) return;
           isTransitioning = true;
           clearCarouselTimers();
+          pauseAllMediaInCarousel();
+          destroyYouTubePlayers();
 
           const cardId = activeCardId || '1';
           const data = SERVICE_DETAILS[cardId] || SERVICE_DETAILS['1'];

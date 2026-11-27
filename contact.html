@@ -2876,9 +2876,9 @@
                 </a>
               </li>
               <li>
-                <a href="index.html#work" class="menu-nav-link" data-section="work">
+                <a href="index.html#about" class="menu-nav-link" data-section="about">
                   <span class="nav-text-wrap">
-                    WORK
+                    ABOUT
                     <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
                       <path class="stroke-cut" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
                       <path class="stroke-ribbon" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
@@ -2888,9 +2888,9 @@
                 </a>
               </li>
               <li>
-                <a href="index.html#about" class="menu-nav-link" data-section="about">
+                <a href="contact.html" class="menu-nav-link is-active" data-section="contact">
                   <span class="nav-text-wrap">
-                    ABOUT
+                    CONTACT US
                     <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
                       <path class="stroke-cut" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
                       <path class="stroke-ribbon" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
@@ -3729,6 +3729,13 @@ function triggerBackToHomeTransition(e) {
             triggerBackToHomeTransition(e);
           } else if (section === 'services') {
             triggerServicesTransition(e);
+          } else if (section === 'contact') {
+            e.preventDefault();
+            closeMenu();
+            const formTarget = document.getElementById('contact-form');
+            if (formTarget) {
+              formTarget.scrollIntoView({ behavior: 'smooth' });
+            }
           } else {
             closeMenu();
           }
