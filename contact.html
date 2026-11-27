@@ -24,6 +24,22 @@
   <script src="three.min.js"></script>
   <script src="MTLLoader.js"></script>
   <script src="OBJLoader.js"></script>
+  <script>
+    (function() {
+      try {
+        if (window.location.search.indexOf('transition=') !== -1) {
+          document.documentElement.classList.add('incoming-brush-transition');
+        }
+      } catch(e) {}
+    })();
+  </script>
+  <style>
+    html.incoming-brush-transition .page-transition-curtain {
+      visibility: visible !important;
+      background: #FF6600 !important;
+      pointer-events: auto !important;
+    }
+  </style>
 
   <style>
     /* ==========================================================================
@@ -3324,6 +3340,8 @@
 
       /* ------------------------------------------------------------------------
          1. UNIFIED ORANGE ZIG-ZAG BRUSH-STROKE PAGE TRANSITION ENGINE
+         (10% Slower Speed, Zero Out-Animation Clip Cut via Full Cap Margin,
+          and Hardware-Accelerated CSS Stroke-Dashoffset Transitions)
          ------------------------------------------------------------------------ */
       const curtain = document.getElementById('pageTransitionCurtain');
 
@@ -3340,99 +3358,96 @@
           orangeLen = Math.ceil(orangePath.getTotalLength() || 4600);
         } catch (e) {}
 
-        greyPath.style.strokeDasharray = `${greyLen} ${greyLen + 100}`;
-        orangePath.style.strokeDasharray = `${orangeLen} ${orangeLen + 100}`;
-        greyPath.style.strokeDashoffset = String(-greyLen);
-        orangePath.style.strokeDashoffset = String(-orangeLen);
+        const CAP_MARGIN = 420;
+        const greyFullDash = greyLen + CAP_MARGIN;
+        const orangeFullDash = orangeLen + CAP_MARGIN;
+        const greyHugeGap = greyLen * 3 + 1600;
+        const orangeHugeGap = orangeLen * 3 + 1600;
 
-        let animRafId = null;
+        greyPath.style.strokeDasharray = `${greyFullDash} ${greyHugeGap}`;
+        orangePath.style.strokeDasharray = `${orangeFullDash} ${orangeHugeGap}`;
+        greyPath.style.transition = 'none';
+        orangePath.style.transition = 'none';
+        greyPath.style.strokeDashoffset = String(-greyFullDash);
+        orangePath.style.strokeDashoffset = String(-orangeFullDash);
 
-        function easeInOutCubic(x) {
-          return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+        let timers = [];
+        function clearTimers() {
+          while (timers.length) {
+            clearTimeout(timers.pop());
+          }
         }
 
         function setHiddenIdle() {
-          if (animRafId) cancelAnimationFrame(animRafId);
-          animRafId = null;
+          clearTimers();
+          document.documentElement.classList.remove('incoming-brush-transition');
+          greyPath.style.transition = 'none';
+          orangePath.style.transition = 'none';
           overlay.classList.remove('is-brush-active', 'is-brush-full-hold', 'is-covering', 'is-active', 'is-closing');
-          greyPath.style.strokeDashoffset = String(-greyLen);
-          orangePath.style.strokeDashoffset = String(-orangeLen);
+          greyPath.style.strokeDashoffset = String(-greyFullDash);
+          orangePath.style.strokeDashoffset = String(-orangeFullDash);
         }
 
         function setFullyCoveredInstant() {
-          if (animRafId) cancelAnimationFrame(animRafId);
-          animRafId = null;
+          clearTimers();
+          greyPath.style.transition = 'none';
+          orangePath.style.transition = 'none';
           overlay.classList.add('is-brush-active', 'is-brush-full-hold');
           greyPath.style.strokeDashoffset = '0';
           orangePath.style.strokeDashoffset = '0';
         }
 
+        // In-Animation (cover): 10% slower (760ms total), GPU CSS transition
         function cover(onCovered) {
-          if (animRafId) cancelAnimationFrame(animRafId);
+          clearTimers();
+          document.documentElement.classList.remove('incoming-brush-transition');
+          greyPath.style.transition = 'none';
+          orangePath.style.transition = 'none';
           overlay.classList.remove('is-brush-full-hold', 'is-closing');
           overlay.classList.add('is-brush-active');
+          greyPath.style.strokeDashoffset = String(-greyFullDash);
+          orangePath.style.strokeDashoffset = String(-orangeFullDash);
 
-          const duration = 680;
-          const start = performance.now();
+          void overlay.offsetWidth;
 
-          function step(now) {
-            const p = Math.min(1, (now - start) / duration);
-            const gLocal = Math.max(0, Math.min(1, p / 0.82));
-            const oLocal = Math.max(0, Math.min(1, (p - 0.08) / 0.92));
+          requestAnimationFrame(() => {
+            greyPath.style.transition = 'stroke-dashoffset 630ms cubic-bezier(0.65, 0, 0.35, 1) 0ms';
+            orangePath.style.transition = 'stroke-dashoffset 700ms cubic-bezier(0.65, 0, 0.35, 1) 55ms';
+            greyPath.style.strokeDashoffset = '0';
+            orangePath.style.strokeDashoffset = '0';
 
-            const eG = easeInOutCubic(gLocal);
-            const eO = easeInOutCubic(oLocal);
-
-            greyPath.style.strokeDashoffset = ((-greyLen * (1 - eG))).toFixed(1);
-            orangePath.style.strokeDashoffset = ((-orangeLen * (1 - eO))).toFixed(1);
-
-            if (p >= 0.97) {
+            timers.push(setTimeout(() => {
               overlay.classList.add('is-brush-full-hold');
-            }
+            }, 725));
 
-            if (p < 1) {
-              animRafId = requestAnimationFrame(step);
-            } else {
-              animRafId = null;
+            timers.push(setTimeout(() => {
               overlay.classList.add('is-brush-full-hold');
-              greyPath.style.strokeDashoffset = '0';
-              orangePath.style.strokeDashoffset = '0';
               if (typeof onCovered === 'function') onCovered();
-            }
-          }
-
-          animRafId = requestAnimationFrame(step);
+            }, 765));
+          });
         }
 
+        // Out-Animation (uncover): 10% slower (960ms total), retracts fullDash + CAP_MARGIN so zero clip cut!
         function uncover(onUncovered) {
           setFullyCoveredInstant();
-          const duration = 860;
-          const start = performance.now();
+          void overlay.offsetWidth;
 
-          function step(now) {
-            const p = Math.min(1, (now - start) / duration);
-            if (p > 0.02) {
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              document.documentElement.classList.remove('incoming-brush-transition');
               overlay.classList.remove('is-brush-full-hold');
-            }
 
-            const oLocal = Math.max(0, Math.min(1, p / 0.88));
-            const gLocal = Math.max(0, Math.min(1, (p - 0.14) / 0.86));
+              orangePath.style.transition = 'stroke-dashoffset 840ms cubic-bezier(0.65, 0, 0.35, 1) 0ms';
+              greyPath.style.transition = 'stroke-dashoffset 830ms cubic-bezier(0.65, 0, 0.35, 1) 125ms';
+              orangePath.style.strokeDashoffset = String(orangeFullDash);
+              greyPath.style.strokeDashoffset = String(greyFullDash);
 
-            const eO = easeInOutCubic(oLocal);
-            const eG = easeInOutCubic(gLocal);
-
-            orangePath.style.strokeDashoffset = (orangeLen * eO).toFixed(1);
-            greyPath.style.strokeDashoffset = (greyLen * eG).toFixed(1);
-
-            if (p < 1) {
-              animRafId = requestAnimationFrame(step);
-            } else {
-              setHiddenIdle();
-              if (typeof onUncovered === 'function') onUncovered();
-            }
-          }
-
-          animRafId = requestAnimationFrame(step);
+              timers.push(setTimeout(() => {
+                setHiddenIdle();
+                if (typeof onUncovered === 'function') onUncovered();
+              }, 975));
+            });
+          });
         }
 
         window.TechuillaBrushTransition = {
@@ -3452,7 +3467,7 @@
         requestAnimationFrame(() => {
           setTimeout(() => {
             window.TechuillaBrushTransition.uncover();
-          }, 60);
+          }, 85);
         });
       }
 
@@ -3504,9 +3519,13 @@
           if (typeof closeMenu === 'function') closeMenu();
           const formTarget = document.getElementById('contact-form');
           if (formTarget) formTarget.scrollIntoView({ behavior: 'instant' });
-          setTimeout(() => {
-            window.TechuillaBrushTransition.uncover();
-          }, 50);
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              setTimeout(() => {
+                window.TechuillaBrushTransition.uncover();
+              }, 110);
+            });
+          });
         });
       }
 

@@ -15,7 +15,7 @@
   <title>Techuilla Agency — Creative Technology & Digital Marketing Studio</title>
 
   <!-- Google Fonts: Inter, Archivo, Caveat, Space Mono, Space Grotesk, Newsreader, Playfair Display -->
-    <!-- Skip Intro Immediately when Navigating from Subpages -->
+  <!-- Skip Intro & Paint Incoming Brush Transition Immediately when Navigating from Subpages -->
   <script>
     (function() {
       try {
@@ -23,8 +23,12 @@
         var params = new URLSearchParams(window.location.search);
         var navEntries = performance.getEntriesByType('navigation');
         var navType = (navEntries && navEntries.length > 0) ? navEntries[0].type : '';
+        if (params.get('transition')) {
+          document.documentElement.classList.add('incoming-brush-transition');
+          document.documentElement.classList.add('skip-intro-immediate');
+        }
         // Intro should ONLY appear if refreshing on the home page (navType === 'reload')
-        if (navType !== 'reload' && (ref.indexOf('services.html') !== -1 || ref.indexOf('contact.html') !== -1 || params.get('skipIntro') === '1' || params.get('from') === 'subpage' || (navType === 'navigate' && ref && ref.indexOf(window.location.host) !== -1 && !ref.endsWith('/index.html') && !ref.endsWith('/')))) {
+        if (navType !== 'reload' && (ref.indexOf('services.html') !== -1 || ref.indexOf('contact.html') !== -1 || params.get('skipIntro') === '1' || params.get('from') === 'subpage' || params.get('transition') || (navType === 'navigate' && ref && ref.indexOf(window.location.host) !== -1 && !ref.endsWith('/index.html') && !ref.endsWith('/')))) {
           document.documentElement.classList.add('skip-intro-immediate');
         }
       } catch(e) {}
@@ -32,6 +36,11 @@
   </script>
   <style>
     .skip-intro-immediate #intro-container { display: none !important; pointer-events: none !important; }
+    html.incoming-brush-transition .enquire-transition-overlay {
+      visibility: visible !important;
+      background: #FF6600 !important;
+      pointer-events: auto !important;
+    }
   </style>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3379,29 +3388,16 @@ input, textarea, [contenteditable="true"] {
     }
 
     /* ==========================================================================
-       9C. TESTIMONIALS SECTION — DRAFT TWO (Scroll-Pinned 3-Image Slice Reveal & Client Name Stage)
-       (Note: Testimonial Draft One is backed up in testimonial_draft_1_backup.json & index_testimonial_draft_1.html)
+       9C. TESTIMONIALS SECTION ("WHAT PEOPLE SAY ABOUT US" — VengeanceUI 3D Card Stack)
        ========================================================================== */
-    .testimonials-pin-track {
+    .testimonials-section {
       position: relative;
-      height: 560vh; /* 6 scroll chapters: Intro -> Health Streak -> AudioKing -> Rama Hair Clinic -> HisYtStory -> Outro */
-      background: var(--bg-warm, #FAF8F5);
       z-index: 8;
+      background: var(--bg-warm, #FAF8F5);
+      padding: 130px 0 150px 0;
       border-top: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.08));
       border-bottom: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.08));
-    }
-
-    .testimonials-sticky-stage {
-      position: sticky;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg-warm, #FAF8F5);
     }
 
     /* Architectural Orange & Black Checks Texture Backdrop (Matching Agency Theme) */
@@ -3410,7 +3406,7 @@ input, textarea, [contenteditable="true"] {
       inset: 0;
       pointer-events: none;
       z-index: 1;
-      opacity: 0.78;
+      opacity: 0.75;
       background-image:
         linear-gradient(to right, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
@@ -3421,223 +3417,69 @@ input, textarea, [contenteditable="true"] {
 
     .testimonials-ambient-glow {
       position: absolute;
-      top: 50%;
+      top: 52%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 1000px;
-      height: 580px;
-      background: radial-gradient(circle, rgba(255, 102, 0, 0.11) 0%, rgba(255, 102, 0, 0.03) 48%, transparent 72%);
+      width: 960px;
+      height: 540px;
+      background: radial-gradient(circle, rgba(255, 102, 0, 0.10) 0%, rgba(255, 102, 0, 0.03) 48%, transparent 72%);
       pointer-events: none;
       z-index: 1;
     }
 
-    /* 3-Image Collage Stage (Clustered around the center text like Studio Grafixo reference, enlarged by +20%) */
-    .testimonials-images-stage {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 6;
-      pointer-events: none;
-    }
-
-    .testimonial-client-cluster {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      visibility: hidden;
-    }
-
-    .testimonial-client-cluster.is-cluster-visible {
-      visibility: visible;
-    }
-
-    .t-collage-card {
-      position: absolute;
-      overflow: hidden;
-      border-radius: 6px;
-      background: #141210;
-      box-shadow: 0 26px 64px rgba(17, 17, 17, 0.18), 0 0 0 1px rgba(17, 17, 17, 0.10);
-      will-change: clip-path, -webkit-clip-path;
-      clip-path: inset(0% 100% 0% 0%);
-      -webkit-clip-path: inset(0% 100% 0% 0%);
-      transform: translate3d(0, 0, 0);
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-    }
-
-    .t-collage-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top center;
-      display: block;
-      will-change: transform;
-      transform: scale(1.08);
-      user-select: none;
-      -webkit-user-drag: none;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-    }
-
-    /* Orange Accent Edge Line on each collage frame during reveal/wipe */
-    .t-collage-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border: 1.5px solid rgba(255, 102, 0, 0.35);
-      border-radius: 6px;
-      pointer-events: none;
-      z-index: 3;
-    }
-
-    /* Client 1 — Health Streak (Enlarged >15%, Aspect Ratios: 1=16:9, 2=9:16, 3=16:9) */
-    .cluster-client-0 .card-slot-1 {
-      top: 9.5vh;
-      left: 8vw;
-      width: clamp(340px, 33vw, 520px);
-      aspect-ratio: 16 / 9;
-      z-index: 7;
-    }
-    .cluster-client-0 .card-slot-2 {
-      top: 10vh;
-      right: 8vw;
-      width: clamp(215px, 19vw, 300px);
-      aspect-ratio: 9 / 16;
-      z-index: 8;
-    }
-    .cluster-client-0 .card-slot-3 {
-      bottom: 6vh;
-      left: 24vw;
-      width: clamp(340px, 32vw, 505px);
-      aspect-ratio: 16 / 9;
-      z-index: 7;
-    }
-
-    /* Client 2 — AudioKing (Enlarged >15%, Aspect Ratios: 1=16:9, 2=16:9, 3=4:5) */
-    .cluster-client-1 .card-slot-1 {
-      top: 9.5vh;
-      left: 9vw;
-      width: clamp(335px, 31vw, 490px);
-      aspect-ratio: 16 / 9;
-      z-index: 8;
-    }
-    .cluster-client-1 .card-slot-2 {
-      bottom: 6vh;
-      left: 21vw;
-      width: clamp(360px, 34.5vw, 540px);
-      aspect-ratio: 16 / 9;
-      z-index: 7;
-    }
-    .cluster-client-1 .card-slot-3 {
-      top: 12vh;
-      right: 7vw;
-      width: clamp(265px, 23.5vw, 370px);
-      aspect-ratio: 4 / 5;
-      z-index: 9;
-    }
-
-    /* Client 3 — Rama Hair Clinic (Enlarged >15%, Aspect Ratios: 1=16:9, 2=4:5, 3=16:9) */
-    .cluster-client-2 .card-slot-1 {
-      top: 9.5vh;
-      left: 8vw;
-      width: clamp(340px, 32vw, 505px);
-      aspect-ratio: 16 / 9;
-      z-index: 7;
-    }
-    .cluster-client-2 .card-slot-2 {
-      top: 12vh;
-      right: 7vw;
-      width: clamp(265px, 23.5vw, 370px);
-      aspect-ratio: 4 / 5;
-      z-index: 8;
-    }
-    .cluster-client-2 .card-slot-3 {
-      bottom: 6vh;
-      left: 24vw;
-      width: clamp(350px, 33vw, 520px);
-      aspect-ratio: 16 / 9;
-      z-index: 7;
-    }
-
-    /* Client 4 — HisYtStory (Enlarged >15%, Aspect Ratios: 1=4:5, 2=9:16, 3=4:5) */
-    .cluster-client-3 .card-slot-1 {
-      top: 9.5vh;
-      left: 9vw;
-      width: clamp(265px, 23vw, 365px);
-      aspect-ratio: 4 / 5;
-      z-index: 8;
-    }
-    .cluster-client-3 .card-slot-2 {
-      top: 9vh;
-      right: 9vw;
-      width: clamp(215px, 19vw, 300px);
-      aspect-ratio: 9 / 16;
-      z-index: 7;
-    }
-    .cluster-client-3 .card-slot-3 {
-      bottom: 6vh;
-      left: 33vw;
-      width: clamp(260px, 22.5vw, 355px);
-      aspect-ratio: 4 / 5;
-      z-index: 9;
-    }
-
-    /* Center Typography Stage (Holds Start/End "WHAT PEOPLE SAY ABOUT US" & 4 Client Names) */
-    .testimonials-center-typo-stage {
+    .testimonials-container {
       position: relative;
-      z-index: 18;
-      width: 100%;
-      max-width: 1560px;
-      padding: 0 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .testimonial-stage-headline {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 100%;
-      margin: 0;
-      padding: 0 24px;
-      font-family: var(--font-sans);
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: -0.04em;
-      line-height: 0.96;
-      color: #111111;
-      will-change: transform, opacity, filter;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    /* Starting & Ending Title: WHAT PEOPLE SAY ABOUT US (+15% Larger with Kinetic Orange Veil Typography) */
-    .testimonial-stage-headline.is-bookend-title {
-      font-size: clamp(56px, 8.4vw, 132px);
+      z-index: 3;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 0.04em;
     }
 
-    .testimonial-stage-headline.is-bookend-title .kinetic-veil-wrap {
+    .testimonials-header {
+      text-align: center;
+      max-width: 980px;
+      margin: 0 auto 76px auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .testimonials-main-title {
+      font-family: var(--font-sans);
+      font-size: clamp(42px, 5.6vw, 82px);
+      font-weight: 800;
+      line-height: 1.04;
+      letter-spacing: -0.035em;
+      text-transform: uppercase;
+      color: #111111;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .testimonials-main-title .accent-orange {
+      color: var(--color-orange, #FF6600);
+    }
+
+    /* Kinetic Orange Layer Wipe Typography Animation for WHAT PEOPLE SAY ABOUT US */
+    .testimonials-title-line {
+      display: block;
+    }
+
+    .testimonials-main-title .kinetic-veil-wrap {
       position: relative;
       display: inline-block;
       overflow: hidden;
       vertical-align: top;
-      padding: 0.03em 0.06em;
+      padding: 2px 10px;
     }
 
-    .testimonial-stage-headline.is-bookend-title .kinetic-veil-mask {
+    .testimonials-main-title .kinetic-veil-mask {
       position: absolute;
       inset: 0;
       background: var(--color-orange, #FF6600);
@@ -3646,50 +3488,284 @@ input, textarea, [contenteditable="true"] {
       z-index: 3;
       pointer-events: none;
       will-change: transform;
+      border-radius: 3px;
     }
 
-    .testimonial-stage-headline.is-bookend-title .kinetic-veil-text {
+    .testimonials-main-title .kinetic-veil-text {
       display: inline-block;
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-      position: relative;
-      z-index: 1;
+      opacity: 0;
+      transform: translate3d(0, 10px, 0);
       will-change: transform, opacity;
     }
 
-    /* Client Name Headline in the Middle: Health Streak, AudioKing, Rama Hair Clinic, HisYtStory */
-    .testimonial-stage-headline.is-client-title {
-      font-size: clamp(54px, 8.2vw, 128px);
-      text-shadow: none !important;
+    /* Container-Free Open Layout: Large Images on Left + Swipe Controller Below Images + Right-Hand Text Block */
+    .vengeance-testimonials-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 12px 0;
     }
 
-    /* Pure Orange Font Color with Zero White Shadow or Highlight Behind */
-    .testimonial-stage-headline .accent-orange {
-      color: var(--color-orange, #FF6600);
-      text-shadow: none !important;
+    .vengeance-testimonials-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(420px, 500px) minmax(440px, 1fr);
+      column-gap: 96px;
+      row-gap: 28px;
+      width: 100%;
+      max-width: 1240px;
+      align-items: center;
+      /* Container box completely removed */
       background: transparent !important;
+      border: none !important;
       box-shadow: none !important;
-      filter: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      padding: 0 !important;
+      border-radius: 0 !important;
     }
 
-    @media (max-width: 900px) {
-      .testimonial-client-cluster .card-slot-1 {
-        top: 8vh;
-        left: 6vw;
-        width: 60vw;
+    /* Left Column: Big Image Card Stack + Left/Right Swipe Controller Below Images */
+    .vengeance-tc-left-col {
+      grid-column: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      gap: 44px;
+    }
+
+    /* Large Image Card Stack (Sized as big as the container box) */
+    .vengeance-tc-stack {
+      position: relative;
+      width: 100%;
+      max-width: 490px;
+      aspect-ratio: 1 / 1;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      perspective: 1400px;
+      -webkit-perspective: 1400px;
+    }
+
+    .vengeance-tc-card {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border: 7px solid #FFFFFF;
+      background: #141210;
+      border-radius: 20px;
+      box-shadow: 0 28px 65px rgba(17, 17, 17, 0.22), 0 0 0 1px rgba(17, 17, 17, 0.08);
+      will-change: transform, opacity;
+      transform-origin: center center;
+      transition:
+        transform 0.78s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.78s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.45s ease,
+        box-shadow 0.45s ease;
+      user-select: none;
+    }
+
+    .vengeance-tc-card.is-active {
+      border-color: #FFFFFF;
+      box-shadow: 0 34px 75px rgba(17, 17, 17, 0.28), 0 14px 36px rgba(255, 102, 0, 0.22), 0 0 0 1.5px rgba(255, 102, 0, 0.45);
+    }
+
+    .vengeance-tc-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .vengeance-tc-card-badge {
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(17, 17, 17, 0.78);
+      border: 1px solid rgba(255, 102, 0, 0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      font-family: var(--font-mono, monospace);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #FFA040;
+      pointer-events: none;
+    }
+
+    /* Left and Right Swipe Controller BELOW the Images */
+    .vengeance-tc-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 4px;
+      position: relative;
+      z-index: 20;
+    }
+
+    .vengeance-tc-nav-btn {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(17, 17, 17, 0.18);
+      background: #FFFFFF;
+      color: #111111;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer !important;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.07);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .vengeance-tc-nav-btn * {
+      cursor: pointer !important;
+    }
+
+    .vengeance-tc-nav-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+    }
+
+    .vengeance-tc-nav-btn:hover {
+      background: var(--color-orange, #FF6600);
+      border-color: var(--color-orange, #FF6600);
+      color: #111111;
+      transform: scale(1.08);
+      box-shadow: 0 12px 28px rgba(255, 102, 0, 0.34);
+    }
+
+    /* Right Column: Counter + 2x Name Title + Subtitle Role + Full Container-Scaled Description */
+    .vengeance-tc-right-col {
+      grid-column: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 490px;
+      width: 100%;
+      position: relative;
+    }
+
+    .vengeance-tc-counter {
+      text-align: right;
+      font-family: var(--font-mono, monospace);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #7A7A7A;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      margin-bottom: 18px;
+      user-select: none;
+    }
+
+    .vengeance-tc-counter .tc-active-num {
+      color: var(--color-orange, #FF6600);
+    }
+
+    .vengeance-tc-text-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
+      position: relative;
+    }
+
+    .vengeance-tc-text-content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      will-change: transform, opacity;
+      transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1), transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .vengeance-tc-quote-icon {
+      width: 44px;
+      height: 44px;
+      color: var(--color-orange, #FF6600);
+      opacity: 0.90;
+    }
+
+    .vengeance-tc-title-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Name is TWICE the size it was previously (was clamp(22px, 2.1vw, 28px) -> now clamp(44px, 4.2vw, 56px)) */
+    .vengeance-tc-title {
+      font-family: var(--font-sans);
+      font-size: clamp(44px, 4.2vw, 56px);
+      font-weight: 800;
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+      color: #111111;
+      margin: 0;
+    }
+
+    /* Subtitle font size stays exactly as it was (12px) */
+    .vengeance-tc-role {
+      font-family: var(--font-mono, monospace);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-orange, #FF6600);
+    }
+
+    /* Description scaled to match the full container footprint */
+    .vengeance-tc-desc {
+      font-family: var(--font-sans);
+      font-size: clamp(19px, 1.55vw, 23px);
+      font-weight: 400;
+      line-height: 1.62;
+      color: #363636;
+      margin: 6px 0 0 0;
+      max-width: 640px;
+    }
+
+    @media (max-width: 980px) {
+      .testimonials-section {
+        padding: 90px 0 110px 0;
       }
-      .testimonial-client-cluster .card-slot-2 {
-        top: 22vh;
-        right: 5vw;
-        left: auto;
-        width: 46vw;
+      .vengeance-testimonials-grid {
+        grid-template-columns: 1fr;
+        row-gap: 44px;
       }
-      .testimonial-client-cluster .card-slot-3 {
-        bottom: 9vh;
-        left: 12vw;
-        right: auto;
-        top: auto;
-        width: 62vw;
+      .vengeance-tc-left-col {
+        grid-column: 1;
+      }
+      .vengeance-tc-stack {
+        max-width: 380px;
+      }
+      .vengeance-tc-right-col {
+        grid-column: 1;
+        min-height: auto;
+        text-align: center;
+        align-items: center;
+      }
+      .vengeance-tc-counter {
+        justify-content: center;
+      }
+      .vengeance-tc-text-content {
+        align-items: center;
       }
     }
 
@@ -5442,102 +5518,88 @@ input, textarea, [contenteditable="true"] {
   </section>
 
   <!-- ==========================================================================
-       7C. TESTIMONIALS SECTION — DRAFT TWO (Scroll-Pinned 3-Image Slice Reveal & Client Name Stage)
-       (Note: Testimonial Draft One is backed up in testimonial_draft_1_backup.json & index_testimonial_draft_1.html)
+       7C. TESTIMONIALS SECTION ("WHAT PEOPLE SAY ABOUT US" — VengeanceUI 3D Card Stack)
        ========================================================================== -->
-  <section class="testimonials-pin-track" id="testimonialsSection" aria-label="What People Say About Us">
-    <div class="testimonials-sticky-stage" id="testimonialsStickyStage">
-      <div class="testimonials-grid-backdrop" aria-hidden="true"></div>
-      <div class="testimonials-ambient-glow" aria-hidden="true"></div>
+  <section class="testimonials-section" id="testimonialsSection" aria-label="What People Say About Us">
+    <div class="testimonials-grid-backdrop" aria-hidden="true"></div>
+    <div class="testimonials-ambient-glow" aria-hidden="true"></div>
 
-      <!-- 3-Image Collage Stage (4 Client Clusters of 3 Images Each, Enlarged >15%) -->
-      <div class="testimonials-images-stage" id="testimonialsImagesStage" aria-hidden="true">
-        <!-- Client 1: Health Streak (1: card_health_streak.png 16:9, 2: t_healthstreak_2.jpg 9:16, 3: t_healthstreak_3.jpg 16:9) -->
-        <div class="testimonial-client-cluster cluster-client-0" data-cluster-idx="0">
-          <div class="t-collage-card card-slot-1" data-wipe-axis="horizontal">
-            <img src="card_health_streak.png" alt="Health Streak Web Platform" decoding="async" />
-          </div>
-          <div class="t-collage-card card-slot-2" data-wipe-axis="vertical">
-            <img src="t_healthstreak_2.jpg" alt="Health Streak Mobile View" decoding="async" />
-          </div>
-          <div class="t-collage-card card-slot-3" data-wipe-axis="horizontal">
-            <img src="t_healthstreak_3.jpg" alt="Health Streak Programs & Services" decoding="async" />
-          </div>
-        </div>
-
-        <!-- Client 2: AudioKing (1: t_audioking_1.png 16:9, 2: card_audio_king.png 16:9, 3: t_audioking_3.jpg 4:5) -->
-        <div class="testimonial-client-cluster cluster-client-1" data-cluster-idx="1">
-          <div class="t-collage-card card-slot-1" data-wipe-axis="vertical">
-            <img src="t_audioking_1.png" alt="AudioKing Product Catalog" decoding="async" />
-          </div>
-          <div class="t-collage-card card-slot-2" data-wipe-axis="horizontal">
-            <img src="card_audio_king.png" alt="AudioKing Flagship Storefront" decoding="async" />
-          </div>
-          <div class="t-collage-card card-slot-3" data-wipe-axis="vertical">
-            <img src="t_audioking_3.jpg" alt="AudioKing Brand Store" decoding="async" />
-          </div>
-        </div>
-
-        <!-- Client 3: Rama Hair Clinic (1: card_rama_trichology.jpg 16:9, 2: t_rama_2.jpg 4:5, 3: t_rama_3.jpg 16:9) -->
-        <div class="testimonial-client-cluster cluster-client-2" data-cluster-idx="2">
-          <div class="t-collage-card card-slot-1" data-wipe-axis="horizontal">
-            <img src="card_rama_trichology.jpg" alt="Rama Hair Clinic Website" decoding="async" />
-          </div>
-          <div class="t-collage-card card-slot-2" data-wipe-axis="vertical">
-            <img src="t_rama_2.jpg" alt="Rama Hair Clinic Online Video Consultation" decoding="async" />
-          </div>
-          <div class="t-collage-card card-slot-3" data-wipe-axis="horizontal">
-            <img src="t_rama_3.jpg" alt="Rama Hair Clinic About & Clinical Expertise" decoding="async" />
-          </div>
-        </div>
-
-        <!-- Client 4: HisYtStory (1: t_hisyt_1.jpg 4:5, 2: t_hisyt_2.jpg 9:16, 3: t_hisyt_3.jpg 4:5) -->
-        <div class="testimonial-client-cluster cluster-client-3" data-cluster-idx="3">
-          <div class="t-collage-card card-slot-1" data-wipe-axis="vertical">
-            <img src="t_hisyt_1.jpg" alt="HisYtStory Campaign Reel 1" decoding="async" />
-          </div>
-          <div class="t-collage-card card-slot-2" data-wipe-axis="horizontal">
-            <img src="t_hisyt_2.jpg" alt="HisYtStory Vertical Story" decoding="async" />
-          </div>
-          <div class="t-collage-card card-slot-3" data-wipe-axis="vertical">
-            <img src="t_hisyt_3.jpg" alt="HisYtStory Campaign Reel 3" decoding="async" />
-          </div>
-        </div>
-      </div>
-
-      <!-- Center Big Typography Stage (Starts & Ends with "WHAT PEOPLE SAY ABOUT US" with Orange Veil Typography, transitions through 4 Client Names) -->
-      <div class="testimonials-center-typo-stage" id="testimonialsCenterTypoStage">
-        <!-- State 0 (Intro) & State 5 (Outro): WHAT PEOPLE SAY ABOUT US -->
-        <h2 class="testimonial-stage-headline is-bookend-title" id="testimonialBookendTitle" style="opacity: 1;">
-          <span class="kinetic-veil-wrap">
-            <span class="kinetic-veil-mask" aria-hidden="true"></span>
-            <span class="kinetic-veil-text">WHAT PEOPLE <span class="accent-orange">SAY</span></span>
+    <div class="testimonials-container">
+      <div class="testimonials-header">
+        <h2 class="testimonials-main-title" id="testimonialsMainTitle">
+          <span class="testimonials-title-line">
+            <span class="kinetic-veil-wrap">
+              <span class="kinetic-veil-mask" aria-hidden="true"></span>
+              <span class="kinetic-veil-text">WHAT PEOPLE <span class="accent-orange">SAY</span></span>
+            </span>
           </span>
-          <span class="kinetic-veil-wrap">
-            <span class="kinetic-veil-mask" aria-hidden="true"></span>
-            <span class="kinetic-veil-text"><span class="accent-orange">ABOUT US</span></span>
+          <span class="testimonials-title-line">
+            <span class="kinetic-veil-wrap">
+              <span class="kinetic-veil-mask" aria-hidden="true"></span>
+              <span class="kinetic-veil-text"><span class="accent-orange">ABOUT US</span></span>
+            </span>
           </span>
         </h2>
+      </div>
 
-        <!-- State 1: Health Streak -->
-        <h3 class="testimonial-stage-headline is-client-title" data-client-headline="0">
-          Health <span class="accent-orange">Streak</span>
-        </h3>
+      <!-- Container-Free Open Layout: Large Image Stack + Controls Below Images + Right-Hand Text -->
+      <div class="vengeance-testimonials-wrap">
+        <div class="vengeance-testimonials-grid" id="vengeanceTestimonialsCard">
+          <!-- Left Column: Big Image Card Stack + Left/Right Swipe Controller Below Images -->
+          <div class="vengeance-tc-left-col">
+            <div class="vengeance-tc-stack" id="vengeanceTcStack">
+              <!-- Populated & animated with 3D perspective keyframes by TestimonialsCard controller -->
+            </div>
 
-        <!-- State 2: AudioKing -->
-        <h3 class="testimonial-stage-headline is-client-title" data-client-headline="1">
-          Audio<span class="accent-orange">King</span>
-        </h3>
+            <!-- Left and Right Swipe Controller BELOW the Images -->
+            <div class="vengeance-tc-nav">
+              <button
+                type="button"
+                class="vengeance-tc-nav-btn"
+                id="vengeanceTcPrevBtn"
+                aria-label="Previous card"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+              </button>
+              <button
+                type="button"
+                class="vengeance-tc-nav-btn"
+                id="vengeanceTcNextBtn"
+                aria-label="Next card"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
 
-        <!-- State 3: Rama Hair Clinic -->
-        <h3 class="testimonial-stage-headline is-client-title" data-client-headline="2">
-          Rama <span class="accent-orange">Hair Clinic</span>
-        </h3>
+          <!-- Right Column: Counter + 2x Name Title + Subtitle Role + Full Container-Scaled Description -->
+          <div class="vengeance-tc-right-col">
+            <div class="vengeance-tc-counter" id="vengeanceTcCounter" aria-live="polite">
+              <span class="tc-active-num" id="vengeanceTcActiveNum">1</span> / <span id="vengeanceTcTotalNum">5</span>
+            </div>
 
-        <!-- State 4: HisYtStory -->
-        <h3 class="testimonial-stage-headline is-client-title" data-client-headline="3">
-          HisYt<span class="accent-orange">Story</span>
-        </h3>
+            <div class="vengeance-tc-text-area">
+              <div class="vengeance-tc-text-content" id="vengeanceTcTextContent">
+                <svg class="vengeance-tc-quote-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                </svg>
+                <div class="vengeance-tc-title-row">
+                  <h3 class="vengeance-tc-title" id="vengeanceTcTitle">Rohan Mehta</h3>
+                  <span class="vengeance-tc-role" id="vengeanceTcRole">Founder & CEO — Audio King</span>
+                </div>
+                <p class="vengeance-tc-desc" id="vengeanceTcDesc">
+                  “Techuilla completely re-engineered our digital storefront and product experience. From custom 3D audio visualizations to sub-second page speeds, our online conversion rate jumped by 180% within the first six weeks of launch.”
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -5785,7 +5847,7 @@ input, textarea, [contenteditable="true"] {
       const navType = (navEntries && navEntries.length > 0) ? navEntries[0].type : '';
       const isReload = (navType === 'reload');
       const urlParams = new URLSearchParams(window.location.search);
-      const isTransitionCurtain = urlParams.get('transition') === 'curtain' || urlParams.get('transition') === 'home' || urlParams.get('transition') === 'logo' || urlParams.get('transition') === 'enquire';
+      const isTransitionCurtain = Boolean(urlParams.get('transition'));
       const isBackForward = (navType === 'back_forward');
 
       const referrer = document.referrer || '';
@@ -5793,18 +5855,12 @@ input, textarea, [contenteditable="true"] {
                               referrer.includes('contact.html') || 
                               urlParams.get('from') === 'subpage' || 
                               urlParams.get('skipIntro') === '1' ||
+                              isTransitionCurtain ||
                               document.documentElement.classList.contains('skip-intro-immediate') ||
                               (navType === 'navigate' && referrer.includes(window.location.host) && !referrer.endsWith('/index.html') && !referrer.endsWith('/'));
 
       // The intro sequence should ONLY appear if refreshing the hero page (never when travelling from subpages)
       const shouldBypassIntro = !isReload && (isTransitionCurtain || isBackForward || isFromOtherPage);
-
-      // Clean up query param from URL so subsequent refresh is a clean home reload
-      if (urlParams.has('from') || urlParams.has('skipIntro')) {
-        try {
-          window.history.replaceState({}, '', window.location.pathname);
-        } catch(e) {}
-      }
 
       let introFinished = false;
       function finishIntro(instant = false) {
@@ -5921,6 +5977,8 @@ input, textarea, [contenteditable="true"] {
 
       // ----------------------------------------------------------------------
       // UNIFIED ORANGE ZIG-ZAG BRUSH-STROKE PAGE TRANSITION ENGINE
+      // (10% Slower Speed, Zero Out-Animation Clip Cut via Full Cap Margin,
+      //  and Hardware-Accelerated CSS Stroke-Dashoffset Transitions)
       // ----------------------------------------------------------------------
       (function initTechuillaBrushEngine() {
         const overlay = document.getElementById('enquireTransitionOverlay');
@@ -5935,99 +5993,99 @@ input, textarea, [contenteditable="true"] {
           orangeLen = Math.ceil(orangePath.getTotalLength() || 4600);
         } catch (e) {}
 
-        greyPath.style.strokeDasharray = `${greyLen} ${greyLen + 100}`;
-        orangePath.style.strokeDasharray = `${orangeLen} ${orangeLen + 100}`;
-        greyPath.style.strokeDashoffset = String(-greyLen);
-        orangePath.style.strokeDashoffset = String(-orangeLen);
+        // Extra margin beyond getTotalLength() so stroke-linecap="round" (radius 148px)
+        // retracts 100% off-screen before overlay hides — completely eliminating any clip cut!
+        const CAP_MARGIN = 420;
+        const greyFullDash = greyLen + CAP_MARGIN;
+        const orangeFullDash = orangeLen + CAP_MARGIN;
+        const greyHugeGap = greyLen * 3 + 1600;
+        const orangeHugeGap = orangeLen * 3 + 1600;
 
-        let animRafId = null;
+        greyPath.style.strokeDasharray = `${greyFullDash} ${greyHugeGap}`;
+        orangePath.style.strokeDasharray = `${orangeFullDash} ${orangeHugeGap}`;
+        greyPath.style.transition = 'none';
+        orangePath.style.transition = 'none';
+        greyPath.style.strokeDashoffset = String(-greyFullDash);
+        orangePath.style.strokeDashoffset = String(-orangeFullDash);
 
-        function easeInOutCubic(x) {
-          return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+        let timers = [];
+        function clearTimers() {
+          while (timers.length) {
+            clearTimeout(timers.pop());
+          }
         }
 
         function setHiddenIdle() {
-          if (animRafId) cancelAnimationFrame(animRafId);
-          animRafId = null;
+          clearTimers();
+          document.documentElement.classList.remove('incoming-brush-transition');
+          greyPath.style.transition = 'none';
+          orangePath.style.transition = 'none';
           overlay.classList.remove('is-brush-active', 'is-brush-full-hold', 'is-covering', 'is-active', 'is-closing');
-          greyPath.style.strokeDashoffset = String(-greyLen);
-          orangePath.style.strokeDashoffset = String(-orangeLen);
+          greyPath.style.strokeDashoffset = String(-greyFullDash);
+          orangePath.style.strokeDashoffset = String(-orangeFullDash);
         }
 
         function setFullyCoveredInstant() {
-          if (animRafId) cancelAnimationFrame(animRafId);
-          animRafId = null;
+          clearTimers();
+          greyPath.style.transition = 'none';
+          orangePath.style.transition = 'none';
           overlay.classList.add('is-brush-active', 'is-brush-full-hold');
           greyPath.style.strokeDashoffset = '0';
           orangePath.style.strokeDashoffset = '0';
         }
 
+        // In-Animation (cover): 10% slower (760ms total), GPU CSS transition
         function cover(onCovered) {
-          if (animRafId) cancelAnimationFrame(animRafId);
+          clearTimers();
+          document.documentElement.classList.remove('incoming-brush-transition');
+          greyPath.style.transition = 'none';
+          orangePath.style.transition = 'none';
           overlay.classList.remove('is-brush-full-hold', 'is-closing');
           overlay.classList.add('is-brush-active');
+          greyPath.style.strokeDashoffset = String(-greyFullDash);
+          orangePath.style.strokeDashoffset = String(-orangeFullDash);
 
-          const duration = 680;
-          const start = performance.now();
+          // Force style flush so initial negative dashoffset is committed before CSS transition starts
+          void overlay.offsetWidth;
 
-          function step(now) {
-            const p = Math.min(1, (now - start) / duration);
-            const gLocal = Math.max(0, Math.min(1, p / 0.82));
-            const oLocal = Math.max(0, Math.min(1, (p - 0.08) / 0.92));
+          requestAnimationFrame(() => {
+            greyPath.style.transition = 'stroke-dashoffset 630ms cubic-bezier(0.65, 0, 0.35, 1) 0ms';
+            orangePath.style.transition = 'stroke-dashoffset 700ms cubic-bezier(0.65, 0, 0.35, 1) 55ms';
+            greyPath.style.strokeDashoffset = '0';
+            orangePath.style.strokeDashoffset = '0';
 
-            const eG = easeInOutCubic(gLocal);
-            const eO = easeInOutCubic(oLocal);
-
-            greyPath.style.strokeDashoffset = ((-greyLen * (1 - eG))).toFixed(1);
-            orangePath.style.strokeDashoffset = ((-orangeLen * (1 - eO))).toFixed(1);
-
-            if (p >= 0.97) {
+            timers.push(setTimeout(() => {
               overlay.classList.add('is-brush-full-hold');
-            }
+            }, 725));
 
-            if (p < 1) {
-              animRafId = requestAnimationFrame(step);
-            } else {
-              animRafId = null;
+            timers.push(setTimeout(() => {
               overlay.classList.add('is-brush-full-hold');
-              greyPath.style.strokeDashoffset = '0';
-              orangePath.style.strokeDashoffset = '0';
               if (typeof onCovered === 'function') onCovered();
-            }
-          }
-
-          animRafId = requestAnimationFrame(step);
+            }, 765));
+          });
         }
 
+        // Out-Animation (uncover): 10% slower (960ms total), retracts fullDash + CAP_MARGIN so zero clip cut!
         function uncover(onUncovered) {
           setFullyCoveredInstant();
-          const duration = 860;
-          const start = performance.now();
+          void overlay.offsetWidth;
 
-          function step(now) {
-            const p = Math.min(1, (now - start) / duration);
-            if (p > 0.02) {
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              document.documentElement.classList.remove('incoming-brush-transition');
               overlay.classList.remove('is-brush-full-hold');
-            }
 
-            const oLocal = Math.max(0, Math.min(1, p / 0.88));
-            const gLocal = Math.max(0, Math.min(1, (p - 0.14) / 0.86));
+              orangePath.style.transition = 'stroke-dashoffset 840ms cubic-bezier(0.65, 0, 0.35, 1) 0ms';
+              greyPath.style.transition = 'stroke-dashoffset 830ms cubic-bezier(0.65, 0, 0.35, 1) 125ms';
+              orangePath.style.strokeDashoffset = String(orangeFullDash);
+              greyPath.style.strokeDashoffset = String(greyFullDash);
 
-            const eO = easeInOutCubic(oLocal);
-            const eG = easeInOutCubic(gLocal);
-
-            orangePath.style.strokeDashoffset = (orangeLen * eO).toFixed(1);
-            greyPath.style.strokeDashoffset = (greyLen * eG).toFixed(1);
-
-            if (p < 1) {
-              animRafId = requestAnimationFrame(step);
-            } else {
-              setHiddenIdle();
-              if (typeof onUncovered === 'function') onUncovered();
-            }
-          }
-
-          animRafId = requestAnimationFrame(step);
+              timers.push(setTimeout(() => {
+                setHiddenIdle();
+                if (typeof onUncovered === 'function') onUncovered();
+              }, 975));
+            });
+          });
         }
 
         window.TechuillaBrushTransition = {
@@ -6047,16 +6105,22 @@ input, textarea, [contenteditable="true"] {
               if (window.location.hash) {
                 const hashTarget = document.querySelector(window.location.hash);
                 if (hashTarget) hashTarget.scrollIntoView({ behavior: 'instant' });
+              } else if (window.resetScrollToTop) {
+                window.resetScrollToTop();
+              } else {
+                window.scrollTo(0, 0);
               }
               setTimeout(() => {
                 window.TechuillaBrushTransition.uncover();
-              }, 60);
+              }, 85);
             });
           }
-          if (window.history && window.history.replaceState) {
+        }
+        if (window.history && window.history.replaceState && (urlParams.has('from') || urlParams.has('skipIntro') || urlParams.has('transition'))) {
+          try {
             const cleanUrl = window.location.pathname + window.location.hash;
             window.history.replaceState({}, document.title, cleanUrl);
-          }
+          } catch (e) {}
         }
       } else {
         // Preload fonts before starting intro to prevent FOUT/FOIT/jitter
@@ -6423,9 +6487,13 @@ Best regards,
             window.scrollTo(0, 0);
             if (window.updatePortalScrub) window.updatePortalScrub(true);
           }
-          setTimeout(() => {
-            window.TechuillaBrushTransition.uncover();
-          }, 50);
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              setTimeout(() => {
+                window.TechuillaBrushTransition.uncover();
+              }, 110);
+            });
+          });
         });
       }
 
@@ -6441,9 +6509,13 @@ Best regards,
           if (typeof closeMenu === 'function') closeMenu();
           const el = document.querySelector(selector);
           if (el) el.scrollIntoView({ behavior: 'instant' });
-          setTimeout(() => {
-            window.TechuillaBrushTransition.uncover();
-          }, 50);
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              setTimeout(() => {
+                window.TechuillaBrushTransition.uncover();
+              }, 110);
+            });
+          });
         });
       }
 
@@ -8255,52 +8327,46 @@ Best regards,
       })();
 
       /* ------------------------------------------------------------------------
-         TESTIMONIAL DRAFT TWO — SCROLL-PINNED 3-IMAGE SLICE WIPE & CLIENT NAME STAGE
-         (Note: Testimonial Draft One is backed up in testimonial_draft_1_backup.json & index_testimonial_draft_1.html)
-         Chapters along scroll progress P in [0, 1]:
-           - State 0 (Intro):    "WHAT PEOPLE SAY ABOUT US" centered in bold with Kinetic Orange Veil Reveal
-           - State 1 (Client 1): "Health Streak" + 3-image collage slice wipe in/out
-           - State 2 (Client 2): "AudioKing" + 3-image collage slice wipe in/out
-           - State 3 (Client 3): "Rama Hair Clinic" + 3-image collage slice wipe in/out
-           - State 4 (Client 4): "HisYtStory" + 3-image collage slice wipe in/out
-           - State 5 (Outro):    "WHAT PEOPLE SAY ABOUT US" returns centered at end with Kinetic Orange Veil Reveal
+         VENGEANCE UI 3D TESTIMONIALS CARD ENGINE ("WHAT PEOPLE SAY ABOUT US")
+         Container-free open layout, large 490px 3D stack, controls below images,
+         2x Name title, infinite auto-shifting carousel (4200ms >= 4s iteration),
+         and kinetic orange layer wipe typography animation on the section title.
          ------------------------------------------------------------------------ */
-      (function initTestimonialsDraftTwoScrollStage() {
-        const trackEl = document.getElementById('testimonialsSection');
-        const bookendTitleEl = document.getElementById('testimonialBookendTitle');
-        const clusters = Array.from(document.querySelectorAll('#testimonialsImagesStage .testimonial-client-cluster'));
-        const clientHeadlines = Array.from(document.querySelectorAll('#testimonialsCenterTypoStage .testimonial-stage-headline.is-client-title'));
+      (function initVengeanceTestimonialsCard() {
+        const sectionEl = document.getElementById('testimonialsSection');
+        const mainTitleEl = document.getElementById('testimonialsMainTitle');
+        const stackEl = document.getElementById('vengeanceTcStack');
+        const activeNumEl = document.getElementById('vengeanceTcActiveNum');
+        const totalNumEl = document.getElementById('vengeanceTcTotalNum');
+        const textContentEl = document.getElementById('vengeanceTcTextContent');
+        const titleEl = document.getElementById('vengeanceTcTitle');
+        const roleEl = document.getElementById('vengeanceTcRole');
+        const descEl = document.getElementById('vengeanceTcDesc');
+        const prevBtn = document.getElementById('vengeanceTcPrevBtn');
+        const nextBtn = document.getElementById('vengeanceTcNextBtn');
 
-        if (!trackEl || !bookendTitleEl || clusters.length === 0) return;
+        if (!stackEl || !titleEl || !descEl || !prevBtn || !nextBtn) return;
 
-        const bookendVeilWraps = Array.from(bookendTitleEl.querySelectorAll('.kinetic-veil-wrap'));
-
-        // Smooth cubic-bezier-like ease in/out helper
-        function easeInOutCubic(x) {
-          return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
-        }
-
-        // Signature Kinetic Orange Veil Reveal on bookend title lines
-        function applySingleVeilLine(mask, text, p) {
+        // 1. Scroll-Driven Kinetic Orange Layer Typography Wipe for "WHAT PEOPLE SAY ABOUT US"
+        function applyTitleKineticVeil(mask, text, p) {
           if (!mask || !text) return;
           if (p <= 0) {
             mask.style.transformOrigin = 'left center';
             mask.style.transform = 'scaleX(0)';
             text.style.opacity = '0';
             text.style.transform = 'translate3d(0, 10px, 0)';
-          } else if (p < 0.48) {
-            const sweepIn = Math.sin(((p / 0.48) * Math.PI) / 2);
+          } else if (p < 0.50) {
+            const sweepIn = Math.sin(((p / 0.50) * Math.PI) / 2);
             mask.style.transformOrigin = 'left center';
-            mask.style.transform = `scaleX(${sweepIn.toFixed(4)})`;
+            mask.style.transform = 'scaleX(' + sweepIn.toFixed(4) + ')';
             text.style.opacity = '0';
-            text.style.transform = 'translate3d(0, 10px, 0)';
           } else if (p < 1.0) {
-            const sweepOut = (p - 0.48) / 0.52;
+            const sweepOut = (p - 0.50) / 0.50;
             const easeOut = Math.sin((sweepOut * Math.PI) / 2);
             mask.style.transformOrigin = 'right center';
-            mask.style.transform = `scaleX(${(1 - easeOut).toFixed(4)})`;
+            mask.style.transform = 'scaleX(' + (1 - easeOut).toFixed(4) + ')';
             text.style.opacity = '1';
-            text.style.transform = 'translate3d(0, 0, 0)';
+            text.style.transform = 'translate3d(0, ' + ((1 - easeOut) * 6).toFixed(2) + 'px, 0)';
           } else {
             mask.style.transformOrigin = 'right center';
             mask.style.transform = 'scaleX(0)';
@@ -8309,228 +8375,231 @@ Best regards,
           }
         }
 
-        function applyBookendVeilProgress(veilP) {
-          const clamped = Math.max(0, Math.min(1, veilP));
-          bookendVeilWraps.forEach((wrap, idx) => {
+        function updateTestimonialsTitleWipe() {
+          if (!sectionEl || !mainTitleEl) return;
+          const wraps = mainTitleEl.querySelectorAll('.kinetic-veil-wrap');
+          if (!wraps.length) return;
+
+          const rect = sectionEl.getBoundingClientRect();
+          const winH = window.innerHeight || 900;
+          // Begins wiping as section enters bottom 92% of viewport, completes by 42% of viewport height
+          const startY = winH * 0.92;
+          const endY = winH * 0.42;
+          const rawP = (startY - rect.top) / Math.max(1, startY - endY);
+          const p = Math.max(0, Math.min(1, rawP));
+
+          wraps.forEach((wrap, idx) => {
             const mask = wrap.querySelector('.kinetic-veil-mask');
             const text = wrap.querySelector('.kinetic-veil-text');
             const stagger = idx * 0.16;
-            const lineP = Math.max(0, Math.min(1, (clamped - stagger) / (1 - stagger)));
-            applySingleVeilLine(mask, text, lineP);
+            const staggeredP = Math.max(0, Math.min(1, (p - stagger) / (1 - stagger)));
+            applyTitleKineticVeil(mask, text, staggeredP);
           });
         }
 
-        // Apply Studio Grafixo-style directional clip-path wipe + inner image scale to a 3-card cluster
-        // Keeps outer card transform stationary at translate3d(0, 0, 0) so images NEVER shake or jump while scrolling
-        function applyClusterWipe(clusterEl, phase, t) {
-          if (!clusterEl) return;
-          const cards = Array.from(clusterEl.querySelectorAll('.t-collage-card'));
+        window.addEventListener('scroll', updateTestimonialsTitleWipe, { passive: true });
+        window.addEventListener('resize', updateTestimonialsTitleWipe, { passive: true });
+        updateTestimonialsTitleWipe();
 
-          if (phase === 'hidden') {
-            clusterEl.classList.remove('is-cluster-visible');
-            cards.forEach(card => {
-              card.style.clipPath = 'inset(0% 100% 0% 0%)';
-              card.style.webkitClipPath = 'inset(0% 100% 0% 0%)';
-              card.style.transform = 'translate3d(0, 0, 0)';
-            });
-            return;
+        // 2. Infinite 3D Testimonials Card Stack Data & Controller
+        const TESTIMONIAL_ITEMS = [
+          {
+            id: 1,
+            title: "Rohan Mehta",
+            role: "Founder & CEO — Audio King",
+            badge: "BUILD / WEB & 3D",
+            description: "“Techuilla completely re-engineered our digital storefront and product experience. From custom 3D audio visualizations to sub-second page speeds, our online conversion rate jumped by 180% within the first six weeks of launch.”",
+            image: "card_audio_king.png"
+          },
+          {
+            id: 2,
+            title: "Dr. Ananya Sharma",
+            role: "Clinical Director — Rama Trichology",
+            badge: "CREATE / BRANDING",
+            description: "“They transformed our clinical identity into a luxury authority brand. The cohesive packaging, editorial design system, and high-intent Meta acquisition funnels doubled our qualified consultation bookings month over month.”",
+            image: "card_rama_trichology.jpg"
+          },
+          {
+            id: 3,
+            title: "Vikramaditya Singh",
+            role: "Co-Founder — Health Streak",
+            badge: "BUILD / FULL-STACK",
+            description: "“Working with Techuilla felt like having an elite product engineering team in-house. They delivered our web platform, interactive habit-tracking UI, and onboarding motion films ahead of schedule with zero compromise on craft.”",
+            image: "card_health_streak.png"
+          },
+          {
+            id: 4,
+            title: "Kabir Malhotra",
+            role: "Creative Director — Untitled Clothing Co.",
+            badge: "CREATE / AI & FILM",
+            description: "“Their AI creatives and 3D product films gave our seasonal drop a cinematic scale we didn't think was possible on our timeline. The campaign achieved a 4.8x ROAS and set a new benchmark for our visual identity.”",
+            image: "card_untitled_clothing.png"
+          },
+          {
+            id: 5,
+            title: "Siddharth Deshmukh",
+            role: "Managing Director — Hindustan Tyre",
+            badge: "GROWTH / PERFORMANCE",
+            description: "“From B2B catalog architecture to national Google Search and Performance Max campaigns, Techuilla built a predictable demand engine that consistently delivers our highest-value commercial dealer inquiries.”",
+            image: "card_hindustan_tyre.jpg"
           }
-
-          clusterEl.classList.add('is-cluster-visible');
-
-          cards.forEach((card, cardIdx) => {
-            const axis = card.getAttribute('data-wipe-axis') || (cardIdx % 2 === 0 ? 'horizontal' : 'vertical');
-            const img = card.querySelector('img');
-            const stagger = cardIdx * 0.10;
-            const localT = Math.max(0, Math.min(1, (t - stagger) / (1 - 0.20)));
-            const e = easeInOutCubic(localT);
-
-            // Outer frame stays locked on pixel grid to eliminate any shake or jitter
-            card.style.transform = 'translate3d(0, 0, 0)';
-
-            if (phase === 'enter') {
-              if (axis === 'horizontal') {
-                const rightClip = (100 - e * 100).toFixed(2);
-                card.style.clipPath = `inset(0% ${rightClip}% 0% 0%)`;
-                card.style.webkitClipPath = `inset(0% ${rightClip}% 0% 0%)`;
-              } else {
-                const topClip = (100 - e * 100).toFixed(2);
-                card.style.clipPath = `inset(${topClip}% 0% 0% 0%)`;
-                card.style.webkitClipPath = `inset(${topClip}% 0% 0% 0%)`;
-              }
-              if (img) img.style.transform = `scale(${(1.08 - e * 0.08).toFixed(3)})`;
-            } else if (phase === 'hold') {
-              card.style.clipPath = 'inset(0% 0% 0% 0%)';
-              card.style.webkitClipPath = 'inset(0% 0% 0% 0%)';
-              if (img) img.style.transform = 'scale(1.000)';
-            } else if (phase === 'exit') {
-              if (axis === 'horizontal') {
-                const leftClip = (e * 100).toFixed(2);
-                card.style.clipPath = `inset(0% 0% 0% ${leftClip}%)`;
-                card.style.webkitClipPath = `inset(0% 0% 0% ${leftClip}%)`;
-              } else {
-                const bottomClip = (e * 100).toFixed(2);
-                card.style.clipPath = `inset(0% 0% ${bottomClip}% 0%)`;
-                card.style.webkitClipPath = `inset(0% 0% ${bottomClip}% 0%)`;
-              }
-              if (img) img.style.transform = `scale(${(1.00 + e * 0.08).toFixed(3)})`;
-            }
-          });
-        }
-
-        // Apply crossfade + vertical slide + subtle blur to a center headline
-        function applyHeadlineState(el, opacity, offsetY, blurPx = 0) {
-          if (!el) return;
-          const clampedOp = Math.max(0, Math.min(1, opacity));
-          el.style.opacity = clampedOp.toFixed(3);
-          el.style.transform = `translate3d(-50%, calc(-50% + ${offsetY.toFixed(1)}px), 0)`;
-          el.style.filter = blurPx > 0.1 ? `blur(${blurPx.toFixed(1)}px)` : 'none';
-        }
-
-        // Timeline definition across scroll progress P in [0, 1]:
-        // - Intro Bookend ("WHAT PEOPLE SAY ABOUT US"): veil reveal + hold [0.00..0.11], exits [0.11..0.18]
-        // - Client 0 ("Health Streak"):     enters [0.13..0.21], holds [0.21..0.29], exits [0.29..0.36]
-        // - Client 1 ("AudioKing"):         enters [0.31..0.39], holds [0.39..0.47], exits [0.47..0.54]
-        // - Client 2 ("Rama Hair Clinic"):  enters [0.49..0.57], holds [0.57..0.65], exits [0.65..0.72]
-        // - Client 3 ("HisYtStory"):        enters [0.67..0.75], holds [0.75..0.83], exits [0.83..0.90]
-        // - Outro Bookend ("WHAT PEOPLE SAY ABOUT US"): enters with orange veil [0.84..0.93], holds [0.93..1.00]
-        const CLIENT_WINDOWS = [
-          { enterStart: 0.13, enterEnd: 0.21, holdEnd: 0.29, exitEnd: 0.36 },
-          { enterStart: 0.31, enterEnd: 0.39, holdEnd: 0.47, exitEnd: 0.54 },
-          { enterStart: 0.49, enterEnd: 0.57, holdEnd: 0.65, exitEnd: 0.72 },
-          { enterStart: 0.67, enterEnd: 0.75, holdEnd: 0.83, exitEnd: 0.90 }
         ];
 
-        let targetP = 0;
-        let currentP = 0;
-        let targetEntryVeilP = 0;
-        let currentEntryVeilP = 0;
-        let rafId = null;
+        const rotations = [4, -2, -9, 7];
+        const totalItems = TESTIMONIAL_ITEMS.length;
+        const AUTO_PLAY_INTERVAL_MS = 4200; // >= 4 seconds per iteration
+        let activeIndex = 0;
+        let direction = 1;
+        let isAnimating = false;
+        let autoPlayTimer = null;
 
-        function computeScrollTargets() {
-          const rect = trackEl.getBoundingClientRect();
-          const winH = window.innerHeight || 900;
-          const maxScroll = Math.max(1, trackEl.offsetHeight - winH);
-          const scrolled = -rect.top;
-          targetP = Math.max(0, Math.min(1, scrolled / maxScroll));
+        if (totalNumEl) totalNumEl.textContent = String(totalItems);
 
-          // Entry orange veil progress: sweeps 0 -> 1 as section enters from rect.top = winH * 0.82 down through P = 0.055
-          const veilStartTop = winH * 0.82;
-          const veilEndTop = -maxScroll * 0.055;
-          const rawVeil = (veilStartTop - rect.top) / Math.max(1, veilStartTop - veilEndTop);
-          targetEntryVeilP = Math.max(0, Math.min(1, rawVeil));
-        }
+        // Build the 3D stacked card elements
+        stackEl.innerHTML = TESTIMONIAL_ITEMS.map((item, idx) => `
+          <div class="vengeance-tc-card${idx === 0 ? ' is-active' : ''}" data-tc-index="${idx}">
+            <img src="${item.image}" alt="${item.title}" draggable="false" decoding="async" />
+            <span class="vengeance-tc-card-badge">${item.badge}</span>
+          </div>
+        `).join('');
 
-        function renderStageAt(P, entryVeilP) {
-          // 1. Intro & Outro Bookend Title ("WHAT PEOPLE SAY ABOUT US")
-          let bookendOp = 0;
-          let bookendY = 0;
-          let bookendBlur = 0;
-          let veilP = 1;
+        const cardEls = Array.from(stackEl.querySelectorAll('.vengeance-tc-card'));
 
-          if (P <= 0.11) {
-            bookendOp = 1;
-            bookendY = 0;
-            bookendBlur = 0;
-            veilP = entryVeilP;
-          } else if (P < 0.18) {
-            const t = (P - 0.11) / (0.18 - 0.11);
-            const e = easeInOutCubic(t);
-            bookendOp = 1 - e;
-            bookendY = -28 * e;
-            bookendBlur = 6 * e;
-            veilP = 1;
-          } else if (P >= 0.93) {
-            bookendOp = 1;
-            bookendY = 0;
-            bookendBlur = 0;
-            veilP = 1;
-          } else if (P > 0.84) {
-            const t = (P - 0.84) / (0.93 - 0.84);
-            const e = easeInOutCubic(t);
-            bookendOp = 1;
-            bookendY = 18 * (1 - e);
-            bookendBlur = 0;
-            veilP = t;
-          }
+        function applyRestingStackTransforms(currentIdx, skipCardIdx = -1) {
+          cardEls.forEach((cardEl, index) => {
+            if (index === skipCardIdx) return;
+            const isActive = index === currentIdx;
+            // Circular stack offset so infinite loop always stacks upcoming cards behind the active card
+            const circularOffset = ((index - currentIdx) % totalItems + totalItems) % totalItems;
+            const rot = rotations[index % 4];
 
-          applyHeadlineState(bookendTitleEl, bookendOp, bookendY, bookendBlur);
-          applyBookendVeilProgress(veilP);
+            cardEl.classList.toggle('is-active', isActive);
 
-          // 2. Evaluate each of the 4 Client Chapters (3-image cluster wipe + center client name)
-          CLIENT_WINDOWS.forEach((win, idx) => {
-            const cluster = clusters[idx];
-            const headline = clientHeadlines[idx];
-
-            if (P < win.enterStart || P > win.exitEnd) {
-              applyClusterWipe(cluster, 'hidden', 0);
-              applyHeadlineState(headline, 0, 30, 0);
-            } else if (P < win.enterEnd) {
-              const t = (P - win.enterStart) / (win.enterEnd - win.enterStart);
-              const e = easeInOutCubic(t);
-              applyClusterWipe(cluster, 'enter', t);
-              applyHeadlineState(headline, e, (1 - e) * 28, (1 - e) * 4);
-            } else if (P <= win.holdEnd) {
-              const t = (P - win.enterEnd) / Math.max(0.001, win.holdEnd - win.enterEnd);
-              applyClusterWipe(cluster, 'hold', t);
-              applyHeadlineState(headline, 1, 0, 0);
+            if (isActive) {
+              cardEl.style.zIndex = '100';
+              cardEl.style.opacity = '1';
+              cardEl.style.transform = 'translate3d(0px, 0px, 40px) scale(1) rotateZ(0deg)';
             } else {
-              const t = (P - win.holdEnd) / (win.exitEnd - win.holdEnd);
-              const e = easeInOutCubic(t);
-              applyClusterWipe(cluster, 'exit', t);
-              applyHeadlineState(headline, 1 - e, -e * 28, e * 4);
+              const x = circularOffset * 18;
+              const y = circularOffset * 8;
+              const z = -90 * circularOffset;
+              const scale = Math.max(0.68, 0.88 - circularOffset * 0.045);
+              cardEl.style.zIndex = String(10 - circularOffset);
+              cardEl.style.opacity = '0.58';
+              cardEl.style.transform = `translate3d(${x}px, ${y}px, ${z}px) scale(${scale.toFixed(3)}) rotateZ(${rot}deg)`;
             }
           });
         }
 
-        function tickLerp() {
-          const dp = targetP - currentP;
-          const dv = targetEntryVeilP - currentEntryVeilP;
+        function transitionToIndex(rawNewIndex, dir, resetAutoTimer = true) {
+          if (isAnimating) return;
+          const newIndex = ((rawNewIndex % totalItems) + totalItems) % totalItems;
+          if (newIndex === activeIndex) return;
 
-          if (window.__TESTIMONIALS_INSTANT_SCRUB__ || (Math.abs(dp) < 0.0003 && Math.abs(dv) < 0.0005)) {
-            currentP = targetP;
-            currentEntryVeilP = targetEntryVeilP;
-            renderStageAt(currentP, currentEntryVeilP);
-            rafId = null;
-            return;
+          isAnimating = true;
+          const prevIndex = activeIndex;
+          activeIndex = newIndex;
+          direction = dir;
+
+          const incomingCard = cardEls[activeIndex];
+          const prevCircularOffset = ((activeIndex - prevIndex) % totalItems + totalItems) % totalItems;
+          const baseRot = rotations[activeIndex % 4];
+
+          // Update counter immediately
+          if (activeNumEl) activeNumEl.textContent = String(activeIndex + 1);
+
+          // Update non-active cards to their new circular stack positions
+          applyRestingStackTransforms(activeIndex, activeIndex);
+
+          // Exact VengeanceUI active card 3-keyframe motion pattern
+          if (incomingCard) {
+            incomingCard.classList.add('is-active');
+            incomingCard.style.zIndex = '100';
+            incomingCard.style.opacity = '1';
+
+            if (typeof incomingCard.animate === 'function') {
+              const startX = prevCircularOffset * 18;
+              const startY = prevCircularOffset * 8;
+              const midX = direction === 1 ? -210 : 210;
+
+              const anim = incomingCard.animate([
+                {
+                  transform: `translate3d(${startX}px, ${startY}px, -120px) scale(0.86) rotateZ(${baseRot}deg)`,
+                  opacity: 0.65
+                },
+                {
+                  transform: `translate3d(${midX}px, 0px, 30px) scale(1.05) rotateZ(-5deg)`,
+                  opacity: 1,
+                  offset: 0.48
+                },
+                {
+                  transform: 'translate3d(0px, 0px, 40px) scale(1) rotateZ(0deg)',
+                  opacity: 1
+                }
+              ], {
+                duration: 780,
+                easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+                fill: 'forwards'
+              });
+
+              anim.onfinish = () => {
+                incomingCard.style.transform = 'translate3d(0px, 0px, 40px) scale(1) rotateZ(0deg)';
+                anim.cancel();
+              };
+            } else {
+              incomingCard.style.transform = 'translate3d(0px, 0px, 40px) scale(1) rotateZ(0deg)';
+            }
           }
 
-          currentP += dp * 0.18;
-          currentEntryVeilP += dv * 0.18;
-          renderStageAt(currentP, currentEntryVeilP);
-          rafId = requestAnimationFrame(tickLerp);
+          // AnimatePresence mode="wait" for Text Area (exit y: -22, enter from y: 22)
+          const item = TESTIMONIAL_ITEMS[activeIndex];
+          if (textContentEl) {
+            textContentEl.style.transition = 'opacity 170ms ease, transform 170ms ease';
+            textContentEl.style.opacity = '0';
+            textContentEl.style.transform = 'translate3d(0, -22px, 0)';
+
+            setTimeout(() => {
+              titleEl.textContent = item.title;
+              if (roleEl) roleEl.textContent = item.role;
+              descEl.textContent = item.description;
+
+              textContentEl.style.transition = 'none';
+              textContentEl.style.transform = 'translate3d(0, 22px, 0)';
+              void textContentEl.offsetWidth;
+
+              textContentEl.style.transition = 'opacity 280ms cubic-bezier(0.22, 1, 0.36, 1), transform 280ms cubic-bezier(0.22, 1, 0.36, 1)';
+              textContentEl.style.opacity = '1';
+              textContentEl.style.transform = 'translate3d(0, 0, 0)';
+            }, 175);
+          }
+
+          if (resetAutoTimer) {
+            startInfiniteAutoPlay();
+          }
+
+          setTimeout(() => {
+            isAnimating = false;
+          }, 560);
         }
 
-        function onScrollOrResize() {
-          computeScrollTargets();
-          if (window.__TESTIMONIALS_INSTANT_SCRUB__) {
-            currentP = targetP;
-            currentEntryVeilP = targetEntryVeilP;
-            renderStageAt(currentP, currentEntryVeilP);
-            return;
-          }
-          if (!rafId) {
-            rafId = requestAnimationFrame(tickLerp);
-          }
+        function startInfiniteAutoPlay() {
+          if (autoPlayTimer) clearInterval(autoPlayTimer);
+          autoPlayTimer = setInterval(() => {
+            transitionToIndex(activeIndex + 1, 1, false);
+          }, AUTO_PLAY_INTERVAL_MS);
         }
 
-        window.updateTestimonialsDraftTwoScrub = function(instant) {
-          computeScrollTargets();
-          if (instant || window.__TESTIMONIALS_INSTANT_SCRUB__) {
-            currentP = targetP;
-            currentEntryVeilP = targetEntryVeilP;
-            renderStageAt(currentP, currentEntryVeilP);
-          } else if (!rafId) {
-            rafId = requestAnimationFrame(tickLerp);
-          }
-        };
+        prevBtn.addEventListener('click', () => {
+          transitionToIndex(activeIndex - 1, -1, true);
+        });
 
-        window.addEventListener('scroll', onScrollOrResize, { passive: true });
-        window.addEventListener('resize', onScrollOrResize, { passive: true });
-        computeScrollTargets();
-        currentP = targetP;
-        currentEntryVeilP = targetEntryVeilP;
-        renderStageAt(currentP, currentEntryVeilP);
+        nextBtn.addEventListener('click', () => {
+          transitionToIndex(activeIndex + 1, 1, true);
+        });
+
+        // Initial resting render & launch 4.2s infinite carousel loop
+        applyRestingStackTransforms(0);
+        startInfiniteAutoPlay();
       })();
     </script>
 </body>
