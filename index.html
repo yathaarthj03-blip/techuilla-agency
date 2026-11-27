@@ -2190,7 +2190,7 @@ input, textarea, [contenteditable="true"] {
       gap: 100px;
     }
 
-    /* Orange Dashed Map Route SVG (50% opacity orange, background z-index: 1) */
+    /* Bold Continuous Scroll-Drawn Orange Ribbon SVG (Matching Reference S-Curve Ribbon) */
     .problem-route-svg {
       position: absolute;
       top: 0;
@@ -2203,18 +2203,12 @@ input, textarea, [contenteditable="true"] {
     }
 
     .problem-route-path {
-      stroke: rgba(244, 119, 50, 0.35);
-      stroke-width: 2.5;
-      stroke-dasharray: 10 10;
+      stroke: #FF5E00;
+      stroke-width: 108;
       stroke-linecap: round;
+      stroke-linejoin: round;
       fill: none;
-      animation: mapRouteDash 24s linear infinite;
-    }
-
-    @keyframes mapRouteDash {
-      to {
-        stroke-dashoffset: -200;
-      }
+      will-change: stroke-dashoffset;
     }
 
     .problem-card {
@@ -5161,20 +5155,20 @@ input, textarea, [contenteditable="true"] {
 
       <!-- Problem Statements Grid with Background Map Route SVG -->
       <div class="problem-statements-list">
-        <!-- Connecting Orange Dashed Map Route SVG (Behind Assets, Z-Index 1) -->
+        <!-- Continuous Scroll-Drawn Thick Orange S-Curve Ribbon (Behind Cards, Z-Index 1) -->
         <svg class="problem-route-svg" id="problemRouteSvg" aria-hidden="true">
           <defs>
             <linearGradient id="routeGlow" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#F47732" stop-opacity="0.35"/>
-              <stop offset="50%" stop-color="#FF8A4C" stop-opacity="0.35"/>
-              <stop offset="100%" stop-color="#F47732" stop-opacity="0.35"/>
+              <stop offset="0%" stop-color="#FF5500" stop-opacity="0.96"/>
+              <stop offset="50%" stop-color="#FF6600" stop-opacity="0.98"/>
+              <stop offset="100%" stop-color="#FF781F" stop-opacity="0.96"/>
             </linearGradient>
           </defs>
           <path class="problem-route-path" id="problemRoutePath"
                 stroke="url(#routeGlow)"
-                stroke-width="2.5"
-                stroke-dasharray="10 10"
+                stroke-width="108"
                 stroke-linecap="round"
+                stroke-linejoin="round"
                 fill="none" />
           <g id="problemRouteNodes" class="problem-route-nodes"></g>
         </svg>
@@ -7040,9 +7034,15 @@ Best regards,
         const container = document.querySelector('.problem-statements-list');
         const svg = document.getElementById('problemRouteSvg');
         const path = document.getElementById('problemRoutePath');
+        const nodesGroup = document.getElementById('problemRouteNodes');
         if (!container || !svg || !path) return;
 
-        function updateRoute() {
+        let pathTotalLen = 3000;
+        let currentDrawP = 0;
+        let targetDrawP = 0;
+        let routeRafId = null;
+
+        function updateRouteGeometry() {
           const wrappers = container.querySelectorAll('.problem-image-wrapper');
           if (wrappers.length < 3) return;
 
@@ -7055,95 +7055,89 @@ Best regards,
           const r2 = wrappers[1].getBoundingClientRect();
           const r3 = wrappers[2].getBoundingClientRect();
 
-          // Point 1: Middle of the RIGHT side of Image 1
-          const p1 = {
-            x: r1.right - cRect.left,
-            y: (r1.top + r1.bottom) / 2 - cRect.top
-          };
+          // Continuous sweeping S-curve ribbon passing smoothly behind Card 1 -> Card 2 -> Card 3 (zero gaps!)
+          const c1x = (r1.left + r1.right) / 2 - cRect.left;
+          const c1y = (r1.top + r1.bottom) / 2 - cRect.top;
 
-          // Point 2: Middle of the LEFT side of Image 2
-          const p2 = {
-            x: r2.left - cRect.left,
-            y: (r2.top + r2.bottom) / 2 - cRect.top
-          };
+          const c2x = (r2.left + r2.right) / 2 - cRect.left;
+          const c2y = (r2.top + r2.bottom) / 2 - cRect.top;
 
-          // Point 3: Middle of the BOTTOM of Image 2
-          const p3 = {
-            x: (r2.left + r2.right) / 2 - cRect.left,
-            y: r2.bottom - cRect.top
-          };
+          const c3x = (r3.left + r3.right) / 2 - cRect.left;
+          const c3y = (r3.top + r3.bottom) / 2 - cRect.top;
 
-          // Point 4: Middle of the RIGHT side of Image 3
-          const p4 = {
-            x: r3.right - cRect.left,
-            y: (r3.top + r3.bottom) / 2 - cRect.top
-          };
+          // Entry tail looping gracefully from upper-left into Card 1 center
+          const startX = Math.max(-40, c1x - cRect.width * 0.24);
+          const startY = Math.max(0, c1y - 160);
 
-          // Curve 1: From right side of Image 1 to left side of Image 2
-          // Sweeps prominently out to the right with an expansive, graceful S-curve
-          const deltaY12 = p2.y - p1.y;
-          const cp1x = p1.x + Math.max(340, cRect.width * 0.22);
-          const cp1y = p1.y + deltaY12 * 0.12;
-          const cp2x = p2.x - Math.max(280, cRect.width * 0.18);
-          const cp2y = p2.y - deltaY12 * 0.12;
+          // Graceful S-curve from Card 1 -> Card 2 -> Card 3 -> flowing exit tail
+          const mid12Y = (c1y + c2y) / 2;
+          const mid23Y = (c2y + c3y) / 2;
+          const endX = Math.min(cRect.width + 40, c3x + cRect.width * 0.14);
+          const endY = c3y + 150;
 
-          // Curve 2: From bottom-middle of Image 2 to middle-right of Image 3
-          // Sweeps down and expands out to the right before curving into Image 3's right edge
-          const deltaY34 = p4.y - p3.y;
-          const cp3x = p3.x + Math.max(160, cRect.width * 0.10);
-          const cp3y = p3.y + deltaY34 * 0.55;
-          const cp4x = p4.x + Math.max(340, cRect.width * 0.22);
-          const cp4y = p4.y;
-
-          // Seamless path from P1 -> P2, behind Image 2 to P3, then P3 -> P4
-          const d = `M ${p1.x.toFixed(1)} ${p1.y.toFixed(1)} ` +
-                    `C ${cp1x.toFixed(1)} ${cp1y.toFixed(1)}, ${cp2x.toFixed(1)} ${cp2y.toFixed(1)}, ${p2.x.toFixed(1)} ${p2.y.toFixed(1)} ` +
-                    `L ${p3.x.toFixed(1)} ${p3.y.toFixed(1)} ` +
-                    `C ${cp3x.toFixed(1)} ${cp3y.toFixed(1)}, ${cp4x.toFixed(1)} ${cp4y.toFixed(1)}, ${p4.x.toFixed(1)} ${p4.y.toFixed(1)}`;
+          const d = [
+            `M ${startX.toFixed(1)} ${startY.toFixed(1)}`,
+            `C ${(startX - 40).toFixed(1)} ${(c1y + 10).toFixed(1)}, ${(c1x - 160).toFixed(1)} ${c1y.toFixed(1)}, ${c1x.toFixed(1)} ${c1y.toFixed(1)}`,
+            `C ${(c1x + cRect.width * 0.28).toFixed(1)} ${(c1y + 20).toFixed(1)}, ${(c2x + cRect.width * 0.22).toFixed(1)} ${(mid12Y - 40).toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}`,
+            `C ${(c2x - cRect.width * 0.26).toFixed(1)} ${(c2y + 40).toFixed(1)}, ${(c3x - cRect.width * 0.24).toFixed(1)} ${(mid23Y + 30).toFixed(1)}, ${c3x.toFixed(1)} ${c3y.toFixed(1)}`,
+            `C ${(c3x + cRect.width * 0.22).toFixed(1)} ${(c3y + 20).toFixed(1)}, ${endX.toFixed(1)} ${(endY - 50).toFixed(1)}, ${endX.toFixed(1)} ${endY.toFixed(1)}`
+          ].join(' ');
 
           path.setAttribute('d', d);
+          if (nodesGroup) nodesGroup.innerHTML = '';
 
-          // Connector nodes / terminals at all 4 key image connection points
-          const nodesGroup = document.getElementById('problemRouteNodes');
-          if (nodesGroup) {
-            nodesGroup.innerHTML = `
-              <!-- Node 1: Right edge of Image 1 -->
-              <g class="route-node">
-                <line x1="${(p1.x - 14).toFixed(1)}" y1="${p1.y.toFixed(1)}" x2="${p1.x.toFixed(1)}" y2="${p1.y.toFixed(1)}" stroke="#F47732" stroke-width="2.5" stroke-opacity="0.6" stroke-linecap="round" />
-                <circle cx="${p1.x.toFixed(1)}" cy="${p1.y.toFixed(1)}" r="11" fill="none" stroke="#F47732" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.4" />
-                <circle cx="${p1.x.toFixed(1)}" cy="${p1.y.toFixed(1)}" r="5.5" fill="#F47732" fill-opacity="0.75" stroke="#FAF8F5" stroke-width="2" />
-              </g>
-              <!-- Node 2: Left edge of Image 2 -->
-              <g class="route-node">
-                <line x1="${p2.x.toFixed(1)}" y1="${p2.y.toFixed(1)}" x2="${(p2.x + 14).toFixed(1)}" y2="${p2.y.toFixed(1)}" stroke="#F47732" stroke-width="2.5" stroke-opacity="0.6" stroke-linecap="round" />
-                <circle cx="${p2.x.toFixed(1)}" cy="${p2.y.toFixed(1)}" r="11" fill="none" stroke="#F47732" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.4" />
-                <circle cx="${p2.x.toFixed(1)}" cy="${p2.y.toFixed(1)}" r="5.5" fill="#F47732" fill-opacity="0.75" stroke="#FAF8F5" stroke-width="2" />
-              </g>
-              <!-- Node 3: Bottom-middle of Image 2 -->
-              <g class="route-node">
-                <line x1="${p3.x.toFixed(1)}" y1="${(p3.y - 14).toFixed(1)}" x2="${p3.x.toFixed(1)}" y2="${p3.y.toFixed(1)}" stroke="#F47732" stroke-width="2.5" stroke-opacity="0.6" stroke-linecap="round" />
-                <circle cx="${p3.x.toFixed(1)}" cy="${p3.y.toFixed(1)}" r="11" fill="none" stroke="#F47732" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.4" />
-                <circle cx="${p3.x.toFixed(1)}" cy="${p3.y.toFixed(1)}" r="5.5" fill="#F47732" fill-opacity="0.75" stroke="#FAF8F5" stroke-width="2" />
-              </g>
-              <!-- Node 4: Right edge of Image 3 -->
-              <g class="route-node">
-                <line x1="${(p4.x - 14).toFixed(1)}" y1="${p4.y.toFixed(1)}" x2="${p4.x.toFixed(1)}" y2="${p4.y.toFixed(1)}" stroke="#F47732" stroke-width="2.5" stroke-opacity="0.6" stroke-linecap="round" />
-                <circle cx="${p4.x.toFixed(1)}" cy="${p4.y.toFixed(1)}" r="11" fill="none" stroke="#F47732" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.4" />
-                <circle cx="${p4.x.toFixed(1)}" cy="${p4.y.toFixed(1)}" r="5.5" fill="#F47732" fill-opacity="0.75" stroke="#FAF8F5" stroke-width="2" />
-              </g>
-            `;
+          try {
+            pathTotalLen = Math.ceil(path.getTotalLength() || 3000);
+          } catch (e) {
+            pathTotalLen = 3000;
           }
+          path.style.strokeDasharray = `${pathTotalLen} ${pathTotalLen + 200}`;
+          applyRouteDraw(currentDrawP);
         }
 
-        window.addEventListener('resize', updateRoute, { passive: true });
-        window.addEventListener('load', updateRoute);
+        function applyRouteDraw(p) {
+          const clamped = Math.max(0, Math.min(1, p));
+          const offset = pathTotalLen * (1 - clamped);
+          path.style.strokeDashoffset = offset.toFixed(1);
+        }
+
+        function computeRouteScrollTarget() {
+          const rect = container.getBoundingClientRect();
+          const winH = window.innerHeight || 900;
+          // Begins drawing smoothly as Card 1 enters lower 78% of viewport, completes as Card 3 clears center
+          const startTop = winH * 0.78;
+          const endTop = -(rect.height - winH * 0.42);
+          const raw = (startTop - rect.top) / Math.max(1, startTop - endTop);
+          targetDrawP = Math.max(0, Math.min(1, raw));
+        }
+
+        function tickRouteDraw() {
+          const diff = targetDrawP - currentDrawP;
+          if (Math.abs(diff) < 0.0008) {
+            currentDrawP = targetDrawP;
+            applyRouteDraw(currentDrawP);
+            routeRafId = null;
+            return;
+          }
+          currentDrawP += diff * 0.14;
+          applyRouteDraw(currentDrawP);
+          routeRafId = requestAnimationFrame(tickRouteDraw);
+        }
+
+        function onRouteScroll() {
+          computeRouteScrollTarget();
+          if (!routeRafId) routeRafId = requestAnimationFrame(tickRouteDraw);
+        }
+
+        window.addEventListener('scroll', onRouteScroll, { passive: true });
+        window.addEventListener('resize', () => { updateRouteGeometry(); onRouteScroll(); }, { passive: true });
+        window.addEventListener('load', () => { updateRouteGeometry(); onRouteScroll(); });
         if (window.ResizeObserver) {
-          const ro = new ResizeObserver(() => updateRoute());
+          const ro = new ResizeObserver(() => { updateRouteGeometry(); onRouteScroll(); });
           ro.observe(container);
         }
-        setTimeout(updateRoute, 60);
-        setTimeout(updateRoute, 300);
-        setTimeout(updateRoute, 1000);
+        setTimeout(() => { updateRouteGeometry(); computeRouteScrollTarget(); currentDrawP = targetDrawP; applyRouteDraw(currentDrawP); }, 80);
+        setTimeout(() => { updateRouteGeometry(); onRouteScroll(); }, 400);
       })();
 
       // ======================================================================

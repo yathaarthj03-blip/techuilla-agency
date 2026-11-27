@@ -110,10 +110,10 @@
 
     const scene = new THREE.Scene();
 
-    // Camera starts framed cleanly on the cinema camera + tripod head, then zooms straight into the lens center on scroll
+    // Camera centered dead-on world y = 0.0 (exact lens optical axis!) so the circular aperture is ALWAYS at (50%, 50%) screen center!
     const camera = new THREE.PerspectiveCamera(36, window.innerWidth / window.innerHeight, 0.05, 60);
-    camera.position.set(0, -0.08, 7.1);
-    camera.lookAt(0, -0.08, 0);
+    camera.position.set(0, 0, 7.1);
+    camera.lookAt(0, 0, 0);
 
     // Cinema Studio 3-Point + Softbox Lighting (matching our motion-blurred film set)
     const ambient = new THREE.AmbientLight(0x3a3240, 1.25);
@@ -185,10 +185,10 @@
     scene.add(rigGroup);
 
     // =========================================================================
-    // 1. CAMERA BODY (Centered around lens axis y = 0.25)
+    // 1. CAMERA BODY (Positioned so Lens Optical Axis is at EXACT world (0, 0, 0)!)
     // =========================================================================
     const cameraGroup = new THREE.Group();
-    cameraGroup.position.set(0, 0.28, 0);
+    cameraGroup.position.set(0, 0.02, 0);
     rigGroup.add(cameraGroup);
 
     // Main Magnesium Chassis
@@ -360,25 +360,71 @@
     baffle2.position.set(0, 0, 0.50);
     lensGroup.add(baffle2);
 
-    // Multi-Coated Optical Glass Front Element (Semi-transparent teal/amber coating that clears as we zoom through!)
-    const glassMat = new THREE.MeshPhysicalMaterial({
-      color: 0x0b1f26,
-      emissive: 0x06222c,
-      emissiveIntensity: 0.45,
-      roughness: 0.06,
-      metalness: 0.15,
+    // Realistic Organic Multi-Element Curved Optical Glass Rim (NO greenish-bluish flat layer!)
+    const opticalRimGlassMat = new THREE.MeshPhysicalMaterial({
+      color: 0x050507,
+      roughness: 0.04,
+      metalness: 0.20,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.04,
       transparent: true,
-      opacity: 0.58
+      opacity: 0.85,
+      side: THREE.DoubleSide
     });
-    const frontGlass = new THREE.Mesh(new THREE.CircleGeometry(0.55, 48), glassMat);
-    frontGlass.position.set(0, 0, 0.68);
-    lensGroup.add(frontGlass);
+    // Outer curved glass meniscus ring (keeps center crystal-clear dark optical bore)
+    const meniscusRing = new THREE.Mesh(new THREE.RingGeometry(0.32, 0.56, 64), opticalRimGlassMat);
+    meniscusRing.position.set(0, 0, 0.66);
+    lensGroup.add(meniscusRing);
+
+    // Subtle Organic Lens Specular Arc Glint (Realistic warm studio light reflection on curved glass)
+    const glintMat = new THREE.MeshBasicMaterial({
+      color: 0xffead2,
+      transparent: true,
+      opacity: 0.28,
+      side: THREE.DoubleSide
+    });
+    const lensGlintArc = new THREE.Mesh(new THREE.RingGeometry(0.38, 0.44, 32, 1, 0.45, 1.15), glintMat);
+    lensGlintArc.position.set(0, 0, 0.69);
+    lensGroup.add(lensGlintArc);
+
+    // 9-Blade Mechanical Organic Camera Iris Diaphragm (Opens smoothly from exact center on scroll!)
+    const irisGroup = new THREE.Group();
+    irisGroup.position.set(0, 0, 0.58);
+    lensGroup.add(irisGroup);
+
+    const irisBladeMat = new THREE.MeshStandardMaterial({
+      color: 0x0b0c0f,
+      roughness: 0.38,
+      metalness: 0.78,
+      side: THREE.DoubleSide
+    });
+    const irisBlades = [];
+    const BLADE_COUNT = 9;
+    const bladeShape = new THREE.Shape();
+    bladeShape.moveTo(0, 0);
+    bladeShape.lineTo(0.42, -0.06);
+    bladeShape.quadraticCurveTo(0.54, 0.16, 0.24, 0.42);
+    bladeShape.lineTo(0, 0.14);
+    bladeShape.closePath();
+    const bladeGeo = new THREE.ShapeGeometry(bladeShape);
+
+    for (let i = 0; i < BLADE_COUNT; i++) {
+      const ang = (i / BLADE_COUNT) * Math.PI * 2;
+      const pivot = new THREE.Group();
+      pivot.position.set(Math.cos(ang) * 0.50, Math.sin(ang) * 0.50, i * 0.002);
+      pivot.rotation.z = ang + Math.PI * 0.68;
+      const blade = new THREE.Mesh(bladeGeo, irisBladeMat);
+      blade.position.set(-0.08, -0.04, 0);
+      pivot.add(blade);
+      irisGroup.add(pivot);
+      irisBlades.push({ pivot, baseRot: ang + Math.PI * 0.68 });
+    }
 
     // =========================================================================
     // 3. HEAVY-DUTY FLUID-HEAD TRIPOD (Directly below Camera Body)
     // =========================================================================
     const tripodGroup = new THREE.Group();
-    tripodGroup.position.set(0, -0.60, -0.24);
+    tripodGroup.position.set(0, -0.86, -0.24);
     rigGroup.add(tripodGroup);
 
     // Quick-Release Base Plate
@@ -443,24 +489,31 @@
     resize();
     window.addEventListener('resize', resize, { passive: true });
 
-    // Scroll-Driven Update Function (0 = Hero Camera on Tripod, 1 = Zoomed Straight Through Center Lens!)
+    // Scroll-Driven Update Function (0 = Hero Camera on Tripod, 1 = Zoomed Straight Through Exact (50%,50%) Lens Center!)
     function renderAtProgress(zoomP) {
       const p = Math.max(0, Math.min(1, zoomP));
-      // Smooth cubic ease for cinematic dolly-in toward the exact lens optical center (0, 0.26, 0.88)
       const easeZ = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
 
-      // Dolly Z from 7.1 -> 1.05 (tight into the lens bore), Y converges cleanly from -0.08 -> 0.26 (exact lens center!)
+      // Keep camera locked dead-on world y = 0.0 so lens bore is ALWAYS at exact (50%, 50%) viewport center!
       const camZ = 7.1 + (1.05 - 7.1) * easeZ;
-      const camY = -0.08 + (0.26 - (-0.08)) * easeZ;
-      camera.position.set(0, camY, camZ);
-      camera.lookAt(0, camY, 0);
+      camera.position.set(0, 0, camZ);
+      camera.lookAt(0, 0, 0);
 
       // CLOCKWISE rotation of the focal-length / focus ring on scroll!
-      // In Three.js facing +Z, negative rotation.z is CLOCKWISE from the viewer's perspective
       focusRingGroup.rotation.z = -p * Math.PI * 1.5;
 
-      // Clear optical glass opacity as camera enters lens so the next section shines cleanly through the circular bore
-      glassMat.opacity = Math.max(0, 0.58 * (1 - Math.max(0, (p - 0.35) / 0.45)));
+      // 9-Blade Organic Iris Diaphragm smoothly opens outward from the exact center as we zoom in!
+      const irisOpen = Math.max(0, Math.min(1, p * 1.45));
+      const irisEase = 1 - Math.pow(1 - irisOpen, 3);
+      irisBlades.forEach(b => {
+        b.pivot.rotation.z = b.baseRot - irisEase * 0.92;
+      });
+      irisGroup.visible = irisOpen < 0.96;
+
+      // Fade optical glass glint cleanly as camera passes through the open iris
+      const glassFade = Math.max(0, 1 - Math.max(0, (p - 0.35) / 0.40));
+      opticalRimGlassMat.opacity = 0.85 * glassFade;
+      glintMat.opacity = 0.28 * glassFade;
 
       renderer.render(scene, camera);
     }
