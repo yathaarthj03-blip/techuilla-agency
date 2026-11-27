@@ -3759,7 +3759,14 @@
           } else if (section === 'services') {
             triggerServicesTransition(e);
           } else if (section === 'about') {
-            triggerBackToHomeTransition(e, '#about');
+            if (e) e.preventDefault();
+            if (!window.TechuillaBrushTransition) {
+              window.location.href = 'about.html';
+            } else {
+              window.TechuillaBrushTransition.cover(() => {
+                window.location.href = `about.html?transition=brush&t=${Date.now()}`;
+              });
+            }
           } else if (section === 'contact') {
             triggerContactInPageTransition(e);
           } else {

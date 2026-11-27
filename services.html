@@ -42,10 +42,10 @@
     }
   </style>
 
-  <!-- Google Fonts: Inter 800, Archivo & Support Fonts -->
+  <!-- Google Fonts: Inter, Archivo (Normal & Expanded 800), Space Grotesk -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100,300..800;125,800&family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
     /* -------------------------------------------------------------------------
@@ -704,9 +704,13 @@
       stroke: #111111 !important;
     }
 
-    /* Fullscreen Menu: solid black text wherever white, orange for active page & on hover */
+    /* Fullscreen Menu: solid black text wherever white, orange for active page & on hover, exact home page navpanel fonts */
     #fullscreen-menu {
       color: #111111 !important;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Archivo', 'Inter', sans-serif;
+      --font-mono: 'Space Grotesk', monospace;
+      font-family: var(--font-sans);
     }
     #fullscreen-menu .menu-nav-link:not(.is-active) {
       color: #111111 !important;
@@ -4991,7 +4995,7 @@ Best regards,
           } else if (section === 'services') {
             triggerServicesTransition(e);
           } else if (section === 'about') {
-            triggerHomeTransition(e, '#about');
+            triggerEnquireTransition(e, 'about.html');
           } else if (section === 'contact') {
             triggerEnquireTransition(e, 'contact.html');
           } else {

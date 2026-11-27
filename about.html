@@ -1,0 +1,2517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
+  <title>About Us — Techuilla Agency</title>
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+
+  <!-- Paint Incoming Brush Transition Immediately on Page Load -->
+  <script>
+    (function () {
+      try {
+        if (window.location.search.indexOf('transition=') !== -1) {
+          document.documentElement.classList.add('incoming-brush-transition');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    html.incoming-brush-transition .enquire-transition-overlay {
+      visibility: visible !important;
+      background: #FF6600 !important;
+      pointer-events: auto !important;
+    }
+  </style>
+
+  <!-- Google Fonts: Exact Home Page Font Stack (Inter, Archivo, Space Grotesk, Newsreader, Playfair Display) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800&family=Inter:wght@400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Preload Critical Visuals -->
+  <link rel="preload" as="image" href="Techuilla_logo.png" />
+  <link rel="preload" as="image" href="service_card_9.jpg" />
+  <link rel="preload" as="image" href="service_card_1.jpg" />
+  <link rel="preload" as="image" href="service_card_3.jpg" />
+  <link rel="preload" as="image" href="service_card_10.jpg" />
+  <link rel="preload" as="image" href="service_card_6.jpg" />
+  <link rel="preload" as="image" href="assets/philosophy_1_think_beyond.png" />
+  <link rel="preload" as="image" href="assets/philosophy_2_create_purpose.png" />
+  <link rel="preload" as="image" href="assets/philosophy_3_unite_disciplines.png" />
+  <link rel="preload" as="image" href="assets/philosophy_4_never_stand_still.png" />
+
+  <style>
+    /* ==========================================================================
+       1. DESIGN TOKENS & SYSTEM RESET (Matching Home Page Editorial System)
+       ========================================================================== */
+    *, *::before, *::after {
+      caret-color: transparent !important;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    input, textarea, [contenteditable="true"] {
+      caret-color: auto !important;
+      cursor: text !important;
+      user-select: text !important;
+    }
+
+    html, body, h1, h2, h3, h4, h5, h6, p, span, div, section, article, aside, header, footer, nav, label, strong, em, b, i, li, ul, ol {
+      cursor: default;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    a, a *, button, button *, [role="button"], [role="button"] *,
+    .nav-brand, .nav-brand *, .menu-nav-link, .menu-nav-link *,
+    .menu-enquiries-btn, .menu-enquiries-btn *, .menu-channel-item, .menu-channel-item *,
+    .reel-panel-card, .reel-panel-card * {
+      cursor: pointer !important;
+    }
+
+    :root {
+      --bg-white: #FFFFFF;
+      --bg-warm: #FAF8F5;
+      --bg-beige: #F5EEE3;
+      --text-primary: #111111;
+      --text-secondary: #5A5A5A;
+      --text-muted: #8E8E8E;
+      --color-orange: #FF6600;
+      --color-orange-soft: #F47732;
+      --color-orange-light: #F8B08A;
+      --border-subtle: rgba(0, 0, 0, 0.08);
+      --border-medium: rgba(0, 0, 0, 0.14);
+      --grid-line: rgba(0, 0, 0, 0.065);
+      --grid-line-orange: rgba(255, 102, 0, 0.14);
+
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Archivo', 'Inter', sans-serif;
+      --font-mono: 'Space Grotesk', monospace;
+      --font-serif-italic: 'Newsreader', 'Times New Roman', Georgia, serif;
+
+      --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Hide native scrollbar, use custom minimal indicator */
+    ::-webkit-scrollbar {
+      width: 0 !important;
+      height: 0 !important;
+      display: none !important;
+    }
+
+    html {
+      width: 100%;
+      background-color: var(--bg-white);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      overflow-x: clip;
+      overflow-y: scroll;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    body {
+      width: 100%;
+      min-height: 100vh;
+      background-color: var(--bg-white);
+      color: var(--text-primary);
+      overflow-x: clip;
+      position: relative;
+    }
+
+    /* Persistent White Background with Architectural Gridline Texture */
+    .about-grid-texture {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      background-color: #FFFFFF;
+      background-image:
+        linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px),
+        linear-gradient(to right, var(--grid-line-orange) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-line-orange) 1px, transparent 1px);
+      background-size: 80px 80px, 80px 80px, 320px 320px, 320px 320px;
+    }
+
+    /* Custom Minimal Scrollbar Track */
+    .custom-scroll-indicator {
+      position: fixed;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 120px;
+      background: rgba(17, 17, 17, 0.12);
+      border-radius: 3px;
+      z-index: 9999;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .custom-scroll-thumb {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 24px;
+      background: var(--color-orange);
+      border-radius: 3px;
+      box-shadow: 0 0 10px rgba(255, 102, 0, 0.5);
+      transform: translateY(0);
+      will-change: transform;
+    }
+
+    /* ==========================================================================
+       2. ORANGE ZIG-ZAG BRUSH-STROKE PAGE TRANSITION OVERLAY
+       ========================================================================== */
+    .enquire-transition-overlay {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      background: transparent !important;
+      clip-path: none !important;
+      -webkit-clip-path: none !important;
+      z-index: 9999999 !important;
+      display: block !important;
+      pointer-events: none;
+      visibility: hidden;
+      overflow: hidden !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .enquire-transition-overlay.is-brush-active,
+    .enquire-transition-overlay.is-covering,
+    .enquire-transition-overlay.is-active {
+      visibility: visible !important;
+      pointer-events: auto !important;
+    }
+
+    .enquire-transition-overlay.is-brush-full-hold {
+      background: #FF6600 !important;
+    }
+
+    .enquire-transition-overlay.is-brush-full-hold .brush-path-grey {
+      opacity: 0 !important;
+    }
+
+    .brush-transition-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+
+    .brush-path-grey {
+      fill: none;
+      stroke: #D8DAD3;
+      stroke-width: 265;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      will-change: stroke-dashoffset;
+    }
+
+    .brush-path-orange {
+      fill: none;
+      stroke: #FF6600;
+      stroke-width: 296;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      will-change: stroke-dashoffset;
+    }
+
+    /* ==========================================================================
+       3. STICKY MINIMAL NAVBAR (Exact Match to Home Page)
+       ========================================================================== */
+    .site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 10005;
+      background: transparent !important;
+      pointer-events: none;
+      transition: transform 0.4s ease;
+    }
+
+    .nav-inner {
+      max-width: 1540px;
+      margin: 0 auto;
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+      color: var(--text-primary);
+      pointer-events: auto;
+    }
+
+    .nav-brand-logo {
+      height: 64px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+      transition: filter 0.45s var(--ease-editorial), opacity 0.45s ease;
+    }
+
+    .nav-brand-text {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 29px;
+      letter-spacing: -0.015em;
+      color: #111111;
+      transition: color 0.45s var(--ease-editorial);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      pointer-events: auto;
+    }
+
+    .btn-enquire {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      height: 46px;
+      padding: 0 19px;
+      background: var(--color-orange-soft);
+      color: #FFFFFF;
+      font-family: var(--font-sans);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      text-decoration: none;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      box-shadow: 0 2px 8px rgba(244, 119, 50, 0.22);
+      transition: all 0.2s var(--ease-editorial);
+      flex-shrink: 0;
+    }
+
+    .btn-enquire:hover {
+      background: #E06422;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(244, 119, 50, 0.35);
+    }
+
+    .btn-enquire-icon {
+      width: 17px;
+      height: 17px;
+      display: inline-block;
+      flex-shrink: 0;
+      transition: transform 0.22s var(--ease-editorial);
+    }
+
+    .btn-enquire:hover .btn-enquire-icon {
+      transform: rotate(-10deg) scale(1.08);
+    }
+
+    .btn-menu {
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: var(--text-primary);
+      border: 1.5px solid var(--border-medium);
+      border-radius: 4px;
+      transition: border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+      padding: 0;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-menu:hover {
+      border-color: #111111;
+      background: rgba(244, 119, 50, 0.08) !important;
+      box-shadow: 0 0 16px rgba(244, 119, 50, 0.28), 0 2px 8px rgba(244, 119, 50, 0.16);
+    }
+
+    .menu-infinity-svg {
+      width: 24px;
+      height: 18px;
+      overflow: visible;
+      display: block;
+    }
+
+    .menu-morph-stroke {
+      fill: none;
+      stroke: var(--text-primary);
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.28s var(--ease-editorial), stroke 0.25s ease;
+    }
+
+    .btn-menu:not(.is-open):not(.is-morphing):hover #menuStrokeTop {
+      transform: translateX(-3px);
+      stroke: var(--color-orange-soft) !important;
+    }
+
+    .btn-menu:not(.is-open):not(.is-morphing):hover #menuStrokeBottom {
+      transform: translateX(3px);
+      stroke: var(--color-orange-soft) !important;
+    }
+
+    .btn-menu.is-open #menuStrokeTop,
+    .btn-menu.is-open #menuStrokeBottom,
+    .btn-menu.is-morphing #menuStrokeTop,
+    .btn-menu.is-morphing #menuStrokeBottom {
+      transform: none !important;
+    }
+
+    /* ==========================================================================
+       4. FULLSCREEN NAVIGATION MENU (Exact Match to Home Page)
+       ========================================================================== */
+    #fullscreen-menu {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(135deg, #FAF8F5 0%, #FAF0E6 45%, #FAD7BE 100%);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      --wipe-x: calc(100% - 54px);
+      --wipe-y: 44px;
+      clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+      -webkit-clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+      opacity: 1;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        -webkit-clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        visibility 0s linear 600ms;
+      overflow: hidden;
+      will-change: clip-path;
+      font-family: var(--font-sans);
+    }
+
+    #fullscreen-menu.is-open {
+      clip-path: circle(150% at var(--wipe-x) var(--wipe-y));
+      -webkit-clip-path: circle(150% at var(--wipe-x) var(--wipe-y));
+      visibility: visible;
+      pointer-events: auto;
+      transition:
+        clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        -webkit-clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        visibility 0s linear 0s;
+    }
+
+    #fullscreen-menu.is-closing {
+      clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+      -webkit-clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+      visibility: visible;
+      pointer-events: none;
+      transition:
+        clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        -webkit-clip-path 600ms cubic-bezier(0.76, 0, 0.24, 1),
+        visibility 0s linear 600ms;
+    }
+
+    .menu-header,
+    .reel-carousel-container,
+    .menu-nav-list li,
+    .menu-mini-brand-row,
+    .menu-enquiries-row,
+    .menu-socials-row {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.35s ease, transform 0.45s var(--ease-editorial);
+    }
+
+    #fullscreen-menu.is-open .menu-header { opacity: 1; transform: translateY(0); transition-delay: 140ms; }
+    #fullscreen-menu.is-open .reel-carousel-container { opacity: 1; transform: translateY(0); transition-delay: 180ms; }
+    #fullscreen-menu.is-open .menu-nav-list li:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 230ms; }
+    #fullscreen-menu.is-open .menu-nav-list li:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 280ms; }
+    #fullscreen-menu.is-open .menu-nav-list li:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 330ms; }
+    #fullscreen-menu.is-open .menu-nav-list li:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 380ms; }
+    #fullscreen-menu.is-open .menu-mini-brand-row { opacity: 1; transform: translateY(0); transition-delay: 420ms; }
+    #fullscreen-menu.is-open .menu-enquiries-row { opacity: 1; transform: translateY(0); transition-delay: 460ms; }
+    #fullscreen-menu.is-open .menu-socials-row { opacity: 1; transform: translateY(0); transition-delay: 500ms; }
+
+    #fullscreen-menu.is-closing .menu-header,
+    #fullscreen-menu.is-closing .reel-carousel-container,
+    #fullscreen-menu.is-closing .menu-nav-list li,
+    #fullscreen-menu.is-closing .menu-mini-brand-row,
+    #fullscreen-menu.is-closing .menu-enquiries-row,
+    #fullscreen-menu.is-closing .menu-socials-row {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+      transition: none !important;
+    }
+
+    .menu-body-split {
+      flex: 1;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reel-carousel-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid var(--border-subtle);
+    }
+
+    .nav-extreme-left-logo-wrap {
+      position: absolute;
+      left: 32px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .nav-extreme-left-logo {
+      width: 164px;
+      height: 137px;
+      object-fit: fill;
+      display: block;
+      filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.16));
+    }
+
+    .reel-wheel {
+      position: absolute;
+      left: -14%;
+      top: 50%;
+      width: 980px;
+      height: 980px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      animation: continuousReelSpin 45s linear infinite;
+      will-change: transform;
+    }
+
+    .reel-wheel:hover { animation-play-state: paused; }
+
+    @keyframes continuousReelSpin {
+      0%   { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .reel-spoke { position: absolute; top: 50%; left: 50%; width: 0; height: 0; transform-origin: 0 0; }
+    .spoke-0 { transform: rotate(0deg); }
+    .spoke-1 { transform: rotate(36deg); }
+    .spoke-2 { transform: rotate(72deg); }
+    .spoke-3 { transform: rotate(108deg); }
+    .spoke-4 { transform: rotate(144deg); }
+    .spoke-5 { transform: rotate(180deg); }
+    .spoke-6 { transform: rotate(216deg); }
+    .spoke-7 { transform: rotate(252deg); }
+    .spoke-8 { transform: rotate(288deg); }
+    .spoke-9 { transform: rotate(324deg); }
+
+    .reel-panel-card {
+      position: absolute;
+      left: 485px;
+      top: -142px;
+      width: 364px;
+      height: 284px;
+      background: #FFFFFF;
+      border-radius: 14px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.35s var(--ease-editorial), border-color 0.3s ease, box-shadow 0.3s ease;
+      text-decoration: none;
+      color: #111111;
+    }
+
+    .reel-panel-card:hover {
+      transform: scale(1.05);
+      border-color: var(--color-orange-soft);
+      box-shadow: 0 20px 42px rgba(244, 119, 50, 0.25);
+    }
+
+    .reel-card-thumb { width: 100%; height: 206px; background: #111111; position: relative; overflow: hidden; }
+    .reel-card-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+    .reel-panel-card:hover .reel-card-img { transform: scale(1.06); }
+
+    .reel-card-num-badge {
+      position: absolute; top: 10px; left: 10px;
+      font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+      color: #FFFFFF; background: rgba(15, 15, 15, 0.72);
+      padding: 3px 8px; border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.16); z-index: 2;
+    }
+    .reel-panel-card:hover .reel-card-num-badge { background: var(--color-orange-soft); border-color: var(--color-orange-soft); }
+
+    .reel-card-info {
+      padding: 10px 14px; display: flex; justify-content: space-between; align-items: center;
+      background: #FFFFFF; flex: 1; border-top: 1px solid rgba(0, 0, 0, 0.06); gap: 8px;
+    }
+    .reel-card-meta-left { display: flex; flex-direction: column; gap: 2px; overflow: hidden; min-width: 0; }
+    .reel-card-title { font-family: var(--font-sans); font-size: 12.5px; font-weight: 700; color: #111111; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .reel-card-niche-sub { font-family: var(--font-mono); font-size: 10.5px; color: #737373; display: flex; align-items: center; gap: 4px; }
+    .reel-card-niche-val { font-weight: 600; color: var(--color-orange-soft); }
+    .reel-card-tag {
+      font-family: var(--font-mono); font-size: 10.5px; font-weight: 700;
+      color: var(--color-orange-soft); background: rgba(244, 119, 50, 0.1);
+      border: 1px solid rgba(244, 119, 50, 0.22); border-radius: 999px;
+      padding: 3px 9px; text-transform: uppercase; flex-shrink: 0;
+    }
+    .reel-panel-card:hover .reel-card-tag { background: var(--color-orange-soft); color: #FFFFFF; }
+
+    .menu-nav-right-col { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px 48px; position: relative; z-index: 5; }
+    .menu-nav-inner { width: 100%; max-width: 580px; display: flex; flex-direction: column; align-items: center; text-align: center; margin: 0 auto; }
+    .menu-nav-list { list-style: none; display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; }
+    .menu-nav-list li { width: 100%; display: flex; justify-content: center; }
+
+    .menu-nav-link {
+      display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+      font-family: var(--font-sans); font-size: clamp(38px, 4.4vw, 60px); font-weight: 800;
+      letter-spacing: -0.015em; text-transform: uppercase; color: #111111;
+      text-decoration: none; transition: transform 0.3s var(--ease-editorial), color 0.25s ease; position: relative;
+    }
+    .menu-nav-link .nav-text-wrap { position: relative; display: inline-flex; align-items: center; }
+
+    .jackpot-char-slot { display: inline-block; overflow: hidden; height: 1.15em; vertical-align: bottom; position: relative; }
+    .jackpot-char-sizer { display: inline-block; opacity: 0; visibility: hidden; line-height: 1.15; }
+    .jackpot-reel-ladder {
+      position: absolute; top: 0; left: 0; width: 100%; height: 400%;
+      display: flex; flex-direction: column; transform: translateY(0);
+      transition: transform 1.02s cubic-bezier(0.2, 0.95, 0.3, 1);
+      transition-delay: calc(var(--char-idx) * 0.045s); will-change: transform;
+    }
+    .menu-nav-link:hover .jackpot-reel-ladder,
+    .menu-channel-item:hover .jackpot-reel-ladder,
+    .menu-enquiries-btn:hover .jackpot-reel-ladder { transform: translateY(-75%); }
+    .jackpot-rung { display: block; height: 25%; width: 100%; line-height: 1.15; text-align: center; }
+    .jackpot-rung.target { color: var(--color-orange-soft); }
+
+    .nav-creative-strikethrough {
+      position: absolute; left: -12%; width: 124%; top: 50%; height: 105%;
+      transform: translateY(-50%); pointer-events: none; z-index: 10; overflow: visible; opacity: 0; transition: opacity 0.3s ease;
+    }
+    .nav-creative-strikethrough .stroke-cut {
+      fill: none; stroke: var(--bg-warm); stroke-width: 9.5px; stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 850; stroke-dashoffset: 850; transition: stroke-dashoffset 0.45s var(--ease-editorial);
+    }
+    .nav-creative-strikethrough .stroke-ribbon {
+      fill: none; stroke: rgba(244, 119, 50, 0.55); stroke-width: 2.5px; stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 850; stroke-dashoffset: 850; transition: stroke-dashoffset 0.45s var(--ease-editorial);
+    }
+    .menu-nav-link .nav-arrow {
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: clamp(22px, 2.6vw, 36px); color: var(--color-orange-soft);
+      opacity: 0; transform: translate(-8px, 8px) scale(0.6);
+      transition: opacity 0.3s ease, transform 0.35s var(--ease-editorial); margin-left: 8px; line-height: 1;
+    }
+    .menu-nav-link.is-active,
+    .menu-nav-link:hover { color: var(--color-orange-soft); }
+    .menu-nav-link:hover { transform: translateY(-2px); }
+    .menu-nav-link.is-active .nav-creative-strikethrough,
+    .menu-nav-link:hover .nav-creative-strikethrough { opacity: 1; }
+    .menu-nav-link.is-active .nav-creative-strikethrough .stroke-cut,
+    .menu-nav-link.is-active .nav-creative-strikethrough .stroke-ribbon,
+    .menu-nav-link:hover .nav-creative-strikethrough .stroke-cut,
+    .menu-nav-link:hover .nav-creative-strikethrough .stroke-ribbon { stroke-dashoffset: 0; }
+    .menu-nav-link.is-active .nav-arrow,
+    .menu-nav-link:hover .nav-arrow { opacity: 1; transform: translate(0, 0) scale(1); }
+
+    .menu-mini-brand-row { margin-top: clamp(42px, 5vh, 60px); width: 100%; display: flex; justify-content: center; }
+    .menu-mini-logo { height: 62px; width: auto; object-fit: contain; display: block; }
+    .menu-enquiries-row { margin-top: clamp(8px, 1.2vh, 12px); width: 100%; display: flex; justify-content: center; }
+    .menu-enquiries-btn {
+      font-family: var(--font-sans); font-size: clamp(16px, 1.3vw, 19px); font-weight: 700;
+      letter-spacing: 0.02em; color: #111111; padding: 6px 0; display: inline-flex; align-items: center; justify-content: center;
+    }
+    .menu-enquiries-btn .nav-text-wrap { position: relative; display: inline-flex; align-items: center; }
+    .menu-socials-row { margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+    .menu-channel-item {
+      font-family: var(--font-mono); font-size: 13px; font-weight: 600;
+      letter-spacing: 0.04em; color: #111111; text-decoration: none; display: inline-flex; align-items: center;
+    }
+    .menu-channel-item .nav-text-wrap { position: relative; display: inline-flex; align-items: center; }
+    .menu-channel-sep { color: rgba(17, 17, 17, 0.35); font-size: 13px; }
+
+    /* ==========================================================================
+       5. SECTION 1 — ABOUT US HERO (Ross Mason Scroll-Scrubbed Expansion)
+       ========================================================================== */
+    .about-hero-track {
+      position: relative;
+      height: 360vh;
+      width: 100%;
+      z-index: 5;
+    }
+
+    .about-hero-sticky {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Upper 5-Card Showcase Band (4 side cards drop down from top, center card emerges from between words & grows bigger) */
+    .hero-cards-band {
+      position: absolute;
+      top: 96px;
+      left: 0;
+      width: 100%;
+      padding: 0 clamp(18px, 2.8vw, 48px);
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.42fr 1fr 1fr;
+      gap: clamp(12px, 1.5vw, 24px);
+      align-items: start;
+      z-index: 12;
+      pointer-events: none;
+    }
+
+    .hero-drop-card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      will-change: transform, opacity;
+      transform: translate3d(0, -145%, 0);
+      opacity: 0;
+    }
+
+    .hero-drop-card-header {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding-left: 2px;
+    }
+
+    .hero-drop-card-title {
+      font-family: var(--font-sans);
+      font-size: clamp(12px, 0.95vw, 15px);
+      font-weight: 700;
+      color: #111111;
+      letter-spacing: -0.015em;
+      line-height: 1.2;
+    }
+
+    .hero-drop-card-tag {
+      font-family: var(--font-mono);
+      font-size: clamp(9.5px, 0.72vw, 11px);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-orange);
+    }
+
+    .hero-drop-card-frame {
+      width: 100%;
+      aspect-ratio: 4 / 4.4;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #0D0D0D;
+      box-shadow: 0 20px 48px rgba(17, 17, 17, 0.14), 0 0 0 1px rgba(17, 17, 17, 0.08);
+    }
+
+    .hero-drop-card-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    /* Placeholder middle column in grid to keep exact spacing for the expanding center card */
+    .hero-center-slot-spacer {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .hero-center-card-header {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      opacity: 0;
+      transform: translate3d(0, -16px, 0);
+      will-change: opacity, transform;
+    }
+
+    /* The Expanding Center Image (Starts inside the exact gap between "Techuilla" & "Agency", then grows bigger into the center slot) */
+    .hero-center-morph-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0px;
+      height: 0px;
+      transform: translate3d(-50%, -50%, 0);
+      border-radius: 6px;
+      overflow: hidden;
+      background: #0B0B0B;
+      box-shadow: 0 28px 70px rgba(17, 17, 17, 0.22), 0 0 0 1.5px rgba(255, 102, 0, 0.25);
+      z-index: 15;
+      opacity: 0;
+      will-change: transform, width, height, opacity;
+      pointer-events: none;
+    }
+
+    .hero-center-morph-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transform: scale(1.06);
+      will-change: transform;
+    }
+
+    /* Centered Wordmark: "Techuilla" (Orange) + "Agency" (Black) */
+    .hero-wordmark-stage {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate3d(-50%, -50%, 0);
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      white-space: nowrap;
+      z-index: 10;
+      will-change: transform;
+      pointer-events: none;
+    }
+
+    .hero-word {
+      font-family: var(--font-sans);
+      font-size: clamp(44px, 5.4vw, 82px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 0.96;
+      display: inline-block;
+      will-change: transform;
+    }
+
+    .hero-word-techuilla {
+      color: var(--color-orange);
+      padding-right: 0.14em;
+    }
+
+    .hero-word-agency {
+      color: #111111;
+      padding-left: 0.14em;
+    }
+
+    .hero-scroll-cue {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #666666;
+      z-index: 16;
+      transition: opacity 0.3s ease;
+    }
+
+    .hero-scroll-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--color-orange);
+      animation: pulseCue 1.8s ease-in-out infinite;
+    }
+
+    @keyframes pulseCue {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.45); opacity: 0.45; }
+    }
+
+    /* ==========================================================================
+       6. SECTION 2 — AGENCY MANIFESTO (64px Bold + 1.5s Orange Veil Typography)
+       ========================================================================== */
+    .about-manifesto-section {
+      position: relative;
+      z-index: 6;
+      width: 100%;
+      padding: clamp(130px, 16vh, 210px) clamp(24px, 6vw, 96px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .about-manifesto-inner {
+      max-width: 1380px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .about-manifesto-text {
+      font-family: var(--font-sans);
+      font-size: clamp(32px, 4.15vw, 64px);
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -0.032em;
+      color: #111111;
+      margin: 0;
+      text-align: left;
+    }
+
+    .about-manifesto-text .accent-orange {
+      color: var(--color-orange);
+    }
+
+    /* Signature 1.5s Orange Layer Wipe Typography Reveal */
+    .orange-veil-line {
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+      padding: 2px 6px 4px 2px;
+      margin-bottom: 4px;
+    }
+
+    .orange-veil-bar {
+      position: absolute;
+      inset: 0;
+      background: var(--color-orange);
+      transform: scaleX(0);
+      transform-origin: left center;
+      z-index: 3;
+      pointer-events: none;
+      border-radius: 3px;
+      will-change: transform;
+    }
+
+    .orange-veil-content {
+      display: inline-block;
+      opacity: 0;
+      transform: translate3d(0, 12px, 0);
+      will-change: opacity, transform;
+    }
+
+    .orange-veil-line.is-revealing .orange-veil-bar {
+      animation: orangeVeilSweep 1.5s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+      animation-delay: var(--veil-delay, 0s);
+    }
+
+    .orange-veil-line.is-revealing .orange-veil-content {
+      animation: orangeVeilTextAppear 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation-delay: var(--veil-delay, 0s);
+    }
+
+    @keyframes orangeVeilSweep {
+      0% {
+        transform-origin: left center;
+        transform: scaleX(0);
+      }
+      45% {
+        transform-origin: left center;
+        transform: scaleX(1);
+      }
+      50% {
+        transform-origin: right center;
+        transform: scaleX(1);
+      }
+      100% {
+        transform-origin: right center;
+        transform: scaleX(0);
+      }
+    }
+
+    @keyframes orangeVeilTextAppear {
+      0%, 44% {
+        opacity: 0;
+        transform: translate3d(0, 10px, 0);
+      }
+      52% {
+        opacity: 1;
+        transform: translate3d(0, 2px, 0);
+      }
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+    }
+
+    /* ==========================================================================
+       7. SECTION 3 — OUR PHILOSOPHY + RADIAL 4-IMAGE THROW / CONTRACT STAGE
+       ========================================================================== */
+    .philosophy-title-section {
+      position: relative;
+      z-index: 6;
+      width: 100%;
+      padding: clamp(90px, 12vh, 150px) 24px clamp(40px, 6vh, 70px) 24px;
+      text-align: center;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .philosophy-main-title {
+      font-family: var(--font-sans);
+      font-size: clamp(46px, 6.4vw, 96px);
+      font-weight: 900;
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      color: #111111;
+      margin: 0 auto;
+      display: inline-block;
+    }
+
+    .philosophy-main-title .accent-orange {
+      color: var(--color-orange);
+    }
+
+    /* Scroll-Pinned Radial Throw Stage (Reverses / Contracts Back When Scrolling Up) */
+    .philosophy-scatter-track {
+      position: relative;
+      height: 310vh;
+      width: 100%;
+      z-index: 7;
+    }
+
+    .philosophy-scatter-sticky {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .philosophy-center-copy {
+      position: relative;
+      z-index: 8;
+      max-width: 780px;
+      width: 90%;
+      text-align: center;
+      padding: 0 20px;
+      will-change: transform, opacity;
+    }
+
+    .philosophy-center-headline {
+      font-family: var(--font-sans);
+      font-size: clamp(36px, 4.4vw, 66px);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+      color: #111111;
+      margin-bottom: 22px;
+    }
+
+    .philosophy-center-headline .accent-orange {
+      color: var(--color-orange);
+    }
+
+    .philosophy-center-desc {
+      font-family: var(--font-sans);
+      font-size: clamp(16px, 1.3vw, 20px);
+      font-weight: 400;
+      line-height: 1.65;
+      color: #4A4A4A;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    /* 4 Square Beige & Orange Images Thrown in 4 Directions */
+    .philosophy-cards-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 12;
+    }
+
+    .philosophy-throw-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: clamp(210px, 21vw, 315px);
+      aspect-ratio: 1 / 1;
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--bg-beige);
+      box-shadow: 0 24px 60px rgba(17, 17, 17, 0.14), 0 6px 20px rgba(255, 102, 0, 0.10);
+      will-change: transform, opacity;
+      transform: translate3d(-50%, -50%, 0);
+    }
+
+    .philosophy-throw-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ==========================================================================
+       8. SECTION 4 — OUR APPROACH (5 Pill Capsules Slide-Down + Middle Full-Screen Open)
+       ========================================================================== */
+    .approach-scroll-track {
+      position: relative;
+      height: 460vh;
+      width: 100%;
+      z-index: 8;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .approach-sticky-stage {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: clamp(92px, 11vh, 128px);
+    }
+
+    .approach-header {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      margin-bottom: clamp(28px, 4vh, 48px);
+      will-change: transform, opacity;
+    }
+
+    .approach-title {
+      font-family: var(--font-sans);
+      font-size: clamp(38px, 4.8vw, 72px);
+      font-weight: 900;
+      letter-spacing: -0.038em;
+      text-transform: uppercase;
+      color: #111111;
+      line-height: 1.02;
+    }
+
+    .approach-title .accent-orange {
+      color: var(--color-orange);
+    }
+
+    /* 5 Vertical Pill / Arch Objects Stage */
+    .approach-pills-stage {
+      position: relative;
+      width: min(92vw, 1380px);
+      height: clamp(380px, 60vh, 580px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(14px, 1.8vw, 28px);
+      z-index: 12;
+    }
+
+    /* Clip-mask container for each pill so it slides down from invisible (video-edit reveal) */
+    .approach-pill-mask {
+      position: relative;
+      flex: 1 1 0;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 999px;
+      will-change: transform, opacity;
+    }
+
+    /* Middle Pill Mask is allowed to overflow & expand cleanly into full screen */
+    .approach-pill-mask.is-middle-slot {
+      overflow: visible;
+      z-index: 25;
+    }
+
+    .approach-pill-inner-clip {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 999px;
+    }
+
+    .approach-pill-object {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 999px;
+      transform: translate3d(0, -108%, 0);
+      will-change: transform, border-radius;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 42px 22px;
+      text-align: center;
+      border: 1px solid rgba(255, 102, 0, 0.22);
+      box-shadow: 0 24px 54px rgba(255, 102, 0, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+      overflow: hidden;
+    }
+
+    /* Subtle Beige & Light Orange Minimal Smooth Gradients for Each of the 5 Capsules */
+    .pill-grad-1 {
+      background: linear-gradient(180deg, #FAF5EC 0%, #FDE9D5 52%, #FFD2AD 100%);
+    }
+    .pill-grad-2 {
+      background: linear-gradient(180deg, #FBF6EE 0%, #FCE2C8 48%, #FFC291 100%);
+    }
+    .pill-grad-3 {
+      background: linear-gradient(180deg, #FAF4EB 0%, #FFDEC0 46%, #FFB178 100%);
+    }
+    .pill-grad-4 {
+      background: linear-gradient(180deg, #FBF6EE 0%, #FCE2C8 48%, #FFC291 100%);
+    }
+    .pill-grad-5 {
+      background: linear-gradient(180deg, #FAF5EC 0%, #FDE9D5 52%, #FFD2AD 100%);
+    }
+
+    /* Soft ambient architectural orb inside each pill */
+    .approach-pill-object::before {
+      content: "";
+      position: absolute;
+      width: 140%;
+      height: 46%;
+      bottom: -12%;
+      left: -20%;
+      background: radial-gradient(circle, rgba(255, 102, 0, 0.22) 0%, rgba(255, 148, 77, 0.08) 55%, transparent 75%);
+      pointer-events: none;
+    }
+
+    .pill-step-num {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--color-orange);
+      position: relative;
+      z-index: 2;
+    }
+
+    .pill-step-label {
+      font-family: var(--font-sans);
+      font-size: clamp(16px, 1.35vw, 22px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: #1A1614;
+      position: relative;
+      z-index: 2;
+      line-height: 1.2;
+    }
+
+    .pill-step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-orange);
+      opacity: 0.75;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Full-Screen Expanding Portal Layer Cloned from Middle Capsule (Object 3) */
+    .approach-portal-expander {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0px;
+      height: 0px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #FAF4EB 0%, #FFDEC0 46%, #FFB178 100%);
+      z-index: 40;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      will-change: top, left, width, height, border-radius, opacity;
+      box-shadow: 0 30px 90px rgba(255, 102, 0, 0.18);
+    }
+
+    .approach-portal-expander::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(255, 102, 0, 0.07) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 102, 0, 0.07) 1px, transparent 1px);
+      background-size: 96px 96px;
+      pointer-events: none;
+    }
+
+    .approach-portal-page-content {
+      position: relative;
+      z-index: 3;
+      max-width: 1100px;
+      width: 90%;
+      text-align: center;
+      opacity: 0;
+      transform: translate3d(0, 36px, 0) scale(0.96);
+      will-change: opacity, transform;
+      padding: 0 24px;
+    }
+
+    .approach-portal-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-orange);
+      margin-bottom: 18px;
+    }
+
+    .approach-portal-headline {
+      font-family: var(--font-display);
+      font-size: clamp(46px, 7.6vw, 118px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 0.96;
+      text-transform: uppercase;
+      color: #111111;
+      margin-bottom: 24px;
+    }
+
+    .approach-portal-headline .accent-orange {
+      color: var(--color-orange);
+    }
+
+    .approach-portal-sub {
+      font-family: var(--font-sans);
+      font-size: clamp(17px, 1.45vw, 22px);
+      font-weight: 500;
+      line-height: 1.6;
+      color: #3B2E26;
+      max-width: 720px;
+      margin: 0 auto 38px auto;
+    }
+
+    .approach-portal-pillars {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .approach-portal-chip {
+      padding: 10px 22px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(255, 102, 0, 0.28);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #111111;
+      backdrop-filter: blur(8px);
+    }
+
+    @media (max-width: 960px) {
+      .nav-brand-logo { height: 48px; }
+      .nav-brand-text { font-size: 22px; }
+      .menu-body-split { grid-template-columns: 1fr; }
+      .reel-carousel-container { display: none; }
+      .hero-cards-band {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+        top: 86px;
+      }
+      .philosophy-throw-card {
+        width: clamp(145px, 34vw, 220px);
+      }
+      .approach-pills-stage {
+        gap: 10px;
+        height: 48vh;
+      }
+      .pill-step-label {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Persistent White Architectural Gridline Background -->
+  <div class="about-grid-texture" aria-hidden="true"></div>
+
+  <!-- Custom Minimal Scroll Indicator -->
+  <div class="custom-scroll-indicator" aria-hidden="true">
+    <div class="custom-scroll-thumb" id="customScrollThumb"></div>
+  </div>
+
+  <!-- Unified Orange Zig-Zag Brush-Stroke Page Transition Overlay -->
+  <div id="enquireTransitionOverlay" class="enquire-transition-overlay" aria-hidden="true">
+    <svg class="brush-transition-svg" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
+      <path id="brushPathGrey" class="brush-path-grey" d="M 920,-180 L -180,1040 L 1640,-140 L 520,1080" />
+      <path id="brushPathOrange" class="brush-path-orange" d="M -220,120 C 120,-120 480,-120 560,120 C 640,360 -200,520 -180,740 C -160,960 920,-140 1120,40 C 1320,220 260,720 440,940 C 620,1160 1560,40 1620,260 C 1680,480 860,820 1180,980 C 1420,1100 1640,860 1680,680" />
+    </svg>
+  </div>
+
+  <!-- Sticky Minimal Navbar -->
+  <header class="site-nav" id="siteNav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand" id="navHomeBrand" aria-label="Techuilla Agency Home">
+        <img src="Techuilla_logo.png" alt="Techuilla Agency Logo" class="nav-brand-logo" />
+        <span class="nav-brand-text">Techuilla Agency</span>
+      </a>
+
+      <div class="nav-actions">
+        <a href="contact.html" class="btn-enquire" id="navEnquireBtn">
+          <span>Enquire</span>
+          <svg class="btn-enquire-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+          </svg>
+        </a>
+
+        <button class="btn-menu" id="open-menu-btn" aria-label="Open Navigation Menu" type="button">
+          <svg class="menu-infinity-svg" viewBox="0 0 28 20" aria-hidden="true">
+            <path id="menuStrokeTop" class="menu-morph-stroke" d="M 4,6 C 9,6 19,6 24,6 C 24,6 24,6 24,6" />
+            <path id="menuStrokeBottom" class="menu-morph-stroke" d="M 4,14 C 9,14 19,14 24,14 C 24,14 24,14 24,14" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Fullscreen Navigation Menu (Identical to Home Page) -->
+  <div id="fullscreen-menu" aria-hidden="true">
+    <div class="menu-body-split">
+      <!-- Left Rotating Reel Carousel -->
+      <div class="reel-carousel-container">
+        <div class="nav-extreme-left-logo-wrap" aria-label="Techuilla Agency">
+          <img src="Techuilla_logo_extreme.png" alt="Techuilla Logo" class="nav-extreme-left-logo" />
+        </div>
+
+        <div class="reel-wheel" id="reelWheel">
+          <div class="reel-spoke spoke-0">
+            <a href="https://audioking.co.in/#home" target="_blank" rel="noopener noreferrer" class="reel-panel-card">
+              <div class="reel-card-thumb"><img src="card_audio_king.png" alt="Audio King Website" class="reel-card-img" /><span class="reel-card-num-badge">01</span></div>
+              <div class="reel-card-info"><div class="reel-card-meta-left"><span class="reel-card-title">Audio King Website</span><span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Build</strong></span></div><span class="reel-card-tag">Build</span></div>
+            </a>
+          </div>
+          <div class="reel-spoke spoke-1">
+            <a href="https://drive.google.com/file/d/18PrnXsRej_q7XqxTCMtUqSj-SEKbG0yA/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="reel-panel-card">
+              <div class="reel-card-thumb"><img src="card_kaali_mata.png" alt="Kaali mata AI teaser" class="reel-card-img" /><span class="reel-card-num-badge">02</span></div>
+              <div class="reel-card-info"><div class="reel-card-meta-left"><span class="reel-card-title">Kaali mata AI teaser</span><span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Create</strong></span></div><span class="reel-card-tag">Create</span></div>
+            </a>
+          </div>
+          <div class="reel-spoke spoke-2">
+            <a href="https://ramahairclinic.com/" target="_blank" rel="noopener noreferrer" class="reel-panel-card">
+              <div class="reel-card-thumb"><img src="card_rama_trichology.jpg" alt="Rama Trichology Branding" class="reel-card-img" /><span class="reel-card-num-badge">03</span></div>
+              <div class="reel-card-info"><div class="reel-card-meta-left"><span class="reel-card-title">Rama Trichology Branding</span><span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Create</strong></span></div><span class="reel-card-tag">Create</span></div>
+            </a>
+          </div>
+          <div class="reel-spoke spoke-3">
+            <a href="https://drive.google.com/file/d/1A3C36LeW2HgyrYftnewULgq4kOUs54oG/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="reel-panel-card">
+              <div class="reel-card-thumb"><img src="card_3d_product.png" alt="3D Product animation" class="reel-card-img" /><span class="reel-card-num-badge">04</span></div>
+              <div class="reel-card-info"><div class="reel-card-meta-left"><span class="reel-card-title">3D Product animation</span><span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Create</strong></span></div><span class="reel-card-tag">Create</span></div>
+            </a>
+          </div>
+          <div class="reel-spoke spoke-4">
+            <a href="https://healthstreak.in/" target="_blank" rel="noopener noreferrer" class="reel-panel-card">
+              <div class="reel-card-thumb"><img src="card_health_streak.png" alt="Health Streak Website" class="reel-card-img" /><span class="reel-card-num-badge">05</span></div>
+              <div class="reel-card-info"><div class="reel-card-meta-left"><span class="reel-card-title">Health Streak Website</span><span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Build</strong></span></div><span class="reel-card-tag">Build</span></div>
+            </a>
+          </div>
+          <div class="reel-spoke spoke-5">
+            <a href="https://audioking.co.in/#home" target="_blank" rel="noopener noreferrer" class="reel-panel-card">
+              <div class="reel-card-thumb"><img src="card_audio_king.png" alt="Audio King Website" class="reel-card-img" /><span class="reel-card-num-badge">01</span></div>
+              <div class="reel-card-info"><div class="reel-card-meta-left"><span class="reel-card-title">Audio King Website</span><span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Build</strong></span></div><span class="reel-card-tag">Build</span></div>
+            </a>
+          </div>
+          <div class="reel-spoke spoke-6">
+            <a href="https://drive.google.com/file/d/18PrnXsRej_q7XqxTCMtUqSj-SEKbG0yA/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="reel-panel-card">
+              <div class="reel-card-thumb"><img src="card_kaali_mata.png" alt="Kaali mata AI teaser" class="reel-card-img" /><span class="reel-card-num-badge">02</span></div>
+              <div class="reel-card-info"><div class="reel-card-meta-left"><span class="reel-card-title">Kaali mata AI teaser</span><span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Create</strong></span></div><span class="reel-card-tag">Create</span></div>
+            </a>
+          </div>
+          <div class="reel-spoke spoke-7">
+            <a href="https://ramahairclinic.com/" target="_blank" rel="noopener noreferrer" class="reel-panel-card">
+              <div class="reel-card-thumb"><img src="card_rama_trichology.jpg" alt="Rama Trichology Branding" class="reel-card-img" /><span class="reel-card-num-badge">03</span></div>
+              <div class="reel-card-info"><div class="reel-card-meta-left"><span class="reel-card-title">Rama Trichology Branding</span><span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Create</strong></span></div><span class="reel-card-tag">Create</span></div>
+            </a>
+          </div>
+          <div class="reel-spoke spoke-8">
+            <a href="https://drive.google.com/file/d/1A3C36LeW2HgyrYftnewULgq4kOUs54oG/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="reel-panel-card">
+              <div class="reel-card-thumb"><img src="card_3d_product.png" alt="3D Product animation" class="reel-card-img" /><span class="reel-card-num-badge">04</span></div>
+              <div class="reel-card-info"><div class="reel-card-meta-left"><span class="reel-card-title">3D Product animation</span><span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Create</strong></span></div><span class="reel-card-tag">Create</span></div>
+            </a>
+          </div>
+          <div class="reel-spoke spoke-9">
+            <a href="https://healthstreak.in/" target="_blank" rel="noopener noreferrer" class="reel-panel-card">
+              <div class="reel-card-thumb"><img src="card_health_streak.png" alt="Health Streak Website" class="reel-card-img" /><span class="reel-card-num-badge">05</span></div>
+              <div class="reel-card-info"><div class="reel-card-meta-left"><span class="reel-card-title">Health Streak Website</span><span class="reel-card-niche-sub">Niche: <strong class="reel-card-niche-val">Build</strong></span></div><span class="reel-card-tag">Build</span></div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Floating Nav Options -->
+      <div class="menu-nav-right-col">
+        <div class="menu-nav-inner">
+          <nav aria-label="Main Navigation">
+            <ul class="menu-nav-list">
+              <li>
+                <a href="index.html" class="menu-nav-link" data-section="home">
+                  <span class="nav-text-wrap">
+                    HOME
+                    <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
+                      <path class="stroke-cut" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                      <path class="stroke-ribbon" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                    </svg>
+                  </span>
+                  <span class="nav-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="services.html" class="menu-nav-link" data-section="services">
+                  <span class="nav-text-wrap">
+                    SERVICES
+                    <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
+                      <path class="stroke-cut" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                      <path class="stroke-ribbon" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                    </svg>
+                  </span>
+                  <span class="nav-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="about.html" class="menu-nav-link is-active" data-section="about">
+                  <span class="nav-text-wrap">
+                    ABOUT
+                    <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
+                      <path class="stroke-cut" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                      <path class="stroke-ribbon" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                    </svg>
+                  </span>
+                  <span class="nav-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="contact.html" class="menu-nav-link" data-section="contact">
+                  <span class="nav-text-wrap">
+                    CONTACT US
+                    <svg class="nav-creative-strikethrough" viewBox="0 0 620 200" preserveAspectRatio="none" aria-hidden="true">
+                      <path class="stroke-cut" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                      <path class="stroke-ribbon" d="M 25,132 C 80,112 120,95 150,88 C 170,82 180,78 182,85 C 184,110 185,132 192,142 C 198,147 208,145 225,138 C 265,122 315,105 356,94 C 350,108 338,126 333,138 C 330,146 342,147 365,138 C 420,118 480,100 540,88 C 565,83 585,80 598,78" />
+                    </svg>
+                  </span>
+                  <span class="nav-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+          <div class="menu-mini-brand-row">
+            <div class="menu-mini-brand" aria-hidden="true">
+              <img src="Techuilla_logo.png" alt="Techuilla Agency Logo" class="menu-mini-logo" />
+            </div>
+          </div>
+
+          <div class="menu-enquiries-row">
+            <div class="menu-enquiries-btn" id="menuEnquiriesBtn" role="button" tabindex="0">
+              <span class="nav-text-wrap enquiry-text">Business Enquiries</span>
+            </div>
+          </div>
+
+          <div class="menu-socials-row" role="list">
+            <a href="https://www.instagram.com/techuilla.co/" target="_blank" rel="noopener noreferrer" class="menu-channel-item" role="listitem">
+              <span class="nav-text-wrap">Instagram</span>
+            </a>
+            <span class="menu-channel-sep" aria-hidden="true">·</span>
+            <a href="https://wa.me/917700014486" target="_blank" rel="noopener noreferrer" class="menu-channel-item" role="listitem">
+              <span class="nav-text-wrap">Whatsapp</span>
+            </a>
+            <span class="menu-channel-sep" aria-hidden="true">·</span>
+            <a href="#" target="_blank" rel="noopener noreferrer" class="menu-channel-item" role="listitem">
+              <span class="nav-text-wrap">Linkedin</span>
+            </a>
+            <span class="menu-channel-sep" aria-hidden="true">·</span>
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=techuilla.co@gmail.com&su=Service%20Enquiry%20-%20Techuilla%20Agency" target="_blank" rel="noopener noreferrer" class="menu-channel-item" id="menuGmailLink" role="listitem">
+              <span class="nav-text-wrap">Gmail</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       SECTION 1: ABOUT US HERO (Techuilla Agency -> Split + Center Image -> Bigger + 4 Drop Cards)
+       ========================================================================== -->
+  <section class="about-hero-track" id="aboutHeroTrack" aria-label="Techuilla Agency Introduction">
+    <div class="about-hero-sticky" id="aboutHeroSticky">
+
+      <!-- Upper Band: 4 Drop-Down Service Cards (2 Left, 2 Right) + Center Header Slot -->
+      <div class="hero-cards-band" id="heroCardsBand">
+        <!-- Left Card 1 -->
+        <article class="hero-drop-card" id="heroDropCard0">
+          <div class="hero-drop-card-header">
+            <span class="hero-drop-card-title">Web Development</span>
+            <span class="hero-drop-card-tag">[BUILD]</span>
+          </div>
+          <div class="hero-drop-card-frame">
+            <img src="service_card_1.jpg" alt="Web Development" decoding="async" />
+          </div>
+        </article>
+
+        <!-- Left Card 2 -->
+        <article class="hero-drop-card" id="heroDropCard1">
+          <div class="hero-drop-card-header">
+            <span class="hero-drop-card-title">AI Automations</span>
+            <span class="hero-drop-card-tag">[SYSTEMS]</span>
+          </div>
+          <div class="hero-drop-card-frame">
+            <img src="service_card_3.jpg" alt="AI Automations" decoding="async" />
+          </div>
+        </article>
+
+        <!-- Center Slot Header (Matches the Growing Center Image) -->
+        <div class="hero-center-slot-spacer" id="heroCenterSlotSpacer">
+          <div class="hero-center-card-header" id="heroCenterCardHeader">
+            <span class="hero-drop-card-title">3D Animations</span>
+            <span class="hero-drop-card-tag">[FLAGSHIP]</span>
+          </div>
+        </div>
+
+        <!-- Right Card 1 -->
+        <article class="hero-drop-card" id="heroDropCard2">
+          <div class="hero-drop-card-header">
+            <span class="hero-drop-card-title">AI Creatives</span>
+            <span class="hero-drop-card-tag">[CREATE]</span>
+          </div>
+          <div class="hero-drop-card-frame">
+            <img src="service_card_10.jpg" alt="AI Creatives" decoding="async" />
+          </div>
+        </article>
+
+        <!-- Right Card 2 -->
+        <article class="hero-drop-card" id="heroDropCard3">
+          <div class="hero-drop-card-header">
+            <span class="hero-drop-card-title">Graphic Designing</span>
+            <span class="hero-drop-card-tag">[IDENTITY]</span>
+          </div>
+          <div class="hero-drop-card-frame">
+            <img src="service_card_6.jpg" alt="Graphic Designing" decoding="async" />
+          </div>
+        </article>
+      </div>
+
+      <!-- Expanding Center Image (Emerges from exact middle between Techuilla and Agency, then grows bigger) -->
+      <div class="hero-center-morph-card" id="heroCenterMorphCard">
+        <img src="service_card_9.jpg" alt="3D Animations Flagship" id="heroCenterMorphImg" decoding="async" />
+      </div>
+
+      <!-- Exact Center Wordmark: Techuilla (Orange) + Agency (Black) -->
+      <div class="hero-wordmark-stage" id="heroWordmarkStage">
+        <span class="hero-word hero-word-techuilla" id="heroWordTechuilla">Techuilla</span>
+        <span class="hero-word hero-word-agency" id="heroWordAgency">Agency</span>
+      </div>
+
+      <!-- Subtle Scroll Cue -->
+      <div class="hero-scroll-cue" id="heroScrollCue" aria-hidden="true">
+        <span class="hero-scroll-dot"></span>
+        <span>Scroll to Explore</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SECTION 2: AGENCY MANIFESTO STATEMENT (64px Bold + 1.5s Orange Typography Reveal)
+       ========================================================================== -->
+  <section class="about-manifesto-section" id="aboutManifestoSection" aria-label="About Techuilla">
+    <div class="about-manifesto-inner">
+      <h2 class="about-manifesto-text" id="aboutManifestoText" data-orange-veil-group>
+        <span class="orange-veil-line" style="--veil-delay: 0.00s;"><span class="orange-veil-bar" aria-hidden="true"></span><span class="orange-veil-content"><span class="accent-orange">Techuilla</span> is a creative technology</span></span>
+        <span class="orange-veil-line" style="--veil-delay: 0.10s;"><span class="orange-veil-bar" aria-hidden="true"></span><span class="orange-veil-content">and digital growth agency combining</span></span>
+        <span class="orange-veil-line" style="--veil-delay: 0.20s;"><span class="orange-veil-bar" aria-hidden="true"></span><span class="orange-veil-content">technology, creativity, and strategy</span></span>
+        <span class="orange-veil-line" style="--veil-delay: 0.30s;"><span class="orange-veil-bar" aria-hidden="true"></span><span class="orange-veil-content">to build digital experiences, powerful</span></span>
+        <span class="orange-veil-line" style="--veil-delay: 0.40s;"><span class="orange-veil-bar" aria-hidden="true"></span><span class="orange-veil-content">brand identities, and intelligent</span></span>
+        <span class="orange-veil-line" style="--veil-delay: 0.50s;"><span class="orange-veil-bar" aria-hidden="true"></span><span class="orange-veil-content">solutions that help businesses</span></span>
+        <span class="orange-veil-line" style="--veil-delay: 0.60s;"><span class="orange-veil-bar" aria-hidden="true"></span><span class="orange-veil-content"><span class="accent-orange">evolve, compete, and grow.</span></span></span>
+      </h2>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SECTION 3: OUR PHILOSOPHY (Orange Typography Title + 4-Direction Throw/Contract Stage)
+       ========================================================================== -->
+  <section class="philosophy-title-section" id="philosophyTitleSection" aria-label="Our Philosophy">
+    <h2 class="philosophy-main-title" data-orange-veil-group>
+      <span class="orange-veil-line" style="--veil-delay: 0.00s;">
+        <span class="orange-veil-bar" aria-hidden="true"></span>
+        <span class="orange-veil-content">OUR <span class="accent-orange">PHILOSOPHY</span></span>
+      </span>
+    </h2>
+  </section>
+
+  <section class="philosophy-scatter-track" id="philosophyScatterTrack" aria-label="We believe in building beyond the obvious">
+    <div class="philosophy-scatter-sticky" id="philosophyScatterSticky">
+      <!-- Center Title & Description -->
+      <div class="philosophy-center-copy" id="philosophyCenterCopy">
+        <h3 class="philosophy-center-headline">
+          We believe in building <span class="accent-orange">beyond the obvious.</span>
+        </h3>
+        <p class="philosophy-center-desc">
+          At Techuilla, we bring technology, creativity, and strategic thinking together to transform ambitious ideas into purposeful solutions. We challenge conventional approaches, push creative boundaries, and build with a clear focus on impact and growth.
+        </p>
+      </div>
+
+      <!-- 4 Square Beige & Orange Images Thrown Outward in 4 Directions (and Contracted Back on Scroll Up) -->
+      <div class="philosophy-cards-layer" id="philosophyCardsLayer">
+        <div class="philosophy-throw-card" id="philCard0">
+          <img src="assets/philosophy_1_think_beyond.png" alt="Think Beyond — Challenge conventional approaches." decoding="async" />
+        </div>
+        <div class="philosophy-throw-card" id="philCard1">
+          <img src="assets/philosophy_2_create_purpose.png" alt="Create With Purpose — Every creation has an objective." decoding="async" />
+        </div>
+        <div class="philosophy-throw-card" id="philCard2">
+          <img src="assets/philosophy_3_unite_disciplines.png" alt="Unite Disciplines — Bring technology, media and strategy together." decoding="async" />
+        </div>
+        <div class="philosophy-throw-card" id="philCard3">
+          <img src="assets/philosophy_4_never_stand_still.png" alt="Never Stand Still — Experiment, adapt and evolve." decoding="async" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SECTION 4: OUR APPROACH (5 Pill Capsules Slide-Down Reveal + Middle Full-Screen Page Open)
+       ========================================================================== -->
+  <section class="approach-scroll-track" id="approachScrollTrack" aria-label="Our Approach">
+    <div class="approach-sticky-stage" id="approachStickyStage">
+      <div class="approach-header" id="approachHeader">
+        <h2 class="approach-title">OUR <span class="accent-orange">APPROACH</span></h2>
+      </div>
+
+      <!-- 5 Tall Vertical Pill / Capsule Objects (1, 2, 4, 5 appear first -> Middle 3 appears last -> Middle 3 opens to new page) -->
+      <div class="approach-pills-stage" id="approachPillsStage">
+        <!-- Object 1 -->
+        <div class="approach-pill-mask" id="approachMask0">
+          <div class="approach-pill-object pill-grad-1" id="approachPill0">
+            <span class="pill-step-num">01</span>
+            <span class="pill-step-label">Discover</span>
+            <span class="pill-step-dot" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <!-- Object 2 -->
+        <div class="approach-pill-mask" id="approachMask1">
+          <div class="approach-pill-object pill-grad-2" id="approachPill1">
+            <span class="pill-step-num">02</span>
+            <span class="pill-step-label">Strategize</span>
+            <span class="pill-step-dot" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <!-- Object 3 (Middle — Appears Last, Then Opens Full-Screen on Next Scroll) -->
+        <div class="approach-pill-mask is-middle-slot" id="approachMask2">
+          <div class="approach-pill-inner-clip">
+            <div class="approach-pill-object pill-grad-3" id="approachPill2">
+              <span class="pill-step-num">03</span>
+              <span class="pill-step-label">Architect</span>
+              <span class="pill-step-dot" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Object 4 -->
+        <div class="approach-pill-mask" id="approachMask3">
+          <div class="approach-pill-object pill-grad-4" id="approachPill3">
+            <span class="pill-step-num">04</span>
+            <span class="pill-step-label">Craft</span>
+            <span class="pill-step-dot" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <!-- Object 5 -->
+        <div class="approach-pill-mask" id="approachMask4">
+          <div class="approach-pill-object pill-grad-5" id="approachPill4">
+            <span class="pill-step-num">05</span>
+            <span class="pill-step-label">Scale</span>
+            <span class="pill-step-dot" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Full-Screen Expanding Portal Layer Triggered from Middle Object (Object 3) -->
+  <div class="approach-portal-expander" id="approachPortalExpander" aria-hidden="true">
+    <div class="approach-portal-page-content" id="approachPortalPageContent">
+      <div class="approach-portal-eyebrow">TECHUILLA AGENCY • METHODOLOGY</div>
+      <h2 class="approach-portal-headline">BUILT TO <span class="accent-orange">MOVE</span><br>FORWARD.</h2>
+      <p class="approach-portal-sub">
+        Every system, brand identity, and campaign we craft is engineered as a cohesive growth engine — uniting design precision, creative technology, and measurable business momentum.
+      </p>
+      <div class="approach-portal-pillars">
+        <span class="approach-portal-chip">01 · Discover</span>
+        <span class="approach-portal-chip">02 · Strategize</span>
+        <span class="approach-portal-chip">03 · Architect</span>
+        <span class="approach-portal-chip">04 · Craft</span>
+        <span class="approach-portal-chip">05 · Scale</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       CLIENT-SIDE CONTROLLERS
+       ========================================================================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ------------------------------------------------------------------------
+         1. UNIFIED ORANGE ZIG-ZAG BRUSH-STROKE PAGE TRANSITION ENGINE
+         ------------------------------------------------------------------------ */
+      (function initTechuillaBrushEngine() {
+        const overlay = document.getElementById('enquireTransitionOverlay');
+        const greyPath = document.getElementById('brushPathGrey');
+        const orangePath = document.getElementById('brushPathOrange');
+        if (!overlay || !greyPath || !orangePath) return;
+
+        let greyLen = 2200;
+        let orangeLen = 4600;
+        try {
+          greyLen = Math.ceil(greyPath.getTotalLength() || 2200);
+          orangeLen = Math.ceil(orangePath.getTotalLength() || 4600);
+        } catch (e) {}
+
+        const CAP_MARGIN = 420;
+        const greyFullDash = greyLen + CAP_MARGIN;
+        const orangeFullDash = orangeLen + CAP_MARGIN;
+        const greyHugeGap = greyLen * 3 + 1600;
+        const orangeHugeGap = orangeLen * 3 + 1600;
+
+        greyPath.style.strokeDasharray = `${greyFullDash} ${greyHugeGap}`;
+        orangePath.style.strokeDasharray = `${orangeFullDash} ${orangeHugeGap}`;
+        greyPath.style.transition = 'none';
+        orangePath.style.transition = 'none';
+        greyPath.style.strokeDashoffset = String(-greyFullDash);
+        orangePath.style.strokeDashoffset = String(-orangeFullDash);
+
+        let timers = [];
+        function clearTimers() {
+          while (timers.length) clearTimeout(timers.pop());
+        }
+
+        function setHiddenIdle() {
+          clearTimers();
+          document.documentElement.classList.remove('incoming-brush-transition');
+          greyPath.style.transition = 'none';
+          orangePath.style.transition = 'none';
+          overlay.classList.remove('is-brush-active', 'is-brush-full-hold', 'is-covering', 'is-active', 'is-closing');
+          greyPath.style.strokeDashoffset = String(-greyFullDash);
+          orangePath.style.strokeDashoffset = String(-orangeFullDash);
+        }
+
+        function setFullyCoveredInstant() {
+          clearTimers();
+          greyPath.style.transition = 'none';
+          orangePath.style.transition = 'none';
+          overlay.classList.add('is-brush-active', 'is-brush-full-hold');
+          greyPath.style.strokeDashoffset = '0';
+          orangePath.style.strokeDashoffset = '0';
+        }
+
+        function cover(onCovered) {
+          clearTimers();
+          document.documentElement.classList.remove('incoming-brush-transition');
+          greyPath.style.transition = 'none';
+          orangePath.style.transition = 'none';
+          overlay.classList.remove('is-brush-full-hold', 'is-closing');
+          overlay.classList.add('is-brush-active');
+          greyPath.style.strokeDashoffset = String(-greyFullDash);
+          orangePath.style.strokeDashoffset = String(-orangeFullDash);
+          void overlay.offsetWidth;
+
+          requestAnimationFrame(() => {
+            greyPath.style.transition = 'stroke-dashoffset 630ms cubic-bezier(0.65, 0, 0.35, 1) 0ms';
+            orangePath.style.transition = 'stroke-dashoffset 700ms cubic-bezier(0.65, 0, 0.35, 1) 55ms';
+            greyPath.style.strokeDashoffset = '0';
+            orangePath.style.strokeDashoffset = '0';
+
+            timers.push(setTimeout(() => overlay.classList.add('is-brush-full-hold'), 725));
+            timers.push(setTimeout(() => {
+              overlay.classList.add('is-brush-full-hold');
+              if (typeof onCovered === 'function') onCovered();
+            }, 765));
+          });
+        }
+
+        function uncover(onUncovered) {
+          setFullyCoveredInstant();
+          void overlay.offsetWidth;
+
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              document.documentElement.classList.remove('incoming-brush-transition');
+              overlay.classList.remove('is-brush-full-hold');
+              orangePath.style.transition = 'stroke-dashoffset 840ms cubic-bezier(0.65, 0, 0.35, 1) 0ms';
+              greyPath.style.transition = 'stroke-dashoffset 830ms cubic-bezier(0.65, 0, 0.35, 1) 125ms';
+              orangePath.style.strokeDashoffset = String(orangeFullDash);
+              greyPath.style.strokeDashoffset = String(greyFullDash);
+
+              timers.push(setTimeout(() => {
+                setHiddenIdle();
+                if (typeof onUncovered === 'function') onUncovered();
+              }, 975));
+            });
+          });
+        }
+
+        window.TechuillaBrushTransition = { cover, uncover, setFullyCoveredInstant, setHiddenIdle };
+      })();
+
+      // Handle arrival transition
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('transition') && window.TechuillaBrushTransition) {
+        window.TechuillaBrushTransition.setFullyCoveredInstant();
+        requestAnimationFrame(() => {
+          setTimeout(() => window.TechuillaBrushTransition.uncover(), 85);
+        });
+        try {
+          window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+        } catch (e) {}
+      }
+
+      window.addEventListener('pageshow', (e) => {
+        if (e.persisted && window.TechuillaBrushTransition) {
+          window.TechuillaBrushTransition.setHiddenIdle();
+        }
+      });
+
+      /* ------------------------------------------------------------------------
+         2. FULLSCREEN MENU CONTROLLER + BEZIER MORPH + JACKPOT HOVER
+         ------------------------------------------------------------------------ */
+      const openMenuBtn = document.getElementById('open-menu-btn');
+      const fullscreenMenu = document.getElementById('fullscreen-menu');
+      const menuLinks = document.querySelectorAll('.menu-nav-link');
+      const menuStrokeTop = document.getElementById('menuStrokeTop');
+      const menuStrokeBottom = document.getElementById('menuStrokeBottom');
+
+      const lineTop    = [4, 6,   9, 6,   19, 6,   24, 6,   24, 6,   24, 6,   24, 6];
+      const lineBottom = [4, 14,  9, 14,  19, 14,  24, 14,  24, 14,  24, 14,  24, 14];
+      const infTop     = [14, 10, 18, 5,  25.5, 6, 25.5, 10, 25.5, 14, 18, 15, 14, 10];
+      const infBottom  = [14, 10, 10, 15, 2.5, 14, 2.5, 10,  2.5, 6,   10, 5,  14, 10];
+      const xTop       = [6, 4,   10, 7,  18, 13,  22, 16,  22, 16,  22, 16,  22, 16];
+      const xBottom    = [6, 16,  10, 13, 18, 7,   22, 4,   22, 4,   22, 4,   22, 4];
+
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      function clamp(v, mn, mx) { return Math.max(mn, Math.min(mx, v)); }
+      function easeInOutCubic(x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
+      function easeOutCubic(x) { return 1 - Math.pow(1 - x, 3); }
+      function interpolateCoords(a, b, t) { return a.map((v, i) => lerp(v, b[i], t)); }
+      function toPathD(c) {
+        return `M ${c[0].toFixed(2)},${c[1].toFixed(2)} C ${c[2].toFixed(2)},${c[3].toFixed(2)} ${c[4].toFixed(2)},${c[5].toFixed(2)} ${c[6].toFixed(2)},${c[7].toFixed(2)} C ${c[8].toFixed(2)},${c[9].toFixed(2)} ${c[10].toFixed(2)},${c[11].toFixed(2)} ${c[12].toFixed(2)},${c[13].toFixed(2)}`;
+      }
+
+      let menuMorphT = 0;
+      let menuMorphAnimId = null;
+      let isMenuCurrentlyOpen = false;
+
+      function renderMenuMorph(t) {
+        if (!menuStrokeTop || !menuStrokeBottom || !openMenuBtn) return;
+        const coordsTop = t <= 0.5 ? interpolateCoords(lineTop, infTop, t / 0.5) : interpolateCoords(infTop, xTop, (t - 0.5) / 0.5);
+        const coordsBottom = t <= 0.5 ? interpolateCoords(lineBottom, infBottom, t / 0.5) : interpolateCoords(infBottom, xBottom, (t - 0.5) / 0.5);
+        menuStrokeTop.setAttribute('d', toPathD(coordsTop));
+        menuStrokeBottom.setAttribute('d', toPathD(coordsBottom));
+        if (isMenuCurrentlyOpen) {
+          openMenuBtn.style.borderColor = '#111111';
+          menuStrokeTop.style.stroke = '#FF6600';
+          menuStrokeBottom.style.stroke = '#FF6600';
+        } else {
+          openMenuBtn.style.borderColor = '';
+          menuStrokeTop.style.stroke = '';
+          menuStrokeBottom.style.stroke = '';
+        }
+      }
+
+      function animateMenuMorph(targetT, duration = 600) {
+        const startT = menuMorphT;
+        const startTime = performance.now();
+        if (menuMorphAnimId) cancelAnimationFrame(menuMorphAnimId);
+        if (openMenuBtn) openMenuBtn.classList.add('is-morphing');
+
+        function step(now) {
+          const p = clamp((now - startTime) / duration, 0, 1);
+          menuMorphT = lerp(startT, targetT, easeInOutCubic(p));
+          renderMenuMorph(menuMorphT);
+          if (p < 1) {
+            menuMorphAnimId = requestAnimationFrame(step);
+          } else {
+            menuMorphAnimId = null;
+            if (openMenuBtn) openMenuBtn.classList.remove('is-morphing');
+          }
+        }
+        menuMorphAnimId = requestAnimationFrame(step);
+      }
+
+      renderMenuMorph(0);
+
+      // Jackpot Hover Engine
+      const JACKPOT_SYMBOLS = ['7', 'X', '9', 'K', 'Q', 'J', '8', '3', 'Z', 'W', 'V'];
+      document.querySelectorAll('.menu-nav-link, .menu-channel-item, .menu-enquiries-btn').forEach(targetEl => {
+        const textWrap = targetEl.querySelector('.nav-text-wrap');
+        if (!textWrap) return;
+        const strike = textWrap.querySelector('.nav-creative-strikethrough');
+        let rawText = '';
+        textWrap.childNodes.forEach(n => { if (n.nodeType === Node.TEXT_NODE) rawText += n.nodeValue; });
+        rawText = rawText.trim();
+        if (!rawText) return;
+        textWrap.innerHTML = '';
+
+        rawText.split('').forEach((char, idx) => {
+          if (char === ' ') {
+            const sp = document.createElement('span');
+            sp.className = 'jackpot-char-slot jackpot-char-space';
+            sp.innerHTML = '&nbsp;';
+            sp.style.width = '0.38em';
+            textWrap.appendChild(sp);
+            return;
+          }
+          const slot = document.createElement('span');
+          slot.className = 'jackpot-char-slot';
+          slot.style.setProperty('--char-idx', idx);
+          const syms = char === char.toUpperCase() && char !== char.toLowerCase() ? ['7', 'X', 'K', 'Q', 'Z'] : ['7', 'x', 'k', 's', 'z'];
+          const r1 = syms[Math.floor(Math.random() * syms.length)];
+          const r2 = syms[Math.floor(Math.random() * syms.length)];
+          slot.innerHTML = `
+            <span class="jackpot-char-sizer" aria-hidden="true">${char}</span>
+            <span class="jackpot-reel-ladder">
+              <span class="jackpot-rung original">${char}</span>
+              <span class="jackpot-rung rung-rand-1">${r1}</span>
+              <span class="jackpot-rung rung-rand-2">${r2}</span>
+              <span class="jackpot-rung target">${char}</span>
+            </span>`;
+          textWrap.appendChild(slot);
+        });
+        if (strike) textWrap.appendChild(strike);
+
+        targetEl.addEventListener('mouseenter', () => {
+          const r1s = textWrap.querySelectorAll('.rung-rand-1');
+          const r2s = textWrap.querySelectorAll('.rung-rand-2');
+          let ticks = 0;
+          const iv = setInterval(() => {
+            ticks++;
+            r1s.forEach(el => { el.textContent = JACKPOT_SYMBOLS[Math.floor(Math.random() * JACKPOT_SYMBOLS.length)]; });
+            r2s.forEach(el => { el.textContent = JACKPOT_SYMBOLS[Math.floor(Math.random() * JACKPOT_SYMBOLS.length)]; });
+            if (ticks > 8) clearInterval(iv);
+          }, 50);
+        });
+      });
+
+      function updateMenuWipeOrigin() {
+        if (!openMenuBtn || !fullscreenMenu) return;
+        const r = openMenuBtn.getBoundingClientRect();
+        fullscreenMenu.style.setProperty('--wipe-x', `${Math.round(r.left + r.width / 2)}px`);
+        fullscreenMenu.style.setProperty('--wipe-y', `${Math.round(r.top + r.height / 2)}px`);
+      }
+
+      function openMenu() {
+        if (!fullscreenMenu) return;
+        isMenuCurrentlyOpen = true;
+        updateMenuWipeOrigin();
+        fullscreenMenu.classList.remove('is-closing');
+        fullscreenMenu.classList.add('is-open');
+        fullscreenMenu.setAttribute('aria-hidden', 'false');
+        if (openMenuBtn) openMenuBtn.classList.add('is-open');
+        animateMenuMorph(1.0, 600);
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMenu() {
+        if (!fullscreenMenu || !isMenuCurrentlyOpen) return;
+        isMenuCurrentlyOpen = false;
+        updateMenuWipeOrigin();
+        if (openMenuBtn) openMenuBtn.classList.remove('is-open');
+        fullscreenMenu.classList.remove('is-open');
+        fullscreenMenu.classList.add('is-closing');
+        fullscreenMenu.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        animateMenuMorph(0, 600);
+        setTimeout(() => { if (!isMenuCurrentlyOpen) fullscreenMenu.classList.remove('is-closing'); }, 600);
+      }
+
+      if (openMenuBtn) openMenuBtn.addEventListener('click', () => isMenuCurrentlyOpen ? closeMenu() : openMenu());
+      window.addEventListener('resize', updateMenuWipeOrigin);
+      window.addEventListener('keydown', e => { if (e.key === 'Escape' && isMenuCurrentlyOpen) closeMenu(); });
+
+      function navigateWithBrush(e, destUrl) {
+        if (e) e.preventDefault();
+        if (!window.TechuillaBrushTransition) {
+          window.location.href = destUrl;
+          return;
+        }
+        const sep = destUrl.includes('?') ? '&' : '?';
+        window.TechuillaBrushTransition.cover(() => {
+          window.location.href = `${destUrl}${sep}transition=brush&t=${Date.now()}`;
+        });
+      }
+
+      function scrollAboutToTopWithBrush(e) {
+        if (e) e.preventDefault();
+        if (!window.TechuillaBrushTransition) {
+          closeMenu();
+          window.scrollTo(0, 0);
+          return;
+        }
+        window.TechuillaBrushTransition.cover(() => {
+          closeMenu();
+          window.scrollTo(0, 0);
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              setTimeout(() => window.TechuillaBrushTransition.uncover(), 110);
+            });
+          });
+        });
+      }
+
+      menuLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          const sec = link.getAttribute('data-section');
+          if (sec === 'home') navigateWithBrush(e, 'index.html?from=subpage');
+          else if (sec === 'services') navigateWithBrush(e, 'services.html');
+          else if (sec === 'about') scrollAboutToTopWithBrush(e);
+          else if (sec === 'contact') navigateWithBrush(e, 'contact.html');
+        });
+      });
+
+      const navHomeBrand = document.getElementById('navHomeBrand');
+      if (navHomeBrand) navHomeBrand.addEventListener('click', e => navigateWithBrush(e, 'index.html?from=subpage'));
+
+      const reelLogo = document.querySelector('.nav-extreme-left-logo-wrap');
+      if (reelLogo) reelLogo.addEventListener('click', e => navigateWithBrush(e, 'index.html?from=subpage'));
+
+      const navEnquireBtn = document.getElementById('navEnquireBtn');
+      if (navEnquireBtn) navEnquireBtn.addEventListener('click', e => navigateWithBrush(e, 'contact.html'));
+
+      const menuEnquiriesBtn = document.getElementById('menuEnquiriesBtn');
+      if (menuEnquiriesBtn) menuEnquiriesBtn.addEventListener('click', e => navigateWithBrush(e, 'contact.html'));
+
+      /* ------------------------------------------------------------------------
+         3. SECTION 1 — ABOUT HERO SCROLL-SCRUBBED ENGINE (Ross Mason Reference)
+            Phase 1 (0.00 -> 0.36): Center image emerges between Techuilla & Agency,
+                                    pushing Techuilla left and Agency right.
+            Phase 2 (0.36 -> 0.72): Center image grows bigger & anchors upper-center;
+                                    Techuilla Agency scales up & shifts downward.
+            Phase 3 (0.48 -> 0.92): 4 service cards drop smoothly from top (2 left, 2 right)
+                                    in the upper portion of the viewport.
+         ------------------------------------------------------------------------ */
+      const heroTrack = document.getElementById('aboutHeroTrack');
+      const heroWordStage = document.getElementById('heroWordmarkStage');
+      const wordTechuilla = document.getElementById('heroWordTechuilla');
+      const wordAgency = document.getElementById('heroWordAgency');
+      const centerMorphCard = document.getElementById('heroCenterMorphCard');
+      const centerMorphImg = document.getElementById('heroCenterMorphImg');
+      const centerCardHeader = document.getElementById('heroCenterCardHeader');
+      const centerSlotSpacer = document.getElementById('heroCenterSlotSpacer');
+      const heroScrollCue = document.getElementById('heroScrollCue');
+      const dropCards = [
+        document.getElementById('heroDropCard0'),
+        document.getElementById('heroDropCard1'),
+        document.getElementById('heroDropCard2'),
+        document.getElementById('heroDropCard3')
+      ];
+
+      let heroTargetP = 0, heroCurrentP = 0;
+
+      function renderHero(P) {
+        if (!heroTrack || !centerMorphCard) return;
+        const winW = window.innerWidth;
+        const winH = window.innerHeight;
+
+        // Fade out scroll cue quickly
+        if (heroScrollCue) {
+          heroScrollCue.style.opacity = String(clamp(1 - P * 10, 0, 1).toFixed(3));
+        }
+
+        // Phase 1: Image appears from exact middle between Techuilla & Agency (P: 0.02 -> 0.38)
+        const p1 = easeInOutCubic(clamp((P - 0.02) / 0.36, 0, 1));
+
+        // Phase 2: Middle image grows bigger & moves into upper-center focal slot; wordmark enlarges & drops down (P: 0.38 -> 0.76)
+        const p2 = easeInOutCubic(clamp((P - 0.38) / 0.38, 0, 1));
+
+        // Compute target big center card dimensions aligned with center column in hero-cards-band
+        const slotRect = centerSlotSpacer ? centerSlotSpacer.getBoundingClientRect() : null;
+        const smallW = clamp(winW * 0.125, 118, 195);
+        const smallH = smallW * 1.28;
+        const bigW = slotRect && slotRect.width > 120 ? slotRect.width : clamp(winW * 0.24, 240, 380);
+        const bigH = clamp(bigW * 1.22, 260, winH * 0.50);
+
+        const curW = lerp(0, smallW, p1) + lerp(0, bigW - smallW, p2);
+        const curH = lerp(0, smallH, p1) + lerp(0, bigH - smallH, p2);
+
+        // Center card vertical position: starts at exact center (50vh), then aligns cleanly under centerCardHeader in upper portion
+        const headerBottomY = slotRect ? (slotRect.top + 46) : 142;
+        const targetCenterY = headerBottomY + bigH / 2;
+        const curCenterY = lerp(winH * 0.50, targetCenterY, p2);
+
+        centerMorphCard.style.opacity = p1 > 0.01 ? '1' : '0';
+        centerMorphCard.style.width = `${curW.toFixed(1)}px`;
+        centerMorphCard.style.height = `${curH.toFixed(1)}px`;
+        centerMorphCard.style.top = `${curCenterY.toFixed(1)}px`;
+        centerMorphCard.style.left = '50%';
+        centerMorphCard.style.transform = `translate3d(-50%, -50%, 0)`;
+
+        if (centerMorphImg) {
+          const imgScale = lerp(1.16, 1.0, clamp(p1 * 0.7 + p2 * 0.3, 0, 1));
+          centerMorphImg.style.transform = `scale(${imgScale.toFixed(3)})`;
+        }
+
+        // Center card title fades in above the center card as it grows bigger
+        if (centerCardHeader) {
+          const hP = easeOutCubic(clamp((P - 0.52) / 0.22, 0, 1));
+          centerCardHeader.style.opacity = hP.toFixed(3);
+          centerCardHeader.style.transform = `translate3d(0, ${lerp(-18, 0, hP).toFixed(1)}px, 0)`;
+        }
+
+        // Words "Techuilla" & "Agency":
+        // Phase 1 pushes Techuilla left and Agency right by half of center image width + breathing gap
+        const splitOffsetPhase1 = (smallW * 0.56 + 18) * p1;
+        // Phase 2 brings them slightly closer again while scaling huge and sliding down to frame the lower viewport (Ross Mason style)
+        const wordScale = lerp(1.0, clamp(winW / 760, 1.45, 2.35), p2);
+        const wordY = lerp(0, winH * 0.34, p2);
+        const splitOffsetFinal = lerp(splitOffsetPhase1, smallW * 0.08, p2);
+
+        if (heroWordStage) {
+          heroWordStage.style.transform = `translate3d(-50%, calc(-50% + ${wordY.toFixed(1)}px), 0) scale(${wordScale.toFixed(3)})`;
+        }
+        if (wordTechuilla) {
+          wordTechuilla.style.transform = `translate3d(${(-splitOffsetFinal).toFixed(1)}px, 0, 0)`;
+        }
+        if (wordAgency) {
+          wordAgency.style.transform = `translate3d(${splitOffsetFinal.toFixed(1)}px, 0, 0)`;
+        }
+
+        // Phase 3: 4 Service Cards Drop Down from Top (2 Left, 2 Right) with smooth stagger
+        const staggers = [0.50, 0.56, 0.58, 0.64];
+        dropCards.forEach((card, idx) => {
+          if (!card) return;
+          const localP = clamp((P - staggers[idx]) / 0.26, 0, 1);
+          const e = easeOutCubic(localP);
+          const yPct = lerp(-145, 0, e);
+          card.style.transform = `translate3d(0, ${yPct.toFixed(2)}%, 0)`;
+          card.style.opacity = clamp(localP * 2.2, 0, 1).toFixed(3);
+        });
+      }
+
+      /* ------------------------------------------------------------------------
+         4. SECTION 2 & 3 TITLES — 1.5s ORANGE LAYER WIPE TYPOGRAPHY OBSERVER
+         ------------------------------------------------------------------------ */
+      const veilGroups = document.querySelectorAll('[data-orange-veil-group]');
+      const veilObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const lines = entry.target.querySelectorAll('.orange-veil-line');
+            lines.forEach(line => line.classList.add('is-revealing'));
+            veilObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.22 });
+
+      veilGroups.forEach(group => veilObserver.observe(group));
+
+      /* ------------------------------------------------------------------------
+         5. SECTION 3 — OUR PHILOSOPHY RADIAL 4-IMAGE THROW & CONTRACT ENGINE
+            Scroll Down -> 4 Square Beige/Orange Images Throw Outward in 4 Directions
+            Scroll Up   -> 4 Square Images Smoothly Contract Back Inward
+         ------------------------------------------------------------------------ */
+      const philTrack = document.getElementById('philosophyScatterTrack');
+      const philCopy = document.getElementById('philosophyCenterCopy');
+      const philCards = [
+        document.getElementById('philCard0'), // Top-Left
+        document.getElementById('philCard1'), // Top-Right
+        document.getElementById('philCard2'), // Bottom-Left
+        document.getElementById('philCard3')  // Bottom-Right
+      ];
+
+      let philTargetP = 0, philCurrentP = 0;
+
+      // Start (contracted cluster around center) -> End (thrown outward in 4 directions, clear of top navbar)
+      const PHIL_VECTORS = [
+        { sx: -10, sy: -8,  sr: -7, ex: -36, ey: -18, er: -5 }, // 0: Top-Left (Think Beyond)
+        { sx:  11, sy: -7,  sr:  6, ex:  36, ey: -17, er:  5 }, // 1: Top-Right (Create With Purpose)
+        { sx: -9,  sy:  11, sr:  5, ex: -35, ey:  27, er:  4 }, // 2: Bottom-Left (Unite Disciplines)
+        { sx:  10, sy:  10, sr: -6, ex:  35, ey:  26, er: -4 }  // 3: Bottom-Right (Never Stand Still)
+      ];
+
+      function renderPhilosophy(P) {
+        if (!philTrack) return;
+        const winW = window.innerWidth;
+        const winH = window.innerHeight;
+        // Throw completes by P = 0.84, holding cleanly from 0.84 -> 1.00 before scrolling into OUR APPROACH
+        const throwP = easeInOutCubic(clamp(P / 0.84, 0, 1));
+
+        philCards.forEach((card, idx) => {
+          if (!card) return;
+          const v = PHIL_VECTORS[idx];
+          // Slight individual stagger for organic radial throw
+          const localP = easeInOutCubic(clamp((P - idx * 0.025) / 0.78, 0, 1));
+          const curX = lerp(v.sx, v.ex, localP) * (winW / 100);
+          const curY = lerp(v.sy, v.ey, localP) * (winH / 100);
+          const curRot = lerp(v.sr, v.er, localP);
+          const curScale = lerp(0.84, 1.0, localP);
+
+          card.style.transform = `translate3d(calc(-50% + ${curX.toFixed(1)}px), calc(-50% + ${curY.toFixed(1)}px), 0) rotate(${curRot.toFixed(2)}deg) scale(${curScale.toFixed(3)})`;
+          card.style.opacity = '1';
+        });
+
+        // Center copy scales into crisp focus as the 4 images throw outward
+        if (philCopy) {
+          const copyScale = lerp(0.92, 1.0, throwP);
+          const copyOp = lerp(0.35, 1.0, clamp(throwP * 1.35, 0, 1));
+          philCopy.style.transform = `scale(${copyScale.toFixed(3)})`;
+          philCopy.style.opacity = copyOp.toFixed(3);
+        }
+      }
+
+      /* ------------------------------------------------------------------------
+         6. SECTION 4 — OUR APPROACH (5 Pill Capsules Masked Slide-Down + Middle Full-Screen Open)
+            - Starts empty below "OUR APPROACH"
+            - Masked slide-down reveal order: 1 -> 2 -> 4 -> 5 -> Middle (3) LAST
+            - Next scroll: Middle object (3) expands smoothly to 100vw x 100vh new page view!
+         ------------------------------------------------------------------------ */
+      const approachTrack = document.getElementById('approachScrollTrack');
+      const approachHeader = document.getElementById('approachHeader');
+      const approachPills = [
+        document.getElementById('approachPill0'),
+        document.getElementById('approachPill1'),
+        document.getElementById('approachPill2'),
+        document.getElementById('approachPill3'),
+        document.getElementById('approachPill4')
+      ];
+      const approachMasks = [
+        document.getElementById('approachMask0'),
+        document.getElementById('approachMask1'),
+        document.getElementById('approachMask2'),
+        document.getElementById('approachMask3'),
+        document.getElementById('approachMask4')
+      ];
+      const portalExpander = document.getElementById('approachPortalExpander');
+      const portalPageContent = document.getElementById('approachPortalPageContent');
+
+      let approachTargetP = 0, approachCurrentP = 0;
+
+      // Exact requested reveal order: Object 1, Object 2, Object 4, Object 5 first -> Object 3 (middle) LAST!
+      const PILL_REVEAL_WINDOWS = [
+        { start: 0.06, end: 0.19 }, // Index 0 (Object 1)
+        { start: 0.16, end: 0.29 }, // Index 1 (Object 2)
+        { start: 0.48, end: 0.62 }, // Index 2 (Object 3 — Middle appears LAST!)
+        { start: 0.26, end: 0.39 }, // Index 3 (Object 4)
+        { start: 0.36, end: 0.49 }  // Index 4 (Object 5)
+      ];
+
+      function renderApproach(P) {
+        if (!approachTrack || !portalExpander) return;
+        const winW = window.innerWidth;
+        const winH = window.innerHeight;
+
+        // 1. Masked Slide-Down Reveal for each of the 5 Capsules
+        PILL_REVEAL_WINDOWS.forEach((win, idx) => {
+          const pill = approachPills[idx];
+          if (!pill) return;
+          const localP = clamp((P - win.start) / (win.end - win.start), 0, 1);
+          const e = easeOutCubic(localP);
+          const yPct = lerp(-108, 0, e);
+          pill.style.transform = `translate3d(0, ${yPct.toFixed(2)}%, 0)`;
+        });
+
+        // 2. Final Scroll Phase (P: 0.66 -> 0.96): Middle Object (Object 3) Opens Smoothly into a Full-Screen New Page
+        const openP = easeInOutCubic(clamp((P - 0.66) / 0.28, 0, 1));
+
+        // Gently lift & fade OUR APPROACH title as middle capsule opens full-screen
+        if (approachHeader) {
+          approachHeader.style.opacity = clamp(1 - openP * 2.2, 0, 1).toFixed(3);
+          approachHeader.style.transform = `translate3d(0, ${(-openP * 48).toFixed(1)}px, 0)`;
+        }
+
+        // Push outer capsules outward smoothly to left/right as middle opens
+        const outerShifts = [-1.45, -0.85, 0, 0.85, 1.45];
+        approachMasks.forEach((mask, idx) => {
+          if (!mask || idx === 2) return;
+          const shiftPx = outerShifts[idx] * openP * (winW * 0.38);
+          mask.style.transform = `translate3d(${shiftPx.toFixed(1)}px, 0, 0)`;
+          mask.style.opacity = clamp(1 - openP * 1.4, 0, 1).toFixed(3);
+        });
+
+        // Expand the Fixed Portal Expander seamlessly from the exact bounding rect of Middle Capsule (Object 3) -> 100vw x 100vh!
+        const middleMask = approachMasks[2];
+        if (openP <= 0.002 || !middleMask) {
+          portalExpander.style.opacity = '0';
+          portalExpander.style.visibility = 'hidden';
+          portalExpander.style.pointerEvents = 'none';
+          if (middleMask) middleMask.style.opacity = '1';
+        } else {
+          const rect = middleMask.getBoundingClientRect();
+          const curLeft = lerp(rect.left, 0, openP);
+          const curTop = lerp(rect.top, 0, openP);
+          const curWidth = lerp(rect.width, winW, openP);
+          const curHeight = lerp(rect.height, winH, openP);
+          const curRadius = lerp(Math.min(rect.width, rect.height) / 2, 0, clamp(openP * 1.15, 0, 1));
+
+          middleMask.style.opacity = '0';
+          portalExpander.style.visibility = 'visible';
+          portalExpander.style.opacity = '1';
+          portalExpander.style.pointerEvents = openP > 0.75 ? 'auto' : 'none';
+          portalExpander.style.left = `${curLeft.toFixed(1)}px`;
+          portalExpander.style.top = `${curTop.toFixed(1)}px`;
+          portalExpander.style.width = `${curWidth.toFixed(1)}px`;
+          portalExpander.style.height = `${curHeight.toFixed(1)}px`;
+          portalExpander.style.borderRadius = `${curRadius.toFixed(1)}px`;
+
+          if (portalPageContent) {
+            const contentP = easeOutCubic(clamp((openP - 0.42) / 0.50, 0, 1));
+            portalPageContent.style.opacity = contentP.toFixed(3);
+            portalPageContent.style.transform = `translate3d(0, ${lerp(36, 0, contentP).toFixed(1)}px, 0) scale(${lerp(0.95, 1, contentP).toFixed(3)})`;
+          }
+        }
+      }
+
+      /* ------------------------------------------------------------------------
+         7. UNIFIED SMOOTH SCROLL & LERP LOOP + CUSTOM SCROLLBAR INDICATOR
+         ------------------------------------------------------------------------ */
+      const scrollThumb = document.getElementById('customScrollThumb');
+      let masterRafId = null;
+
+      function computeAllTargets() {
+        const winH = window.innerHeight || 900;
+
+        if (heroTrack) {
+          const r = heroTrack.getBoundingClientRect();
+          const maxS = Math.max(1, heroTrack.offsetHeight - winH);
+          heroTargetP = clamp(-r.top / maxS, 0, 1);
+        }
+
+        if (philTrack) {
+          const r = philTrack.getBoundingClientRect();
+          const maxS = Math.max(1, philTrack.offsetHeight - winH);
+          philTargetP = clamp(-r.top / maxS, 0, 1);
+        }
+
+        if (approachTrack) {
+          const r = approachTrack.getBoundingClientRect();
+          const maxS = Math.max(1, approachTrack.offsetHeight - winH);
+          approachTargetP = clamp(-r.top / maxS, 0, 1);
+        }
+
+        if (scrollThumb) {
+          const docH = Math.max(1, document.documentElement.scrollHeight - winH);
+          const scrollPct = clamp(window.scrollY / docH, 0, 1);
+          scrollThumb.style.transform = `translateY(${(scrollPct * 96).toFixed(1)}px)`;
+        }
+      }
+
+      function tickMaster() {
+        const dh = heroTargetP - heroCurrentP;
+        const dp = philTargetP - philCurrentP;
+        const da = approachTargetP - approachCurrentP;
+
+        if (window.__ABOUT_INSTANT_SCRUB__ || (Math.abs(dh) < 0.0004 && Math.abs(dp) < 0.0004 && Math.abs(da) < 0.0004)) {
+          heroCurrentP = heroTargetP;
+          philCurrentP = philTargetP;
+          approachCurrentP = approachTargetP;
+          renderHero(heroCurrentP);
+          renderPhilosophy(philCurrentP);
+          renderApproach(approachCurrentP);
+          masterRafId = null;
+          return;
+        }
+
+        heroCurrentP += dh * 0.16;
+        philCurrentP += dp * 0.16;
+        approachCurrentP += da * 0.16;
+
+        renderHero(heroCurrentP);
+        renderPhilosophy(philCurrentP);
+        renderApproach(approachCurrentP);
+        masterRafId = requestAnimationFrame(tickMaster);
+      }
+
+      function onScrollOrResize() {
+        computeAllTargets();
+        if (window.__ABOUT_INSTANT_SCRUB__) {
+          heroCurrentP = heroTargetP;
+          philCurrentP = philTargetP;
+          approachCurrentP = approachTargetP;
+          renderHero(heroCurrentP);
+          renderPhilosophy(philCurrentP);
+          renderApproach(approachCurrentP);
+          return;
+        }
+        if (!masterRafId) masterRafId = requestAnimationFrame(tickMaster);
+      }
+
+      window.addEventListener('scroll', onScrollOrResize, { passive: true });
+      window.addEventListener('resize', onScrollOrResize, { passive: true });
+
+      // Expose helper for instant inspection
+      window.syncAboutScrubInstant = function () {
+        computeAllTargets();
+        heroCurrentP = heroTargetP;
+        philCurrentP = philTargetP;
+        approachCurrentP = approachTargetP;
+        renderHero(heroCurrentP);
+        renderPhilosophy(philCurrentP);
+        renderApproach(approachCurrentP);
+      };
+
+      // Initial render
+      computeAllTargets();
+      heroCurrentP = heroTargetP;
+      philCurrentP = philTargetP;
+      approachCurrentP = approachTargetP;
+      renderHero(heroCurrentP);
+      renderPhilosophy(philCurrentP);
+      renderApproach(approachCurrentP);
+    })();
+  </script>
+</body>
+</html>
