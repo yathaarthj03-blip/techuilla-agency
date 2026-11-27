@@ -169,61 +169,69 @@
     }
 
     /* -------------------------------------------------------------------------
-       ORANGE CIRCULAR NAVIGATION CURTAIN TRANSITION
+       ORANGE ZIG-ZAG BRUSH-STROKE NAVIGATION TRANSITION
        ------------------------------------------------------------------------- */
     .enquire-transition-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: var(--color-orange, #FF6600);
-      z-index: 99999;
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      background: transparent !important;
+      clip-path: none !important;
+      -webkit-clip-path: none !important;
+      z-index: 9999999 !important;
+      display: block !important;
       pointer-events: none;
-      clip-path: circle(0px at var(--wipe-x, 90vw) var(--wipe-y, 40px));
-      -webkit-clip-path: circle(0px at var(--wipe-x, 90vw) var(--wipe-y, 40px));
-      transition: clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1), -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      visibility: hidden;
+      overflow: hidden !important;
+      margin: 0 !important;
+      padding: 0 !important;
     }
 
-    .enquire-transition-overlay.is-covering {
-      clip-path: circle(150vmax at var(--wipe-x, 90vw) var(--wipe-y, 40px));
-      -webkit-clip-path: circle(150vmax at var(--wipe-x, 90vw) var(--wipe-y, 40px));
+    .enquire-transition-overlay.is-brush-active,
+    .enquire-transition-overlay.is-covering,
+    .enquire-transition-overlay.is-active {
+      visibility: visible !important;
+      pointer-events: auto !important;
     }
 
-    .enquire-transition-overlay.is-closing {
-      clip-path: circle(0px at var(--wipe-x, 90vw) var(--wipe-y, 40px));
-      -webkit-clip-path: circle(0px at var(--wipe-x, 90vw) var(--wipe-y, 40px));
+    .enquire-transition-overlay.is-brush-full-hold {
+      background: #FF6600 !important;
     }
 
-    .transition-brand-box {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      opacity: 0;
-      transform: scale(0.95);
-      transition: opacity 0.3s ease, transform 0.3s ease;
+    .enquire-transition-overlay.is-brush-full-hold .brush-path-grey {
+      opacity: 0 !important;
     }
 
-    .enquire-transition-overlay.is-covering .transition-brand-box {
-      opacity: 1;
-      transform: scale(1);
+    .enquire-transition-overlay .transition-brand-box {
+      display: none !important;
     }
 
-    .enquire-transition-logo {
-      height: 48px;
-      width: auto;
-      object-fit: contain;
+    .brush-transition-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
     }
 
-    .enquire-transition-text {
-      font-family: var(--font-hero);
-      font-weight: 800;
-      font-size: 26px;
-      color: #111111;
-      letter-spacing: -0.02em;
+    .brush-path-grey {
+      fill: none;
+      stroke: #D8DAD3;
+      stroke-width: 265;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      will-change: stroke-dashoffset;
+    }
+
+    .brush-path-orange {
+      fill: none;
+      stroke: #FF6600;
+      stroke-width: 296;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      will-change: stroke-dashoffset;
     }
 
     /* -------------------------------------------------------------------------
@@ -816,91 +824,7 @@
       transform: rotate(-10deg) scale(1.08);
     }
 
-    /* Unified Cinematic Orange Page Transition Overlay (In & Out at Button / Logo Origin, >= 2.0s Total Duration) */
-    .enquire-transition-overlay {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      background: #FF6600;
-      z-index: 9999999 !important;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 1; /* Pure solid opaque orange - ZERO fade out! */
-      pointer-events: none;
-      visibility: hidden;
-      --wipe-x: calc(100% - 85px);
-      --wipe-y: 40px;
-      clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
-      -webkit-clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
-      transition: 
-        clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1),
-        -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1);
-      will-change: clip-path;
-      margin: 0;
-      padding: 0;
-    }
-
-    .enquire-transition-overlay.is-covering,
-    .enquire-transition-overlay.is-active {
-      visibility: visible;
-      pointer-events: auto;
-      clip-path: circle(160% at var(--wipe-x) var(--wipe-y));
-      -webkit-clip-path: circle(160% at var(--wipe-x) var(--wipe-y));
-    }
-
-    .enquire-transition-overlay.is-closing,
-    .enquire-transition-overlay.is-dissolving {
-      visibility: visible;
-      pointer-events: none;
-      clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
-      -webkit-clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
-    }
-
-    .transition-brand-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      gap: 20px;
-      width: 100%;
-      max-width: 500px;
-      margin: 0 auto;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .enquire-transition-logo {
-      width: 168px; /* Increased by 20% from 140px */
-      height: 168px;
-      object-fit: contain;
-      display: block;
-      margin: 0 auto;
-      filter: brightness(0); /* Solid Pitch Black Techuilla Logo */
-      transform: scale(0.92);
-      transition: transform 1000ms cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .enquire-transition-overlay.is-covering .enquire-transition-logo,
-    .enquire-transition-overlay.is-active .enquire-transition-logo {
-      transform: scale(1);
-    }
-
-    .enquire-transition-text {
-      font-family: var(--font-sans);
-      font-size: 40px; /* Increased by 15% from 35px */
-      font-weight: 800;
-      letter-spacing: 0.10em;
-      text-transform: uppercase;
-      color: #000000; /* Solid Pitch Black Brand Text */
-      text-align: center;
-      display: block;
-      margin: 0 auto;
-      line-height: 1.2;
-      white-space: nowrap;
-    }
+    /* Unified Orange Zig-Zag Brush-Stroke Page Transition Overlay */
 
     .btn-menu {
       width: 44px;
@@ -3697,12 +3621,12 @@
     <div class="custom-scroll-thumb" id="customScrollThumb"></div>
   </div>
 
-  <!-- Orange Enquire/Navigation Transition Curtain -->
+  <!-- Orange Zig-Zag Brush-Stroke Page Transition Overlay -->
   <div class="enquire-transition-overlay" id="enquireTransitionOverlay" aria-hidden="true">
-    <div class="transition-brand-box">
-      <img src="Techuilla_logo.png" alt="Techuilla Logo" class="enquire-transition-logo" />
-      <span class="enquire-transition-text">Techuilla Agency</span>
-    </div>
+    <svg class="brush-transition-svg" viewBox="0 0 1000 640" preserveAspectRatio="none" aria-hidden="true">
+      <path class="brush-path-grey" id="brushPathGrey" d="M 140,-120 C 380,140 680,380 1060,740 C 1140,520 980,220 1080,-80"></path>
+      <path class="brush-path-orange" id="brushPathOrange" d="M -110,15 C 260,-35 740,-35 1040,25 C 1170,75 330,175 -70,305 C -210,360 700,215 1040,345 C 1170,415 320,485 -110,610 C -210,655 580,665 1110,520"></path>
+    </svg>
   </div>
 
   <!-- Sticky Minimal Navbar -->
@@ -4821,34 +4745,138 @@
         return { x: Math.round(x), y: Math.round(y) };
       }
 
+      /* ------------------------------------------------------------------------
+         UNIFIED ORANGE ZIG-ZAG BRUSH-STROKE PAGE TRANSITION ENGINE
+         ------------------------------------------------------------------------ */
+      (function initTechuillaBrushEngine() {
+        const overlay = document.getElementById('enquireTransitionOverlay');
+        const greyPath = document.getElementById('brushPathGrey');
+        const orangePath = document.getElementById('brushPathOrange');
+        if (!overlay || !greyPath || !orangePath) return;
+
+        let greyLen = 2200;
+        let orangeLen = 4600;
+        try {
+          greyLen = Math.ceil(greyPath.getTotalLength() || 2200);
+          orangeLen = Math.ceil(orangePath.getTotalLength() || 4600);
+        } catch (e) {}
+
+        greyPath.style.strokeDasharray = `${greyLen} ${greyLen + 100}`;
+        orangePath.style.strokeDasharray = `${orangeLen} ${orangeLen + 100}`;
+        greyPath.style.strokeDashoffset = String(-greyLen);
+        orangePath.style.strokeDashoffset = String(-orangeLen);
+
+        let animRafId = null;
+
+        function easeInOutCubic(x) {
+          return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+        }
+
+        function setHiddenIdle() {
+          if (animRafId) cancelAnimationFrame(animRafId);
+          animRafId = null;
+          overlay.classList.remove('is-brush-active', 'is-brush-full-hold', 'is-covering', 'is-active', 'is-closing');
+          greyPath.style.strokeDashoffset = String(-greyLen);
+          orangePath.style.strokeDashoffset = String(-orangeLen);
+        }
+
+        function setFullyCoveredInstant() {
+          if (animRafId) cancelAnimationFrame(animRafId);
+          animRafId = null;
+          overlay.classList.add('is-brush-active', 'is-brush-full-hold');
+          greyPath.style.strokeDashoffset = '0';
+          orangePath.style.strokeDashoffset = '0';
+        }
+
+        function cover(onCovered) {
+          if (animRafId) cancelAnimationFrame(animRafId);
+          overlay.classList.remove('is-brush-full-hold', 'is-closing');
+          overlay.classList.add('is-brush-active');
+
+          const duration = 680;
+          const start = performance.now();
+
+          function step(now) {
+            const p = Math.min(1, (now - start) / duration);
+            const gLocal = Math.max(0, Math.min(1, p / 0.82));
+            const oLocal = Math.max(0, Math.min(1, (p - 0.08) / 0.92));
+
+            const eG = easeInOutCubic(gLocal);
+            const eO = easeInOutCubic(oLocal);
+
+            greyPath.style.strokeDashoffset = ((-greyLen * (1 - eG))).toFixed(1);
+            orangePath.style.strokeDashoffset = ((-orangeLen * (1 - eO))).toFixed(1);
+
+            if (p >= 0.97) {
+              overlay.classList.add('is-brush-full-hold');
+            }
+
+            if (p < 1) {
+              animRafId = requestAnimationFrame(step);
+            } else {
+              animRafId = null;
+              overlay.classList.add('is-brush-full-hold');
+              greyPath.style.strokeDashoffset = '0';
+              orangePath.style.strokeDashoffset = '0';
+              if (typeof onCovered === 'function') onCovered();
+            }
+          }
+
+          animRafId = requestAnimationFrame(step);
+        }
+
+        function uncover(onUncovered) {
+          setFullyCoveredInstant();
+          const duration = 860;
+          const start = performance.now();
+
+          function step(now) {
+            const p = Math.min(1, (now - start) / duration);
+            if (p > 0.02) {
+              overlay.classList.remove('is-brush-full-hold');
+            }
+
+            const oLocal = Math.max(0, Math.min(1, p / 0.88));
+            const gLocal = Math.max(0, Math.min(1, (p - 0.14) / 0.86));
+
+            const eO = easeInOutCubic(oLocal);
+            const eG = easeInOutCubic(gLocal);
+
+            orangePath.style.strokeDashoffset = (orangeLen * eO).toFixed(1);
+            greyPath.style.strokeDashoffset = (greyLen * eG).toFixed(1);
+
+            if (p < 1) {
+              animRafId = requestAnimationFrame(step);
+            } else {
+              setHiddenIdle();
+              if (typeof onUncovered === 'function') onUncovered();
+            }
+          }
+
+          animRafId = requestAnimationFrame(step);
+        }
+
+        window.TechuillaBrushTransition = {
+          cover,
+          uncover,
+          setFullyCoveredInstant,
+          setHiddenIdle
+        };
+      })();
+
       function triggerEnquireTransition(e, targetUrl = 'contact.html') {
         if (e) e.preventDefault();
-        const overlay = document.getElementById('enquireTransitionOverlay');
-        if (!overlay) {
+        if (!window.TechuillaBrushTransition) {
           window.location.href = targetUrl;
           return;
         }
-        const btn = (e && e.currentTarget) ? e.currentTarget : document.querySelector('.btn-enquire');
-        const origin = setTransitionOrigin(btn, overlay);
-
-        // Reset state & start at 0% at the button itself
-        overlay.style.transition = 'none';
-        overlay.classList.remove('is-closing', 'is-dissolving');
-        overlay.classList.remove('is-covering', 'is-active');
-        void overlay.offsetWidth;
-
-        // Open outward from the button over 1000ms
-        overlay.style.transition = 'clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1), -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1)';
-        overlay.classList.add('is-covering');
-
-        // Navigate after 1000ms when screen is fully solid orange
-        setTimeout(() => {
+        window.TechuillaBrushTransition.cover(() => {
           const sep = targetUrl.includes('?') ? '&' : '?';
-          window.location.href = `${targetUrl}${sep}transition=enquire&x=${origin.x}&y=${origin.y}`;
-        }, 1000);
+          window.location.href = `${targetUrl}${sep}transition=brush&t=${Date.now()}`;
+        });
       }
 
-      const allEnquireButtons = document.querySelectorAll('.btn-enquire, .btn-cta-large');
+      const allEnquireButtons = document.querySelectorAll('.btn-enquire, .btn-cta-large, #btnDetailInquiry');
       allEnquireButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
           triggerEnquireTransition(e, 'contact.html');
@@ -4858,7 +4886,6 @@
       const enquiriesBtn = document.getElementById('menuEnquiriesBtn');
       if (enquiriesBtn) {
         enquiriesBtn.addEventListener('click', (e) => {
-          closeMenu();
           triggerEnquireTransition(e, 'contact.html');
         });
       }
@@ -4901,35 +4928,40 @@ Best regards,
         });
       }
 
-      function triggerHomeTransition(e) {
+      function triggerHomeTransition(e, hashSuffix = '') {
         if (e) e.preventDefault();
-        if (typeof closeMenu === 'function') closeMenu();
-        const overlay = document.getElementById('enquireTransitionOverlay');
-        if (!overlay) {
-          window.location.href = 'index.html?from=subpage';
+        const dest = `index.html?from=subpage&transition=brush&t=${Date.now()}${hashSuffix}`;
+        if (!window.TechuillaBrushTransition) {
+          window.location.href = dest;
           return;
         }
-        const logoEl = document.querySelector('.nav-brand');
-        const origin = setTransitionOrigin(logoEl, overlay);
-        overlay.style.transition = 'none';
-        overlay.classList.remove('is-closing', 'is-dissolving');
-        overlay.classList.remove('is-covering', 'is-active');
-        void overlay.offsetWidth;
-        overlay.style.transition = 'clip-path 800ms cubic-bezier(0.76, 0, 0.24, 1), -webkit-clip-path 800ms cubic-bezier(0.76, 0, 0.24, 1)';
-        overlay.classList.add('is-covering');
-        setTimeout(() => {
-          window.location.href = 'index.html?from=subpage';
-        }, 800);
+        window.TechuillaBrushTransition.cover(() => {
+          window.location.href = dest;
+        });
       }
 
       function triggerServicesTransition(e) {
         if (e) e.preventDefault();
-        if (typeof closeMenu === 'function') closeMenu();
-        if (typeof window.resetServicesScrollToTop === 'function') {
-          window.resetServicesScrollToTop();
-        } else {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (!window.TechuillaBrushTransition) {
+          if (typeof closeMenu === 'function') closeMenu();
+          if (typeof window.resetServicesScrollToTop === 'function') {
+            window.resetServicesScrollToTop();
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+          return;
         }
+        window.TechuillaBrushTransition.cover(() => {
+          if (typeof closeMenu === 'function') closeMenu();
+          if (typeof window.resetServicesScrollToTop === 'function') {
+            window.resetServicesScrollToTop();
+          } else {
+            window.scrollTo(0, 0);
+          }
+          setTimeout(() => {
+            window.TechuillaBrushTransition.uncover();
+          }, 50);
+        });
       }
 
       menuLinks.forEach(link => {
@@ -4941,8 +4973,9 @@ Best regards,
             triggerHomeTransition(e);
           } else if (section === 'services') {
             triggerServicesTransition(e);
+          } else if (section === 'about') {
+            triggerHomeTransition(e, '#about');
           } else if (section === 'contact') {
-            closeMenu();
             triggerEnquireTransition(e, 'contact.html');
           } else {
             closeMenu();
@@ -4965,6 +4998,13 @@ Best regards,
         });
       }
 
+      const footerBrandLogo = document.querySelector('.footer-brand-logo-wrap');
+      if (footerBrandLogo) {
+        footerBrandLogo.addEventListener('click', (e) => {
+          triggerHomeTransition(e);
+        });
+      }
+
       window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && fullscreenMenu && fullscreenMenu.classList.contains('is-open')) {
           closeMenu();
@@ -4972,43 +5012,26 @@ Best regards,
       });
 
       /* ------------------------------------------------------------------------
-         1. TRANSITION HANDLING
+         1. TRANSITION HANDLING ON ARRIVAL
          ------------------------------------------------------------------------ */
       const urlParams = new URLSearchParams(window.location.search);
       const isTransition = urlParams.get('transition');
-      const originX = urlParams.get('x') || (window.innerWidth - 85);
-      const originY = urlParams.get('y') || 40;
-      const overlay = document.getElementById('enquireTransitionOverlay');
 
-      if (overlay) {
-        overlay.style.setProperty('--wipe-x', `${originX}px`);
-        overlay.style.setProperty('--wipe-y', `${originY}px`);
-
-        if (isTransition) {
-          overlay.style.transition = 'none';
-          overlay.classList.add('is-covering');
-          overlay.classList.remove('is-closing');
-          void overlay.offsetWidth;
-
-          requestAnimationFrame(() => {
-            overlay.style.transition = 'clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1), -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1)';
-            overlay.classList.remove('is-covering', 'is-active');
-            overlay.classList.add('is-closing');
-            setTimeout(() => {
-              overlay.classList.remove('is-closing');
-            }, 1050);
-          });
-
-          try {
-            const newUrl = new URL(window.location.href);
-            newUrl.searchParams.delete('transition');
-            newUrl.searchParams.delete('x');
-            newUrl.searchParams.delete('y');
-            window.history.replaceState({}, '', newUrl.toString());
-          } catch (err) {}
-        } else {
-          overlay.style.display = 'none';
-        }
+      if (isTransition && window.TechuillaBrushTransition) {
+        window.TechuillaBrushTransition.setFullyCoveredInstant();
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            window.TechuillaBrushTransition.uncover();
+          }, 60);
+        });
+        try {
+          const newUrl = new URL(window.location.href);
+          newUrl.searchParams.delete('transition');
+          newUrl.searchParams.delete('t');
+          newUrl.searchParams.delete('x');
+          newUrl.searchParams.delete('y');
+          window.history.replaceState({}, '', newUrl.toString());
+        } catch (err) {}
       }
 
       /* ------------------------------------------------------------------------

@@ -159,92 +159,69 @@
     }
 
     /* ==========================================================================
-       2. CINEMATIC ORANGE PAGE TRANSITION OVERLAY (In & Out at Button / Logo Origin, >= 2.0s Total Duration)
+       2. ORANGE ZIG-ZAG BRUSH-STROKE PAGE TRANSITION OVERLAY
        ========================================================================== */
     .page-transition-curtain {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      background: #FF6600;
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      background: transparent !important;
+      clip-path: none !important;
+      -webkit-clip-path: none !important;
       z-index: 9999999 !important;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 1; /* Solid opaque orange - ZERO fade out! */
+      display: block !important;
       pointer-events: none;
       visibility: hidden;
-      --wipe-x: calc(100% - 85px);
-      --wipe-y: 40px;
-      clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
-      -webkit-clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
-      transition: 
-        clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1),
-        -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1);
-      will-change: clip-path;
-      margin: 0;
-      padding: 0;
+      overflow: hidden !important;
+      margin: 0 !important;
+      padding: 0 !important;
     }
 
+    .page-transition-curtain.is-brush-active,
     .page-transition-curtain.is-covering,
     .page-transition-curtain.is-active {
-      visibility: visible;
-      pointer-events: auto;
-      clip-path: circle(160% at var(--wipe-x) var(--wipe-y));
-      -webkit-clip-path: circle(160% at var(--wipe-x) var(--wipe-y));
+      visibility: visible !important;
+      pointer-events: auto !important;
     }
 
-    .page-transition-curtain.is-closing,
-    .page-transition-curtain.is-dissolving {
-      visibility: visible;
-      pointer-events: none;
-      clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
-      -webkit-clip-path: circle(0% at var(--wipe-x) var(--wipe-y));
+    .page-transition-curtain.is-brush-full-hold {
+      background: #FF6600 !important;
     }
 
-    .transition-brand-box,
-    .page-transition-icon-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      gap: 20px;
+    .page-transition-curtain.is-brush-full-hold .brush-path-grey {
+      opacity: 0 !important;
+    }
+
+    .page-transition-curtain .transition-brand-box {
+      display: none !important;
+    }
+
+    .brush-transition-svg {
+      position: absolute;
+      inset: 0;
       width: 100%;
-      max-width: 500px;
-      margin: 0 auto;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .page-transition-logo {
-      width: 168px; /* Increased by 20% from 140px */
-      height: 168px;
-      object-fit: contain;
+      height: 100%;
       display: block;
-      margin: 0 auto;
-      filter: brightness(0); /* Solid Pitch Black Techuilla Logo */
-      transform: scale(0.92);
-      transition: transform 1000ms cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: visible;
     }
 
-    .page-transition-curtain.is-covering .page-transition-logo,
-    .page-transition-curtain.is-active .page-transition-logo {
-      transform: scale(1);
+    .brush-path-grey {
+      fill: none;
+      stroke: #D8DAD3;
+      stroke-width: 265;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      will-change: stroke-dashoffset;
     }
 
-    .page-transition-text {
-      font-family: var(--font-sans);
-      font-size: 40px; /* Increased by 15% from 35px */
-      font-weight: 800;
-      letter-spacing: 0.10em;
-      text-transform: uppercase;
-      color: #000000; /* Solid Pitch Black Brand Text */
-      text-align: center;
-      display: block;
-      margin: 0 auto;
-      line-height: 1.2;
-      white-space: nowrap;
+    .brush-path-orange {
+      fill: none;
+      stroke: #FF6600;
+      stroke-width: 296;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      will-change: stroke-dashoffset;
     }
 
     /* ==========================================================================
@@ -2632,13 +2609,13 @@
   </div>
 
   <!-- ==========================================================================
-       ORANGE TRANSITION CURTAIN (Opens smoothly within 1 second)
+       ORANGE ZIG-ZAG BRUSH-STROKE PAGE TRANSITION OVERLAY
        ========================================================================== -->
   <div class="page-transition-curtain" id="pageTransitionCurtain" aria-hidden="true">
-    <div class="transition-brand-box page-transition-icon-wrap">
-      <img src="Techuilla_logo.png" alt="Techuilla Logo" class="page-transition-logo">
-      <span class="page-transition-text">Techuilla Agency</span>
-    </div>
+    <svg class="brush-transition-svg" viewBox="0 0 1000 640" preserveAspectRatio="none" aria-hidden="true">
+      <path class="brush-path-grey" id="brushPathGrey" d="M 140,-120 C 380,140 680,380 1060,740 C 1140,520 980,220 1080,-80"></path>
+      <path class="brush-path-orange" id="brushPathOrange" d="M -110,15 C 260,-35 740,-35 1040,25 C 1170,75 330,175 -70,305 C -210,360 700,215 1040,345 C 1170,415 320,485 -110,610 C -210,655 580,665 1110,520"></path>
+    </svg>
   </div>
 
   <!-- ==========================================================================
@@ -3346,67 +3323,136 @@
       'use strict';
 
       /* ------------------------------------------------------------------------
-         1. UNIFIED CINEMATIC ORANGE TRANSITION ENGINE (>= 2.0s Duration)
+         1. UNIFIED ORANGE ZIG-ZAG BRUSH-STROKE PAGE TRANSITION ENGINE
          ------------------------------------------------------------------------ */
       const curtain = document.getElementById('pageTransitionCurtain');
 
-      function setTransitionOrigin(el, overlay) {
-        let x = window.innerWidth - 85;
-        let y = 40;
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          x = rect.left + rect.width / 2;
-          y = rect.top + rect.height / 2;
-        }
-        if (overlay) {
-          overlay.style.setProperty('--wipe-x', `${Math.round(x)}px`);
-          overlay.style.setProperty('--wipe-y', `${Math.round(y)}px`);
-        }
-        return { x: Math.round(x), y: Math.round(y) };
-      }
+      (function initTechuillaBrushEngine() {
+        const overlay = curtain;
+        const greyPath = document.getElementById('brushPathGrey');
+        const orangePath = document.getElementById('brushPathOrange');
+        if (!overlay || !greyPath || !orangePath) return;
 
-      function closeCurtainAt(targetEl, callback) {
-        if (!curtain) {
-          if (callback) callback();
-          return;
-        }
-        setTransitionOrigin(targetEl, curtain);
+        let greyLen = 2200;
+        let orangeLen = 4600;
+        try {
+          greyLen = Math.ceil(greyPath.getTotalLength() || 2200);
+          orangeLen = Math.ceil(orangePath.getTotalLength() || 4600);
+        } catch (e) {}
 
-        // Close back into the target element over 1000ms with ZERO fade-out!
-        requestAnimationFrame(() => {
-          curtain.style.transition = 'clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1), -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1)';
-          curtain.classList.remove('is-covering', 'is-active');
-          curtain.classList.add('is-closing');
-          setTimeout(() => {
-            curtain.style.display = 'none';
-            curtain.classList.remove('is-closing');
-            if (callback) callback();
-          }, 1050);
-        });
-      }
+        greyPath.style.strokeDasharray = `${greyLen} ${greyLen + 100}`;
+        orangePath.style.strokeDasharray = `${orangeLen} ${orangeLen + 100}`;
+        greyPath.style.strokeDashoffset = String(-greyLen);
+        orangePath.style.strokeDashoffset = String(-orangeLen);
+
+        let animRafId = null;
+
+        function easeInOutCubic(x) {
+          return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+        }
+
+        function setHiddenIdle() {
+          if (animRafId) cancelAnimationFrame(animRafId);
+          animRafId = null;
+          overlay.classList.remove('is-brush-active', 'is-brush-full-hold', 'is-covering', 'is-active', 'is-closing');
+          greyPath.style.strokeDashoffset = String(-greyLen);
+          orangePath.style.strokeDashoffset = String(-orangeLen);
+        }
+
+        function setFullyCoveredInstant() {
+          if (animRafId) cancelAnimationFrame(animRafId);
+          animRafId = null;
+          overlay.classList.add('is-brush-active', 'is-brush-full-hold');
+          greyPath.style.strokeDashoffset = '0';
+          orangePath.style.strokeDashoffset = '0';
+        }
+
+        function cover(onCovered) {
+          if (animRafId) cancelAnimationFrame(animRafId);
+          overlay.classList.remove('is-brush-full-hold', 'is-closing');
+          overlay.classList.add('is-brush-active');
+
+          const duration = 680;
+          const start = performance.now();
+
+          function step(now) {
+            const p = Math.min(1, (now - start) / duration);
+            const gLocal = Math.max(0, Math.min(1, p / 0.82));
+            const oLocal = Math.max(0, Math.min(1, (p - 0.08) / 0.92));
+
+            const eG = easeInOutCubic(gLocal);
+            const eO = easeInOutCubic(oLocal);
+
+            greyPath.style.strokeDashoffset = ((-greyLen * (1 - eG))).toFixed(1);
+            orangePath.style.strokeDashoffset = ((-orangeLen * (1 - eO))).toFixed(1);
+
+            if (p >= 0.97) {
+              overlay.classList.add('is-brush-full-hold');
+            }
+
+            if (p < 1) {
+              animRafId = requestAnimationFrame(step);
+            } else {
+              animRafId = null;
+              overlay.classList.add('is-brush-full-hold');
+              greyPath.style.strokeDashoffset = '0';
+              orangePath.style.strokeDashoffset = '0';
+              if (typeof onCovered === 'function') onCovered();
+            }
+          }
+
+          animRafId = requestAnimationFrame(step);
+        }
+
+        function uncover(onUncovered) {
+          setFullyCoveredInstant();
+          const duration = 860;
+          const start = performance.now();
+
+          function step(now) {
+            const p = Math.min(1, (now - start) / duration);
+            if (p > 0.02) {
+              overlay.classList.remove('is-brush-full-hold');
+            }
+
+            const oLocal = Math.max(0, Math.min(1, p / 0.88));
+            const gLocal = Math.max(0, Math.min(1, (p - 0.14) / 0.86));
+
+            const eO = easeInOutCubic(oLocal);
+            const eG = easeInOutCubic(gLocal);
+
+            orangePath.style.strokeDashoffset = (orangeLen * eO).toFixed(1);
+            greyPath.style.strokeDashoffset = (greyLen * eG).toFixed(1);
+
+            if (p < 1) {
+              animRafId = requestAnimationFrame(step);
+            } else {
+              setHiddenIdle();
+              if (typeof onUncovered === 'function') onUncovered();
+            }
+          }
+
+          animRafId = requestAnimationFrame(step);
+        }
+
+        window.TechuillaBrushTransition = {
+          cover,
+          uncover,
+          setFullyCoveredInstant,
+          setHiddenIdle
+        };
+      })();
 
       // Check arrival parameters from transition
       const urlParams = new URLSearchParams(window.location.search);
       const transitionType = urlParams.get('transition');
 
-      if (curtain) {
-        // Start 100% solid covered
-        curtain.style.display = 'flex';
-        curtain.style.transition = 'none';
-        curtain.classList.add('is-covering');
-        curtain.classList.remove('is-closing', 'is-dissolving');
-
-        // As requested: as transition closes, it closes keeping the Techuilla logo at the top left as the center medium to close
-        const topNavLogo = document.querySelector('.nav-brand-logo') || document.querySelector('.nav-brand') || document.getElementById('navHomeBrand');
-        setTransitionOrigin(topNavLogo, curtain);
-        void curtain.offsetWidth;
-
-        // Perform smooth 1000ms contraction into top-left Techuilla logo!
+      if (window.TechuillaBrushTransition) {
+        window.TechuillaBrushTransition.setFullyCoveredInstant();
         requestAnimationFrame(() => {
           setTimeout(() => {
-            const logoTarget = document.querySelector('.nav-brand-logo') || document.querySelector('.nav-brand') || document.getElementById('navHomeBrand');
-            closeCurtainAt(logoTarget);
-          }, 80);
+            window.TechuillaBrushTransition.uncover();
+          }, 60);
         });
       }
 
@@ -3418,91 +3464,55 @@
 
       // Handle Browser Back / Forward Navigation (bfcache)
       window.addEventListener('pageshow', (e) => {
-        if (curtain) {
-          const navBrand = document.querySelector('.nav-brand') || document.getElementById('navHomeBrand');
-          closeCurtainAt(navBrand);
+        if (e.persisted && window.TechuillaBrushTransition) {
+          window.TechuillaBrushTransition.setHiddenIdle();
         }
       });
 
-      window.addEventListener('popstate', () => {
-        if (curtain) {
-          const navBrand = document.querySelector('.nav-brand') || document.getElementById('navHomeBrand');
-          closeCurtainAt(navBrand);
-        }
-      });
-
-      // Navigate back to home with the orange transition (opens from logo, closes at logo)
-            function triggerServicesTransition(e) {
+      function triggerServicesTransition(e) {
         if (e) e.preventDefault();
-        // Do NOT call closeMenu() here! Keeps menu open under the blooming curtain to eliminate any jerk
-        if (!curtain) {
+        if (!window.TechuillaBrushTransition) {
           window.location.href = 'services.html';
           return;
         }
-
-        const linkEl = (e && e.currentTarget) || document.querySelector('[data-section="services"]') || document.querySelector('.nav-brand');
-        const origin = setTransitionOrigin(linkEl, curtain);
-
-        curtain.style.display = 'flex';
-        curtain.style.transition = 'none';
-        curtain.classList.remove('is-closing', 'is-dissolving');
-        curtain.classList.remove('is-covering', 'is-active');
-        void curtain.offsetWidth;
-
-        curtain.style.transition = 'clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1), -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1)';
-        curtain.classList.add('is-covering');
-
-        setTimeout(() => {
-          window.location.href = `services.html?transition=services&t=${Date.now()}&x=${origin.x}&y=${origin.y}`;
-        }, 1000);
+        window.TechuillaBrushTransition.cover(() => {
+          window.location.href = `services.html?transition=brush&t=${Date.now()}`;
+        });
       }
 
-function triggerBackToHomeTransition(e) {
+      function triggerBackToHomeTransition(e, hashSuffix = '') {
         if (e) e.preventDefault();
-
-        // Immediately dismiss and hide fullscreen menu so it NEVER flashes during transition
-        if (fullscreenMenu) {
-          isMenuCurrentlyOpen = false;
-          fullscreenMenu.classList.remove('is-open', 'is-closing');
-          fullscreenMenu.style.display = '';
-          fullscreenMenu.style.visibility = 'hidden';
-          fullscreenMenu.style.pointerEvents = 'none';
-          fullscreenMenu.setAttribute('aria-hidden', 'true');
-          document.body.classList.remove('menu-open');
-          document.body.style.overflow = '';
-          if (openMenuBtn) {
-            openMenuBtn.classList.remove('is-open');
-            openMenuBtn.setAttribute('aria-label', 'Open Navigation Menu');
-          }
-          if (typeof animateMenuMorph === 'function') animateMenuMorph(0, 0);
-        }
-
-        if (!curtain) {
-          window.location.href = 'index.html?transition=logo';
+        const dest = `index.html?from=subpage&transition=brush&t=${Date.now()}${hashSuffix}`;
+        if (!window.TechuillaBrushTransition) {
+          window.location.href = dest;
           return;
         }
+        window.TechuillaBrushTransition.cover(() => {
+          window.location.href = dest;
+        });
+      }
 
-        const logoEl = document.querySelector('.nav-brand') || document.getElementById('navHomeBrand');
-        const origin = setTransitionOrigin(logoEl, curtain);
-
-        curtain.style.display = 'flex';
-        curtain.style.transition = 'none';
-        curtain.classList.remove('is-closing', 'is-dissolving');
-        curtain.classList.remove('is-covering', 'is-active');
-        void curtain.offsetWidth;
-
-        // Open outward from logo over 1000ms
-        curtain.style.transition = 'clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1), -webkit-clip-path 1000ms cubic-bezier(0.76, 0, 0.24, 1)';
-        curtain.classList.add('is-covering');
-
-        setTimeout(() => {
-          window.location.href = `index.html?transition=logo&x=${origin.x}&y=${origin.y}`;
-        }, 1000);
+      function triggerContactInPageTransition(e) {
+        if (e) e.preventDefault();
+        if (!window.TechuillaBrushTransition) {
+          if (typeof closeMenu === 'function') closeMenu();
+          const formTarget = document.getElementById('contact-form');
+          if (formTarget) formTarget.scrollIntoView({ behavior: 'smooth' });
+          return;
+        }
+        window.TechuillaBrushTransition.cover(() => {
+          if (typeof closeMenu === 'function') closeMenu();
+          const formTarget = document.getElementById('contact-form');
+          if (formTarget) formTarget.scrollIntoView({ behavior: 'instant' });
+          setTimeout(() => {
+            window.TechuillaBrushTransition.uncover();
+          }, 50);
+        });
       }
 
       const navHomeBrand = document.getElementById('navHomeBrand');
       if (navHomeBrand) {
-        navHomeBrand.addEventListener('click', triggerBackToHomeTransition);
+        navHomeBrand.addEventListener('click', (e) => triggerBackToHomeTransition(e));
       }
 
       /* ------------------------------------------------------------------------
@@ -3729,13 +3739,10 @@ function triggerBackToHomeTransition(e) {
             triggerBackToHomeTransition(e);
           } else if (section === 'services') {
             triggerServicesTransition(e);
+          } else if (section === 'about') {
+            triggerBackToHomeTransition(e, '#about');
           } else if (section === 'contact') {
-            e.preventDefault();
-            closeMenu();
-            const formTarget = document.getElementById('contact-form');
-            if (formTarget) {
-              formTarget.scrollIntoView({ behavior: 'smooth' });
-            }
+            triggerContactInPageTransition(e);
           } else {
             closeMenu();
           }
@@ -3753,12 +3760,7 @@ function triggerBackToHomeTransition(e) {
       const menuEnquiriesBtn = document.getElementById('menuEnquiriesBtn');
       if (menuEnquiriesBtn) {
         menuEnquiriesBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          closeMenu();
-          const formTarget = document.getElementById('contact-form');
-          if (formTarget) {
-            formTarget.scrollIntoView({ behavior: 'smooth' });
-          }
+          triggerContactInPageTransition(e);
         });
       }
 
