@@ -2064,6 +2064,7 @@
         fullscreenMenu.setAttribute('aria-hidden', 'false');
         if (openMenuBtn) openMenuBtn.classList.add('is-open');
         animateMenuMorph(1.0, 600);
+        document.body.classList.add('menu-open');
         document.body.style.overflow = 'hidden';
       }
 
@@ -2075,6 +2076,7 @@
         fullscreenMenu.classList.remove('is-open');
         fullscreenMenu.classList.add('is-closing');
         fullscreenMenu.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('menu-open');
         document.body.style.overflow = '';
         animateMenuMorph(0, 600);
         setTimeout(() => { if (!isMenuCurrentlyOpen) fullscreenMenu.classList.remove('is-closing'); }, 600);
@@ -2100,12 +2102,14 @@
         if (e) e.preventDefault();
         if (!window.TechuillaBrushTransition) {
           closeMenu();
-          window.scrollTo(0, 0);
+          if (typeof window.resetAboutScrollToTop === 'function') window.resetAboutScrollToTop();
+          else window.scrollTo(0, 0);
           return;
         }
         window.TechuillaBrushTransition.cover(() => {
           closeMenu();
-          window.scrollTo(0, 0);
+          if (typeof window.resetAboutScrollToTop === 'function') window.resetAboutScrollToTop();
+          else window.scrollTo(0, 0);
           requestAnimationFrame(() => {
             requestAnimationFrame(() => {
               setTimeout(() => window.TechuillaBrushTransition.uncover(), 110);
@@ -2465,9 +2469,9 @@
           return;
         }
 
-        heroCurrentP += dh * 0.16;
-        philCurrentP += dp * 0.16;
-        approachCurrentP += da * 0.16;
+        heroCurrentP += dh * 0.144;
+        philCurrentP += dp * 0.144;
+        approachCurrentP += da * 0.144;
 
         renderHero(heroCurrentP);
         renderPhilosophy(philCurrentP);
@@ -2492,8 +2496,86 @@
       window.addEventListener('scroll', onScrollOrResize, { passive: true });
       window.addEventListener('resize', onScrollOrResize, { passive: true });
 
+      /* ------------------------------------------------------------------------
+         8. LUXURIOUS CINEMATIC SMOOTH SCROLL (Exact Match to Services Page)
+            Clamped delta * 0.54 travel speed + 0.088 heavy cinematic inertia
+         ------------------------------------------------------------------------ */
+      let currentY = window.scrollY;
+      let targetY = window.scrollY;
+      let isSmoothScrolling = false;
+      let smoothScrollRafId = null;
+
+      window.addEventListener('scroll', () => {
+        if (!isSmoothScrolling) {
+          currentY = window.scrollY;
+          targetY = window.scrollY;
+        }
+      }, { passive: true });
+
+      window.addEventListener('wheel', (e) => {
+        if (document.body.classList.contains('menu-open')) {
+          return;
+        }
+
+        e.preventDefault();
+        const maxScrollY = document.documentElement.scrollHeight - window.innerHeight;
+        if (maxScrollY <= 0) return;
+
+        // Exact Services Page physics: clamped delta with 10% decreased travel speed (0.54)
+        const clampedDelta = Math.sign(e.deltaY) * Math.min(75, Math.abs(e.deltaY));
+        targetY = Math.max(0, Math.min(maxScrollY, targetY + clampedDelta * 0.54));
+
+        if (!isSmoothScrolling) {
+          isSmoothScrolling = true;
+          smoothScrollRafId = requestAnimationFrame(smoothScrollTick);
+        }
+      }, { passive: false });
+
+      function smoothScrollTick() {
+        const diff = targetY - currentY;
+        if (Math.abs(diff) > 0.4) {
+          currentY += diff * 0.088; // Exact slow, heavy cinematic inertia matching Services & Home pages
+          window.scrollTo(0, currentY);
+          onScrollOrResize();
+          smoothScrollRafId = requestAnimationFrame(smoothScrollTick);
+        } else {
+          currentY = targetY;
+          window.scrollTo(0, currentY);
+          onScrollOrResize();
+          isSmoothScrolling = false;
+        }
+      }
+
+      window.resetAboutScrollToTop = function () {
+        isSmoothScrolling = false;
+        if (smoothScrollRafId) {
+          cancelAnimationFrame(smoothScrollRafId);
+          smoothScrollRafId = null;
+        }
+        targetY = 0;
+        currentY = 0;
+        heroTargetP = 0;
+        heroCurrentP = 0;
+        philTargetP = 0;
+        philCurrentP = 0;
+        approachTargetP = 0;
+        approachCurrentP = 0;
+        window.scrollTo(0, 0);
+        renderHero(0);
+        renderPhilosophy(0);
+        renderApproach(0);
+        computeAllTargets();
+      };
+
       // Expose helper for instant inspection
       window.syncAboutScrubInstant = function () {
+        isSmoothScrolling = false;
+        if (smoothScrollRafId) {
+          cancelAnimationFrame(smoothScrollRafId);
+          smoothScrollRafId = null;
+        }
+        currentY = window.scrollY;
+        targetY = window.scrollY;
         computeAllTargets();
         heroCurrentP = heroTargetP;
         philCurrentP = philTargetP;
