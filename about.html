@@ -39,7 +39,8 @@
 
   <!-- Preload Critical Visuals -->
   <link rel="preload" as="image" href="Techuilla_logo.png" />
-  <link rel="preload" as="image" href="service_card_9.jpg" />
+  <link rel="preload" as="image" href="assets/about_hero_center_brand.jpg" />
+  <link rel="preload" as="image" href="assets/cgi_film_set_bg.jpg" />
   <link rel="preload" as="image" href="service_card_1.jpg" />
   <link rel="preload" as="image" href="service_card_3.jpg" />
   <link rel="preload" as="image" href="service_card_10.jpg" />
@@ -48,6 +49,10 @@
   <link rel="preload" as="image" href="assets/philosophy_2_create_purpose.png" />
   <link rel="preload" as="image" href="assets/philosophy_3_unite_disciplines.png" />
   <link rel="preload" as="image" href="assets/philosophy_4_never_stand_still.png" />
+
+  <!-- Three.js & CGI Cinema Camera Engine -->
+  <script src="three.min.js"></script>
+  <script src="aboutCameraCGI.js"></script>
 
   <style>
     /* ==========================================================================
@@ -286,6 +291,16 @@
       letter-spacing: -0.015em;
       color: #111111;
       transition: color 0.45s var(--ease-editorial);
+    }
+
+    /* Adaptive Navbar Themes (Dark Camera/Gallery -> Cream text; Orange Intro/Outro -> Black logo & button) */
+    .site-nav.theme-dark-bg .nav-brand-text { color: #FAF8F5 !important; }
+    .site-nav.theme-orange-bg .nav-brand-text { color: #111111 !important; }
+    .site-nav.theme-orange-bg .nav-brand-logo { filter: brightness(0) !important; }
+    .site-nav.theme-orange-bg .btn-enquire {
+      background: #111111 !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
     }
 
     .nav-actions {
@@ -701,7 +716,7 @@
       width: 100%;
       padding: 0 clamp(18px, 2.8vw, 48px);
       display: grid;
-      grid-template-columns: 1fr 1fr 1.42fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1.56fr 1fr 1fr;
       gap: clamp(12px, 1.5vw, 24px);
       align-items: start;
       z-index: 12;
@@ -804,39 +819,43 @@
       will-change: transform;
     }
 
-    /* Centered Wordmark: "Techuilla" (Orange) + "Agency" (Black) */
+    /* Centered Wordmark: "Techuilla" (Orange) + "Agency" (Black) — +15% Font Size,
+       Exact Symmetrical Gap Anchored at x=50% so Middle Image Grows Evenly Between Both Words */
     .hero-wordmark-stage {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate3d(-50%, -50%, 0);
-      display: flex;
-      align-items: baseline;
-      justify-content: center;
-      white-space: nowrap;
+      width: 0px;
+      height: 0px;
       z-index: 10;
       will-change: transform;
       pointer-events: none;
     }
 
     .hero-word {
+      position: absolute;
+      top: 0;
       font-family: var(--font-sans);
-      font-size: clamp(44px, 5.4vw, 82px);
+      font-size: clamp(51px, 6.2vw, 94px);
       font-weight: 800;
       letter-spacing: -0.04em;
       line-height: 0.96;
-      display: inline-block;
+      white-space: nowrap;
       will-change: transform;
     }
 
     .hero-word-techuilla {
+      right: 0;
       color: var(--color-orange);
-      padding-right: 0.14em;
+      padding-right: 0.16em;
+      transform: translate3d(0, -50%, 0);
     }
 
     .hero-word-agency {
+      left: 0;
       color: #111111;
-      padding-left: 0.14em;
+      padding-left: 0.16em;
+      transform: translate3d(0, -50%, 0);
     }
 
     .hero-scroll-cue {
@@ -1092,11 +1111,12 @@
     }
 
     /* ==========================================================================
-       8. SECTION 4 — OUR APPROACH (5 Pill Capsules Slide-Down + Middle Full-Screen Open)
+       8. SECTION 4 — OUR APPROACH (Bottom-to-Top Poppy 3D Pills, Vertical Letters,
+          Middle Window Portal & Flashy Moduluxe-Style Zoom into CREATE · BUILD · GROW)
        ========================================================================== */
     .approach-scroll-track {
       position: relative;
-      height: 460vh;
+      height: 560vh;
       width: 100%;
       z-index: 8;
       border-top: 1px solid var(--border-subtle);
@@ -1113,14 +1133,15 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding-top: clamp(92px, 11vh, 128px);
+      padding-top: clamp(86px, 10vh, 118px);
+      perspective: 1400px;
     }
 
     .approach-header {
       position: relative;
       z-index: 10;
       text-align: center;
-      margin-bottom: clamp(28px, 4vh, 48px);
+      margin-bottom: clamp(22px, 3.4vh, 42px);
       will-change: transform, opacity;
     }
 
@@ -1142,15 +1163,17 @@
     .approach-pills-stage {
       position: relative;
       width: min(92vw, 1380px);
-      height: clamp(380px, 60vh, 580px);
+      height: clamp(400px, 64vh, 610px);
       display: flex;
       align-items: center;
       justify-content: center;
       gap: clamp(14px, 1.8vw, 28px);
       z-index: 12;
+      transform-style: preserve-3d;
+      will-change: transform;
     }
 
-    /* Clip-mask container for each pill so it slides down from invisible (video-edit reveal) */
+    /* Bottom-to-Top Reveal Mask Container */
     .approach-pill-mask {
       position: relative;
       flex: 1 1 0;
@@ -1158,20 +1181,11 @@
       overflow: hidden;
       border-radius: 999px;
       will-change: transform, opacity;
+      perspective: 1100px;
     }
 
-    /* Middle Pill Mask is allowed to overflow & expand cleanly into full screen */
     .approach-pill-mask.is-middle-slot {
-      overflow: visible;
       z-index: 25;
-    }
-
-    .approach-pill-inner-clip {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      border-radius: 999px;
     }
 
     .approach-pill-object {
@@ -1179,81 +1193,126 @@
       width: 100%;
       height: 100%;
       border-radius: 999px;
-      transform: translate3d(0, -108%, 0);
-      will-change: transform, border-radius;
+      /* Starts hidden below (bottom-to-top poppy 3D reveal!) */
+      transform: translate3d(0, 118%, 0) scale(0.86) rotateX(18deg);
+      transform-origin: center bottom;
+      will-change: transform, opacity;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-      padding: 42px 22px;
+      justify-content: center;
+      padding: 36px 14px;
       text-align: center;
-      border: 1px solid rgba(255, 102, 0, 0.22);
-      box-shadow: 0 24px 54px rgba(255, 102, 0, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+      border: 1.5px solid rgba(255, 102, 0, 0.24);
+      box-shadow: 0 28px 60px rgba(255, 102, 0, 0.12), inset 0 2px 0 rgba(255, 255, 255, 0.88);
       overflow: hidden;
     }
 
-    /* Subtle Beige & Light Orange Minimal Smooth Gradients for Each of the 5 Capsules */
-    .pill-grad-1 {
-      background: linear-gradient(180deg, #FAF5EC 0%, #FDE9D5 52%, #FFD2AD 100%);
-    }
-    .pill-grad-2 {
-      background: linear-gradient(180deg, #FBF6EE 0%, #FCE2C8 48%, #FFC291 100%);
-    }
-    .pill-grad-3 {
-      background: linear-gradient(180deg, #FAF4EB 0%, #FFDEC0 46%, #FFB178 100%);
-    }
-    .pill-grad-4 {
-      background: linear-gradient(180deg, #FBF6EE 0%, #FCE2C8 48%, #FFC291 100%);
-    }
-    .pill-grad-5 {
-      background: linear-gradient(180deg, #FAF5EC 0%, #FDE9D5 52%, #FFD2AD 100%);
+    .pill-grad-1 { background: linear-gradient(180deg, #FAF5EC 0%, #FDE9D5 52%, #FFD2AD 100%); }
+    .pill-grad-2 { background: linear-gradient(180deg, #FBF6EE 0%, #FCE2C8 48%, #FFC291 100%); }
+    .pill-grad-3 { background: linear-gradient(180deg, #FAF4EB 0%, #FFDEC0 46%, #FFB178 100%); }
+    .pill-grad-4 { background: linear-gradient(180deg, #FBF6EE 0%, #FCE2C8 48%, #FFC291 100%); }
+    .pill-grad-5 { background: linear-gradient(180deg, #FAF5EC 0%, #FDE9D5 52%, #FFD2AD 100%); }
+
+    /* Big Vertical One-Letter-Each Typography inside Cards 1, 2, 4, 5 */
+    .pill-vertical-word {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.04em;
+      font-family: var(--font-display);
+      font-size: clamp(22px, 2.35vw, 38px);
+      font-weight: 800;
+      line-height: 0.96;
+      color: #161311;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 3;
+      text-shadow: 0 2px 12px rgba(255, 255, 255, 0.55);
     }
 
-    /* Soft ambient architectural orb inside each pill */
-    .approach-pill-object::before {
-      content: "";
+    .pill-vertical-word.is-long-word {
+      font-size: clamp(18px, 1.85vw, 30px);
+      line-height: 0.92;
+    }
+
+    .pill-vertical-word span {
+      display: block;
+    }
+
+    .pill-vertical-word span:first-child {
+      color: var(--color-orange);
+    }
+
+    /* Middle Pill (Object 3) — True Window Portal Peeking into CREATE · BUILD · GROW */
+    .approach-middle-portal-window {
+      padding: 0 !important;
+      background: #FAF5EC !important;
+    }
+
+    .approach-middle-peek-scene {
       position: absolute;
-      width: 140%;
-      height: 46%;
-      bottom: -12%;
-      left: -20%;
-      background: radial-gradient(circle, rgba(255, 102, 0, 0.22) 0%, rgba(255, 148, 77, 0.08) 55%, transparent 75%);
+      top: 50%;
+      left: 50%;
+      width: 100vw;
+      height: 100vh;
+      transform: translate3d(-50%, -50%, 0);
+      background: linear-gradient(180deg, #FAF6EF 0%, #FFF1E3 55%, #FFE3CA 100%);
+      background-image:
+        linear-gradient(to right, rgba(255, 102, 0, 0.07) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 102, 0, 0.07) 1px, transparent 1px),
+        linear-gradient(180deg, #FAF6EF 0%, #FFF1E3 55%, #FFE3CA 100%);
+      background-size: 80px 80px, 80px 80px, 100% 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 32px;
       pointer-events: none;
     }
 
-    .pill-step-num {
-      font-family: var(--font-mono);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      color: var(--color-orange);
-      position: relative;
-      z-index: 2;
-    }
-
-    .pill-step-label {
-      font-family: var(--font-sans);
-      font-size: clamp(16px, 1.35vw, 22px);
+    .cbg-headline {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5.2vw, 86px);
       font-weight: 800;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.035em;
+      line-height: 1.02;
       text-transform: uppercase;
-      color: #1A1614;
-      position: relative;
-      z-index: 2;
-      line-height: 1.2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      gap: clamp(14px, 2vw, 28px);
+      margin-bottom: 28px;
+      will-change: transform, opacity;
     }
 
-    .pill-step-dot {
-      width: 8px;
-      height: 8px;
+    .cbg-word-orange { color: var(--color-orange); }
+    .cbg-word-black { color: #111111; }
+    .cbg-dot {
+      display: inline-block;
+      width: clamp(10px, 1.1vw, 18px);
+      height: clamp(10px, 1.1vw, 18px);
       border-radius: 50%;
       background: var(--color-orange);
-      opacity: 0.75;
-      position: relative;
-      z-index: 2;
+      flex-shrink: 0;
     }
 
-    /* Full-Screen Expanding Portal Layer Cloned from Middle Capsule (Object 3) */
+    .cbg-statement {
+      font-family: var(--font-sans);
+      font-size: clamp(18px, 1.6vw, 25px);
+      font-weight: 500;
+      line-height: 1.58;
+      color: #2B241F;
+      max-width: 820px;
+      margin: 0 auto;
+      will-change: transform, opacity;
+    }
+
+    /* Full-Screen Zoom-In Portal Layer (Replicates Moduluxe Flashy Zoom-In!) */
     .approach-portal-expander {
       position: fixed;
       top: 0;
@@ -1261,43 +1320,83 @@
       width: 0px;
       height: 0px;
       border-radius: 999px;
-      background: linear-gradient(180deg, #FAF4EB 0%, #FFDEC0 46%, #FFB178 100%);
       z-index: 40;
       pointer-events: none;
       opacity: 0;
       visibility: hidden;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       will-change: top, left, width, height, border-radius, opacity;
-      box-shadow: 0 30px 90px rgba(255, 102, 0, 0.18);
     }
 
-    .approach-portal-expander::before {
-      content: "";
+    .approach-portal-expander .approach-middle-peek-scene {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 100vw;
+      height: 100vh;
+      transform: translate3d(-50%, -50%, 0);
+    }
+
+    /* Cinematic Bright Flash Layer for Moduluxe-Style Zoom Climax */
+    .approach-zoom-flash {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at 50% 50%, #FFFFFF 0%, #FFE0C2 48%, rgba(255, 102, 0, 0.85) 100%);
+      z-index: 48;
+      pointer-events: none;
+      opacity: 0;
+      will-change: opacity;
+    }
+
+    /* ==========================================================================
+       9. SECTION 5 — WHAT WE DO SHUTTER PULL-UP + CGI 3D CAMERA ON TRIPOD LENS ZOOM
+       ========================================================================== */
+    .camera-section-track {
+      position: relative;
+      height: 520vh;
+      width: 100%;
+      z-index: 45;
+      background: #0B0A0C;
+    }
+
+    .camera-sticky-stage {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #0B0A0C;
+    }
+
+    /* Physical Shutter Panel ("WHAT WE DO") that pulls straight upward while camera stays fixed underneath */
+    .what-we-do-shutter {
       position: absolute;
       inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 60;
+      background: #FAF8F5;
       background-image:
-        linear-gradient(to right, rgba(255, 102, 0, 0.07) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 102, 0, 0.07) 1px, transparent 1px);
-      background-size: 96px 96px;
-      pointer-events: none;
-    }
-
-    .approach-portal-page-content {
-      position: relative;
-      z-index: 3;
-      max-width: 1100px;
-      width: 90%;
+        linear-gradient(to right, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+        linear-gradient(to right, rgba(255, 102, 0, 0.14) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 102, 0, 0.14) 1px, transparent 1px);
+      background-size: 80px 80px, 80px 80px, 320px 320px, 320px 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      opacity: 0;
-      transform: translate3d(0, 36px, 0) scale(0.96);
-      will-change: opacity, transform;
-      padding: 0 24px;
+      border-bottom: 4px solid var(--color-orange);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+      will-change: transform;
+      transform: translate3d(0, 0%, 0);
     }
 
-    .approach-portal-eyebrow {
+    .shutter-eyebrow {
       font-family: var(--font-mono);
       font-size: 13px;
       font-weight: 700;
@@ -1307,51 +1406,323 @@
       margin-bottom: 18px;
     }
 
-    .approach-portal-headline {
+    .shutter-title {
       font-family: var(--font-display);
-      font-size: clamp(46px, 7.6vw, 118px);
+      font-size: clamp(56px, 9.2vw, 148px);
       font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 0.96;
+      letter-spacing: -0.045em;
+      line-height: 0.94;
       text-transform: uppercase;
       color: #111111;
-      margin-bottom: 24px;
     }
 
-    .approach-portal-headline .accent-orange {
+    .shutter-title .accent-orange {
       color: var(--color-orange);
     }
 
-    .approach-portal-sub {
-      font-family: var(--font-sans);
-      font-size: clamp(17px, 1.45vw, 22px);
-      font-weight: 500;
-      line-height: 1.6;
-      color: #3B2E26;
-      max-width: 720px;
-      margin: 0 auto 38px auto;
+    /* Layer 1 underneath shutter: Original Motion-Blurred Film Set Background */
+    .camera-env-bg {
+      position: absolute;
+      inset: -4%;
+      width: 108%;
+      height: 108%;
+      background: url('assets/cgi_film_set_bg.jpg') center center / cover no-repeat;
+      z-index: 10;
+      will-change: transform, opacity;
+      pointer-events: none;
     }
 
-    .approach-portal-pillars {
+    /* Layer 2: Next Section ("OUR CRAFTS") Peeking Cinematically Through the Center Camera Lens Aperture */
+    .camera-lens-portal-reveal {
+      position: absolute;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--color-orange);
+      z-index: 26;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-wrap: wrap;
-      gap: 12px;
+      clip-path: circle(0% at 50% 50%);
+      -webkit-clip-path: circle(0% at 50% 50%);
+      opacity: 0;
+      pointer-events: none;
+      will-change: clip-path, -webkit-clip-path, opacity;
     }
 
-    .approach-portal-chip {
-      padding: 10px 22px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.72);
-      border: 1px solid rgba(255, 102, 0, 0.28);
+    .camera-lens-portal-title {
+      font-family: var(--font-display);
+      font-size: clamp(54px, 9vw, 140px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      color: #111111;
+      text-align: center;
+      transform: scale(0.72);
+      will-change: transform;
+    }
+
+    /* Layer 3: Three.js WebGL CGI 3D Camera on Tripod (100% Non-Interactive, Zero Mouse Reaction) */
+    .camera-cgi-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 20;
+      pointer-events: none !important;
+      display: block;
+    }
+
+    /* Layer 4: Surrounding Editorial Placeholder Text (Strictly in Outer Corners, Never Touching Camera) */
+    .camera-side-text-layer {
+      position: absolute;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 24;
+      pointer-events: none !important;
+    }
+
+    .cam-text-tl {
+      position: absolute;
+      top: clamp(92px, 11vh, 130px);
+      left: clamp(28px, 4vw, 68px);
+      font-family: var(--font-serif-italic);
+      font-size: clamp(32px, 3.8vw, 58px);
+      font-weight: 500;
+      line-height: 1.04;
+      color: rgba(255, 250, 244, 0.94);
+      letter-spacing: -0.02em;
+      max-width: 28vw;
+      will-change: transform, opacity;
+    }
+
+    .cam-text-br {
+      position: absolute;
+      bottom: clamp(48px, 7vh, 88px);
+      right: clamp(28px, 4vw, 68px);
+      font-family: var(--font-serif-italic);
+      font-size: clamp(32px, 3.8vw, 58px);
+      font-weight: 500;
+      line-height: 1.04;
+      color: rgba(255, 250, 244, 0.94);
+      letter-spacing: -0.02em;
+      text-align: right;
+      max-width: 28vw;
+      will-change: transform, opacity;
+    }
+
+    .cam-text-bl {
+      position: absolute;
+      bottom: clamp(52px, 7.5vh, 92px);
+      left: clamp(28px, 4vw, 68px);
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: clamp(11px, 0.92vw, 13.5px);
+      font-weight: 500;
+      line-height: 1.55;
+      color: rgba(255, 232, 210, 0.72);
+      max-width: 24vw;
+      will-change: transform, opacity;
+    }
+
+    /* ==========================================================================
+       10. SECTION 6 — OUR CRAFTS (Orange Intro + 3D Circular Proof-of-Work Gallery + Outro)
+       ========================================================================== */
+    .crafts-section-track {
+      position: relative;
+      height: 760vh;
+      width: 100%;
+      z-index: 46;
+      background: var(--color-orange);
+    }
+
+    .crafts-sticky-stage {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #0A0908;
+    }
+
+    /* Orange Intro Cover ("OUR CRAFTS" in bold black on vibrant orange) */
+    .crafts-orange-intro {
+      position: absolute;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--color-orange);
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      will-change: transform, opacity;
+    }
+
+    .crafts-intro-title {
+      font-family: var(--font-display);
+      font-size: clamp(54px, 9vw, 140px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      color: #111111;
+      line-height: 0.96;
+    }
+
+    .crafts-intro-sub {
+      margin-top: 16px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.20em;
+      text-transform: uppercase;
+      color: rgba(17, 17, 17, 0.75);
+    }
+
+    /* Curved Repeating Kinetic Typography Backdrop (Matches Reference W-O-R-K Ribbon Style in Orange/Black) */
+    .crafts-kinetic-bg {
+      position: absolute;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0;
+      overflow: hidden;
+      pointer-events: none;
+      background: #080706;
+    }
+
+    .crafts-bg-row {
+      font-family: var(--font-display);
+      font-size: clamp(92px, 15.5vh, 178px);
+      font-weight: 900;
+      line-height: 0.88;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      color: var(--color-orange);
+      opacity: 0.82;
+      will-change: transform;
+      user-select: none;
+    }
+
+    /* 3D Circular Arc Proof-of-Work Gallery */
+    .crafts-arc-stage {
+      position: absolute;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 15;
+      perspective: 1400px;
+      transform-style: preserve-3d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .craft-arc-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: clamp(280px, 28vw, 430px);
+      aspect-ratio: 16 / 11;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #121110;
+      border: 2px solid rgba(255, 102, 0, 0.55);
+      box-shadow: 0 28px 68px rgba(0, 0, 0, 0.65), 0 0 24px rgba(255, 102, 0, 0.20);
+      will-change: transform, opacity;
+      transform-origin: center center;
+      backface-visibility: hidden;
+    }
+
+    .craft-arc-card img,
+    .craft-arc-card video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .craft-arc-label {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: rgba(10, 9, 8, 0.78);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 102, 0, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .craft-arc-title {
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #FFFFFF;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .craft-arc-cat {
+      font-family: var(--font-mono);
+      font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
+      color: var(--color-orange);
+      flex-shrink: 0;
+    }
+
+    /* Orange Outro Panel */
+    .crafts-orange-outro {
+      position: absolute;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--color-orange);
+      z-index: 35;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 clamp(24px, 7vw, 120px);
+      transform: translate3d(0, 100%, 0);
+      will-change: transform;
+    }
+
+    .crafts-outro-text {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.9vw, 62px);
+      font-weight: 800;
+      line-height: 1.14;
+      letter-spacing: -0.025em;
+      text-transform: uppercase;
       color: #111111;
-      backdrop-filter: blur(8px);
+      max-width: 1280px;
+    }
+
+    .crafts-outro-tag {
+      margin-top: 28px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(17, 17, 17, 0.72);
     }
 
     @media (max-width: 960px) {
@@ -1616,8 +1987,8 @@
         <!-- Center Slot Header (Matches the Growing Center Image) -->
         <div class="hero-center-slot-spacer" id="heroCenterSlotSpacer">
           <div class="hero-center-card-header" id="heroCenterCardHeader">
-            <span class="hero-drop-card-title">3D Animations</span>
-            <span class="hero-drop-card-tag">[FLAGSHIP]</span>
+            <span class="hero-drop-card-title">Techuilla Agency</span>
+            <span class="hero-drop-card-tag">[STUDIO]</span>
           </div>
         </div>
 
@@ -1644,9 +2015,9 @@
         </article>
       </div>
 
-      <!-- Expanding Center Image (Emerges from exact middle between Techuilla and Agency, then grows bigger) -->
+      <!-- Expanding Center Image (Attached Brand Image — Grows Symmetrically Between Techuilla & Agency, +10% Larger) -->
       <div class="hero-center-morph-card" id="heroCenterMorphCard">
-        <img src="service_card_9.jpg" alt="3D Animations Flagship" id="heroCenterMorphImg" decoding="async" />
+        <img src="assets/about_hero_center_brand.jpg" alt="Techuilla Agency — Ideas. Strategy. Impact." id="heroCenterMorphImg" decoding="async" />
       </div>
 
       <!-- Exact Center Wordmark: Techuilla (Orange) + Agency (Black) -->
@@ -1723,7 +2094,8 @@
   </section>
 
   <!-- ==========================================================================
-       SECTION 4: OUR APPROACH (5 Pill Capsules Slide-Down Reveal + Middle Full-Screen Page Open)
+       SECTION 4: OUR APPROACH (Bottom-to-Top Poppy 3D Pills, Vertical Letters,
+       Middle Window Portal & Flashy Moduluxe Zoom into CREATE · BUILD · GROW)
        ========================================================================== -->
   <section class="approach-scroll-track" id="approachScrollTrack" aria-label="Our Approach">
     <div class="approach-sticky-stage" id="approachStickyStage">
@@ -1731,75 +2103,148 @@
         <h2 class="approach-title">OUR <span class="accent-orange">APPROACH</span></h2>
       </div>
 
-      <!-- 5 Tall Vertical Pill / Capsule Objects (1, 2, 4, 5 appear first -> Middle 3 appears last -> Middle 3 opens to new page) -->
+      <!-- 5 Tall Vertical Pill Objects (1, 2, 4, 5 appear bottom-to-top first -> Middle 3 appears last -> Flashy Zoom-in) -->
       <div class="approach-pills-stage" id="approachPillsStage">
-        <!-- Object 1 -->
+        <!-- Object 1: UNDERSTAND (Vertical One-Letter-Each) -->
         <div class="approach-pill-mask" id="approachMask0">
           <div class="approach-pill-object pill-grad-1" id="approachPill0">
-            <span class="pill-step-num">01</span>
-            <span class="pill-step-label">Discover</span>
-            <span class="pill-step-dot" aria-hidden="true"></span>
-          </div>
-        </div>
-
-        <!-- Object 2 -->
-        <div class="approach-pill-mask" id="approachMask1">
-          <div class="approach-pill-object pill-grad-2" id="approachPill1">
-            <span class="pill-step-num">02</span>
-            <span class="pill-step-label">Strategize</span>
-            <span class="pill-step-dot" aria-hidden="true"></span>
-          </div>
-        </div>
-
-        <!-- Object 3 (Middle — Appears Last, Then Opens Full-Screen on Next Scroll) -->
-        <div class="approach-pill-mask is-middle-slot" id="approachMask2">
-          <div class="approach-pill-inner-clip">
-            <div class="approach-pill-object pill-grad-3" id="approachPill2">
-              <span class="pill-step-num">03</span>
-              <span class="pill-step-label">Architect</span>
-              <span class="pill-step-dot" aria-hidden="true"></span>
+            <div class="pill-vertical-word is-long-word" aria-label="Understand">
+              <span>U</span><span>N</span><span>D</span><span>E</span><span>R</span><span>S</span><span>T</span><span>A</span><span>N</span><span>D</span>
             </div>
           </div>
         </div>
 
-        <!-- Object 4 -->
-        <div class="approach-pill-mask" id="approachMask3">
-          <div class="approach-pill-object pill-grad-4" id="approachPill3">
-            <span class="pill-step-num">04</span>
-            <span class="pill-step-label">Craft</span>
-            <span class="pill-step-dot" aria-hidden="true"></span>
+        <!-- Object 2: IDEATE (Vertical One-Letter-Each) -->
+        <div class="approach-pill-mask" id="approachMask1">
+          <div class="approach-pill-object pill-grad-2" id="approachPill1">
+            <div class="pill-vertical-word" aria-label="Ideate">
+              <span>I</span><span>D</span><span>E</span><span>A</span><span>T</span><span>E</span>
+            </div>
           </div>
         </div>
 
-        <!-- Object 5 -->
+        <!-- Object 3: MIDDLE PORTAL WINDOW (Peeks into CREATE · BUILD · GROW, Appears Last, Flashy Zooms Full-Screen!) -->
+        <div class="approach-pill-mask is-middle-slot" id="approachMask2">
+          <div class="approach-pill-object approach-middle-portal-window" id="approachPill2">
+            <div class="approach-middle-peek-scene">
+              <div class="cbg-headline">
+                <span class="cbg-word-orange">CREATE</span>
+                <span class="cbg-dot" aria-hidden="true"></span>
+                <span class="cbg-word-black">BUILD</span>
+                <span class="cbg-dot" aria-hidden="true"></span>
+                <span class="cbg-word-orange">GROW</span>
+              </div>
+              <p class="cbg-statement">
+                Driven by innovation, guided by purpose, and powered by execution. We turn possibilities into progress and ideas into impact.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Object 4: CREATE (Vertical One-Letter-Each) -->
+        <div class="approach-pill-mask" id="approachMask3">
+          <div class="approach-pill-object pill-grad-4" id="approachPill3">
+            <div class="pill-vertical-word" aria-label="Create">
+              <span>C</span><span>R</span><span>E</span><span>A</span><span>T</span><span>E</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Object 5: EVOLVE (Vertical One-Letter-Each) -->
         <div class="approach-pill-mask" id="approachMask4">
           <div class="approach-pill-object pill-grad-5" id="approachPill4">
-            <span class="pill-step-num">05</span>
-            <span class="pill-step-label">Scale</span>
-            <span class="pill-step-dot" aria-hidden="true"></span>
+            <div class="pill-vertical-word" aria-label="Evolve">
+              <span>E</span><span>V</span><span>O</span><span>L</span><span>V</span><span>E</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Full-Screen Expanding Portal Layer Triggered from Middle Object (Object 3) -->
+  <!-- Full-Screen Zoom-In Portal Layer (Matches Moduluxe Flashy Zoom into CREATE · BUILD · GROW) -->
   <div class="approach-portal-expander" id="approachPortalExpander" aria-hidden="true">
-    <div class="approach-portal-page-content" id="approachPortalPageContent">
-      <div class="approach-portal-eyebrow">TECHUILLA AGENCY • METHODOLOGY</div>
-      <h2 class="approach-portal-headline">BUILT TO <span class="accent-orange">MOVE</span><br>FORWARD.</h2>
-      <p class="approach-portal-sub">
-        Every system, brand identity, and campaign we craft is engineered as a cohesive growth engine — uniting design precision, creative technology, and measurable business momentum.
+    <div class="approach-middle-peek-scene" id="approachExpandedScene">
+      <h2 class="cbg-headline" id="cbgExpandedHeadline">
+        <span class="cbg-word-orange">CREATE</span>
+        <span class="cbg-dot" aria-hidden="true"></span>
+        <span class="cbg-word-black">BUILD</span>
+        <span class="cbg-dot" aria-hidden="true"></span>
+        <span class="cbg-word-orange">GROW</span>
+      </h2>
+      <p class="cbg-statement" id="cbgExpandedStatement">
+        Driven by innovation, guided by purpose, and powered by execution. We turn possibilities into progress and ideas into impact.
       </p>
-      <div class="approach-portal-pillars">
-        <span class="approach-portal-chip">01 · Discover</span>
-        <span class="approach-portal-chip">02 · Strategize</span>
-        <span class="approach-portal-chip">03 · Architect</span>
-        <span class="approach-portal-chip">04 · Craft</span>
-        <span class="approach-portal-chip">05 · Scale</span>
-      </div>
     </div>
   </div>
+
+  <!-- Flashy Zoom-In Pulse Overlay -->
+  <div class="approach-zoom-flash" id="approachZoomFlash" aria-hidden="true"></div>
+
+  <!-- ==========================================================================
+       SECTION 5: WHAT WE DO SHUTTER PULL-UP + CGI 3D CAMERA ON TRIPOD LENS ZOOM
+       ========================================================================== -->
+  <section class="camera-section-track" id="cameraSectionTrack" aria-label="What We Do — Camera Lens Experience">
+    <div class="camera-sticky-stage" id="cameraStickyStage">
+      <!-- Physical Shutter Panel ("WHAT WE DO") Pulling Upward While Camera Stays Fixed Underneath -->
+      <div class="what-we-do-shutter" id="whatWeDoShutter">
+        <div class="shutter-eyebrow">TECHUILLA AGENCY • CAPABILITIES</div>
+        <h2 class="shutter-title">WHAT WE <span class="accent-orange">DO</span></h2>
+      </div>
+
+      <!-- Original Motion-Blurred Film-Shoot Studio Environment -->
+      <div class="camera-env-bg" id="cameraEnvBg" aria-hidden="true"></div>
+
+      <!-- Three.js WebGL CGI 3D Cinema Camera on Fluid-Head Tripod (Non-Interactive, Clockwise Focus Ring) -->
+      <canvas class="camera-cgi-canvas" id="cameraCgiCanvas" aria-hidden="true"></canvas>
+
+      <!-- Surrounding Editorial Placeholder Text (Strictly Clear of Camera & Tripod) -->
+      <div class="camera-side-text-layer" id="cameraSideTextLayer" aria-hidden="true">
+        <div class="cam-text-tl" id="camTextTL">An aperture<br>into craft</div>
+        <div class="cam-text-br" id="camTextBR">Where vision<br>becomes impact</div>
+        <div class="cam-text-bl" id="camTextBL">
+          Precision optics, creative technology, and motion engineered to command attention.
+        </div>
+      </div>
+
+      <!-- Cinematic Lens Dissolve Portal Revealing "OUR CRAFTS" Through the Camera Lens Center -->
+      <div class="camera-lens-portal-reveal" id="cameraLensPortalReveal" aria-hidden="true">
+        <div class="camera-lens-portal-title" id="cameraLensPortalTitle">OUR CRAFTS</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SECTION 6: OUR CRAFTS (Orange Intro + 3D Circular Proof-of-Work Gallery + Orange Outro)
+       ========================================================================== -->
+  <section class="crafts-section-track" id="craftsSectionTrack" aria-label="Our Crafts">
+    <div class="crafts-sticky-stage" id="craftsStickyStage">
+      <!-- Orange Intro Screen ("OUR CRAFTS") -->
+      <div class="crafts-orange-intro" id="craftsOrangeIntro">
+        <h2 class="crafts-intro-title">OUR CRAFTS</h2>
+        <div class="crafts-intro-sub">PROOF OF WORK • ACROSS EVERY DOMAIN</div>
+      </div>
+
+      <!-- Curved Repeating Kinetic Background Typography -->
+      <div class="crafts-kinetic-bg" id="craftsKineticBg" aria-hidden="true">
+        <div class="crafts-bg-row" id="craftsBgRow0">OUR CRAFTS • OUR CRAFTS • OUR CRAFTS • OUR CRAFTS • </div>
+        <div class="crafts-bg-row" id="craftsBgRow1">CRAFTS • OUR CRAFTS • OUR CRAFTS • OUR CRAFTS • OUR </div>
+        <div class="crafts-bg-row" id="craftsBgRow2">OUR CRAFTS • OUR CRAFTS • OUR CRAFTS • OUR CRAFTS • </div>
+        <div class="crafts-bg-row" id="craftsBgRow3">CRAFTS • OUR CRAFTS • OUR CRAFTS • OUR CRAFTS • OUR </div>
+      </div>
+
+      <!-- 3D Circular Scrolling Arc of ALL Proof-of-Work Videos & Images (Zero Thumbnails) -->
+      <div class="crafts-arc-stage" id="craftsArcStage"></div>
+
+      <!-- Orange Outro Panel -->
+      <div class="crafts-orange-outro" id="craftsOrangeOutro">
+        <p class="crafts-outro-text">
+          “WORKING ACROSS DOMAINS LIKE ANIMATIONS, DEVELOPMENT, AUTOMATIONS AND CREATIVES TECHUILLA HAS ADVANCED UP TO ITS POTENTIAL”
+        </p>
+        <div class="crafts-outro-tag">TECHUILLA AGENCY • BUILD · CREATE · GROW</div>
+      </div>
+    </div>
+  </section>
 
   <!-- ==========================================================================
        CLIENT-SIDE CONTROLLERS
@@ -2183,12 +2628,12 @@
         // Phase 2: Middle image grows bigger & moves into upper-center focal slot; wordmark enlarges & drops down (P: 0.38 -> 0.76)
         const p2 = easeInOutCubic(clamp((P - 0.38) / 0.38, 0, 1));
 
-        // Compute target big center card dimensions aligned with center column in hero-cards-band
+        // Compute target big center card dimensions (+10% larger than before!) aligned with center column in hero-cards-band
         const slotRect = centerSlotSpacer ? centerSlotSpacer.getBoundingClientRect() : null;
-        const smallW = clamp(winW * 0.125, 118, 195);
-        const smallH = smallW * 1.28;
-        const bigW = slotRect && slotRect.width > 120 ? slotRect.width : clamp(winW * 0.24, 240, 380);
-        const bigH = clamp(bigW * 1.22, 260, winH * 0.50);
+        const smallW = clamp(winW * 0.138, 130, 215);
+        const smallH = smallW * 1.15;
+        const bigW = slotRect && slotRect.width > 120 ? slotRect.width : clamp(winW * 0.265, 265, 420);
+        const bigH = clamp(bigW * 1.18, 285, winH * 0.55);
 
         const curW = lerp(0, smallW, p1) + lerp(0, bigW - smallW, p2);
         const curH = lerp(0, smallH, p1) + lerp(0, bigH - smallH, p2);
@@ -2218,21 +2663,20 @@
         }
 
         // Words "Techuilla" & "Agency":
-        // Phase 1 pushes Techuilla left and Agency right by half of center image width + breathing gap
-        const splitOffsetPhase1 = (smallW * 0.56 + 18) * p1;
-        // Phase 2 brings them slightly closer again while scaling huge and sliding down to frame the lower viewport (Ross Mason style)
-        const wordScale = lerp(1.0, clamp(winW / 760, 1.45, 2.35), p2);
-        const wordY = lerp(0, winH * 0.34, p2);
-        const splitOffsetFinal = lerp(splitOffsetPhase1, smallW * 0.08, p2);
+        // Anchored symmetrically on either side of x=50%, so splitOffset pushes Techuilla LEFT and Agency RIGHT equally!
+        const splitOffsetPhase1 = (smallW * 0.52 + 22) * p1;
+        const wordScale = lerp(1.0, clamp(winW / 860, 1.32, 1.98), p2);
+        const wordY = lerp(0, winH * 0.35, p2);
+        const splitOffsetFinal = lerp(splitOffsetPhase1, 14, p2);
 
         if (heroWordStage) {
-          heroWordStage.style.transform = `translate3d(-50%, calc(-50% + ${wordY.toFixed(1)}px), 0) scale(${wordScale.toFixed(3)})`;
+          heroWordStage.style.transform = `translate3d(0, ${wordY.toFixed(1)}px, 0) scale(${wordScale.toFixed(3)})`;
         }
         if (wordTechuilla) {
-          wordTechuilla.style.transform = `translate3d(${(-splitOffsetFinal).toFixed(1)}px, 0, 0)`;
+          wordTechuilla.style.transform = `translate3d(${(-splitOffsetFinal).toFixed(1)}px, -50%, 0)`;
         }
         if (wordAgency) {
-          wordAgency.style.transform = `translate3d(${splitOffsetFinal.toFixed(1)}px, 0, 0)`;
+          wordAgency.style.transform = `translate3d(${splitOffsetFinal.toFixed(1)}px, -50%, 0)`;
         }
 
         // Phase 3: 4 Service Cards Drop Down from Top (2 Left, 2 Right) with smooth stagger
@@ -2318,13 +2762,12 @@
       }
 
       /* ------------------------------------------------------------------------
-         6. SECTION 4 — OUR APPROACH (5 Pill Capsules Masked Slide-Down + Middle Full-Screen Open)
-            - Starts empty below "OUR APPROACH"
-            - Masked slide-down reveal order: 1 -> 2 -> 4 -> 5 -> Middle (3) LAST
-            - Next scroll: Middle object (3) expands smoothly to 100vw x 100vh new page view!
+         6. SECTION 4 — OUR APPROACH (Bottom-to-Top Poppy 3D Reveal: 1->2->4->5->Middle 3,
+            Middle Portal Window Showing CREATE · BUILD · GROW + Flashy Moduluxe Zoom-In!)
          ------------------------------------------------------------------------ */
       const approachTrack = document.getElementById('approachScrollTrack');
       const approachHeader = document.getElementById('approachHeader');
+      const approachPillsStage = document.getElementById('approachPillsStage');
       const approachPills = [
         document.getElementById('approachPill0'),
         document.getElementById('approachPill1'),
@@ -2340,58 +2783,83 @@
         document.getElementById('approachMask4')
       ];
       const portalExpander = document.getElementById('approachPortalExpander');
-      const portalPageContent = document.getElementById('approachPortalPageContent');
+      const approachZoomFlash = document.getElementById('approachZoomFlash');
+      const cbgExpandedHeadline = document.getElementById('cbgExpandedHeadline');
+      const cbgExpandedStatement = document.getElementById('cbgExpandedStatement');
 
       let approachTargetP = 0, approachCurrentP = 0;
 
       // Exact requested reveal order: Object 1, Object 2, Object 4, Object 5 first -> Object 3 (middle) LAST!
       const PILL_REVEAL_WINDOWS = [
-        { start: 0.06, end: 0.19 }, // Index 0 (Object 1)
-        { start: 0.16, end: 0.29 }, // Index 1 (Object 2)
-        { start: 0.48, end: 0.62 }, // Index 2 (Object 3 — Middle appears LAST!)
-        { start: 0.26, end: 0.39 }, // Index 3 (Object 4)
-        { start: 0.36, end: 0.49 }  // Index 4 (Object 5)
+        { start: 0.05, end: 0.16 }, // Index 0 (Object 1: UNDERSTAND)
+        { start: 0.13, end: 0.24 }, // Index 1 (Object 2: IDEATE)
+        { start: 0.40, end: 0.52 }, // Index 2 (Object 3: Middle Window Portal — LAST!)
+        { start: 0.21, end: 0.32 }, // Index 3 (Object 4: CREATE)
+        { start: 0.29, end: 0.40 }  // Index 4 (Object 5: EVOLVE)
       ];
+
+      // Springy Back-Out Easing for Poppy 3D Bottom-to-Top Feel
+      function easeOutBack(x) {
+        const c1 = 1.70158;
+        const c3 = c1 + 1;
+        return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+      }
 
       function renderApproach(P) {
         if (!approachTrack || !portalExpander) return;
         const winW = window.innerWidth;
         const winH = window.innerHeight;
 
-        // 1. Masked Slide-Down Reveal for each of the 5 Capsules
+        // Check if we've scrolled past approachTrack into Section 5 (Camera) — if so, cleanly hide fixed portal expander
+        const trackRect = approachTrack.getBoundingClientRect();
+        const pastApproach = trackRect.bottom <= 2;
+
+        // 1. Poppy 3D Bottom-to-Top Reveal for all 5 Capsules
         PILL_REVEAL_WINDOWS.forEach((win, idx) => {
           const pill = approachPills[idx];
           if (!pill) return;
           const localP = clamp((P - win.start) / (win.end - win.start), 0, 1);
-          const e = easeOutCubic(localP);
-          const yPct = lerp(-108, 0, e);
-          pill.style.transform = `translate3d(0, ${yPct.toFixed(2)}%, 0)`;
+          if (localP <= 0.001) {
+            pill.style.transform = 'translate3d(0, 118%, 0) scale(0.86) rotateX(18deg)';
+            pill.style.opacity = '0';
+          } else {
+            const popE = easeOutBack(localP);
+            const yPct = lerp(115, 0, popE);
+            const sc = lerp(0.86, 1.0, popE);
+            const rx = lerp(18, 0, easeOutCubic(localP));
+            pill.style.transform = `translate3d(0, ${yPct.toFixed(2)}%, 0) scale(${sc.toFixed(3)}) rotateX(${rx.toFixed(2)}deg)`;
+            pill.style.opacity = clamp(localP * 2.5, 0, 1).toFixed(3);
+          }
         });
 
-        // 2. Final Scroll Phase (P: 0.66 -> 0.96): Middle Object (Object 3) Opens Smoothly into a Full-Screen New Page
-        const openP = easeInOutCubic(clamp((P - 0.66) / 0.28, 0, 1));
+        // 2. Moduluxe-Style Flashy Zoom-In (P: 0.56 -> 0.86), then holds CREATE · BUILD · GROW cleanly (0.86 -> 1.00)
+        const rawOpen = clamp((P - 0.56) / 0.28, 0, 1);
+        const openP = easeInOutCubic(rawOpen);
 
-        // Gently lift & fade OUR APPROACH title as middle capsule opens full-screen
         if (approachHeader) {
-          approachHeader.style.opacity = clamp(1 - openP * 2.2, 0, 1).toFixed(3);
-          approachHeader.style.transform = `translate3d(0, ${(-openP * 48).toFixed(1)}px, 0)`;
+          approachHeader.style.opacity = clamp(1 - openP * 2.4, 0, 1).toFixed(3);
+          approachHeader.style.transform = `translate3d(0, ${(-openP * 54).toFixed(1)}px, 0)`;
         }
 
-        // Push outer capsules outward smoothly to left/right as middle opens
-        const outerShifts = [-1.45, -0.85, 0, 0.85, 1.45];
+        // Whole pill row zooms forward aggressively into the screen while outer 4 cards fly away
+        if (approachPillsStage) {
+          const rowZoom = lerp(1.0, 1.55, openP);
+          approachPillsStage.style.transform = `scale(${rowZoom.toFixed(3)})`;
+        }
+
+        const outerShifts = [-1.75, -1.05, 0, 1.05, 1.75];
         approachMasks.forEach((mask, idx) => {
           if (!mask || idx === 2) return;
-          const shiftPx = outerShifts[idx] * openP * (winW * 0.38);
+          const shiftPx = outerShifts[idx] * openP * (winW * 0.42);
           mask.style.transform = `translate3d(${shiftPx.toFixed(1)}px, 0, 0)`;
-          mask.style.opacity = clamp(1 - openP * 1.4, 0, 1).toFixed(3);
+          mask.style.opacity = clamp(1 - openP * 1.6, 0, 1).toFixed(3);
         });
 
-        // Expand the Fixed Portal Expander seamlessly from the exact bounding rect of Middle Capsule (Object 3) -> 100vw x 100vh!
         const middleMask = approachMasks[2];
-        if (openP <= 0.002 || !middleMask) {
+        if (openP <= 0.002 || !middleMask || pastApproach) {
           portalExpander.style.opacity = '0';
           portalExpander.style.visibility = 'hidden';
-          portalExpander.style.pointerEvents = 'none';
+          if (approachZoomFlash) approachZoomFlash.style.opacity = '0';
           if (middleMask) middleMask.style.opacity = '1';
         } else {
           const rect = middleMask.getBoundingClientRect();
@@ -2399,28 +2867,271 @@
           const curTop = lerp(rect.top, 0, openP);
           const curWidth = lerp(rect.width, winW, openP);
           const curHeight = lerp(rect.height, winH, openP);
-          const curRadius = lerp(Math.min(rect.width, rect.height) / 2, 0, clamp(openP * 1.15, 0, 1));
+          const curRadius = lerp(Math.min(rect.width, rect.height) / 2, 0, clamp(openP * 1.18, 0, 1));
 
           middleMask.style.opacity = '0';
           portalExpander.style.visibility = 'visible';
           portalExpander.style.opacity = '1';
-          portalExpander.style.pointerEvents = openP > 0.75 ? 'auto' : 'none';
           portalExpander.style.left = `${curLeft.toFixed(1)}px`;
           portalExpander.style.top = `${curTop.toFixed(1)}px`;
           portalExpander.style.width = `${curWidth.toFixed(1)}px`;
           portalExpander.style.height = `${curHeight.toFixed(1)}px`;
           portalExpander.style.borderRadius = `${curRadius.toFixed(1)}px`;
 
-          if (portalPageContent) {
-            const contentP = easeOutCubic(clamp((openP - 0.42) / 0.50, 0, 1));
-            portalPageContent.style.opacity = contentP.toFixed(3);
-            portalPageContent.style.transform = `translate3d(0, ${lerp(36, 0, contentP).toFixed(1)}px, 0) scale(${lerp(0.95, 1, contentP).toFixed(3)})`;
+          // Flashy Zoom-In Pulse right across openP = 0.45 -> 0.85 (Moduluxe flash!)
+          if (approachZoomFlash) {
+            const flashBell = Math.sin(clamp((rawOpen - 0.35) / 0.55, 0, 1) * Math.PI);
+            approachZoomFlash.style.opacity = (flashBell * 0.82).toFixed(3);
+          }
+
+          // Moduluxe-style bold headline pop/stretch into place right as flash clears
+          if (cbgExpandedHeadline) {
+            const textPop = easeOutBack(clamp((rawOpen - 0.55) / 0.42, 0, 1));
+            const hScale = lerp(0.84, 1.0, textPop);
+            cbgExpandedHeadline.style.transform = `scale(${hScale.toFixed(3)})`;
+            cbgExpandedHeadline.style.opacity = clamp(0.35 + rawOpen * 0.85, 0, 1).toFixed(3);
+          }
+          if (cbgExpandedStatement) {
+            const stP = easeOutCubic(clamp((rawOpen - 0.68) / 0.32, 0, 1));
+            cbgExpandedStatement.style.opacity = stP.toFixed(3);
+            cbgExpandedStatement.style.transform = `translate3d(0, ${lerp(24, 0, stP).toFixed(1)}px, 0)`;
           }
         }
       }
 
       /* ------------------------------------------------------------------------
-         7. UNIFIED SMOOTH SCROLL & LERP LOOP + CUSTOM SCROLLBAR INDICATOR
+         7. SECTION 5 — WHAT WE DO SHUTTER PULL-UP + CGI 3D CAMERA LENS ZOOM ENGINE
+            Phase A (0.00 -> 0.30): WHAT WE DO shutter lifts straight upward (0% -> -100%);
+                                    Camera stays completely stationary underneath.
+            Phase B (0.30 -> 0.88): Camera zooms smoothly into center lens + focus ring rotates
+                                    CLOCKWISE + side texts drift out (zero mouse interaction).
+            Phase C (0.62 -> 1.00): OUR CRAFTS orange screen becomes cinematically visible through
+                                    the circular camera lens and dissolves into full screen!
+         ------------------------------------------------------------------------ */
+      const cameraTrack = document.getElementById('cameraSectionTrack');
+      const whatWeDoShutter = document.getElementById('whatWeDoShutter');
+      const cameraEnvBg = document.getElementById('cameraEnvBg');
+      const cameraCgiCanvas = document.getElementById('cameraCgiCanvas');
+      const camTextTL = document.getElementById('camTextTL');
+      const camTextBR = document.getElementById('camTextBR');
+      const camTextBL = document.getElementById('camTextBL');
+      const cameraLensPortalReveal = document.getElementById('cameraLensPortalReveal');
+      const cameraLensPortalTitle = document.getElementById('cameraLensPortalTitle');
+
+      const cameraCgiController = (typeof window.initAboutCameraCGI === 'function' && cameraCgiCanvas)
+        ? window.initAboutCameraCGI(cameraCgiCanvas)
+        : null;
+
+      let cameraTargetP = 0, cameraCurrentP = 0;
+
+      function renderCameraSection(P) {
+        if (!cameraTrack) return;
+
+        // Phase A: Physical Shutter Pull-Up ("WHAT WE DO" lifts straight up while camera stays locked)
+        const shutterP = easeInOutCubic(clamp(P / 0.30, 0, 1));
+        if (whatWeDoShutter) {
+          whatWeDoShutter.style.transform = `translate3d(0, ${(-shutterP * 102).toFixed(2)}%, 0)`;
+        }
+
+        // Phase B: Zoom straight into center of camera lens + rotate focus ring CLOCKWISE
+        const zoomP = clamp((P - 0.30) / 0.62, 0, 1);
+        const zoomE = easeInOutCubic(zoomP);
+
+        if (cameraCgiController) {
+          cameraCgiController.renderAtProgress(zoomP);
+        }
+
+        if (cameraEnvBg) {
+          const bgScale = lerp(1.0, 1.38, zoomE);
+          cameraEnvBg.style.transform = `scale(${bgScale.toFixed(3)})`;
+        }
+
+        // Surrounding placeholder texts drift outward off-screen as lens zooms in (never touching camera!)
+        const txtOut = easeInOutCubic(clamp((zoomP - 0.05) / 0.50, 0, 1));
+        if (camTextTL) {
+          camTextTL.style.transform = `translate3d(${(-txtOut * 140).toFixed(1)}px, ${(-txtOut * 80).toFixed(1)}px, 0)`;
+          camTextTL.style.opacity = clamp(1 - txtOut * 1.25, 0, 1).toFixed(3);
+        }
+        if (camTextBR) {
+          camTextBR.style.transform = `translate3d(${(txtOut * 140).toFixed(1)}px, ${(txtOut * 80).toFixed(1)}px, 0)`;
+          camTextBR.style.opacity = clamp(1 - txtOut * 1.25, 0, 1).toFixed(3);
+        }
+        if (camTextBL) {
+          camTextBL.style.transform = `translate3d(${(-txtOut * 110).toFixed(1)}px, ${(txtOut * 60).toFixed(1)}px, 0)`;
+          camTextBL.style.opacity = clamp(1 - txtOut * 1.25, 0, 1).toFixed(3);
+        }
+
+        // Phase C: Cinematic Lens Aperture Portal Dissolve into "OUR CRAFTS"
+        const dissolveP = clamp((P - 0.60) / 0.38, 0, 1);
+        if (cameraLensPortalReveal) {
+          if (dissolveP <= 0.002) {
+            cameraLensPortalReveal.style.opacity = '0';
+            cameraLensPortalReveal.style.clipPath = 'circle(0% at 50% 50%)';
+            cameraLensPortalReveal.style.webkitClipPath = 'circle(0% at 50% 50%)';
+          } else {
+            const rad = lerp(6, 118, easeInOutCubic(dissolveP));
+            const op = clamp(dissolveP * 2.2, 0, 1);
+            cameraLensPortalReveal.style.opacity = op.toFixed(3);
+            cameraLensPortalReveal.style.clipPath = `circle(${rad.toFixed(2)}% at 50% 50%)`;
+            cameraLensPortalReveal.style.webkitClipPath = `circle(${rad.toFixed(2)}% at 50% 50%)`;
+            if (cameraLensPortalTitle) {
+              const tScale = lerp(0.68, 1.0, easeOutCubic(dissolveP));
+              cameraLensPortalTitle.style.transform = `scale(${tScale.toFixed(3)})`;
+            }
+          }
+        }
+      }
+
+      /* ------------------------------------------------------------------------
+         8. SECTION 6 — OUR CRAFTS (Orange Intro + 3D Circular Proof-of-Work Gallery + Outro)
+            Strictly ONLY proof-of-work videos & images from services.html (ZERO cover thumbnails!)
+         ------------------------------------------------------------------------ */
+      const OUR_CRAFTS_PROOF_ITEMS = [
+        // Web Development (5 Live Websites)
+        { type: 'image', src: 'card_health_streak.png', title: 'Health Streak', cat: 'WEB DEV' },
+        { type: 'image', src: 't_rama_3.jpg', title: 'Rama Health Care', cat: 'WEB DEV' },
+        { type: 'image', src: 'card_audio_king.png', title: 'AudioKing', cat: 'WEB DEV' },
+        { type: 'image', src: 'webdev_yathaarth_portfolio.jpg', title: 'Yathaarth Jaju Portfolio', cat: 'WEB DEV' },
+        { type: 'image', src: 'webdev_rca_code_vault.jpg', title: 'RCA Code Vault', cat: 'WEB DEV' },
+        // AI Automations (Kabir AI)
+        { type: 'image', src: 'ai_auto_kabir_1.png', title: 'Kabir — AI Calling Receptionist', cat: 'AI AUTOMATION' },
+        { type: 'image', src: 'ai_auto_kabir_2.jpg', title: 'AI Agentic Workflows', cat: 'AI AUTOMATION' },
+        { type: 'image', src: 'ai_auto_kabir_3.png', title: 'Kabir Call Assistant', cat: 'AI AUTOMATION' },
+        // Video Editing (4 Native Videos)
+        { type: 'video', src: 'vid_ve_email_id_tips.mp4', title: 'Email Id Tips', cat: 'VIDEO EDITING' },
+        { type: 'video', src: 'vid_ve_business_ads.mp4', title: 'Business Ads', cat: 'VIDEO EDITING' },
+        { type: 'video', src: 'vid_ve_flipkart_goodies.mp4', title: 'Flipkart Goodies', cat: 'VIDEO EDITING' },
+        { type: 'video', src: 'vid_ve_storylabs.mp4', title: 'Storylabs', cat: 'VIDEO EDITING' },
+        // SaaS Videos (3 Native Videos)
+        { type: 'video', src: 'vid_saas_interviews.mp4', title: 'SaaS Explainer for Interviews', cat: 'SAAS VIDEO' },
+        { type: 'video', src: 'vid_saas_phonepe.mp4', title: 'PhonePe', cat: 'SAAS VIDEO' },
+        { type: 'video', src: 'vid_saas_strivio.mp4', title: 'Strivio', cat: 'SAAS VIDEO' },
+        // Graphic Designing (3 Brand Projects)
+        { type: 'image', src: 'services_project_2.jpg', title: 'Soap Dispenser Packaging', cat: 'GRAPHIC DESIGN' },
+        { type: 'image', src: 'services_project_3.jpg', title: 'UNTITLED Clothing Co.', cat: 'GRAPHIC DESIGN' },
+        { type: 'image', src: 'services_project_1.jpg', title: 'Aurora Coffee Roasters', cat: 'GRAPHIC DESIGN' },
+        // Cinematography & 2D Animations
+        { type: 'video', src: 'vid_cinema_ganesh_chaturthi.mp4', title: 'Ganesh Chaturthi', cat: 'CINEMATOGRAPHY' },
+        { type: 'video', src: 'vid_2d_animation.mp4', title: '2D Animation Reel', cat: '2D ANIMATION' },
+        // 3D Animations (HisYtStory 5 Works)
+        { type: 'image', src: 'https://i.ytimg.com/vi/CKjlKvKTz0s/hqdefault.jpg', title: 'The Game That Lasted Fifty Years', cat: '3D ANIMATION' },
+        { type: 'image', src: 'https://i.ytimg.com/vi/Y09ReaDyEuw/hqdefault.jpg', title: 'My School Nurse Iced My Broken Leg', cat: '3D ANIMATION' },
+        { type: 'image', src: 'https://i.ytimg.com/vi/JXiwxn6VpwM/hqdefault.jpg', title: 'Dad Refused to Lose', cat: '3D ANIMATION' },
+        { type: 'image', src: 'https://i.ytimg.com/vi/gFy3TamJNkg/hqdefault.jpg', title: 'She Hated My Gift', cat: '3D ANIMATION' },
+        { type: 'image', src: 'https://i.ytimg.com/vi/Tf3wVEpn8wU/hqdefault.jpg', title: 'What Was Clapping', cat: '3D ANIMATION' },
+        // AI Creatives (4 Native Videos)
+        { type: 'video', src: 'vid_ai_hungama_ho_gaya.mp4', title: 'Hungama Ho Gaya', cat: 'AI CREATIVES' },
+        { type: 'video', src: 'vid_ai_kaali_maa.mp4', title: 'Kaali Maa', cat: 'AI CREATIVES' },
+        { type: 'video', src: 'vid_ai_varaha.mp4', title: 'Varaha', cat: 'AI CREATIVES' },
+        { type: 'video', src: 'vid_ai_dd_blessings.mp4', title: 'DD Blessings', cat: 'AI CREATIVES' },
+        // Growth / Campaigns
+        { type: 'image', src: 'card_untitled_clothing.png', title: 'D2C 4.8x ROAS Campaign', cat: 'GROWTH' },
+        { type: 'image', src: 'card_rama_trichology.jpg', title: 'Rama Trichology Funnel', cat: 'GROWTH' },
+        { type: 'image', src: 'card_hindustan_tyre.jpg', title: 'Hindustan Tyre Demand Engine', cat: 'GROWTH' }
+      ];
+
+      const craftsTrack = document.getElementById('craftsSectionTrack');
+      const craftsOrangeIntro = document.getElementById('craftsOrangeIntro');
+      const craftsArcStage = document.getElementById('craftsArcStage');
+      const craftsOrangeOutro = document.getElementById('craftsOrangeOutro');
+      const craftsBgRows = [
+        document.getElementById('craftsBgRow0'),
+        document.getElementById('craftsBgRow1'),
+        document.getElementById('craftsBgRow2'),
+        document.getElementById('craftsBgRow3')
+      ];
+
+      // Build 32 Proof-of-Work Cards inside the 3D Circular Arc Stage
+      const craftCardEls = [];
+      if (craftsArcStage) {
+        craftsArcStage.innerHTML = OUR_CRAFTS_PROOF_ITEMS.map((item, idx) => {
+          const mediaHtml = item.type === 'video'
+            ? `<video src="${item.src}" muted loop playsinline preload="metadata"></video>`
+            : `<img src="${item.src}" alt="${item.title}" loading="lazy" decoding="async" />`;
+          return `
+            <div class="craft-arc-card" data-craft-idx="${idx}">
+              ${mediaHtml}
+              <div class="craft-arc-label">
+                <span class="craft-arc-title">${item.title}</span>
+                <span class="craft-arc-cat">${item.cat}</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+        craftsArcStage.querySelectorAll('.craft-arc-card').forEach(el => craftCardEls.push(el));
+      }
+
+      let craftsTargetP = 0, craftsCurrentP = 0;
+
+      function renderCraftsSection(P) {
+        if (!craftsTrack) return;
+        const winW = window.innerWidth;
+
+        // 1. Orange Intro lifts smoothly upward (P: 0.04 -> 0.14)
+        const introExit = easeInOutCubic(clamp((P - 0.04) / 0.10, 0, 1));
+        if (craftsOrangeIntro) {
+          craftsOrangeIntro.style.transform = `translate3d(0, ${(-introExit * 102).toFixed(2)}%, 0)`;
+        }
+
+        // 2. Curved Repeating Background Typography shifts dynamically with scroll
+        const galleryP = clamp((P - 0.10) / 0.78, 0, 1);
+        craftsBgRows.forEach((row, idx) => {
+          if (!row) return;
+          const dir = idx % 2 === 0 ? -1 : 1;
+          const shift = dir * galleryP * 480;
+          const curveTilt = (idx - 1.5) * 1.2;
+          row.style.transform = `translate3d(${shift.toFixed(1)}px, 0, 0) skewX(${curveTilt.toFixed(1)}deg)`;
+        });
+
+        // 3. 3D Circular Arc Scroll across all 32 Proof-of-Work Cards
+        const total = craftCardEls.length;
+        const activeFloat = galleryP * (total - 1);
+        const radiusX = clamp(winW * 0.42, 340, 680);
+        const radiusZ = 520;
+
+        craftCardEls.forEach((card, idx) => {
+          const delta = idx - activeFloat; // 0 = dead center of 3D arc
+          if (Math.abs(delta) > 3.6) {
+            card.style.opacity = '0';
+            card.style.visibility = 'hidden';
+            const vid = card.querySelector('video');
+            if (vid && !vid.paused) vid.pause();
+            return;
+          }
+
+          card.style.visibility = 'visible';
+          // Circular angle around Y-axis in radians
+          const angle = delta * 0.44;
+          const x = Math.sin(angle) * radiusX * 1.28;
+          const z = (Math.cos(angle) - 1) * radiusZ;
+          const y = Math.abs(delta) * Math.abs(delta) * 12;
+          const rotY = -angle * (180 / Math.PI) * 0.85;
+          const scale = clamp(1.06 - Math.abs(delta) * 0.11, 0.65, 1.06);
+          const op = clamp(1.15 - Math.abs(delta) * 0.32, 0, 1);
+
+          card.style.opacity = op.toFixed(3);
+          card.style.zIndex = String(50 - Math.round(Math.abs(delta) * 10));
+          card.style.transform = `translate3d(calc(-50% + ${x.toFixed(1)}px), calc(-50% + ${y.toFixed(1)}px), ${z.toFixed(1)}px) rotateY(${rotY.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+
+          const vid = card.querySelector('video');
+          if (vid) {
+            if (Math.abs(delta) < 1.15 && P > 0.10 && P < 0.90) {
+              if (vid.paused) vid.play().catch(() => {});
+            } else if (!vid.paused) {
+              vid.pause();
+            }
+          }
+        });
+
+        // 4. Orange Outro Panel rises smoothly into view (P: 0.88 -> 0.98)
+        const outroP = easeInOutCubic(clamp((P - 0.88) / 0.10, 0, 1));
+        if (craftsOrangeOutro) {
+          craftsOrangeOutro.style.transform = `translate3d(0, ${lerp(102, 0, outroP).toFixed(2)}%, 0)`;
+        }
+      }
+
+      /* ------------------------------------------------------------------------
+         9. UNIFIED SMOOTH SCROLL & LERP LOOP + CUSTOM SCROLLBAR INDICATOR
          ------------------------------------------------------------------------ */
       const scrollThumb = document.getElementById('customScrollThumb');
       let masterRafId = null;
@@ -2446,6 +3157,18 @@
           approachTargetP = clamp(-r.top / maxS, 0, 1);
         }
 
+        if (cameraTrack) {
+          const r = cameraTrack.getBoundingClientRect();
+          const maxS = Math.max(1, cameraTrack.offsetHeight - winH);
+          cameraTargetP = clamp(-r.top / maxS, 0, 1);
+        }
+
+        if (craftsTrack) {
+          const r = craftsTrack.getBoundingClientRect();
+          const maxS = Math.max(1, craftsTrack.offsetHeight - winH);
+          craftsTargetP = clamp(-r.top / maxS, 0, 1);
+        }
+
         if (scrollThumb) {
           const docH = Math.max(1, document.documentElement.scrollHeight - winH);
           const scrollPct = clamp(window.scrollY / docH, 0, 1);
@@ -2453,18 +3176,53 @@
         }
       }
 
+      const siteNavEl = document.getElementById('siteNav');
+
+      function updateAdaptiveNavbarTheme() {
+        if (!siteNavEl) return;
+        const camRect = cameraTrack ? cameraTrack.getBoundingClientRect() : null;
+        const craftsRect = craftsTrack ? craftsTrack.getBoundingClientRect() : null;
+
+        let mode = 'light';
+        if (craftsRect && craftsRect.top <= 40) {
+          if (craftsCurrentP < 0.10 || craftsCurrentP > 0.90) mode = 'orange';
+          else mode = 'dark';
+        } else if (camRect && camRect.top <= 40) {
+          if (cameraCurrentP < 0.24) mode = 'light';
+          else if (cameraCurrentP > 0.84) mode = 'orange';
+          else mode = 'dark';
+        }
+
+        siteNavEl.classList.toggle('theme-dark-bg', mode === 'dark');
+        siteNavEl.classList.toggle('theme-orange-bg', mode === 'orange');
+      }
+
+      function renderAllSections() {
+        renderHero(heroCurrentP);
+        renderPhilosophy(philCurrentP);
+        renderApproach(approachCurrentP);
+        renderCameraSection(cameraCurrentP);
+        renderCraftsSection(craftsCurrentP);
+        updateAdaptiveNavbarTheme();
+      }
+
       function tickMaster() {
         const dh = heroTargetP - heroCurrentP;
         const dp = philTargetP - philCurrentP;
         const da = approachTargetP - approachCurrentP;
+        const dc = cameraTargetP - cameraCurrentP;
+        const dk = craftsTargetP - craftsCurrentP;
 
-        if (window.__ABOUT_INSTANT_SCRUB__ || (Math.abs(dh) < 0.0004 && Math.abs(dp) < 0.0004 && Math.abs(da) < 0.0004)) {
+        if (
+          window.__ABOUT_INSTANT_SCRUB__ ||
+          (Math.abs(dh) < 0.0004 && Math.abs(dp) < 0.0004 && Math.abs(da) < 0.0004 && Math.abs(dc) < 0.0004 && Math.abs(dk) < 0.0004)
+        ) {
           heroCurrentP = heroTargetP;
           philCurrentP = philTargetP;
           approachCurrentP = approachTargetP;
-          renderHero(heroCurrentP);
-          renderPhilosophy(philCurrentP);
-          renderApproach(approachCurrentP);
+          cameraCurrentP = cameraTargetP;
+          craftsCurrentP = craftsTargetP;
+          renderAllSections();
           masterRafId = null;
           return;
         }
@@ -2472,10 +3230,10 @@
         heroCurrentP += dh * 0.144;
         philCurrentP += dp * 0.144;
         approachCurrentP += da * 0.144;
+        cameraCurrentP += dc * 0.144;
+        craftsCurrentP += dk * 0.144;
 
-        renderHero(heroCurrentP);
-        renderPhilosophy(philCurrentP);
-        renderApproach(approachCurrentP);
+        renderAllSections();
         masterRafId = requestAnimationFrame(tickMaster);
       }
 
@@ -2485,9 +3243,9 @@
           heroCurrentP = heroTargetP;
           philCurrentP = philTargetP;
           approachCurrentP = approachTargetP;
-          renderHero(heroCurrentP);
-          renderPhilosophy(philCurrentP);
-          renderApproach(approachCurrentP);
+          cameraCurrentP = cameraTargetP;
+          craftsCurrentP = craftsTargetP;
+          renderAllSections();
           return;
         }
         if (!masterRafId) masterRafId = requestAnimationFrame(tickMaster);
@@ -2497,8 +3255,8 @@
       window.addEventListener('resize', onScrollOrResize, { passive: true });
 
       /* ------------------------------------------------------------------------
-         8. LUXURIOUS CINEMATIC SMOOTH SCROLL (Exact Match to Services Page)
-            Clamped delta * 0.54 travel speed + 0.088 heavy cinematic inertia
+         10. LUXURIOUS CINEMATIC SMOOTH SCROLL (Exact Match to Services Page)
+             Clamped delta * 0.54 travel speed + 0.088 heavy cinematic inertia
          ------------------------------------------------------------------------ */
       let currentY = window.scrollY;
       let targetY = window.scrollY;
@@ -2521,7 +3279,6 @@
         const maxScrollY = document.documentElement.scrollHeight - window.innerHeight;
         if (maxScrollY <= 0) return;
 
-        // Exact Services Page physics: clamped delta with 10% decreased travel speed (0.54)
         const clampedDelta = Math.sign(e.deltaY) * Math.min(75, Math.abs(e.deltaY));
         targetY = Math.max(0, Math.min(maxScrollY, targetY + clampedDelta * 0.54));
 
@@ -2534,7 +3291,7 @@
       function smoothScrollTick() {
         const diff = targetY - currentY;
         if (Math.abs(diff) > 0.4) {
-          currentY += diff * 0.088; // Exact slow, heavy cinematic inertia matching Services & Home pages
+          currentY += diff * 0.088;
           window.scrollTo(0, currentY);
           onScrollOrResize();
           smoothScrollRafId = requestAnimationFrame(smoothScrollTick);
@@ -2554,20 +3311,16 @@
         }
         targetY = 0;
         currentY = 0;
-        heroTargetP = 0;
-        heroCurrentP = 0;
-        philTargetP = 0;
-        philCurrentP = 0;
-        approachTargetP = 0;
-        approachCurrentP = 0;
+        heroTargetP = heroCurrentP = 0;
+        philTargetP = philCurrentP = 0;
+        approachTargetP = approachCurrentP = 0;
+        cameraTargetP = cameraCurrentP = 0;
+        craftsTargetP = craftsCurrentP = 0;
         window.scrollTo(0, 0);
-        renderHero(0);
-        renderPhilosophy(0);
-        renderApproach(0);
+        renderAllSections();
         computeAllTargets();
       };
 
-      // Expose helper for instant inspection
       window.syncAboutScrubInstant = function () {
         isSmoothScrolling = false;
         if (smoothScrollRafId) {
@@ -2580,9 +3333,9 @@
         heroCurrentP = heroTargetP;
         philCurrentP = philTargetP;
         approachCurrentP = approachTargetP;
-        renderHero(heroCurrentP);
-        renderPhilosophy(philCurrentP);
-        renderApproach(approachCurrentP);
+        cameraCurrentP = cameraTargetP;
+        craftsCurrentP = craftsTargetP;
+        renderAllSections();
       };
 
       // Initial render
@@ -2590,9 +3343,9 @@
       heroCurrentP = heroTargetP;
       philCurrentP = philTargetP;
       approachCurrentP = approachTargetP;
-      renderHero(heroCurrentP);
-      renderPhilosophy(philCurrentP);
-      renderApproach(approachCurrentP);
+      cameraCurrentP = cameraTargetP;
+      craftsCurrentP = craftsTargetP;
+      renderAllSections();
     })();
   </script>
 </body>
