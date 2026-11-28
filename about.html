@@ -35,7 +35,7 @@
   <!-- Google Fonts: Exact Home Page Font Stack (Inter, Archivo, Space Grotesk, Newsreader, Playfair Display) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800&family=Inter:wght@400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wdth,wght@125,800&family=Big+Shoulders+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Preload Critical Visuals -->
   <link rel="preload" as="image" href="Techuilla_logo.png" />
@@ -53,7 +53,7 @@
   <!-- Three.js, CGI Cinema Camera Engine & CGI Luxury Watch Engine -->
   <script src="three.min.js"></script>
   <script src="aboutCameraCGI.js?v=20261128_macro_v3"></script>
-  <script src="aboutWatchCGI.js?v=20261128_watch_v2_highpoly"></script>
+  <script src="aboutWatchCGI.js?v=20261128_watch_v3_photoreal"></script>
 
   <style>
     /* ==========================================================================
@@ -1740,80 +1740,109 @@
       display: block;
     }
 
-    /* Compact Live Mechanical Stepper Counter — Strictly Top-Right Corner (Left & Right of Watch Empty!) */
-    .watch-live-stepper {
+    /* Left-Hand Editorial Track Record Typography (All Caps, Archivo Black / Bryson Style, ZERO Shadows / Highlights!) */
+    .watch-left-copy {
       position: absolute;
-      top: 94px;
-      right: clamp(20px, 3vw, 44px);
+      left: clamp(24px, 3.6vw, 58px);
+      top: 50%;
+      transform: translate3d(0, -50%, 0);
       z-index: 28;
-      background: rgba(14, 14, 17, 0.84);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 10px;
-      padding: 10px 14px 11px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      max-width: 25vw;
       pointer-events: none;
-      transform-origin: right top;
-      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55);
+      transform-origin: left center;
     }
 
-    .watch-stepper-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 9.5px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
+    .watch-left-heading {
+      font-family: "Archivo Black", "Inter", sans-serif;
+      font-size: clamp(22px, 2.25vw, 35px);
+      font-weight: 900;
+      line-height: 1.04;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: #FFFFFF;
+      text-shadow: none;
+    }
+
+    .watch-left-heading .accent-orange {
+      color: var(--color-orange);
+    }
+
+    .watch-left-subline {
+      font-family: "Archivo Black", "Inter", sans-serif;
+      font-size: clamp(18px, 1.9vw, 30px);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -0.015em;
+      text-transform: uppercase;
+      color: #FFFFFF;
+      text-shadow: none;
+      margin-top: 8px;
+    }
+
+    .watch-left-date {
+      font-family: "Archivo Black", "Inter", sans-serif;
+      font-size: clamp(22px, 2.45vw, 38px);
+      font-weight: 900;
+      line-height: 1.02;
+      letter-spacing: -0.015em;
       text-transform: uppercase;
       color: var(--color-orange);
-      margin-bottom: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
+      text-shadow: none;
     }
 
-    .watch-stepper-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--color-orange);
-      box-shadow: 0 0 8px rgba(255, 102, 0, 0.85);
-      animation: pulseCue 1.4s ease-in-out infinite;
+    /* Right-Hand Vertical Mechanical Stepper Counter — NO Container Box, Transparent Background, Larger Tall Gothic Numerals! */
+    .watch-live-stepper {
+      position: absolute;
+      right: clamp(28px, 4.5vw, 72px);
+      top: 50%;
+      transform: translate3d(0, -50%, 0);
+      z-index: 28;
+      background: transparent;
+      border: none;
+      padding: 0;
+      pointer-events: none;
+      transform-origin: right center;
     }
 
     .watch-stepper-grid {
       display: flex;
-      align-items: center;
-      gap: 6px;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
     }
 
     .watch-step-unit {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: flex-end;
+      gap: 12px;
     }
 
     .watch-step-drums {
       display: flex;
       gap: 2px;
-      background: #070709;
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      border-radius: 5px;
-      padding: 3px 4px;
-      box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.8), inset 0 -4px 8px rgba(0, 0, 0, 0.8);
+      background: transparent;
+      border: none;
+      padding: 0;
     }
 
     .watch-drum-slot {
       position: relative;
-      width: 13px;
-      height: 19px;
+      width: 24px;
+      height: 52px;
       overflow: hidden;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 19px;
-      color: #F4F5F7;
+      font-family: "Big Shoulders Display", "Archivo Black", sans-serif;
+      font-size: 50px;
+      font-weight: 900;
+      line-height: 52px;
+      color: #FFFFFF;
       text-align: center;
+      text-shadow: none;
     }
 
     .watch-drum-strip {
@@ -1824,25 +1853,20 @@
 
     .watch-drum-strip span {
       display: block;
-      height: 19px;
-      line-height: 19px;
+      height: 52px;
+      line-height: 52px;
     }
 
     .watch-step-label {
-      font-family: var(--font-mono);
-      font-size: 8px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
+      font-family: "Archivo Black", "Inter", sans-serif;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.48);
-    }
-
-    .watch-step-sep {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 700;
-      color: rgba(255, 102, 0, 0.65);
-      margin-bottom: 11px;
+      color: var(--color-orange);
+      min-width: 44px;
+      text-align: left;
+      text-shadow: none;
     }
 
     /* Final Page Pull-Up Panel: "THE PERSON BEHIND TECHUILLA" */
@@ -2428,12 +2452,15 @@
       <!-- Three.js WebGL High-Detail 3D CGI Luxury Watch (Strictly Non-Interactive) -->
       <canvas class="watch-cgi-canvas" id="watchCgiCanvas" aria-hidden="true"></canvas>
 
-      <!-- Compact Live Mechanical Stepper Counter — Strictly Top-Right Corner (Left & Right of Watch Empty!) -->
-      <div class="watch-live-stepper" id="watchLiveStepper" aria-label="Operating Since 4 May 2026">
-        <div class="watch-stepper-eyebrow">
-          <span>SINCE 4 MAY 2026</span>
-          <span class="watch-stepper-dot" aria-hidden="true"></span>
-        </div>
+      <!-- Left-Hand Side Editorial Typography (All Caps, Zero Shadows/Highlights) -->
+      <div class="watch-left-copy" id="watchLeftCopy">
+        <div class="watch-left-heading">OUR <span class="accent-orange">TRACK RECORD</span></div>
+        <div class="watch-left-subline">OPERATING SINCE</div>
+        <div class="watch-left-date">MAY 2026</div>
+      </div>
+
+      <!-- Right-Hand Side Vertical Mechanical Stepper Counter (Transparent Background, No Box, No Icons!) -->
+      <div class="watch-live-stepper" id="watchLiveStepper" aria-label="Operating Duration">
         <div class="watch-stepper-grid" id="watchStepperGrid"></div>
       </div>
 
@@ -3423,6 +3450,7 @@
       const watchTrack = document.getElementById('watchSectionTrack');
       const watchManifestoShutter = document.getElementById('watchManifestoShutter');
       const watchCgiCanvas = document.getElementById('watchCgiCanvas');
+      const watchLeftCopy = document.getElementById('watchLeftCopy');
       const watchLiveStepper = document.getElementById('watchLiveStepper');
       const watchStepperGrid = document.getElementById('watchStepperGrid');
       const personBehindPullUp = document.getElementById('personBehindPullUp');
@@ -3431,7 +3459,7 @@
         ? window.initAboutWatchCGI(watchCgiCanvas)
         : null;
 
-      // Build Compact Live Mechanical Drum Stepper (Counting Continuously from 4 May 2026, 12:00 PM)
+      // Build Right-Hand Vertical Mechanical Drum Stepper (Transparent, No Box, Stacked Vertically: YRS, MOS, DAYS, HRS, MIN, SEC)
       const STEPPER_UNITS = [
         { key: 'yrs',  label: 'YRS',  digits: 2 },
         { key: 'mos',  label: 'MOS',  digits: 2 },
@@ -3444,12 +3472,11 @@
 
       if (watchStepperGrid) {
         const digitSpans = '0123456789'.split('').map(d => `<span>${d}</span>`).join('');
-        watchStepperGrid.innerHTML = STEPPER_UNITS.map((u, ui) => {
+        watchStepperGrid.innerHTML = STEPPER_UNITS.map((u) => {
           const slots = Array.from({ length: u.digits }, (_, di) =>
             `<div class="watch-drum-slot"><div class="watch-drum-strip" data-unit="${u.key}" data-digit="${di}">${digitSpans}</div></div>`
           ).join('');
-          const sep = ui < STEPPER_UNITS.length - 1 ? '<span class="watch-step-sep">:</span>' : '';
-          return `<div class="watch-step-unit"><div class="watch-step-drums">${slots}</div><span class="watch-step-label">${u.label}</span></div>${sep}`;
+          return `<div class="watch-step-unit"><div class="watch-step-drums">${slots}</div><span class="watch-step-label">${u.label}</span></div>`;
         }).join('');
 
         STEPPER_UNITS.forEach(u => {
@@ -3462,7 +3489,6 @@
           let diffMs = now.getTime() - startDate.getTime();
           if (diffMs < 0) diffMs = 0;
 
-          // Calendar-accurate Years, Months, Days, Hours, Minutes, Seconds
           let yrs = 0, mos = 0, days = 0, hrs = 0, mins = 0, secs = 0;
           if (diffMs > 0) {
             let cursor = new Date(startDate.getTime());
@@ -3492,7 +3518,7 @@
             const strips = drumStripsByKey[u.key] || [];
             strips.forEach((strip, idx) => {
               const digitVal = parseInt(str[idx], 10) || 0;
-              strip.style.transform = `translate3d(0, ${-digitVal * 19}px, 0)`;
+              strip.style.transform = `translate3d(0, ${-digitVal * 52}px, 0)`;
             });
           });
         }
@@ -3507,33 +3533,36 @@
         if (!watchTrack) return;
         const safeP = clamp(P, 0, 1);
 
-        // 1. Orange Manifesto Panel Pull-Up (0.03 -> 0.12): Reveals ONLY the stationary 3D CGI Watch underneath!
+        // 1. Orange Manifesto Panel Pull-Up (0.03 -> 0.12)
         const shutterP = easeInOutCubic(clamp((safeP - 0.03) / 0.09, 0, 1));
         if (watchManifestoShutter) {
           watchManifestoShutter.style.transform = `translate3d(0, ${(-shutterP * 102).toFixed(2)}%, 0)`;
         }
 
-        // 2. Compact Top-Right Live Stepper: Appears once manifesto clears, then motion-blurs forward toward viewer when zooming in!
-        if (watchLiveStepper) {
-          const enterOp = clamp((safeP - 0.09) / 0.04, 0, 1);
-          const exitP = easeInOutCubic(clamp((safeP - 0.13) / 0.08, 0, 1));
-          const op = enterOp * clamp(1 - exitP * 1.25, 0, 1);
-          const sc = lerp(1.0, 1.38, exitP);
-          const blurPx = (exitP * 9).toFixed(1);
-          watchLiveStepper.style.opacity = op.toFixed(3);
-          watchLiveStepper.style.transform = `scale(${sc.toFixed(3)})`;
-          watchLiveStepper.style.filter = exitP > 0.01 && op > 0.01 ? `blur(${blurPx}px)` : 'none';
-        }
+        // 2. Left Copy & Right Vertical Stepper: Appear cleanly once manifesto clears, then motion-blur toward viewer on zoom-in!
+        const enterOp = clamp((safeP - 0.09) / 0.04, 0, 1);
+        const exitP = easeInOutCubic(clamp((safeP - 0.13) / 0.08, 0, 1));
+        const hudOp = enterOp * clamp(1 - exitP * 1.25, 0, 1);
+        const hudSc = lerp(1.0, 1.38, exitP);
+        const hudBlur = (exitP * 9).toFixed(1);
+        const hudFilter = exitP > 0.01 && hudOp > 0.01 ? `blur(${hudBlur}px)` : 'none';
 
-        // 3. Drive High-Detail 3D CGI Watch Choreography
+        [watchLeftCopy, watchLiveStepper].forEach(el => {
+          if (!el) return;
+          el.style.opacity = hudOp.toFixed(3);
+          el.style.transform = `translate3d(0, -50%, 0) scale(${hudSc.toFixed(3)})`;
+          el.style.filter = hudFilter;
+        });
+
+        // 3. Drive Photorealistic 3D CGI Watch Choreography
         const wr = watchTrack.getBoundingClientRect();
         const isWatchVisible = wr.top < window.innerHeight && wr.bottom > 0 && safeP < 0.99;
         if (watchCgiController) {
           watchCgiController.renderAtProgress(safeP, isWatchVisible);
         }
 
-        // 4. Final Page Pull-Up Panel ("THE PERSON BEHIND TECHUILLA", 0.89 -> 0.99)
-        const personP = easeInOutCubic(clamp((safeP - 0.89) / 0.10, 0, 1));
+        // 4. Final Page Pull-Up Panel ("THE PERSON BEHIND TECHUILLA", 0.93 -> 0.995 — after full watch body zooms back out!)
+        const personP = easeInOutCubic(clamp((safeP - 0.93) / 0.065, 0, 1));
         if (personBehindPullUp) {
           personBehindPullUp.style.transform = `translate3d(0, ${lerp(102, 0, personP).toFixed(2)}%, 0)`;
         }
@@ -3690,7 +3719,15 @@
         if (maxScrollY <= 0) return;
 
         const clampedDelta = Math.sign(e.deltaY) * Math.min(75, Math.abs(e.deltaY));
-        targetY = Math.max(0, Math.min(maxScrollY, targetY + clampedDelta * 0.513));
+        // Decrease scroll speed by 5% ONLY inside the Watch Track Record section!
+        let scrollFactor = 0.513;
+        if (watchTrack) {
+          const wr = watchTrack.getBoundingClientRect();
+          if (wr.top <= 10 && wr.bottom >= window.innerHeight - 10) {
+            scrollFactor = 0.487;
+          }
+        }
+        targetY = Math.max(0, Math.min(maxScrollY, targetY + clampedDelta * scrollFactor));
 
         if (!isSmoothScrolling) {
           isSmoothScrolling = true;
