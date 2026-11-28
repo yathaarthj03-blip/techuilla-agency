@@ -951,13 +951,14 @@
       // CLOCKWISE rotation of the focal-length / focus ring on scroll!
       focusRingGroup.rotation.z = -p * Math.PI * 1.5;
 
-      // 9-Blade Organic Iris Diaphragm smoothly opens outward from the exact center as we zoom in!
-      const irisOpen = Math.max(0, Math.min(1, p * 1.45));
+      // 9-Blade Organic Iris Diaphragm smoothly retracts behind the bezel (zero abrupt visibility pop!)
+      const irisOpen = Math.max(0, Math.min(1, p * 1.35));
       const irisEase = 1 - Math.pow(1 - irisOpen, 3);
       irisBlades.forEach(b => {
-        b.pivot.rotation.z = b.baseRot - irisEase * 0.92;
+        b.pivot.rotation.z = b.baseRot - irisEase * 1.18;
       });
-      irisGroup.visible = irisOpen < 0.96;
+      irisBladeMat.transparent = true;
+      irisBladeMat.opacity = Math.max(0, 1 - Math.max(0, (irisOpen - 0.72) / 0.28));
 
       // Fade multi-layered optical glass coatings cleanly as camera passes through the open iris into OUR CRAFTS
       const outerGlassFade = Math.max(0, 1 - Math.max(0, (p - 0.36) / 0.38));

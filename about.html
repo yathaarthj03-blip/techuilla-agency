@@ -1361,11 +1361,12 @@
     .pill-vertical-word span:first-child { color: var(--color-orange); }
 
     /* ==========================================================================
-       9. SECTION 5 — WHAT WE DO SHUTTER PULL-UP + CGI 3D CAMERA ON TRIPOD LENS ZOOM
+       9. UNIFIED SECTION 5 & 6 — WHAT WE DO SHUTTER + CGI 3D CAMERA LENS ZOOM
+          + SINGLE DIRECT OUR CRAFTS STAGE (ZERO DUPLICATE / ZERO OVERLAP!)
        ========================================================================== */
     .camera-section-track {
       position: relative;
-      height: 540vh;
+      height: 1180vh;
       width: 100%;
       z-index: 45;
       background: #0B0A0C;
@@ -1443,25 +1444,6 @@
       pointer-events: none;
     }
 
-    /* Layer 2: Pure Orange Circular Lens Aperture Portal Centered at Exact (50%, 50%) — NO Duplicate OUR CRAFTS Text! */
-    .camera-lens-portal-reveal {
-      position: absolute;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      background: var(--color-orange);
-      z-index: 26;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      clip-path: circle(0% at 50% 50%);
-      -webkit-clip-path: circle(0% at 50% 50%);
-      opacity: 0;
-      pointer-events: none;
-      will-change: clip-path, -webkit-clip-path, opacity;
-    }
-
     /* Layer 3: Three.js WebGL CGI 3D Camera on Tripod (100% Non-Interactive, Organic Iris Lens, Exact (50%, 50%) Center) */
     .camera-cgi-canvas {
       position: absolute;
@@ -1531,29 +1513,21 @@
     }
 
     /* ==========================================================================
-       10. SECTION 6 — OUR CRAFTS (Seamless Direct Lens Entry + Page Pull-Up Intro
-           + Curved Concave Cylinder Letter Wall + Inside-Cylinder 3D Proof-of-Work Gallery)
+       10. SINGLE UNIFIED OUR CRAFTS LAYER (Directly Revealed Through Camera Lens — ZERO Overlap!)
        ========================================================================== */
-    .crafts-section-track {
-      position: relative;
-      height: 760vh;
-      width: 100%;
-      margin-top: -100vh; /* Seamless direct handoff from Camera Lens into OUR CRAFTS — ZERO empty orange gap! */
-      z-index: 46;
-      background: transparent;
-    }
-
-    .crafts-sticky-stage {
-      position: sticky;
-      top: 0;
-      left: 0;
+    .crafts-stage-layer {
+      position: absolute;
+      inset: 0;
       width: 100vw;
       height: 100vh;
       overflow: hidden;
       background: #080706;
+      z-index: 35;
+      clip-path: circle(0% at 50% 50%);
+      -webkit-clip-path: circle(0% at 50% 50%);
       opacity: 0;
       pointer-events: none;
-      will-change: opacity;
+      will-change: clip-path, -webkit-clip-path, opacity;
     }
 
     /* Single Orange Intro ("OUR CRAFTS" + "PROOF OF WORK • ACROSS EVERY DOMAIN") — Physical Page Pull-Up! */
@@ -2226,44 +2200,33 @@
         </div>
       </div>
 
-      <!-- Direct Lens Aperture Portal Revealing OUR CRAFTS Straight Through the Camera Lens (Zero Empty Orange Gap!) -->
-      <div class="camera-lens-portal-reveal" id="cameraLensPortalReveal" aria-hidden="true">
-        <h2 class="crafts-intro-title">OUR CRAFTS</h2>
-        <div class="crafts-intro-sub">PROOF OF WORK • ACROSS EVERY DOMAIN</div>
-      </div>
-    </div>
-  </section>
+      <!-- SINGLE UNIFIED OUR CRAFTS LAYER (Expands Directly Through Camera Lens Center — ZERO Duplicate, ZERO Overlap!) -->
+      <div class="crafts-stage-layer" id="craftsStageLayer" aria-label="Our Crafts">
+        <!-- Single Orange Intro ("OUR CRAFTS" + "PROOF OF WORK • ACROSS EVERY DOMAIN") -->
+        <div class="crafts-orange-intro" id="craftsOrangeIntro">
+          <h2 class="crafts-intro-title">OUR CRAFTS</h2>
+          <div class="crafts-intro-sub">PROOF OF WORK • ACROSS EVERY DOMAIN</div>
+        </div>
 
-  <!-- ==========================================================================
-       SECTION 6: OUR CRAFTS (Single Intro + Curved Repeating Letter Wall
-       + Horizontal Right-to-Left Curated Proof-of-Work Ribbon + Orange Outro)
-       ========================================================================== -->
-  <section class="crafts-section-track" id="craftsSectionTrack" aria-label="Our Crafts">
-    <div class="crafts-sticky-stage" id="craftsStickyStage">
-      <!-- Single Orange Intro ("OUR CRAFTS" + "PROOF OF WORK • ACROSS EVERY DOMAIN") -->
-      <div class="crafts-orange-intro" id="craftsOrangeIntro">
-        <h2 class="crafts-intro-title">OUR CRAFTS</h2>
-        <div class="crafts-intro-sub">PROOF OF WORK • ACROSS EVERY DOMAIN</div>
-      </div>
+        <!-- Curved Repeating Single-Letter Wall (Exact Reference W-O-R-K Style in Orange/Black) -->
+        <div class="crafts-kinetic-bg" id="craftsKineticBg" aria-hidden="true">
+          <div class="crafts-bg-row" id="craftsBgRow0">C C C C C C C C C C C C C C C C C C C C </div>
+          <div class="crafts-bg-row" id="craftsBgRow1">R R R R R R R R R R R R R R R R R R R R </div>
+          <div class="crafts-bg-row" id="craftsBgRow2">A A A A A A A A A A A A A A A A A A A A </div>
+          <div class="crafts-bg-row" id="craftsBgRow3">F F F F F F F F F F F F F F F F F F F F </div>
+          <div class="crafts-bg-row" id="craftsBgRow4">T T T T T T T T T T T T T T T T T T T T </div>
+        </div>
 
-      <!-- Curved Repeating Single-Letter Wall (Exact Reference W-O-R-K Style in Orange/Black) -->
-      <div class="crafts-kinetic-bg" id="craftsKineticBg" aria-hidden="true">
-        <div class="crafts-bg-row" id="craftsBgRow0">C C C C C C C C C C C C C C C C C C C C </div>
-        <div class="crafts-bg-row" id="craftsBgRow1">R R R R R R R R R R R R R R R R R R R R </div>
-        <div class="crafts-bg-row" id="craftsBgRow2">A A A A A A A A A A A A A A A A A A A A </div>
-        <div class="crafts-bg-row" id="craftsBgRow3">F F F F F F F F F F F F F F F F F F F F </div>
-        <div class="crafts-bg-row" id="craftsBgRow4">T T T T T T T T T T T T T T T T T T T T </div>
-      </div>
+        <!-- Inside-Cylinder Concave 3D Proof-of-Work Gallery (2 per Service Section, Zero AI Automation, Zero Thumbnails) -->
+        <div class="crafts-arc-stage" id="craftsArcStage"></div>
 
-      <!-- Clean Horizontal Right-to-Left Proof-of-Work Ribbon (2 per Service Section, Zero AI Automation, Zero Thumbnails) -->
-      <div class="crafts-arc-stage" id="craftsArcStage"></div>
-
-      <!-- Orange Outro Panel -->
-      <div class="crafts-orange-outro" id="craftsOrangeOutro">
-        <p class="crafts-outro-text">
-          “WORKING ACROSS DOMAINS LIKE ANIMATIONS, DEVELOPMENT, AUTOMATIONS AND CREATIVES TECHUILLA HAS ADVANCED UP TO ITS POTENTIAL”
-        </p>
-        <div class="crafts-outro-tag">TECHUILLA AGENCY • BUILD · CREATE · GROW</div>
+        <!-- Orange Outro Panel -->
+        <div class="crafts-orange-outro" id="craftsOrangeOutro">
+          <p class="crafts-outro-text">
+            “WORKING ACROSS DOMAINS LIKE ANIMATIONS, DEVELOPMENT, AUTOMATIONS AND CREATIVES TECHUILLA HAS ADVANCED UP TO ITS POTENTIAL”
+          </p>
+          <div class="crafts-outro-tag">TECHUILLA AGENCY • BUILD · CREATE · GROW</div>
+        </div>
       </div>
     </div>
   </section>
@@ -2859,6 +2822,8 @@
         return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
       }
 
+      const approachPillsStage = document.getElementById('approachPillsStage');
+
       function renderApproach(P) {
         if (!approachTrack || !approachWallLayer) return;
         if (!baseWinMetrics || baseWinMetrics.w < 40) {
@@ -2866,6 +2831,8 @@
         }
 
         const safeP = clamp(P, 0, 1);
+        const winW = window.innerWidth || 1600;
+        const winH = window.innerHeight || 960;
 
         // 1. Poppy 3D Bottom-to-Top Reveal for all 5 Airplane Windows (Bidirectional, Glitch-Free on Reverse Scroll!)
         let middleRevealP = 0;
@@ -2890,47 +2857,59 @@
           }
         });
 
-        // Synchronize the SVG transparent cutout with Middle Airplane Window (opens smoothly as Window 3 pops up!)
+        // 2. Continuous Smooth Camera-Style Zoom Through Middle Airplane Window (P: 0.52 -> 0.90)
+        //    CRITICAL ANTI-GLITCH ARCHITECTURE:
+        //    approachWallLayer & SVG backdrop NEVER scale above 1x (zero 8K GPU texture eviction after returning from OUR CRAFTS!).
+        //    Instead, maskCutoutPill grows directly in SVG coordinates while only approachPillsStage scales smoothly,
+        //    with ZERO filter:blur() inside scaled layers (eliminates Chromium compositor tile-flicker on reverse scroll!).
+        const rawZoom = clamp((safeP - 0.52) / 0.36, 0, 1);
+        const zoomE = easeInOutCubic(rawZoom);
+        const stageScale = 1.0 + Math.pow(zoomE, 1.35) * 2.65;
+        const wallFadeOut = clamp(1 - Math.max(0, (rawZoom - 0.78) / 0.22), 0, 1);
+
+        // Keep outer wall layer strictly at 1x scale!
+        approachWallLayer.style.transform = 'none';
+        approachWallLayer.style.opacity = wallFadeOut.toFixed(3);
+
+        // Synchronize SVG cutout with Middle Airplane Window (first opens as Window 3 pops up, then expands cleanly to full viewport!)
         if (maskCutoutPill) {
           const inset = 14;
           const openRatio = easeOutCubic(middleRevealP);
-          const cw = Math.max(0, (baseWinMetrics.w - inset * 2) * openRatio);
-          const ch = Math.max(0, (baseWinMetrics.h - inset * 2) * openRatio);
-          const cx = baseWinMetrics.x + baseWinMetrics.w / 2 - cw / 2;
-          const cy = baseWinMetrics.y + baseWinMetrics.h / 2 - ch / 2;
-          const rad = Math.min(cw, ch) / 2;
+          const baseW = Math.max(0, (baseWinMetrics.w - inset * 2) * openRatio);
+          const baseH = Math.max(0, (baseWinMetrics.h - inset * 2) * openRatio);
+          const targetFullW = Math.max(winW, baseW) * 1.45;
+          const targetFullH = Math.max(winH, baseH) * 1.45;
+          const cw = lerp(baseW, targetFullW, Math.pow(zoomE, 1.18));
+          const ch = lerp(baseH, targetFullH, Math.pow(zoomE, 1.18));
+          const centerX = baseWinMetrics.x + baseWinMetrics.w / 2;
+          const centerY = baseWinMetrics.y + baseWinMetrics.h / 2;
+          const cx = centerX - cw / 2;
+          const cy = centerY - ch / 2;
+          const rad = lerp(Math.min(baseW, baseH) / 2, Math.min(cw, ch) * 0.12, zoomE);
           maskCutoutPill.setAttribute('x', cx.toFixed(1));
           maskCutoutPill.setAttribute('y', cy.toFixed(1));
           maskCutoutPill.setAttribute('width', cw.toFixed(1));
           maskCutoutPill.setAttribute('height', ch.toFixed(1));
-          maskCutoutPill.setAttribute('rx', rad.toFixed(1));
-          maskCutoutPill.setAttribute('ry', rad.toFixed(1));
+          maskCutoutPill.setAttribute('rx', Math.max(0, rad).toFixed(1));
+          maskCutoutPill.setAttribute('ry', Math.max(0, rad).toFixed(1));
         }
 
-        // 2. Continuous Smooth Camera-Style Zoom Through Middle Airplane Window (P: 0.52 -> 0.90)
-        //    Never toggles visibility:hidden (prevents Chromium GPU composite glitch when scrolling back up!)
-        const rawZoom = clamp((safeP - 0.52) / 0.36, 0, 1);
-        const zoomE = easeInOutCubic(rawZoom);
+        if (approachPillsStage) {
+          approachPillsStage.style.transform = `translate3d(0, 0, 0) scale(${stageScale.toFixed(4)})`;
+          approachPillsStage.style.opacity = clamp(1 - Math.max(0, (rawZoom - 0.66) / 0.30), 0, 1).toFixed(3);
+        }
 
-        const wallScale = 1.0 + Math.pow(zoomE, 1.38) * 4.6;
-        const wallFadeOut = clamp(1 - Math.max(0, (rawZoom - 0.82) / 0.18), 0, 1);
-
-        approachWallLayer.style.transform = `translate3d(0, 0, 0) scale(${wallScale.toFixed(4)})`;
-        approachWallLayer.style.opacity = wallFadeOut.toFixed(3);
-
-        // Progressive Depth-of-Field Blur on Side Airplane Windows (capped at 8px so GPU never corrupts tiles on reverse!)
-        const sideBlur = (zoomE * 8).toFixed(1);
-        const sideOp = clamp(1 - zoomE * 1.15, 0, 1).toFixed(3);
-        const useBlur = zoomE > 0.02 && wallFadeOut > 0.02;
+        const sideOp = clamp(1 - zoomE * 1.35, 0, 1).toFixed(3);
         approachMasks.forEach((mask, idx) => {
           if (!mask || idx === 2) return;
-          mask.style.filter = useBlur ? `blur(${sideBlur}px)` : 'none';
+          mask.style.filter = 'none';
           mask.style.opacity = sideOp;
         });
 
         if (approachHeader) {
-          approachHeader.style.filter = useBlur ? `blur(${(zoomE * 6).toFixed(1)}px)` : 'none';
-          approachHeader.style.opacity = clamp(1 - zoomE * 1.8, 0, 1).toFixed(3);
+          approachHeader.style.filter = 'none';
+          approachHeader.style.opacity = clamp(1 - zoomE * 1.85, 0, 1).toFixed(3);
+          approachHeader.style.transform = `translate3d(-50%, ${(-zoomE * 36).toFixed(1)}px, 0)`;
         }
       }
 
@@ -2938,11 +2917,18 @@
          7. SECTION 5 — WHAT WE DO SHUTTER PULL-UP + CGI 3D CAMERA LENS ZOOM ENGINE
             Phase A (0.00 -> 0.30): WHAT WE DO shutter lifts straight upward (0% -> -100%);
                                     Camera stays completely stationary underneath.
-            Phase B (0.30 -> 0.88): Camera zooms smoothly into exact (50%,50%) center lens +
-                                    focus ring rotates CLOCKWISE + 9-blade organic iris opens +
-                                    surrounding texts fly TOWARD the screen in 3D with blur & fade!
-            Phase C (0.58 -> 1.00): Pure orange circular aperture centered at (50%,50%) dissolves
-                                    directly into the single OUR CRAFTS section!
+      /* ------------------------------------------------------------------------
+         7 & 8. UNIFIED SECTION 5 & 6 — WHAT WE DO SHUTTER + CGI 3D CAMERA LENS
+            + SINGLE DIRECT OUR CRAFTS STAGE (ZERO DUPLICATE, ZERO OVERLAP!)
+            Phase A (0.00 -> 0.14): WHAT WE DO shutter lifts straight up (0% -> -102%).
+            Phase B (0.14 -> 0.41): Camera zooms into ultra-detailed macro lens +
+                                    clockwise focus ring + smooth 9-blade iris retraction +
+                                    surrounding editorial texts fly forward in 3D.
+            Phase C (0.24 -> 0.42): THE ONE & ONLY OUR CRAFTS stage expands directly
+                                    from exact (50%, 50%) center inside the opening iris!
+            Phase D (0.43 -> 0.50): OUR CRAFTS orange intro physically pulls straight up!
+            Phase E (0.48 -> 0.92): Inside-cylinder concave 3D proof-of-work gallery (18 items).
+            Phase F (0.92 -> 0.99): Orange Outro rises cleanly into view!
          ------------------------------------------------------------------------ */
       const cameraTrack = document.getElementById('cameraSectionTrack');
       const whatWeDoShutter = document.getElementById('whatWeDoShutter');
@@ -2951,73 +2937,22 @@
       const camTextTL = document.getElementById('camTextTL');
       const camTextBR = document.getElementById('camTextBR');
       const camTextBL = document.getElementById('camTextBL');
-      const cameraLensPortalReveal = document.getElementById('cameraLensPortalReveal');
+      const craftsStageLayer = document.getElementById('craftsStageLayer');
+      const craftsOrangeIntro = document.getElementById('craftsOrangeIntro');
+      const craftsArcStage = document.getElementById('craftsArcStage');
+      const craftsOrangeOutro = document.getElementById('craftsOrangeOutro');
+      const craftsBgRows = [
+        document.getElementById('craftsBgRow0'),
+        document.getElementById('craftsBgRow1'),
+        document.getElementById('craftsBgRow2'),
+        document.getElementById('craftsBgRow3'),
+        document.getElementById('craftsBgRow4')
+      ];
 
       const cameraCgiController = (typeof window.initAboutCameraCGI === 'function' && cameraCgiCanvas)
         ? window.initAboutCameraCGI(cameraCgiCanvas)
         : null;
 
-      let cameraTargetP = 0, cameraCurrentP = 0;
-
-      function renderCameraSection(P) {
-        if (!cameraTrack) return;
-
-        // Phase A: Physical Shutter Pull-Up ("WHAT WE DO" lifts straight up while camera stays locked)
-        const shutterP = easeInOutCubic(clamp(P / 0.30, 0, 1));
-        if (whatWeDoShutter) {
-          whatWeDoShutter.style.transform = `translate3d(0, ${(-shutterP * 102).toFixed(2)}%, 0)`;
-        }
-
-        // Phase B: Zoom straight into center of camera lens + rotate focus ring CLOCKWISE + open organic iris
-        const zoomP = clamp((P - 0.30) / 0.62, 0, 1);
-        const zoomE = easeInOutCubic(zoomP);
-
-        if (cameraCgiController) {
-          cameraCgiController.renderAtProgress(zoomP);
-        }
-
-        if (cameraEnvBg) {
-          const bgScale = lerp(1.0, 1.38, zoomE);
-          cameraEnvBg.style.transform = `scale(${bgScale.toFixed(3)})`;
-        }
-
-        // Surrounding texts fly TOWARD the viewer in 3D space (translateZ + scale + progressive blur + fade)
-        const txtOut = easeInOutCubic(clamp((zoomP - 0.04) / 0.52, 0, 1));
-        const tz = (txtOut * 420).toFixed(1);
-        const tsc = lerp(1.0, 1.52, txtOut).toFixed(3);
-        const tBlur = (txtOut * 12).toFixed(1);
-        const tOp = clamp(1 - txtOut * 1.22, 0, 1).toFixed(3);
-        const tFilter = txtOut > 0.01 ? `blur(${tBlur}px)` : 'none';
-
-        [camTextTL, camTextBR, camTextBL].forEach(el => {
-          if (!el) return;
-          el.style.transform = `translate3d(0, 0, ${tz}px) scale(${tsc})`;
-          el.style.filter = tFilter;
-          el.style.opacity = tOp;
-        });
-
-        // Phase C: Pure Orange Circular Lens Aperture Dissolve Centered at Exact (50%, 50%)
-        const dissolveP = clamp((P - 0.56) / 0.42, 0, 1);
-        if (cameraLensPortalReveal) {
-          if (dissolveP <= 0.002) {
-            cameraLensPortalReveal.style.opacity = '0';
-            cameraLensPortalReveal.style.clipPath = 'circle(0% at 50% 50%)';
-            cameraLensPortalReveal.style.webkitClipPath = 'circle(0% at 50% 50%)';
-          } else {
-            const rad = lerp(2, 118, easeInOutCubic(dissolveP));
-            const op = clamp(dissolveP * 2.4, 0, 1);
-            cameraLensPortalReveal.style.opacity = op.toFixed(3);
-            cameraLensPortalReveal.style.clipPath = `circle(${rad.toFixed(2)}% at 50% 50%)`;
-            cameraLensPortalReveal.style.webkitClipPath = `circle(${rad.toFixed(2)}% at 50% 50%)`;
-          }
-        }
-      }
-
-      /* ------------------------------------------------------------------------
-         8. SECTION 6 — OUR CRAFTS (Single Intro + Curved Repeating Letter Wall
-            + Clean Horizontal Right-to-Left Curated Proof-of-Work Ribbon + Outro)
-            Strictly 2 Images or 2 Videos per Service Section (EXCLUDING AI Automation & ZERO Cover Thumbnails!)
-         ------------------------------------------------------------------------ */
       const OUR_CRAFTS_PROOF_ITEMS = [
         // Web Development (2 images)
         { type: 'image', src: 'card_health_streak.png', title: 'Health Streak', cat: 'WEB DEV' },
@@ -3049,19 +2984,6 @@
         { type: 'image', src: 'services_project_1.jpg', title: 'Aurora Coffee Roasters', cat: 'GOOGLE ADS' }
       ];
 
-      const craftsTrack = document.getElementById('craftsSectionTrack');
-      const craftsStickyStage = document.getElementById('craftsStickyStage');
-      const craftsOrangeIntro = document.getElementById('craftsOrangeIntro');
-      const craftsArcStage = document.getElementById('craftsArcStage');
-      const craftsOrangeOutro = document.getElementById('craftsOrangeOutro');
-      const craftsBgRows = [
-        document.getElementById('craftsBgRow0'),
-        document.getElementById('craftsBgRow1'),
-        document.getElementById('craftsBgRow2'),
-        document.getElementById('craftsBgRow3'),
-        document.getElementById('craftsBgRow4')
-      ];
-
       // Build 18 Curated Proof-of-Work Cards inside the Concave Inside-Cylinder Stage
       const craftCardEls = [];
       if (craftsArcStage) {
@@ -3082,27 +3004,83 @@
         craftsArcStage.querySelectorAll('.craft-arc-card').forEach(el => craftCardEls.push(el));
       }
 
-      let craftsTargetP = 0, craftsCurrentP = 0;
+      let cameraTargetP = 0, cameraCurrentP = 0;
 
-      function renderCraftsSection(P) {
-        if (!craftsTrack) return;
+      function renderCameraAndCrafts(P) {
+        if (!cameraTrack) return;
         const winW = window.innerWidth;
 
-        // Activate craftsStickyStage seamlessly ONLY once the camera lens dissolve has filled the screen (zero empty orange gap!)
-        if (craftsStickyStage) {
-          const isReady = P > 0.001 || cameraCurrentP >= 0.96;
-          craftsStickyStage.style.opacity = isReady ? '1' : '0';
-          craftsStickyStage.style.pointerEvents = isReady ? 'auto' : 'none';
+        // Phase A (0.00 -> 0.14): Physical Shutter Pull-Up ("WHAT WE DO" lifts straight up while camera stays locked)
+        const shutterP = easeInOutCubic(clamp(P / 0.14, 0, 1));
+        if (whatWeDoShutter) {
+          whatWeDoShutter.style.transform = `translate3d(0, ${(-shutterP * 102).toFixed(2)}%, 0)`;
         }
 
-        // 1. Physical PAGE PULL-UP Animation on OUR CRAFTS Intro (P: 0.02 -> 0.12)
-        const introPullUp = easeInOutCubic(clamp((P - 0.02) / 0.10, 0, 1));
+        // Phase B (0.14 -> 0.41): Zoom straight into center of camera lens + clockwise focus ring + smooth 9-blade iris
+        const zoomP = clamp((P - 0.14) / 0.27, 0, 1);
+        const zoomE = easeInOutCubic(zoomP);
+
+        // Only render WebGL camera while visible underneath OUR CRAFTS (saves GPU while user is in OUR CRAFTS!)
+        const isCraftsFullScreen = P >= 0.43;
+        if (cameraCgiController && !isCraftsFullScreen) {
+          cameraCgiController.renderAtProgress(zoomP);
+        }
+        if (cameraCgiCanvas) {
+          cameraCgiCanvas.style.opacity = isCraftsFullScreen ? '0' : '1';
+        }
+        if (cameraEnvBg) {
+          const bgScale = lerp(1.0, 1.38, zoomE);
+          cameraEnvBg.style.transform = `scale(${bgScale.toFixed(3)})`;
+          cameraEnvBg.style.opacity = isCraftsFullScreen ? '0' : '1';
+        }
+
+        // Surrounding texts fly TOWARD the viewer in 3D space (translateZ + scale + blur + fade)
+        const txtOut = easeInOutCubic(clamp((zoomP - 0.04) / 0.50, 0, 1));
+        const tz = (txtOut * 420).toFixed(1);
+        const tsc = lerp(1.0, 1.52, txtOut).toFixed(3);
+        const tBlur = (txtOut * 10).toFixed(1);
+        const tOp = clamp(1 - txtOut * 1.25, 0, 1).toFixed(3);
+        const tFilter = txtOut > 0.01 && txtOut < 0.98 ? `blur(${tBlur}px)` : 'none';
+
+        [camTextTL, camTextBR, camTextBL].forEach(el => {
+          if (!el) return;
+          el.style.transform = `translate3d(0, 0, ${tz}px) scale(${tsc})`;
+          el.style.filter = tFilter;
+          el.style.opacity = tOp;
+        });
+
+        // Phase C (0.24 -> 0.42): THE ONE & ONLY OUR CRAFTS Layer expands smoothly from exact (50%, 50%) center
+        //   Synchronized directly with the opening iris so there is NEVER a black-hole pop or duplicate OUR CRAFTS!
+        const dissolveP = clamp((P - 0.24) / 0.18, 0, 1);
+        if (craftsStageLayer) {
+          if (dissolveP <= 0.002) {
+            craftsStageLayer.style.opacity = '0';
+            craftsStageLayer.style.pointerEvents = 'none';
+            craftsStageLayer.style.clipPath = 'circle(0% at 50% 50%)';
+            craftsStageLayer.style.webkitClipPath = 'circle(0% at 50% 50%)';
+          } else if (dissolveP >= 0.995) {
+            craftsStageLayer.style.opacity = '1';
+            craftsStageLayer.style.pointerEvents = 'auto';
+            craftsStageLayer.style.clipPath = 'none';
+            craftsStageLayer.style.webkitClipPath = 'none';
+          } else {
+            const rad = lerp(0.5, 115, easeInOutCubic(dissolveP));
+            const op = clamp(dissolveP * 3.5, 0, 1);
+            craftsStageLayer.style.opacity = op.toFixed(3);
+            craftsStageLayer.style.pointerEvents = 'none';
+            craftsStageLayer.style.clipPath = `circle(${rad.toFixed(2)}% at 50% 50%)`;
+            craftsStageLayer.style.webkitClipPath = `circle(${rad.toFixed(2)}% at 50% 50%)`;
+          }
+        }
+
+        // Phase D (0.43 -> 0.50): Physical PAGE PULL-UP Animation on OUR CRAFTS Orange Intro
+        const introPullUp = easeInOutCubic(clamp((P - 0.43) / 0.07, 0, 1));
         if (craftsOrangeIntro) {
           craftsOrangeIntro.style.transform = `translate3d(0, ${(-introPullUp * 102).toFixed(2)}%, 0)`;
         }
 
-        // 2. Concave Curved Repeating Single-Letter Background Wall (C / R / A / F / T)
-        const galleryP = clamp((P - 0.08) / 0.80, 0, 1);
+        // Phase E (0.48 -> 0.92): Concave Repeating Single-Letter Background Wall + Inside-Cylinder 3D Proof-of-Work Gallery
+        const galleryP = clamp((P - 0.48) / 0.44, 0, 1);
         craftsBgRows.forEach((row, idx) => {
           if (!row) return;
           const dir = idx % 2 === 0 ? -1 : 1;
@@ -3111,17 +3089,13 @@
           row.style.transform = `translate3d(${shift.toFixed(1)}px, 0, 0) rotateX(${curveRot.toFixed(1)}deg)`;
         });
 
-        // 3. TRUE INSIDE-OF-A-CYLINDER CONCAVE 3D MOVEMENT (Viewer standing INSIDE cylinder looking at inner curved wall!)
-        //    As cards travel right -> left along the inner wall of radius R:
-        //    theta = delta * 0.48 rad -> x = sin(theta)*R, z = -(cos(theta) - 1)*R (curves FORWARD toward viewer on left & right!),
-        //    rotateY = -theta (angles inward along the concave inner cylinder wall!)
         const total = craftCardEls.length;
         const travelFloat = lerp(-1.2, total + 0.2, galleryP);
         const cylRadius = clamp(winW * 0.68, 560, 1080);
 
         craftCardEls.forEach((card, idx) => {
           const delta = idx - travelFloat;
-          if (Math.abs(delta) > 2.5 || P < 0.05 || P > 0.93) {
+          if (Math.abs(delta) > 2.5 || P < 0.45 || P > 0.95) {
             card.style.opacity = '0';
             card.style.visibility = 'hidden';
             const vid = card.querySelector('video');
@@ -3130,10 +3104,10 @@
           }
 
           card.style.visibility = 'visible';
-          const theta = delta * 0.50; // Angular spacing along inner cylinder wall
+          const theta = delta * 0.50;
           const x = Math.sin(theta) * cylRadius;
-          const z = -(Math.cos(theta) - 1) * cylRadius * 0.85; // Positive Z on sides -> true concave inside-cylinder wrap!
-          const rotY = -theta * (180 / Math.PI) * 0.92;        // Faces inward toward the viewer at cylinder center!
+          const z = -(Math.cos(theta) - 1) * cylRadius * 0.85;
+          const rotY = -theta * (180 / Math.PI) * 0.92;
           const op = clamp(1.25 - Math.abs(delta) * 0.42, 0, 1);
 
           card.style.opacity = op.toFixed(3);
@@ -3142,7 +3116,7 @@
 
           const vid = card.querySelector('video');
           if (vid) {
-            if (Math.abs(delta) < 1.15 && P > 0.08 && P < 0.90) {
+            if (Math.abs(delta) < 1.15 && P > 0.47 && P < 0.93) {
               if (vid.paused) vid.play().catch(() => {});
             } else if (!vid.paused) {
               vid.pause();
@@ -3150,8 +3124,8 @@
           }
         });
 
-        // 4. Orange Outro Panel rises smoothly into view (P: 0.89 -> 0.98)
-        const outroP = easeInOutCubic(clamp((P - 0.89) / 0.09, 0, 1));
+        // Phase F (0.92 -> 0.99): Orange Outro Panel rises smoothly into view
+        const outroP = easeInOutCubic(clamp((P - 0.92) / 0.07, 0, 1));
         if (craftsOrangeOutro) {
           craftsOrangeOutro.style.transform = `translate3d(0, ${lerp(102, 0, outroP).toFixed(2)}%, 0)`;
         }
@@ -3190,12 +3164,6 @@
           cameraTargetP = clamp(-r.top / maxS, 0, 1);
         }
 
-        if (craftsTrack) {
-          const r = craftsTrack.getBoundingClientRect();
-          const maxS = Math.max(1, craftsTrack.offsetHeight - winH);
-          craftsTargetP = clamp(-r.top / maxS, 0, 1);
-        }
-
         if (scrollThumb) {
           const docH = Math.max(1, document.documentElement.scrollHeight - winH);
           const scrollPct = clamp(window.scrollY / docH, 0, 1);
@@ -3208,15 +3176,11 @@
       function updateAdaptiveNavbarTheme() {
         if (!siteNavEl) return;
         const camRect = cameraTrack ? cameraTrack.getBoundingClientRect() : null;
-        const craftsRect = craftsTrack ? craftsTrack.getBoundingClientRect() : null;
 
         let mode = 'light';
-        if (craftsRect && craftsRect.top <= 40) {
-          if (craftsCurrentP < 0.10 || craftsCurrentP > 0.90) mode = 'orange';
-          else mode = 'dark';
-        } else if (camRect && camRect.top <= 40) {
-          if (cameraCurrentP < 0.24) mode = 'light';
-          else if (cameraCurrentP > 0.84) mode = 'orange';
+        if (camRect && camRect.top <= 40) {
+          if (cameraCurrentP < 0.11) mode = 'light';
+          else if ((cameraCurrentP >= 0.39 && cameraCurrentP <= 0.48) || cameraCurrentP > 0.94) mode = 'orange';
           else mode = 'dark';
         }
 
@@ -3228,8 +3192,7 @@
         renderHero(heroCurrentP);
         renderPhilosophy(philCurrentP);
         renderApproach(approachCurrentP);
-        renderCameraSection(cameraCurrentP);
-        renderCraftsSection(craftsCurrentP);
+        renderCameraAndCrafts(cameraCurrentP);
         updateAdaptiveNavbarTheme();
       }
 
@@ -3238,17 +3201,15 @@
         const dp = philTargetP - philCurrentP;
         const da = approachTargetP - approachCurrentP;
         const dc = cameraTargetP - cameraCurrentP;
-        const dk = craftsTargetP - craftsCurrentP;
 
         if (
           window.__ABOUT_INSTANT_SCRUB__ ||
-          (Math.abs(dh) < 0.0004 && Math.abs(dp) < 0.0004 && Math.abs(da) < 0.0004 && Math.abs(dc) < 0.0004 && Math.abs(dk) < 0.0004)
+          (Math.abs(dh) < 0.0004 && Math.abs(dp) < 0.0004 && Math.abs(da) < 0.0004 && Math.abs(dc) < 0.0004)
         ) {
           heroCurrentP = heroTargetP;
           philCurrentP = philTargetP;
           approachCurrentP = approachTargetP;
           cameraCurrentP = cameraTargetP;
-          craftsCurrentP = craftsTargetP;
           renderAllSections();
           masterRafId = null;
           return;
@@ -3258,7 +3219,6 @@
         philCurrentP += dp * 0.144;
         approachCurrentP += da * 0.144;
         cameraCurrentP += dc * 0.144;
-        craftsCurrentP += dk * 0.144;
 
         renderAllSections();
         masterRafId = requestAnimationFrame(tickMaster);
@@ -3271,7 +3231,6 @@
           philCurrentP = philTargetP;
           approachCurrentP = approachTargetP;
           cameraCurrentP = cameraTargetP;
-          craftsCurrentP = craftsTargetP;
           renderAllSections();
           return;
         }
@@ -3342,7 +3301,6 @@
         philTargetP = philCurrentP = 0;
         approachTargetP = approachCurrentP = 0;
         cameraTargetP = cameraCurrentP = 0;
-        craftsTargetP = craftsCurrentP = 0;
         window.scrollTo(0, 0);
         renderAllSections();
         computeAllTargets();
@@ -3361,7 +3319,6 @@
         philCurrentP = philTargetP;
         approachCurrentP = approachTargetP;
         cameraCurrentP = cameraTargetP;
-        craftsCurrentP = craftsTargetP;
         renderAllSections();
       };
 
@@ -3371,7 +3328,6 @@
       philCurrentP = philTargetP;
       approachCurrentP = approachTargetP;
       cameraCurrentP = cameraTargetP;
-      craftsCurrentP = craftsTargetP;
       renderAllSections();
     })();
   </script>
