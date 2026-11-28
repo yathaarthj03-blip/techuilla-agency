@@ -308,7 +308,7 @@
     const tex = new THREE.CanvasTexture(c);
     tex.anisotropy = maxAniso || 8;
 
-    const TARGET_WORD = 'clients';
+    const TARGET_WORD = 'projects';
     const ALPHABET = 'abcdefghijklmnopqrstuvwxyz';
     let lastKey = '';
 
@@ -383,11 +383,11 @@
       ctx.fillText('+', 316, topY + 2);
       ctx.restore();
 
-      const botFont = '500 54px "Space Grotesk", "Inter", monospace';
+      const botFont = '500 50px "Space Grotesk", "Inter", monospace';
       const botY = H * 0.77;
-      const botCharH = 62;
-      const startX = 76;
-      const spacing = 59;
+      const botCharH = 58;
+      const startX = 64;
+      const spacing = 54;
 
       for (let i = 0; i < TARGET_WORD.length; i++) {
         const targetChar = TARGET_WORD[i];
