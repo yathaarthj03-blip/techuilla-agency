@@ -3703,21 +3703,6 @@ input, textarea, [contenteditable="true"] {
       gap: 10px;
     }
 
-    .vengeance-tc-stars {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      color: var(--color-orange, #FF6600);
-      margin-top: 2px;
-    }
-
-    .vengeance-tc-stars svg {
-      width: 21px;
-      height: 21px;
-      fill: currentColor;
-      display: block;
-    }
-
     /* Name is TWICE the size it was previously (was clamp(22px, 2.1vw, 28px) -> now clamp(44px, 4.2vw, 56px)) */
     .vengeance-tc-title {
       font-family: var(--font-sans);
@@ -3737,6 +3722,17 @@ input, textarea, [contenteditable="true"] {
       letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--color-orange, #FF6600);
+    }
+
+    .vengeance-tc-stars {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--color-orange, #FF6600);
+      font-size: 18px;
+      line-height: 1;
+      letter-spacing: 0.06em;
+      margin-top: 2px;
     }
 
     /* Description scaled to match the full container footprint */
@@ -5587,7 +5583,7 @@ input, textarea, [contenteditable="true"] {
             </div>
           </div>
 
-          <!-- Right Column: Counter + 2x Name Title + Subtitle Role + Full Container-Scaled Description -->
+          <!-- Right Column: Counter + 2x Name Title + Subtitle Role + Stars + Description -->
           <div class="vengeance-tc-right-col">
             <div class="vengeance-tc-counter" id="vengeanceTcCounter" aria-live="polite">
               <span class="tc-active-num" id="vengeanceTcActiveNum">1</span> / <span id="vengeanceTcTotalNum">4</span>
@@ -5601,13 +5597,7 @@ input, textarea, [contenteditable="true"] {
                 <div class="vengeance-tc-title-row">
                   <h3 class="vengeance-tc-title" id="vengeanceTcTitle">Drashti Zatakia</h3>
                   <span class="vengeance-tc-role" id="vengeanceTcRole">Founder | Health Streak</span>
-                  <div class="vengeance-tc-stars" id="vengeanceTcStars" aria-label="5 out of 5 stars">
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  </div>
+                  <div class="vengeance-tc-stars" id="vengeanceTcStars" aria-label="5 out of 5 stars">★★★★★</div>
                 </div>
                 <p class="vengeance-tc-desc" id="vengeanceTcDesc">
                   “Working with Yathaarth was a seamless experience. He understood my vision from the start and translated it into a website that was exactly what I needed. Every detail was thoughtfully executed, and the final result exceeded my expectations. I truly appreciate his professionalism, creativity, and attention to detail. Highly recommended.”
@@ -8418,46 +8408,47 @@ Best regards,
         updateTestimonialsTitleWipe();
 
         // 2. Infinite 3D Testimonials Card Stack Data & Controller
+        const starsEl = document.getElementById('vengeanceTcStars');
         const TESTIMONIAL_ITEMS = [
           {
             id: 1,
             title: "Drashti Zatakia",
             role: "Founder | Health Streak",
-            badge: "★★★★★ • 5.0",
+            badge: "WEB DEVELOPMENT",
             stars: 5,
             description: "“Working with Yathaarth was a seamless experience. He understood my vision from the start and translated it into a website that was exactly what I needed. Every detail was thoughtfully executed, and the final result exceeded my expectations. I truly appreciate his professionalism, creativity, and attention to detail. Highly recommended.”",
-            image: "assets/testimonial_drashti.jpg",
+            image: "assets/testimonial_1_healthstreak.jpg",
             imgStyle: "object-fit:contain;background:#FFFFFF;padding:18px;"
           },
           {
             id: 2,
             title: "Kushal Gangwani",
             role: "Owner | Oramax Clinic",
-            badge: "★★★★★ • 5.0",
+            badge: "WEB DEVELOPMENT",
             stars: 5,
             description: "“Yathaarth did a great job creating my website and understood exactly what I needed. He was attentive to every detail and delivered a clean, professional website that matched my vision perfectly. Highly recommended!”",
-            image: "assets/testimonial_kushal.jpg",
-            imgStyle: "object-fit:cover;object-position:center top;"
+            image: "assets/testimonial_2_oramax.jpg",
+            imgStyle: "object-position:center 18%;"
           },
           {
             id: 3,
             title: "Anurag Tiwari",
             role: "Founder | AY Media Agency",
-            badge: "★★★★★ • 5.0",
+            badge: "PRODUCTION PARTNER",
             stars: 5,
             description: "“Working with Yathaarth has been an excellent experience. He brings quality, efficiency, and professionalism to every project. His ability to execute smoothly and deliver consistently has made them a valuable production partner for our agency. We genuinely appreciate the collaboration and look forward to more projects together.”",
-            image: "assets/testimonial_anurag.png",
-            imgStyle: "object-fit:contain;background:#0C0D11;padding:14px;"
+            image: "assets/testimonial_3_aymedia.png",
+            imgStyle: "object-fit:contain;background:#0B0C10;padding:14px;"
           },
           {
             id: 4,
             title: "Ritesh Safariya",
             role: "Owner | Rama Hair Clinic – Trichology Center",
-            badge: "★★★★★ • 5.0",
+            badge: "WEB DEVELOPMENT",
             stars: 5,
             description: "“Smart on-time n organised guy, I highly recommend him for work. Good luck to him.”",
-            image: "assets/testimonial_ritesh.jpg",
-            imgStyle: "object-fit:cover;object-position:center top;"
+            image: "assets/testimonial_4_ramahair.jpg",
+            imgStyle: "object-position:center 20%;"
           }
         ];
 
@@ -8577,6 +8568,11 @@ Best regards,
             setTimeout(() => {
               titleEl.textContent = item.title;
               if (roleEl) roleEl.textContent = item.role;
+              if (starsEl) {
+                const count = item.stars || 5;
+                starsEl.textContent = '★'.repeat(count);
+                starsEl.setAttribute('aria-label', `${count} out of 5 stars`);
+              }
               descEl.textContent = item.description;
 
               textContentEl.style.transition = 'none';
