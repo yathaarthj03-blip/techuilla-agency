@@ -95,61 +95,334 @@
     return tex;
   }
 
-  // Photorealistic Multi-Coated Curved Camera Lens Element Texture (No Greenish/Bluish Flat Layer)
-  function createCameraLensGlassTexture() {
+  // Ultra-High-Res Procedural Concentric Micro-Grooved Baffle & Bezel Texture (2048x2048)
+  function createMicroBaffleTextures(maxAniso) {
+    // 1. Albedo + Grazing Specular Sheen Map
     const c = document.createElement('canvas');
-    c.width = 1024;
-    c.height = 1024;
+    c.width = 2048;
+    c.height = 2048;
     const ctx = c.getContext('2d');
-    const cx = 512, cy = 512;
+    const cx = 1024, cy = 1024;
 
-    // Deep obsidian multi-element optical barrel base
-    const baseGrad = ctx.createRadialGradient(cx, cy, 40, cx, cy, 500);
-    baseGrad.addColorStop(0.00, 'rgba(3, 3, 5, 0.25)');
-    baseGrad.addColorStop(0.42, 'rgba(8, 8, 12, 0.72)');
-    baseGrad.addColorStop(0.68, 'rgba(18, 16, 22, 0.90)');
-    baseGrad.addColorStop(0.86, 'rgba(10, 10, 14, 0.96)');
-    baseGrad.addColorStop(1.00, 'rgba(4, 4, 6, 1.0)');
+    ctx.fillStyle = '#070709';
+    ctx.fillRect(0, 0, 2048, 2048);
+
+    // 110 precision lathe-turned concentric light-trap micro-grooves
+    for (let r = 980; r >= 240; r -= 6.5) {
+      const band = Math.floor((980 - r) / 145);
+      const isStepEdge = Math.abs(((980 - r) % 145)) < 8;
+      const grooveBright = isStepEdge ? 42 : (Math.sin(r * 0.95) * 0.5 + 0.5) * 20 + 8;
+      ctx.strokeStyle = `rgb(${Math.round(grooveBright * 1.06)}, ${Math.round(grooveBright * 0.98)}, ${Math.round(grooveBright * 0.92)})`;
+      ctx.lineWidth = isStepEdge ? 3.2 : 2.1;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Deep matte-black valley beside each micro-ridge
+      ctx.strokeStyle = '#030304';
+      ctx.lineWidth = 2.4;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r - 3.1, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Subtle step shadow drop at each tiered barrel wall
+      if (isStepEdge && band > 0) {
+        ctx.strokeStyle = 'rgba(255, 198, 138, 0.22)';
+        ctx.lineWidth = 2.0;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r + 2.5, -0.65, 1.15);
+        ctx.stroke();
+      }
+    }
+
+    // Grazing warm golden-amber studio rim light catching the concentric micro-grooves
+    // Right bevel sheen (2:30 - 5:30 o'clock)
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+    const sheenRight = ctx.createRadialGradient(cx + 620, cy + 220, 40, cx + 620, cy + 220, 680);
+    sheenRight.addColorStop(0.0, 'rgba(255, 186, 112, 0.36)');
+    sheenRight.addColorStop(0.45, 'rgba(215, 132, 68, 0.16)');
+    sheenRight.addColorStop(1.0, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = sheenRight;
+    ctx.fillRect(0, 0, 2048, 2048);
+
+    // Left bevel sheen (8:30 - 11:00 o'clock)
+    const sheenLeft = ctx.createRadialGradient(cx - 640, cy - 180, 30, cx - 640, cy - 180, 620);
+    sheenLeft.addColorStop(0.0, 'rgba(255, 196, 132, 0.32)');
+    sheenLeft.addColorStop(0.45, 'rgba(180, 115, 72, 0.14)');
+    sheenLeft.addColorStop(1.0, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = sheenLeft;
+    ctx.fillRect(0, 0, 2048, 2048);
+
+    // Bottom inner warm bounce sheen (5:30 - 6:30 o'clock)
+    const sheenBottom = ctx.createRadialGradient(cx + 90, cy + 620, 20, cx + 90, cy + 620, 360);
+    sheenBottom.addColorStop(0.0, 'rgba(255, 178, 92, 0.28)');
+    sheenBottom.addColorStop(0.55, 'rgba(180, 102, 42, 0.10)');
+    sheenBottom.addColorStop(1.0, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = sheenBottom;
+    ctx.fillRect(0, 0, 2048, 2048);
+    ctx.restore();
+
+    const mapTex = new THREE.CanvasTexture(c);
+    mapTex.anisotropy = maxAniso || 8;
+
+    // 2. Matching Smooth Concentric Micro-Groove Bump Map (Smooth Sine-Wave Ridges — Zero Aliasing / Moire!)
+    const b = document.createElement('canvas');
+    b.width = 512;
+    b.height = 512;
+    const bctx = b.getContext('2d');
+    for (let y = 0; y < 512; y++) {
+      const v = Math.round((Math.sin((y / 512) * Math.PI * 2 * 36) * 0.5 + 0.5) * 180 + 35);
+      bctx.fillStyle = `rgb(${v},${v},${v})`;
+      bctx.fillRect(0, y, 512, 1);
+    }
+    const bumpTex = new THREE.CanvasTexture(b);
+    bumpTex.wrapS = THREE.RepeatWrapping;
+    bumpTex.wrapT = THREE.RepeatWrapping;
+    bumpTex.repeat.set(1, 1);
+    bumpTex.anisotropy = maxAniso || 8;
+
+    return { mapTex, bumpTex };
+  }
+
+  // Layer 1: Outer Multi-Coated Curved Glass Element (Sleek Curved Emerald-Cyan AR Crescent + Fine Concentric Rings)
+  function createOuterOpticalCoatingTexture(maxAniso) {
+    const c = document.createElement('canvas');
+    c.width = 2048;
+    c.height = 2048;
+    const ctx = c.getContext('2d');
+    const cx = 1024, cy = 1024;
+
+    ctx.clearRect(0, 0, 2048, 2048);
+
+    // Deep obsidian optical barrel depth vignette
+    const baseGrad = ctx.createRadialGradient(cx, cy, 80, cx, cy, 990);
+    baseGrad.addColorStop(0.00, 'rgba(2, 3, 5, 0.25)');
+    baseGrad.addColorStop(0.35, 'rgba(4, 6, 10, 0.45)');
+    baseGrad.addColorStop(0.66, 'rgba(7, 8, 12, 0.72)');
+    baseGrad.addColorStop(0.86, 'rgba(5, 5, 8, 0.90)');
+    baseGrad.addColorStop(1.00, 'rgba(2, 2, 4, 0.98)');
     ctx.fillStyle = baseGrad;
-    ctx.fillRect(0, 0, 1024, 1024);
+    ctx.fillRect(0, 0, 2048, 2048);
 
-    // Subtle concentric optical internal lens element rings
-    [455, 395, 330, 265].forEach((r, idx) => {
-      ctx.strokeStyle = idx % 2 === 0 ? 'rgba(255, 255, 255, 0.14)' : 'rgba(255, 168, 96, 0.12)';
-      ctx.lineWidth = idx === 0 ? 4 : 2.5;
+    // Crisp concentric internal lens element rim reflections
+    const ringDefs = [
+      { r: 948, w: 3.0, col: 'rgba(255, 205, 148, 0.30)' },
+      { r: 878, w: 1.8, col: 'rgba(255, 255, 255, 0.14)' },
+      { r: 785, w: 2.5, col: 'rgba(255, 190, 128, 0.24)' },
+      { r: 688, w: 1.8, col: 'rgba(170, 230, 255, 0.16)' },
+      { r: 580, w: 2.2, col: 'rgba(255, 220, 178, 0.20)' },
+      { r: 462, w: 1.8, col: 'rgba(130, 220, 200, 0.18)' },
+      { r: 350, w: 1.8, col: 'rgba(255, 205, 158, 0.20)' },
+      { r: 248, w: 1.6, col: 'rgba(170, 225, 215, 0.22)' }
+    ];
+    ringDefs.forEach(rd => {
+      ctx.strokeStyle = rd.col;
+      ctx.lineWidth = rd.w;
+      ctx.beginPath();
+      ctx.arc(cx, cy, rd.r, 0, Math.PI * 2);
+      ctx.stroke();
+    });
+
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+
+    // Signature UPPER-RIGHT Curved Emerald-Cyan / Teal / Warm-Gold Anti-Reflective Crescent Band (1:15 - 2:45 o'clock)
+    ctx.save();
+    ctx.translate(cx, cy);
+    // Broad soft emerald-teal curved band following lens curvature (not an oval blob!)
+    ctx.filter = 'blur(26px)';
+    ctx.strokeStyle = 'rgba(42, 218, 162, 0.62)';
+    ctx.lineWidth = 115;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.arc(0, 0, 560, -0.96, -0.22);
+    ctx.stroke();
+
+    // Inner bright mint-cyan specular highlight arc
+    ctx.filter = 'blur(14px)';
+    ctx.strokeStyle = 'rgba(182, 255, 232, 0.78)';
+    ctx.lineWidth = 44;
+    ctx.beginPath();
+    ctx.arc(0, 0, 585, -0.84, -0.34);
+    ctx.stroke();
+
+    // Subtle golden-lime outer dispersion edge on upper-right arc
+    ctx.filter = 'blur(18px)';
+    ctx.strokeStyle = 'rgba(220, 210, 96, 0.36)';
+    ctx.lineWidth = 34;
+    ctx.beginPath();
+    ctx.arc(0, 0, 490, -0.92, -0.28);
+    ctx.stroke();
+
+    // Signature LOWER-LEFT Secondary Emerald-Teal Curved AR Crescent (7:15 - 8:30 o'clock)
+    ctx.filter = 'blur(22px)';
+    ctx.strokeStyle = 'rgba(56, 212, 164, 0.44)';
+    ctx.lineWidth = 76;
+    ctx.beginPath();
+    ctx.arc(0, 0, 625, 2.08, 2.74);
+    ctx.stroke();
+
+    // Bottom Warm Golden-Amber Curved Glass Rim Reflection (5:30 - 6:15 o'clock)
+    ctx.filter = 'blur(16px)';
+    ctx.strokeStyle = 'rgba(255, 174, 82, 0.46)';
+    ctx.lineWidth = 32;
+    ctx.beginPath();
+    ctx.arc(0, 0, 745, 1.25, 1.85);
+    ctx.stroke();
+
+    ctx.filter = 'none';
+    ctx.restore();
+
+    ctx.restore();
+
+    const tex = new THREE.CanvasTexture(c);
+    tex.anisotropy = maxAniso || 8;
+    return tex;
+  }
+
+  // Layer 2: Mid-Depth Chromatic Prism Element (Vivid Amber-Gold + Royal Blue + Magenta-Violet Left Prism Stack!)
+  function createMidPrismCoatingTexture(maxAniso) {
+    const c = document.createElement('canvas');
+    c.width = 2048;
+    c.height = 2048;
+    const ctx = c.getContext('2d');
+    const cx = 1024, cy = 1024;
+    ctx.clearRect(0, 0, 2048, 2048);
+
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+
+    // Signature LEFT-SIDE Chromatic Prism Stack (Amber-Orange -> Crisp White-Gold -> Royal Blue -> Violet-Magenta)
+    ctx.save();
+    ctx.translate(cx, cy);
+
+    // Warm Amber-Orange inner prism flare
+    ctx.filter = 'blur(12px)';
+    ctx.strokeStyle = 'rgba(255, 148, 52, 0.95)';
+    ctx.lineWidth = 64;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.arc(0, 0, 565, 2.82, 3.30);
+    ctx.stroke();
+
+    // Hot White-Gold highlight core right on the amber edge
+    ctx.filter = 'blur(5px)';
+    ctx.strokeStyle = 'rgba(255, 240, 205, 0.98)';
+    ctx.lineWidth = 22;
+    ctx.beginPath();
+    ctx.arc(0, 0, 590, 2.90, 3.24);
+    ctx.stroke();
+
+    // Royal Blue / Cobalt prism dispersion outer band (just outside amber)
+    ctx.filter = 'blur(14px)';
+    ctx.strokeStyle = 'rgba(84, 142, 255, 0.92)';
+    ctx.lineWidth = 74;
+    ctx.beginPath();
+    ctx.arc(0, 0, 685, 2.76, 3.48);
+    ctx.stroke();
+
+    // Magenta-Violet dispersion arc extending downward along lower-left curve
+    ctx.filter = 'blur(16px)';
+    ctx.strokeStyle = 'rgba(224, 92, 255, 0.80)';
+    ctx.lineWidth = 54;
+    ctx.beginPath();
+    ctx.arc(0, 0, 645, 2.28, 2.98);
+    ctx.stroke();
+
+    // Tight inner royal-blue crescent reflection closer to optical center
+    ctx.filter = 'blur(8px)';
+    ctx.strokeStyle = 'rgba(104, 166, 255, 0.88)';
+    ctx.lineWidth = 34;
+    ctx.beginPath();
+    ctx.arc(0, 0, 388, 2.70, 3.42);
+    ctx.stroke();
+
+    // Inner warm gold curved counter-reflection on lower-left-inner barrel
+    ctx.filter = 'blur(10px)';
+    ctx.strokeStyle = 'rgba(255, 192, 112, 0.56)';
+    ctx.lineWidth = 26;
+    ctx.beginPath();
+    ctx.arc(0, 0, 448, 2.02, 2.78);
+    ctx.stroke();
+
+    // Inner upper-right teal-gold secondary coating arc (creates genuine 3D parallax against outer emerald layer!)
+    ctx.filter = 'blur(10px)';
+    ctx.strokeStyle = 'rgba(128, 248, 202, 0.72)';
+    ctx.lineWidth = 38;
+    ctx.beginPath();
+    ctx.arc(0, 0, 395, -0.94, -0.24);
+    ctx.stroke();
+
+    ctx.filter = 'none';
+    ctx.restore();
+
+    // Razor-sharp concentric inner optical bevel rings
+    [710, 610, 505, 390, 285, 195].forEach((r, idx) => {
+      ctx.strokeStyle = idx % 2 === 0 ? 'rgba(255, 224, 186, 0.28)' : 'rgba(150, 205, 255, 0.24)';
+      ctx.lineWidth = 2.4;
       ctx.beginPath();
       ctx.arc(cx, cy, r, 0, Math.PI * 2);
       ctx.stroke();
     });
 
-    // Realistic curved convex glass studio softbox reflection (upper-right warm tungsten arc)
-    ctx.save();
-    ctx.translate(cx, cy);
-    ctx.rotate(-0.55);
-    const ref1 = ctx.createLinearGradient(-160, -340, 180, -180);
-    ref1.addColorStop(0, 'rgba(255, 236, 214, 0.0)');
-    ref1.addColorStop(0.45, 'rgba(255, 236, 214, 0.36)');
-    ref1.addColorStop(1, 'rgba(255, 190, 130, 0.0)');
-    ctx.strokeStyle = ref1;
-    ctx.lineWidth = 42;
-    ctx.lineCap = 'round';
-    ctx.beginPath();
-    ctx.arc(0, 0, 345, -1.35, -0.35);
-    ctx.stroke();
-
-    // Subtle anti-reflective warm magenta/amber secondary coating sheen (lower-left)
-    const ref2 = ctx.createLinearGradient(-220, 160, 120, 340);
-    ref2.addColorStop(0, 'rgba(255, 110, 48, 0.0)');
-    ref2.addColorStop(0.5, 'rgba(210, 110, 185, 0.22)');
-    ref2.addColorStop(1, 'rgba(255, 110, 48, 0.0)');
-    ctx.strokeStyle = ref2;
-    ctx.lineWidth = 28;
-    ctx.beginPath();
-    ctx.arc(0, 0, 290, 1.75, 2.75);
-    ctx.stroke();
     ctx.restore();
 
     const tex = new THREE.CanvasTexture(c);
+    tex.anisotropy = maxAniso || 8;
+    return tex;
+  }
+
+  // Layer 3: Deep Inner Optical Core & Jewel-Like Central Specular Glint
+  function createDeepCoreOpticalTexture(maxAniso) {
+    const c = document.createElement('canvas');
+    c.width = 1024;
+    c.height = 1024;
+    const ctx = c.getContext('2d');
+    const cx = 512, cy = 512;
+    ctx.clearRect(0, 0, 1024, 1024);
+
+    // Deep concentric optical tunnel micro-rings
+    for (let r = 460; r >= 55; r -= 18) {
+      ctx.strokeStyle = r < 160 ? 'rgba(190, 230, 220, 0.24)' : 'rgba(255, 205, 150, 0.14)';
+      ctx.lineWidth = r < 160 ? 1.8 : 1.3;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+
+    // Tight inner emerald-gold glint at 1:30
+    ctx.filter = 'blur(4px)';
+    ctx.strokeStyle = 'rgba(155, 255, 215, 0.72)';
+    ctx.lineWidth = 10;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.arc(cx, cy, 128, -0.95, -0.35);
+    ctx.stroke();
+
+    // Tight inner cool white-cyan glint at 7:30 (matches the crisp inner double reflection in the reference!)
+    ctx.strokeStyle = 'rgba(215, 245, 255, 0.85)';
+    ctx.lineWidth = 12;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 118, 2.05, 2.55);
+    ctx.stroke();
+
+    // Pinpoint jewel-like optical center glint
+    ctx.filter = 'none';
+    const pin = ctx.createRadialGradient(cx + 16, cy - 12, 2, cx + 16, cy - 12, 42);
+    pin.addColorStop(0.0, 'rgba(255, 252, 232, 0.92)');
+    pin.addColorStop(0.35, 'rgba(150, 238, 205, 0.45)');
+    pin.addColorStop(1.0, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = pin;
+    ctx.fillRect(cx - 60, cy - 60, 120, 120);
+
+    ctx.restore();
+
+    const tex = new THREE.CanvasTexture(c);
+    tex.anisotropy = maxAniso || 8;
     return tex;
   }
 
@@ -196,6 +469,23 @@
     const bounceLight = new THREE.PointLight(0xff8c3a, 1.4, 14);
     bounceLight.position.set(0, -3.4, 2.8);
     scene.add(bounceLight);
+
+    // Dedicated Grazing Macro Studio Rim Lights for Chamfered Lens Bezel & Micro-Grooves (tight falloff so body stays obsidian!)
+    const lensRimTopLeft = new THREE.PointLight(0xffb864, 0.95, 4.2);
+    lensRimTopLeft.position.set(-1.35, 1.15, 1.75);
+    scene.add(lensRimTopLeft);
+
+    const lensRimBottomRight = new THREE.PointLight(0xff9438, 0.85, 4.2);
+    lensRimBottomRight.position.set(1.40, -0.95, 1.65);
+    scene.add(lensRimBottomRight);
+
+    const lensRimTopRight = new THREE.PointLight(0xd4eeff, 0.65, 4.0);
+    lensRimTopRight.position.set(1.15, 1.25, 1.85);
+    scene.add(lensRimTopRight);
+
+    const maxAniso = renderer.capabilities && renderer.capabilities.getMaxAnisotropy
+      ? Math.min(renderer.capabilities.getMaxAnisotropy(), 16)
+      : 8;
 
     // Procedural PBR Materials
     const leatherTex = createLeatherBumpTexture();
@@ -409,41 +699,146 @@
       focusRingGroup.add(tick);
     }
 
-    // Inner Stepped Optical Baffles (Deep dark tunnel inside lens)
-    const baffle1 = new THREE.Mesh(new THREE.TorusGeometry(0.55, 0.04, 16, 48), matMetalDark);
-    baffle1.position.set(0, 0, 0.72);
-    lensGroup.add(baffle1);
+    // Helper: Curved Optical Glass Dome Geometry with Exact Planar Circular UVs (Zero UV Distortion + Real 3D Depth!)
+    function createCurvedOpticalDomeGeo(innerR, outerR, bulgeZ, radialSegs, ringSegs) {
+      const geo = new THREE.RingGeometry(innerR, outerR, radialSegs, ringSegs);
+      const pos = geo.attributes.position;
+      const uv = geo.attributes.uv;
+      for (let i = 0; i < pos.count; i++) {
+        const x = pos.getX(i);
+        const y = pos.getY(i);
+        const r = Math.sqrt(x * x + y * y);
+        const rn = Math.min(1, r / outerR);
+        // Parabolic / spherical meniscus curvature
+        const z = bulgeZ * (1 - rn * rn);
+        pos.setZ(i, z);
+        uv.setXY(i, (x / outerR) * 0.5 + 0.5, (y / outerR) * 0.5 + 0.5);
+      }
+      geo.computeVertexNormals();
+      return geo;
+    }
 
-    const baffle2 = new THREE.Mesh(new THREE.TorusGeometry(0.46, 0.035, 16, 48), matBody);
-    baffle2.position.set(0, 0, 0.50);
-    lensGroup.add(baffle2);
+    // Ultra-Detailed Stepped Micro-Grooved Inner Lens Barrel & Multi-Element Optical Assembly
+    const baffleTexBundle = createMicroBaffleTextures(maxAniso);
 
-    // Realistic Multi-Coated Photorealistic Camera Lens Glass Element (Zero Greenish/Bluish Tint!)
-    const lensGlassTex = createCameraLensGlassTexture();
-    const opticalRimGlassMat = new THREE.MeshBasicMaterial({
-      map: lensGlassTex,
+    // 1) Precision Chamfered Outer Bezel Rim catching warm gold studio highlights
+    const matChamferWarm = new THREE.MeshStandardMaterial({
+      color: 0x3b3532,
+      roughness: 0.22,
+      metalness: 0.92
+    });
+    const outerChamferBezel = new THREE.Mesh(new THREE.TorusGeometry(0.76, 0.028, 24, 96), matChamferWarm);
+    outerChamferBezel.position.set(0, 0, 0.875);
+    lensGroup.add(outerChamferBezel);
+
+    // 2) 5-Tiered Stepped Concentric Inner Barrel Funnel (LatheGeometry with Micro-Grooved Bump Map!)
+    const lathePoints = [
+      new THREE.Vector2(0.585, 0.865),
+      new THREE.Vector2(0.565, 0.835),
+      new THREE.Vector2(0.540, 0.805),
+      new THREE.Vector2(0.540, 0.755),
+      new THREE.Vector2(0.495, 0.725),
+      new THREE.Vector2(0.495, 0.675),
+      new THREE.Vector2(0.445, 0.640),
+      new THREE.Vector2(0.445, 0.585),
+      new THREE.Vector2(0.390, 0.545),
+      new THREE.Vector2(0.390, 0.485),
+      new THREE.Vector2(0.335, 0.445),
+      new THREE.Vector2(0.335, 0.375),
+      new THREE.Vector2(0.275, 0.335)
+    ];
+    const steppedBarrelGeo = new THREE.LatheGeometry(lathePoints, 96);
+    steppedBarrelGeo.rotateX(Math.PI / 2);
+    const steppedBarrelMat = new THREE.MeshStandardMaterial({
+      color: 0x0a0b0e,
+      roughness: 0.42,
+      metalness: 0.78,
+      bumpMap: baffleTexBundle.bumpTex,
+      bumpScale: 0.011,
+      side: THREE.DoubleSide
+    });
+    const steppedBarrelMesh = new THREE.Mesh(steppedBarrelGeo, steppedBarrelMat);
+    lensGroup.add(steppedBarrelMesh);
+
+    // Pitch-Black Deep Optical Chamber Back-Plate (completely blocks camera body leatherette from ever peeking through lens bore!)
+    const opticalBackPlate = new THREE.Mesh(
+      new THREE.CircleGeometry(0.56, 64),
+      new THREE.MeshBasicMaterial({ color: 0x020204 })
+    );
+    opticalBackPlate.position.set(0, 0, 0.24);
+    lensGroup.add(opticalBackPlate);
+
+    // 3) Front Micro-Grooved Light-Trap Baffle Collar Annulus (2048px Concentric Lathe Grooves + Subtle Warm Grazing Sheen)
+    const microBaffleFaceMat = new THREE.MeshStandardMaterial({
+      color: 0x625e5c,
+      map: baffleTexBundle.mapTex,
+      roughness: 0.50,
+      metalness: 0.72,
+      side: THREE.DoubleSide
+    });
+    const microBaffleFace = new THREE.Mesh(createCurvedOpticalDomeGeo(0.41, 0.615, -0.045, 96, 8), microBaffleFaceMat);
+    microBaffleFace.position.set(0, 0, 0.855);
+    lensGroup.add(microBaffleFace);
+
+    // 4) 6 Razor-Sharp Precision Metallic Spacer Rings Stepping Deep into the Optical Tunnel
+    const spacerRingConfigs = [
+      { r: 0.585, tube: 0.014, z: 0.860, mat: matChamferWarm },
+      { r: 0.542, tube: 0.011, z: 0.798, mat: matMetalBrushed },
+      { r: 0.495, tube: 0.010, z: 0.720, mat: matChamferWarm },
+      { r: 0.445, tube: 0.009, z: 0.635, mat: matMetalBrushed },
+      { r: 0.390, tube: 0.008, z: 0.542, mat: matChamferWarm },
+      { r: 0.335, tube: 0.007, z: 0.442, mat: matMetalBrushed }
+    ];
+    spacerRingConfigs.forEach(cfg => {
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(cfg.r, cfg.tube, 18, 96), cfg.mat);
+      ring.position.set(0, 0, cfg.z);
+      lensGroup.add(ring);
+    });
+
+    // 5) Layer 1 — Outer Curved Multi-Coated Meniscus Glass Element (Emerald-Cyan AR Coating + Fine Concentric Rings)
+    const outerOpticalTex = createOuterOpticalCoatingTexture(maxAniso);
+    const outerOpticalMat = new THREE.MeshBasicMaterial({
+      map: outerOpticalTex,
+      transparent: true,
+      opacity: 0.96,
+      depthWrite: false,
+      side: THREE.DoubleSide
+    });
+    const outerMeniscusDome = new THREE.Mesh(createCurvedOpticalDomeGeo(0.08, 0.565, 0.095, 96, 16), outerOpticalMat);
+    outerMeniscusDome.position.set(0, 0, 0.735);
+    lensGroup.add(outerMeniscusDome);
+
+    // 6) Layer 2 — Mid-Depth Chromatic Prism Curved Element (Amber-Gold + Royal Blue + Magenta-Violet Left Prism Arc!)
+    const midPrismTex = createMidPrismCoatingTexture(maxAniso);
+    const midPrismMat = new THREE.MeshBasicMaterial({
+      map: midPrismTex,
       transparent: true,
       opacity: 0.94,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
       side: THREE.DoubleSide
     });
-    const meniscusRing = new THREE.Mesh(new THREE.RingGeometry(0.18, 0.56, 64), opticalRimGlassMat);
-    meniscusRing.position.set(0, 0, 0.67);
-    lensGroup.add(meniscusRing);
+    const midPrismDome = new THREE.Mesh(createCurvedOpticalDomeGeo(0.06, 0.495, -0.075, 96, 14), midPrismMat);
+    midPrismDome.position.set(0, 0, 0.615);
+    lensGroup.add(midPrismDome);
 
-    // Subtle Secondary Curved Specular Glint Rim
-    const glintMat = new THREE.MeshBasicMaterial({
-      color: 0xffeedd,
+    // 7) Layer 3 — Deep Inner Optical Core & Jewel-Like Central Specular Glint
+    const deepCoreTex = createDeepCoreOpticalTexture(maxAniso);
+    const deepCoreMat = new THREE.MeshBasicMaterial({
+      map: deepCoreTex,
       transparent: true,
-      opacity: 0.26,
+      opacity: 0.92,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
       side: THREE.DoubleSide
     });
-    const lensGlintArc = new THREE.Mesh(new THREE.RingGeometry(0.41, 0.45, 48, 1, 0.55, 0.95), glintMat);
-    lensGlintArc.position.set(0, 0, 0.70);
-    lensGroup.add(lensGlintArc);
+    const deepCoreDome = new THREE.Mesh(createCurvedOpticalDomeGeo(0.001, 0.385, 0.045, 72, 10), deepCoreMat);
+    deepCoreDome.position.set(0, 0, 0.465);
+    lensGroup.add(deepCoreDome);
 
     // 9-Blade Mechanical Organic Camera Iris Diaphragm (Opens smoothly from exact center on scroll!)
     const irisGroup = new THREE.Group();
-    irisGroup.position.set(0, 0, 0.58);
+    irisGroup.position.set(0, 0, 0.52);
     lensGroup.add(irisGroup);
 
     const irisBladeMat = new THREE.MeshStandardMaterial({
@@ -564,10 +959,15 @@
       });
       irisGroup.visible = irisOpen < 0.96;
 
-      // Fade optical glass glint cleanly as camera passes through the open iris
-      const glassFade = Math.max(0, 1 - Math.max(0, (p - 0.35) / 0.40));
-      opticalRimGlassMat.opacity = 0.85 * glassFade;
-      glintMat.opacity = 0.28 * glassFade;
+      // Fade multi-layered optical glass coatings cleanly as camera passes through the open iris into OUR CRAFTS
+      const outerGlassFade = Math.max(0, 1 - Math.max(0, (p - 0.36) / 0.38));
+      const coreGlassFade = Math.max(0, 1 - Math.max(0, (p - 0.24) / 0.32));
+      outerOpticalMat.opacity = 0.96 * outerGlassFade;
+      midPrismMat.opacity = 0.94 * outerGlassFade;
+      deepCoreMat.opacity = 0.92 * coreGlassFade;
+      // Subtle optical refraction shimmer as focal ring turns
+      midPrismDome.rotation.z = p * 0.14;
+      deepCoreDome.rotation.z = -p * 0.22;
 
       renderer.render(scene, camera);
     }
