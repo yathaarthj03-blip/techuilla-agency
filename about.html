@@ -3828,14 +3828,14 @@
 
       const FOUNDER_BOLD_UNIT = 'FOUNDER • ';
       const FOUNDER_SCRIPT_UNITS = [
-        'Developer\u00A0\u00A0\u00A0\u00A0',
+        'Entrepreneur\u00A0\u00A0\u00A0\u00A0',
         'Designer & Integrator\u00A0\u00A0\u00A0\u00A0',
-        'Creative\u00A0\u00A0\u00A0\u00A0',
-        'Developer\u00A0\u00A0\u00A0\u00A0',
+        'Creator & Developer\u00A0\u00A0\u00A0\u00A0',
+        'Entrepreneur\u00A0\u00A0\u00A0\u00A0',
         'Designer & Integrator\u00A0\u00A0\u00A0\u00A0'
       ];
       const boldUnitLens = [520, 520, 520, 520, 520];
-      const scriptUnitLens = [390, 810, 350, 390, 810];
+      const scriptUnitLens = [480, 810, 740, 480, 810];
 
       for (let i = 0; i < 5; i++) {
         if (founderBoldTPs[i]) {
@@ -4142,7 +4142,8 @@
         if (founderTrack) {
           const fr = founderTrack.getBoundingClientRect();
           if (fr.top <= 10 && fr.bottom >= window.innerHeight - 10) {
-            scrollFactor = 0.611;
+            // Keep default speed (0.513) before split opens; increase by +20% (0.733) once founder images appear!
+            scrollFactor = founderCurrentP >= 0.16 ? 0.733 : 0.513;
           }
         }
         targetY = Math.max(0, Math.min(maxScrollY, targetY + clampedDelta * scrollFactor));
