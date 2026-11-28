@@ -3703,6 +3703,21 @@ input, textarea, [contenteditable="true"] {
       gap: 10px;
     }
 
+    .vengeance-tc-stars {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--color-orange, #FF6600);
+      margin-top: 2px;
+    }
+
+    .vengeance-tc-stars svg {
+      width: 21px;
+      height: 21px;
+      fill: currentColor;
+      display: block;
+    }
+
     /* Name is TWICE the size it was previously (was clamp(22px, 2.1vw, 28px) -> now clamp(44px, 4.2vw, 56px)) */
     .vengeance-tc-title {
       font-family: var(--font-sans);
@@ -5575,7 +5590,7 @@ input, textarea, [contenteditable="true"] {
           <!-- Right Column: Counter + 2x Name Title + Subtitle Role + Full Container-Scaled Description -->
           <div class="vengeance-tc-right-col">
             <div class="vengeance-tc-counter" id="vengeanceTcCounter" aria-live="polite">
-              <span class="tc-active-num" id="vengeanceTcActiveNum">1</span> / <span id="vengeanceTcTotalNum">5</span>
+              <span class="tc-active-num" id="vengeanceTcActiveNum">1</span> / <span id="vengeanceTcTotalNum">4</span>
             </div>
 
             <div class="vengeance-tc-text-area">
@@ -5584,11 +5599,18 @@ input, textarea, [contenteditable="true"] {
                   <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                 </svg>
                 <div class="vengeance-tc-title-row">
-                  <h3 class="vengeance-tc-title" id="vengeanceTcTitle">Rohan Mehta</h3>
-                  <span class="vengeance-tc-role" id="vengeanceTcRole">Founder & CEO — Audio King</span>
+                  <h3 class="vengeance-tc-title" id="vengeanceTcTitle">Drashti Zatakia</h3>
+                  <span class="vengeance-tc-role" id="vengeanceTcRole">Founder | Health Streak</span>
+                  <div class="vengeance-tc-stars" id="vengeanceTcStars" aria-label="5 out of 5 stars">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                  </div>
                 </div>
                 <p class="vengeance-tc-desc" id="vengeanceTcDesc">
-                  “Techuilla completely re-engineered our digital storefront and product experience. From custom 3D audio visualizations to sub-second page speeds, our online conversion rate jumped by 180% within the first six weeks of launch.”
+                  “Working with Yathaarth was a seamless experience. He understood my vision from the start and translated it into a website that was exactly what I needed. Every detail was thoughtfully executed, and the final result exceeded my expectations. I truly appreciate his professionalism, creativity, and attention to detail. Highly recommended.”
                 </p>
               </div>
             </div>
@@ -8399,43 +8421,43 @@ Best regards,
         const TESTIMONIAL_ITEMS = [
           {
             id: 1,
-            title: "Rohan Mehta",
-            role: "Founder & CEO — Audio King",
-            badge: "BUILD / WEB & 3D",
-            description: "“Techuilla completely re-engineered our digital storefront and product experience. From custom 3D audio visualizations to sub-second page speeds, our online conversion rate jumped by 180% within the first six weeks of launch.”",
-            image: "card_audio_king.png"
+            title: "Drashti Zatakia",
+            role: "Founder | Health Streak",
+            badge: "★★★★★ • 5.0",
+            stars: 5,
+            description: "“Working with Yathaarth was a seamless experience. He understood my vision from the start and translated it into a website that was exactly what I needed. Every detail was thoughtfully executed, and the final result exceeded my expectations. I truly appreciate his professionalism, creativity, and attention to detail. Highly recommended.”",
+            image: "assets/testimonial_drashti.jpg",
+            imgStyle: "object-fit:contain;background:#FFFFFF;padding:18px;"
           },
           {
             id: 2,
-            title: "Dr. Ananya Sharma",
-            role: "Clinical Director — Rama Trichology",
-            badge: "CREATE / BRANDING",
-            description: "“They transformed our clinical identity into a luxury authority brand. The cohesive packaging, editorial design system, and high-intent Meta acquisition funnels doubled our qualified consultation bookings month over month.”",
-            image: "card_rama_trichology.jpg"
+            title: "Kushal Gangwani",
+            role: "Owner | Oramax Clinic",
+            badge: "★★★★★ • 5.0",
+            stars: 5,
+            description: "“Yathaarth did a great job creating my website and understood exactly what I needed. He was attentive to every detail and delivered a clean, professional website that matched my vision perfectly. Highly recommended!”",
+            image: "assets/testimonial_kushal.jpg",
+            imgStyle: "object-fit:cover;object-position:center top;"
           },
           {
             id: 3,
-            title: "Vikramaditya Singh",
-            role: "Co-Founder — Health Streak",
-            badge: "BUILD / FULL-STACK",
-            description: "“Working with Techuilla felt like having an elite product engineering team in-house. They delivered our web platform, interactive habit-tracking UI, and onboarding motion films ahead of schedule with zero compromise on craft.”",
-            image: "card_health_streak.png"
+            title: "Anurag Tiwari",
+            role: "Founder | AY Media Agency",
+            badge: "★★★★★ • 5.0",
+            stars: 5,
+            description: "“Working with Yathaarth has been an excellent experience. He brings quality, efficiency, and professionalism to every project. His ability to execute smoothly and deliver consistently has made them a valuable production partner for our agency. We genuinely appreciate the collaboration and look forward to more projects together.”",
+            image: "assets/testimonial_anurag.png",
+            imgStyle: "object-fit:contain;background:#0C0D11;padding:14px;"
           },
           {
             id: 4,
-            title: "Kabir Malhotra",
-            role: "Creative Director — Untitled Clothing Co.",
-            badge: "CREATE / AI & FILM",
-            description: "“Their AI creatives and 3D product films gave our seasonal drop a cinematic scale we didn't think was possible on our timeline. The campaign achieved a 4.8x ROAS and set a new benchmark for our visual identity.”",
-            image: "card_untitled_clothing.png"
-          },
-          {
-            id: 5,
-            title: "Siddharth Deshmukh",
-            role: "Managing Director — Hindustan Tyre",
-            badge: "GROWTH / PERFORMANCE",
-            description: "“From B2B catalog architecture to national Google Search and Performance Max campaigns, Techuilla built a predictable demand engine that consistently delivers our highest-value commercial dealer inquiries.”",
-            image: "card_hindustan_tyre.jpg"
+            title: "Ritesh Safariya",
+            role: "Owner | Rama Hair Clinic – Trichology Center",
+            badge: "★★★★★ • 5.0",
+            stars: 5,
+            description: "“Smart on-time n organised guy, I highly recommend him for work. Good luck to him.”",
+            image: "assets/testimonial_ritesh.jpg",
+            imgStyle: "object-fit:cover;object-position:center top;"
           }
         ];
 
@@ -8452,7 +8474,7 @@ Best regards,
         // Build the 3D stacked card elements
         stackEl.innerHTML = TESTIMONIAL_ITEMS.map((item, idx) => `
           <div class="vengeance-tc-card${idx === 0 ? ' is-active' : ''}" data-tc-index="${idx}">
-            <img src="${item.image}" alt="${item.title}" draggable="false" decoding="async" />
+            <img src="${item.image}" alt="${item.title}" style="${item.imgStyle || ''}" draggable="false" decoding="async" />
             <span class="vengeance-tc-card-badge">${item.badge}</span>
           </div>
         `).join('');
