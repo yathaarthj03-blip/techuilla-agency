@@ -81,7 +81,7 @@
     }
 
     html {
-      scroll-behavior: smooth;
+      scroll-behavior: auto;
       background: var(--bg-warm);
       color: var(--text-primary);
       font-family: var(--font-sans);
@@ -5015,7 +5015,11 @@ Best regards,
           const maxScrollY = document.documentElement.scrollHeight - window.innerHeight;
           if (maxScrollY <= 0) return;
 
-          // 10% slower than default (0.90x) with smooth inertial glide
+          // 10% slower than default (0.90x) with instant-response smooth inertial glide
+          if (!active) {
+            curY = window.scrollY;
+            tgtY = curY;
+          }
           tgtY = Math.max(0, Math.min(maxScrollY, tgtY + e.deltaY * 0.90));
           if (!active) {
             active = true;
@@ -5027,11 +5031,11 @@ Best regards,
           const diff = tgtY - curY;
           if (Math.abs(diff) > 0.4) {
             curY += diff * 0.14;
-            window.scrollTo(0, curY);
+            window.scrollTo({ top: curY, behavior: 'instant' });
             rafId = requestAnimationFrame(tick);
           } else {
             curY = tgtY;
-            window.scrollTo(0, curY);
+            window.scrollTo({ top: curY, behavior: 'instant' });
             active = false;
           }
         }
