@@ -16,7 +16,7 @@
   function easeInOutCubic(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
   function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
 
-  // 1. Cool-Neutral Horology Studio HDRI Environment Map (Authentic 316L Stainless Steel Reflections!)
+  // 1. Rich Dramatic Horology Studio HDRI Environment Map (Restored Warm Amber Rim + Crisp Overhead Softboxes!)
   function createHorologyStudioEnvMap(renderer) {
     const W = 1024, H = 512;
     const c = document.createElement('canvas');
@@ -24,12 +24,11 @@
     c.height = H;
     const ctx = c.getContext('2d');
 
-    // Deep dark studio cyclorama
     const bg = ctx.createLinearGradient(0, 0, 0, H);
-    bg.addColorStop(0.00, '#101216');
-    bg.addColorStop(0.45, '#040507');
-    bg.addColorStop(0.55, '#020203');
-    bg.addColorStop(1.00, '#090a0d');
+    bg.addColorStop(0.00, '#0a0b0e');
+    bg.addColorStop(0.45, '#040406');
+    bg.addColorStop(0.55, '#030304');
+    bg.addColorStop(1.00, '#080605');
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, W, H);
 
@@ -41,19 +40,19 @@
       ctx.restore();
     };
 
-    // High-contrast crisp silver-white horology overhead & side strip softboxes (sculpts real 316L steel!)
-    drawSoftbox(60, 38, 360, 74, 'rgba(255, 255, 255, 0.96)', 14);
-    drawSoftbox(560, 52, 380, 62, 'rgba(236, 244, 255, 0.92)', 16);
-    drawSoftbox(220, 152, 260, 24, 'rgba(245, 248, 255, 0.78)', 7);
-    drawSoftbox(680, 178, 240, 22, 'rgba(220, 232, 248, 0.68)', 8);
+    // Main cool-white top-left & top-right horology softboxes
+    drawSoftbox(80, 42, 340, 72, 'rgba(255, 255, 255, 0.96)', 14);
+    drawSoftbox(560, 56, 360, 58, 'rgba(232, 242, 255, 0.92)', 16);
+    drawSoftbox(260, 148, 220, 26, 'rgba(255, 248, 240, 0.72)', 8);
 
-    // Subtle specular metallic edge strips around horizon
-    drawSoftbox(80, 230, 860, 10, 'rgba(255, 255, 255, 0.82)', 4);
-    drawSoftbox(140, 295, 240, 48, 'rgba(180, 194, 212, 0.42)', 18);
-    drawSoftbox(640, 305, 260, 44, 'rgba(195, 208, 224, 0.38)', 18);
+    // Signature Warm Burnt-Orange / Amber Grazing Rim Cards (Dramatic Horology Reflections!)
+    drawSoftbox(24, 245, 290, 96, 'rgba(255, 118, 28, 0.95)', 24);
+    drawSoftbox(690, 260, 280, 88, 'rgba(255, 134, 48, 0.85)', 24);
+    drawSoftbox(380, 380, 260, 56, 'rgba(255, 168, 92, 0.55)', 18);
 
-    // Very restrained subtle warm accent low on one side (never tints steel bronze!)
-    drawSoftbox(40, 390, 180, 36, 'rgba(255, 132, 52, 0.38)', 22);
+    // Razor-sharp specular accent filaments for brushed steel gleam
+    drawSoftbox(140, 195, 740, 8, 'rgba(255, 255, 255, 0.88)', 3);
+    drawSoftbox(110, 320, 220, 10, 'rgba(255, 145, 55, 0.92)', 4);
 
     const eqTex = new THREE.CanvasTexture(c);
     eqTex.mapping = THREE.EquirectangularReflectionMapping;
@@ -269,27 +268,28 @@
     return tex;
   }
 
-  // 6. Luminous Orange Hour Hand Inlay Texture ("25+ HAPPY CLIENTS" in BRYSON-Style Bold Geometric Display Font!)
+  // 6. Luminous Orange Hour Hand Inlay Texture ("25+ HAPPY CLIENTS" — Exact 2048x188 10.9:1 Aspect Ratio, ZERO Stretching!)
   function createHourHandInlayTexture(maxAniso) {
+    const W = 2048, H = 188;
     const c = document.createElement('canvas');
-    c.width = 1024;
-    c.height = 256;
+    c.width = W;
+    c.height = H;
     const ctx = c.getContext('2d');
 
-    const g = ctx.createLinearGradient(0, 0, 0, 256);
+    const g = ctx.createLinearGradient(0, 0, 0, H);
     g.addColorStop(0.00, '#FF6D1A');
     g.addColorStop(0.48, '#F25006');
     g.addColorStop(1.00, '#C83A00');
     ctx.fillStyle = g;
-    ctx.fillRect(0, 0, 1024, 256);
+    ctx.fillRect(0, 0, W, H);
 
-    // Bold, Clean, Heavy Display Typography (Matching BRYSON / MONIGUE Reference Image 1 — Zero Shadows!)
+    // Proportionate, Bold, Crisp Bryson-Style Typography (Zero Horizontal Stretching!)
     ctx.save();
     ctx.fillStyle = '#FFFFFF';
-    ctx.font = '900 58px "Archivo Black", "Inter", Impact, sans-serif';
+    ctx.font = '900 108px "Archivo Black", "Inter", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('25+ HAPPY CLIENTS', 625, 130);
+    ctx.fillText('25+ HAPPY CLIENTS', 1205, H * 0.52);
     ctx.restore();
 
     const tex = new THREE.CanvasTexture(c);
@@ -524,12 +524,12 @@
     camera.position.set(0, 0, 9.6);
     camera.lookAt(0, 0, 0);
 
-    // Crisp Studio Horology Lighting
-    const ambient = new THREE.AmbientLight(0x14161c, 0.36);
+    // Rich Dramatic Horology Studio Lighting (Restored Warm Amber Rim & Soft Contact Shadows!)
+    const ambient = new THREE.AmbientLight(0x161820, 0.42);
     scene.add(ambient);
 
-    const keyLight = new THREE.DirectionalLight(0xf8fbff, 1.85);
-    keyLight.position.set(-2.8, 3.8, 5.4);
+    const keyLight = new THREE.DirectionalLight(0xfffaf2, 1.85);
+    keyLight.position.set(-2.6, 3.8, 5.2);
     keyLight.castShadow = true;
     keyLight.shadow.mapSize.width = 1024;
     keyLight.shadow.mapSize.height = 1024;
@@ -543,18 +543,18 @@
     keyLight.shadow.radius = 3.5;
     scene.add(keyLight);
 
-    const rimRight = new THREE.DirectionalLight(0xe4eeff, 1.55);
-    rimRight.position.set(5.4, 2.4, 2.8);
+    const rimRight = new THREE.DirectionalLight(0xd4e6ff, 1.35);
+    rimRight.position.set(5.4, 2.2, 2.8);
     scene.add(rimRight);
 
-    const rimLeft = new THREE.DirectionalLight(0xdce6f5, 0.95);
-    rimLeft.position.set(-5.2, -1.8, 2.2);
-    scene.add(rimLeft);
+    // Warm Burnt-Orange Grazing Rim Light (Dramatic Horology Bezel Glow!)
+    const warmOrangeRim = new THREE.PointLight(0xff5e00, 3.2, 10);
+    warmOrangeRim.position.set(-2.65, -2.55, 1.35);
+    scene.add(warmOrangeRim);
 
-    // Subtle warm macro accent only at bottom-left grazing angle (doesn't turn steel bronze!)
-    const warmSubtleRim = new THREE.PointLight(0xff6a14, 1.05, 7.5);
-    warmSubtleRim.position.set(-2.5, -2.6, 1.15);
-    scene.add(warmSubtleRim);
+    const warmRightBounce = new THREE.PointLight(0xff9848, 1.65, 9);
+    warmRightBounce.position.set(2.95, -1.75, 1.45);
+    scene.add(warmRightBounce);
 
     // Photorealistic PBR Materials
     const dialPebbleBump = createOrganicPebbleBump(512, 6.0, 52);

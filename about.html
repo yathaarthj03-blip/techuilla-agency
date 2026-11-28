@@ -53,7 +53,7 @@
   <!-- Three.js, CGI Cinema Camera Engine & CGI Luxury Watch Engine -->
   <script src="three.min.js"></script>
   <script src="aboutCameraCGI.js?v=20261128_macro_v3"></script>
-  <script src="aboutWatchCGI.js?v=20261128_watch_v3_photoreal"></script>
+  <script src="aboutWatchCGI.js?v=20261128_watch_v4_final"></script>
 
   <style>
     /* ==========================================================================
@@ -1711,12 +1711,12 @@
 
     .watch-manifesto-text {
       font-family: var(--font-sans);
-      font-size: clamp(20px, 2.35vw, 38px);
+      font-size: clamp(24px, 2.85vw, 46px);
       font-weight: 800;
-      line-height: 1.32;
-      letter-spacing: -0.024em;
+      line-height: 1.28;
+      letter-spacing: -0.025em;
       color: #111111;
-      max-width: 1200px;
+      max-width: 1340px;
     }
 
     .watch-manifesto-tag {
@@ -1740,10 +1740,10 @@
       display: block;
     }
 
-    /* Left-Hand Editorial Track Record Typography (All Caps, Archivo Black / Bryson Style, ZERO Shadows / Highlights!) */
+    /* Left-Hand Editorial Track Record Typography (+20% Larger, All Caps, Archivo Black, ZERO Shadows/Highlights!) */
     .watch-left-copy {
       position: absolute;
-      left: clamp(24px, 3.6vw, 58px);
+      left: clamp(24px, 3.4vw, 56px);
       top: 50%;
       transform: translate3d(0, -50%, 0);
       z-index: 28;
@@ -1751,16 +1751,16 @@
       flex-direction: column;
       align-items: flex-start;
       gap: 10px;
-      max-width: 25vw;
+      max-width: 28vw;
       pointer-events: none;
-      transform-origin: left center;
+      transform-origin: center center;
     }
 
     .watch-left-heading {
       font-family: "Archivo Black", "Inter", sans-serif;
-      font-size: clamp(22px, 2.25vw, 35px);
+      font-size: clamp(27px, 2.75vw, 44px);
       font-weight: 900;
-      line-height: 1.04;
+      line-height: 1.02;
       letter-spacing: -0.02em;
       text-transform: uppercase;
       color: #FFFFFF;
@@ -1773,19 +1773,19 @@
 
     .watch-left-subline {
       font-family: "Archivo Black", "Inter", sans-serif;
-      font-size: clamp(18px, 1.9vw, 30px);
+      font-size: clamp(22px, 2.3vw, 37px);
       font-weight: 900;
-      line-height: 1.08;
+      line-height: 1.06;
       letter-spacing: -0.015em;
       text-transform: uppercase;
       color: #FFFFFF;
       text-shadow: none;
-      margin-top: 8px;
+      margin-top: 10px;
     }
 
     .watch-left-date {
       font-family: "Archivo Black", "Inter", sans-serif;
-      font-size: clamp(22px, 2.45vw, 38px);
+      font-size: clamp(27px, 2.95vw, 46px);
       font-weight: 900;
       line-height: 1.02;
       letter-spacing: -0.015em;
@@ -1794,10 +1794,10 @@
       text-shadow: none;
     }
 
-    /* Right-Hand Vertical Mechanical Stepper Counter — NO Container Box, Transparent Background, Larger Tall Gothic Numerals! */
+    /* Right-Hand Vertical Mechanical Stepper Counter (+15%+ Larger, Transparent Background, No Box, Fades Forward!) */
     .watch-live-stepper {
       position: absolute;
-      right: clamp(28px, 4.5vw, 72px);
+      right: clamp(24px, 3.8vw, 64px);
       top: 50%;
       transform: translate3d(0, -50%, 0);
       z-index: 28;
@@ -1805,14 +1805,14 @@
       border: none;
       padding: 0;
       pointer-events: none;
-      transform-origin: right center;
+      transform-origin: center center;
     }
 
     .watch-stepper-grid {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 12px;
+      gap: 10px;
     }
 
     .watch-step-unit {
@@ -1820,7 +1820,7 @@
       flex-direction: row;
       align-items: baseline;
       justify-content: flex-end;
-      gap: 12px;
+      gap: 14px;
     }
 
     .watch-step-drums {
@@ -1833,13 +1833,13 @@
 
     .watch-drum-slot {
       position: relative;
-      width: 24px;
-      height: 52px;
+      width: 30px;
+      height: 62px;
       overflow: hidden;
       font-family: "Big Shoulders Display", "Archivo Black", sans-serif;
-      font-size: 50px;
+      font-size: 60px;
       font-weight: 900;
-      line-height: 52px;
+      line-height: 62px;
       color: #FFFFFF;
       text-align: center;
       text-shadow: none;
@@ -1853,18 +1853,18 @@
 
     .watch-drum-strip span {
       display: block;
-      height: 52px;
-      line-height: 52px;
+      height: 62px;
+      line-height: 62px;
     }
 
     .watch-step-label {
       font-family: "Archivo Black", "Inter", sans-serif;
-      font-size: 13px;
+      font-size: 16px;
       font-weight: 900;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--color-orange);
-      min-width: 44px;
+      min-width: 52px;
       text-align: left;
       text-shadow: none;
     }
@@ -3724,7 +3724,7 @@
             const strips = drumStripsByKey[u.key] || [];
             strips.forEach((strip, idx) => {
               const digitVal = parseInt(str[idx], 10) || 0;
-              strip.style.transform = `translate3d(0, ${-digitVal * 52}px, 0)`;
+              strip.style.transform = `translate3d(0, ${-digitVal * 62}px, 0)`;
             });
           });
         }
@@ -3745,18 +3745,19 @@
           watchManifestoShutter.style.transform = `translate3d(0, ${(-shutterP * 102).toFixed(2)}%, 0)`;
         }
 
-        // 2. Left Copy & Right Vertical Stepper: Appear cleanly once manifesto clears, then motion-blur toward viewer on zoom-in!
+        // 2. Left Copy & Right Vertical Stepper: Fade & come straight FORWARD toward the viewer (not sideways right/left!)
         const enterOp = clamp((safeP - 0.09) / 0.04, 0, 1);
         const exitP = easeInOutCubic(clamp((safeP - 0.13) / 0.08, 0, 1));
         const hudOp = enterOp * clamp(1 - exitP * 1.25, 0, 1);
-        const hudSc = lerp(1.0, 1.38, exitP);
+        const hudTz = (exitP * 260).toFixed(1);
+        const hudSc = lerp(1.0, 1.28, exitP);
         const hudBlur = (exitP * 9).toFixed(1);
         const hudFilter = exitP > 0.01 && hudOp > 0.01 ? `blur(${hudBlur}px)` : 'none';
 
         [watchLeftCopy, watchLiveStepper].forEach(el => {
           if (!el) return;
           el.style.opacity = hudOp.toFixed(3);
-          el.style.transform = `translate3d(0, -50%, 0) scale(${hudSc.toFixed(3)})`;
+          el.style.transform = `perspective(900px) translate3d(0, -50%, ${hudTz}px) scale(${hudSc.toFixed(3)})`;
           el.style.filter = hudFilter;
         });
 
