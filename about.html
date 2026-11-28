@@ -3904,8 +3904,10 @@
           const pathEl = founderArchPaths[k];
           if (!panel || !pathEl) continue;
 
-          const startPos = (k - 1) - OVERLAP;
-          const span = 1.0 + OVERLAP;
+          // Panel 1 (2nd image) starts cleanly at 0 so Image 1 is 100% full-screen when THE PERSON BEHIND TECHUILLA opens!
+          // Panels 2, 3, 4 start with 0.36 overlap so each next image is already ~25% visible as the previous hits 100%!
+          const startPos = k === 1 ? 0.0 : (k - 1) - OVERLAP;
+          const span = k === 1 ? 1.0 : (1.0 + OVERLAP);
           const localP = clamp((seqFloat - startPos) / span, 0, 1);
 
           if (localP <= 0.001) {
@@ -4128,18 +4130,18 @@
         if (maxScrollY <= 0) return;
 
         const clampedDelta = Math.sign(e.deltaY) * Math.min(75, Math.abs(e.deltaY));
-        // Section-specific smooth scroll pacing: Watch (-10% slower -> 0.438), Founder (-10% slower -> 0.462)
+        // Section-specific smooth scroll pacing: Watch (-15% slower -> 0.372), Founder (+15% faster -> 0.531)
         let scrollFactor = 0.513;
         if (watchTrack) {
           const wr = watchTrack.getBoundingClientRect();
           if (wr.top <= 10 && wr.bottom >= window.innerHeight - 10) {
-            scrollFactor = 0.438;
+            scrollFactor = 0.372;
           }
         }
         if (founderTrack) {
           const fr = founderTrack.getBoundingClientRect();
           if (fr.top <= 10 && fr.bottom >= window.innerHeight - 10) {
-            scrollFactor = 0.462;
+            scrollFactor = 0.531;
           }
         }
         targetY = Math.max(0, Math.min(maxScrollY, targetY + clampedDelta * scrollFactor));
