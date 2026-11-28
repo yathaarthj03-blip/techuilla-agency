@@ -1877,7 +1877,7 @@
        ========================================================================== */
     .founder-section-track {
       position: relative;
-      height: 940vh;
+      height: 1080vh;
       width: 100%;
       z-index: 52;
       background: #FAF8F5;
@@ -1944,6 +1944,98 @@
       color: #111111;
       padding-left: 0.16em;
       transform: translate3d(32vw, -50%, 0);
+    }
+
+    /* Grand Finale Pop-Up CTA Button Below "Techuilla Agency" */
+    .founder-closing-cta-wrap {
+      position: absolute;
+      top: calc(50% + 48px);
+      left: 50%;
+      transform: translate3d(-50%, 28px, 0) scale(0.65);
+      opacity: 0;
+      z-index: 18;
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+
+    .founder-closing-cta-wrap.is-interactive {
+      pointer-events: auto;
+    }
+
+    .btn-closing-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 19px 44px;
+      background: var(--color-orange, #FF6600);
+      color: #FFFFFF;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 9999px;
+      box-shadow: 0 12px 28px rgba(255, 102, 0, 0.30);
+      transition: background-color 0.28s ease, transform 0.28s ease, box-shadow 0.28s ease;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-closing-cta:hover {
+      background: #E65500;
+      transform: translateY(-2px);
+      box-shadow: 0 16px 34px rgba(255, 102, 0, 0.42);
+    }
+
+    .btn-closing-cta-arrow {
+      width: 18px;
+      height: 18px;
+      display: block;
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .btn-closing-cta:hover .btn-closing-cta-arrow {
+      transform: translateX(4px);
+    }
+
+    /* Pixelated ASCII Hands Framing Left & Right of "Techuilla Agency" (Hands Only, No Footer) */
+    .closing-ascii-hands {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 6;
+    }
+
+    .closing-ascii-hand-wrap {
+      position: relative;
+      width: 36%;
+      max-width: 520px;
+      min-width: 210px;
+      will-change: transform, opacity;
+      pointer-events: auto;
+      opacity: 0;
+    }
+
+    .closing-ascii-hand-wrap.left {
+      transform: translate3d(-105%, 0, 0);
+    }
+
+    .closing-ascii-hand-wrap.right {
+      transform: translate3d(105%, 0, 0);
+    }
+
+    .closing-ascii-hand-canvas {
+      display: block;
+      width: 100%;
+      height: auto;
     }
 
     /* Center-Split Curtain Doors for 3-Line "THE PERSON / BEHIND / TECHUILLA" */
@@ -2697,9 +2789,30 @@
 
       <!-- Full-Circle Closing Wordmark Backdrop (Revealed as Filmstrip Closes into Rectangle -> Rotating Square -> Vanish) -->
       <div class="founder-closing-backdrop" id="founderClosingBackdrop" aria-label="Techuilla Agency">
+        <!-- Pixelated ASCII Hands Entering From Left & Right of "Techuilla Agency" (Hands Only) -->
+        <div class="closing-ascii-hands" id="closingAsciiHands" aria-hidden="true">
+          <div class="closing-ascii-hand-wrap left" id="closingAsciiHandLeftWrap">
+            <canvas class="closing-ascii-hand-canvas" id="closingAsciiHandLeftCanvas"></canvas>
+          </div>
+          <div class="closing-ascii-hand-wrap right" id="closingAsciiHandRightWrap">
+            <canvas class="closing-ascii-hand-canvas" id="closingAsciiHandRightCanvas"></canvas>
+          </div>
+        </div>
+
         <div class="founder-closing-wordmark" id="founderClosingWordmark">
           <span class="founder-closing-word founder-closing-techuilla" id="founderClosingTechuilla">Techuilla</span>
           <span class="founder-closing-word founder-closing-agency" id="founderClosingAgency">Agency</span>
+        </div>
+
+        <!-- Pop-Up CTA Button Below "Techuilla Agency" -->
+        <div class="founder-closing-cta-wrap" id="founderClosingCtaWrap">
+          <a href="contact.html" class="btn-closing-cta" id="founderClosingCtaBtn">
+            <span>Start a Conversation</span>
+            <svg class="btn-closing-cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
+          </a>
         </div>
       </div>
 
@@ -3898,6 +4011,16 @@
       const founderFilmstripOrangeVeil = document.getElementById('founderFilmstripOrangeVeil');
       const founderClosingTechuilla = document.getElementById('founderClosingTechuilla');
       const founderClosingAgency = document.getElementById('founderClosingAgency');
+      const founderClosingCtaWrap = document.getElementById('founderClosingCtaWrap');
+      const founderClosingCtaBtn = document.getElementById('founderClosingCtaBtn');
+      const closingAsciiHandLeftWrap = document.getElementById('closingAsciiHandLeftWrap');
+      const closingAsciiHandRightWrap = document.getElementById('closingAsciiHandRightWrap');
+      const closingAsciiHandLeftCanvas = document.getElementById('closingAsciiHandLeftCanvas');
+      const closingAsciiHandRightCanvas = document.getElementById('closingAsciiHandRightCanvas');
+
+      if (founderClosingCtaBtn) {
+        founderClosingCtaBtn.addEventListener('click', (e) => navigateWithBrush(e, 'contact.html'));
+      }
 
       const FOUNDER_PANEL_COUNT = 6;
       const founderPanels = [
@@ -4032,8 +4155,8 @@
         }
         prevFounderP = safeP;
 
-        // Phase A (0.02 -> 0.13): Center Split-Wipe! Left half wipes left, Right half wipes right!
-        const splitP = easeInOutCubic(clamp((safeP - 0.02) / 0.11, 0, 1));
+        // Phase A (0.02 -> 0.12): Center Split-Wipe! Left half wipes left, Right half wipes right!
+        const splitP = easeInOutCubic(clamp((safeP - 0.02) / 0.10, 0, 1));
         if (founderSplitCurtain) {
           const splitHidden = splitP >= 0.999;
           founderSplitCurtain.style.display = splitHidden ? 'none' : 'block';
@@ -4043,10 +4166,10 @@
           }
         }
 
-        // Phase B (0.13 -> 0.76): 6-Panel Continuous Overlapping Upward-Arch Dissolve Sequence (1 -> 2 -> 3 -> 4 -> 5 -> 2)
+        // Phase B (0.12 -> 0.68): 6-Panel Continuous Overlapping Upward-Arch Dissolve Sequence (1 -> 2 -> 3 -> 4 -> 5 -> 2)
         //   With occlusion culling: once Panel k hits 100%, all panels underneath are hidden (display:none)
         //   and Panel k's SVG clipPath is removed so GPU only composites 1-2 active panels at 60fps!
-        const seqFloat = clamp((safeP - 0.13) / 0.63, 0, 1) * 5.0;
+        const seqFloat = clamp((safeP - 0.12) / 0.56, 0, 1) * 5.0;
         const OVERLAP = 0.36;
 
         const localPs = [1, 0, 0, 0, 0, 0];
@@ -4110,17 +4233,18 @@
           }
         }
 
-        // Phase C (0.63 -> 0.98): Pure GPU-Composited Closing Choreography (Zero Layout Thrash!)
-        //   Uses compositor-only clip-path: inset(...) + transform: rotate()/scale() instead of width/height!
+        // Phase C (0.58 -> 0.87): STRICT Two-Stage Pure GPU-Composited Closing Choreography!
+        //   C1 (0.58 -> 0.71): LEFT & RIGHT SIDES ONLY -> full-height vertical rectangle around winking frame (ZERO top/bottom shrink!).
+        //   C2 (0.71 -> 0.81): AFTER left/right closing finishes -> shrink from top & bottom + rotate left into small square.
+        //   C3 (0.81 -> 0.87): Small rotating square contracts to 0 & disappears as Techuilla & Agency reunite at center!
         const winW = cachedFounderW;
         const winH = cachedFounderH;
 
-        const c1 = easeInOutCubic(clamp((safeP - 0.63) / 0.15, 0, 1)); // Side squeeze -> vertical rectangle
-        const c2 = easeInOutCubic(clamp((safeP - 0.78) / 0.13, 0, 1)); // Top/bottom shrink + left rotation -> small square
-        const c3 = easeInOutCubic(clamp((safeP - 0.91) / 0.07, 0, 1)); // Final contraction to 0 & vanish
+        const c1 = easeInOutCubic(clamp((safeP - 0.58) / 0.13, 0, 1)); // Left & right side squeeze ONLY
+        const c2 = easeInOutCubic(clamp((safeP - 0.71) / 0.10, 0, 1)); // Top/bottom shrink + left rotation -> small square
+        const c3 = easeInOutCubic(clamp((safeP - 0.81) / 0.06, 0, 1)); // Final contraction to 0 & vanish
 
         const rectW = clamp(winW * 0.16, 150, 260);
-        const rectH = winH * 0.88;
         const sqSize = clamp(Math.min(winW, winH) * 0.105, 68, 108);
 
         let curW = winW;
@@ -4130,17 +4254,18 @@
         let filmOp = 1;
         let radiusPx = 0;
 
-        if (safeP > 0.63) {
+        if (safeP > 0.58) {
+          // Width closes first during C1 (100vw -> vertical rectangle), then narrows to square during C2
           const w1 = lerp(winW, rectW, c1);
           curW = lerp(w1, sqSize, c2);
 
-          const h1 = lerp(winH, rectH, c1 * 0.85);
-          curH = lerp(h1, sqSize, c2);
+          // Height stays 100% FULL (winH, ZERO top/bottom shrink!) during all of C1; only shrinks during C2!
+          curH = lerp(winH, sqSize, c2);
 
           rotDeg = lerp(0, -58, c2) + lerp(0, -32, c3);
           filmScale = lerp(1, 0, c3);
           filmOp = clamp(1 - c3 * 1.15, 0, 1);
-          radiusPx = lerp(0, 8, c1) + lerp(0, 4, c2);
+          radiusPx = lerp(0, 10, c2);
         }
 
         if (founderFilmstrip) {
@@ -4148,7 +4273,7 @@
             founderFilmstrip.style.visibility = 'hidden';
           } else {
             founderFilmstrip.style.visibility = 'visible';
-            if (safeP > 0.63) {
+            if (safeP > 0.58) {
               const insetX = Math.max(0, (winW - curW) * 0.5).toFixed(1);
               const insetY = Math.max(0, (winH - curH) * 0.5).toFixed(1);
               const insetStr = `inset(${insetY}px ${insetX}px ${insetY}px ${insetX}px round ${radiusPx.toFixed(1)}px)`;
@@ -4165,7 +4290,7 @@
 
         // Subtle brand-orange glow bloom right before the small rotating square vanishes (matching reference f_08 -> f_09)
         if (founderFilmstripOrangeVeil) {
-          const orangeBloom = safeP > 0.78 ? (clamp((c2 - 0.55) / 0.45, 0, 1) * 0.88 + c3 * 0.12) : 0;
+          const orangeBloom = safeP > 0.71 ? (clamp((c2 - 0.55) / 0.45, 0, 1) * 0.88 + c3 * 0.12) : 0;
           founderFilmstripOrangeVeil.style.opacity = orangeBloom.toFixed(3);
         }
 
@@ -4173,7 +4298,7 @@
         const arcOp = clamp(1 - c1 * 1.45, 0, 1);
         lastFounderArcOp = arcOp;
         const minScaleToCover = Math.max(curW / winW, curH / winH);
-        const innerSc = safeP > 0.63 ? Math.max(minScaleToCover * 1.02, lerp(1.0, 0.56, c2)) : 1.0;
+        const innerSc = safeP > 0.58 ? Math.max(minScaleToCover * 1.02, lerp(1.0, 0.56, c2)) : 1.0;
 
         for (let i = 0; i < FOUNDER_PANEL_COUNT; i++) {
           if (!founderPanelVisible[i]) continue;
@@ -4183,13 +4308,13 @@
           // Smoothly frame inner portrait inside shrinking rectangle/square with zero black gaps.
           // For Panel 5 (winking photo), gently shift +3.8vw right as rectangle closes so face, left ear & winking hand sit dead-center!
           if (founderPanels[i]) {
-            const panXvw = (i === 5 && safeP > 0.63) ? lerp(0, 3.8, c1) : 0;
+            const panXvw = (i === 5 && safeP > 0.58) ? lerp(0, 3.8, c1) : 0;
             founderPanels[i].style.transform = `translate3d(calc(-50% + ${panXvw.toFixed(2)}vw), -50%, 0) scale(${innerSc.toFixed(3)})`;
           }
         }
 
         // Closing "Techuilla" (Left -> Center) & "Agency" (Right -> Center) gliding back together cleanly!
-        const wordRevealOp = clamp((safeP - 0.65) / 0.08, 0, 1);
+        const wordRevealOp = clamp((safeP - 0.60) / 0.07, 0, 1);
         const shiftStart = clamp(winW * 0.25, 170, 380);
         const shiftAfterC1 = clamp(winW * 0.165, 125, 240);
         const shiftAfterC2 = clamp(winW * 0.085, 78, 125);
@@ -4197,13 +4322,53 @@
         const s2 = lerp(s1, shiftAfterC2, c2);
         const curShiftPx = lerp(s2, 0, c3);
 
+        // Phase D (0.87 -> 0.99): GRAND FINALE!
+        //   1) Staggered one-by-one upward lift: "Techuilla" rises first (0.87 -> 0.94), then "Agency" rises (0.895 -> 0.965)!
+        //   2) Simultaneously: "Start a Conversation" CTA button pops up below with a spring overshoot (0.885 -> 0.965)!
+        //   3) Simultaneously: Pixelated ASCII Hands slide in from left & right of "Techuilla Agency" (0.875 -> 0.98)!
+        const easeOutCubicLocal = (t) => 1 - Math.pow(1 - t, 3);
+        const easeOutBackLocal = (t) => {
+          const c1b = 1.70158;
+          const c3b = c1b + 1;
+          return 1 + c3b * Math.pow(t - 1, 3) + c1b * Math.pow(t - 1, 2);
+        };
+
+        const liftTechuillaP = easeOutCubicLocal(clamp((safeP - 0.87) / 0.07, 0, 1));
+        const liftAgencyP = easeOutCubicLocal(clamp((safeP - 0.895) / 0.07, 0, 1));
+        const liftDistPx = clamp(winH * 0.068, 42, 68);
+
         if (founderClosingTechuilla) {
+          const ty = -liftTechuillaP * liftDistPx;
           founderClosingTechuilla.style.opacity = wordRevealOp.toFixed(3);
-          founderClosingTechuilla.style.transform = `translate3d(${(-curShiftPx).toFixed(1)}px, -50%, 0)`;
+          founderClosingTechuilla.style.transform = `translate3d(${(-curShiftPx).toFixed(1)}px, calc(-50% + ${ty.toFixed(1)}px), 0)`;
         }
         if (founderClosingAgency) {
+          const ty = -liftAgencyP * liftDistPx;
           founderClosingAgency.style.opacity = wordRevealOp.toFixed(3);
-          founderClosingAgency.style.transform = `translate3d(${curShiftPx.toFixed(1)}px, -50%, 0)`;
+          founderClosingAgency.style.transform = `translate3d(${curShiftPx.toFixed(1)}px, calc(-50% + ${ty.toFixed(1)}px), 0)`;
+        }
+
+        // Pop-up "Start a Conversation" Button below Techuilla Agency
+        const ctaRawP = clamp((safeP - 0.885) / 0.08, 0, 1);
+        if (founderClosingCtaWrap) {
+          const ctaScale = ctaRawP <= 0 ? 0.65 : lerp(0.65, 1.0, easeOutBackLocal(ctaRawP));
+          const ctaY = lerp(28, 0, easeOutCubicLocal(ctaRawP));
+          const ctaOp = clamp(ctaRawP * 1.45, 0, 1);
+          founderClosingCtaWrap.style.opacity = ctaOp.toFixed(3);
+          founderClosingCtaWrap.style.transform = `translate3d(-50%, ${ctaY.toFixed(1)}px, 0) scale(${ctaScale.toFixed(4)})`;
+          founderClosingCtaWrap.classList.toggle('is-interactive', ctaOp > 0.6);
+        }
+
+        // Pixelated ASCII Hands gliding in from left & right of Techuilla Agency (Hands Only!)
+        const handsP = easeOutCubicLocal(clamp((safeP - 0.875) / 0.105, 0, 1));
+        window.__ABOUT_CLOSING_HANDS_REVEAL__ = handsP;
+        if (closingAsciiHandLeftWrap && closingAsciiHandRightWrap) {
+          const handOffsetPct = lerp(105, 0, handsP);
+          const handOp = clamp(handsP * 1.6, 0, 1);
+          closingAsciiHandLeftWrap.style.opacity = handOp.toFixed(3);
+          closingAsciiHandRightWrap.style.opacity = handOp.toFixed(3);
+          closingAsciiHandLeftWrap.style.transform = `translate3d(${(-handOffsetPct).toFixed(2)}%, 0, 0)`;
+          closingAsciiHandRightWrap.style.transform = `translate3d(${handOffsetPct.toFixed(2)}%, 0, 0)`;
         }
       }
 
@@ -4235,6 +4400,192 @@
         requestAnimationFrame(tickFounderCarousel);
       }
       requestAnimationFrame(tickFounderCarousel);
+
+      /* ------------------------------------------------------------------------
+         8D. CLOSING PIXELATED ASCII HANDS ENGINE (SessionStorage-Cached, Interactive Hover Glow)
+             Only draws when Phase D finale is visible (zero overhead during rest of page!)
+         ------------------------------------------------------------------------ */
+      (function initClosingAsciiHands() {
+        if (!closingAsciiHandLeftCanvas || !closingAsciiHandRightCanvas) return;
+
+        const ASCII_CHARS = '........:::=+xX#0369';
+        const HIGHLIGHT_LIFETIME = 350;
+        const CLUSTER_SIZE = 12;
+        const columns = window.innerWidth < 768 ? 45 : 70;
+        const cellSize = window.innerWidth < 768 ? 14 : 18;
+        const fontSize = window.innerWidth < 768 ? 12 : 16;
+        const hoverRadius = 8;
+
+        const charColor = '#803500';
+        const hoverColor = '#FF6600';
+        const hoverCharColor = '#111111';
+        const hands = [];
+
+        function buildHandCells(image, cols) {
+          const rows = Math.max(1, Math.round(cols / (image.naturalWidth / image.naturalHeight || 1)));
+          const sampler = document.createElement('canvas');
+          sampler.width = cols;
+          sampler.height = rows;
+          const sCtx = sampler.getContext('2d');
+          const cells = new Map();
+          if (!sCtx) return { rows, cells };
+          sCtx.drawImage(image, 0, 0, cols, rows);
+          const pixels = sCtx.getImageData(0, 0, cols, rows).data;
+          const bgIdx = ASCII_CHARS.lastIndexOf('.');
+          for (let row = 0; row < rows; row++) {
+            for (let col = 0; col < cols; col++) {
+              const off = (row * cols + col) * 4;
+              const bright = (pixels[off] * 0.299 + pixels[off + 1] * 0.587 + pixels[off + 2] * 0.114) / 255;
+              const ci = Math.min(ASCII_CHARS.length - 1, Math.floor((1 - bright) * ASCII_CHARS.length));
+              if (ci <= bgIdx) continue;
+              cells.set(`${col},${row}`, { col, row, char: ASCII_CHARS[ci], highlightEndTime: 0 });
+            }
+          }
+          return { rows, cells };
+        }
+
+        function setupHand(canvas, src, storageKey) {
+          const ctx = canvas.getContext('2d');
+          if (!ctx) return;
+          const handObj = {
+            canvas,
+            ctx,
+            cells: new Map(),
+            cellList: [],
+            rows: 0,
+            columns,
+            cellSize,
+            baselineOffset: fontSize * 0.1,
+            dirty: true
+          };
+
+          try {
+            const cached = sessionStorage.getItem(storageKey);
+            if (cached) {
+              const parsed = JSON.parse(cached);
+              handObj.rows = parsed.rows;
+              canvas.width = columns * cellSize;
+              canvas.height = parsed.rows * cellSize;
+              parsed.cells.forEach(c => {
+                const cell = { col: c[0], row: c[1], char: c[2], highlightEndTime: 0 };
+                handObj.cells.set(`${c[0]},${c[1]}`, cell);
+                handObj.cellList.push(cell);
+              });
+              handObj.dirty = true;
+            }
+          } catch (e) {}
+
+          const img = new Image();
+          img.src = src;
+          const onReady = () => {
+            if (!img.naturalWidth) return;
+            const { rows, cells } = buildHandCells(img, columns);
+            handObj.rows = rows;
+            handObj.cells = cells;
+            handObj.cellList = Array.from(cells.values());
+            canvas.width = columns * cellSize;
+            canvas.height = rows * cellSize;
+            handObj.dirty = true;
+            try {
+              sessionStorage.setItem(storageKey, JSON.stringify({
+                rows,
+                cells: handObj.cellList.map(c => [c.col, c.row, c.char])
+              }));
+            } catch (e) {}
+          };
+          if (img.decode) img.decode().then(onReady).catch(onReady);
+          else img.onload = onReady;
+
+          hands.push(handObj);
+        }
+
+        setupHand(closingAsciiHandLeftCanvas, 'hand-left.jpg', 'techuilla_ascii_left_70');
+        setupHand(closingAsciiHandRightCanvas, 'hand-right.jpg', 'techuilla_ascii_right_70');
+
+        function highlightCluster(cells, startCell) {
+          const now = Date.now();
+          startCell.highlightEndTime = now + HIGHLIGHT_LIFETIME;
+          const steps = Math.floor(Math.random() * CLUSTER_SIZE) + 1;
+          const lit = [startCell];
+          let cur = startCell;
+          for (let s = 0; s < steps; s++) {
+            const nb = [];
+            for (let dy = -1; dy <= 1; dy++) {
+              for (let dx = -1; dx <= 1; dx++) {
+                if (dx === 0 && dy === 0) continue;
+                const n = cells.get(`${cur.col + dx},${cur.row + dy}`);
+                if (n && !lit.includes(n)) nb.push(n);
+              }
+            }
+            if (!nb.length) break;
+            const next = nb[Math.floor(Math.random() * nb.length)];
+            next.highlightEndTime = now + HIGHLIGHT_LIFETIME + s * 10;
+            lit.push(next);
+            cur = next;
+          }
+        }
+
+        window.addEventListener('mousemove', (ev) => {
+          if (!window.__ABOUT_CLOSING_HANDS_REVEAL__ || window.__ABOUT_CLOSING_HANDS_REVEAL__ < 0.05) return;
+          for (let h = 0; h < hands.length; h++) {
+            const hand = hands[h];
+            const rect = hand.canvas.getBoundingClientRect();
+            const x = ev.clientX - rect.left;
+            const y = ev.clientY - rect.top;
+            if (x < 0 || x > rect.width || y < 0 || y > rect.height) continue;
+            const col = Math.floor(x / (hand.cellSize * (rect.width / (hand.columns * hand.cellSize))));
+            const row = Math.floor(y / (hand.cellSize * (rect.height / (hand.rows * hand.cellSize))));
+            let closest = null, closestDist = Infinity;
+            for (let dy = -1; dy <= 1; dy++) {
+              for (let dx = -1; dx <= 1; dx++) {
+                const cell = hand.cells.get(`${col + dx},${row + dy}`);
+                if (!cell) continue;
+                const d = Math.hypot(dx, dy);
+                if (d < closestDist) { closestDist = d; closest = cell; }
+              }
+            }
+            if (closest && closestDist <= hoverRadius) {
+              highlightCluster(hand.cells, closest);
+              hand.dirty = true;
+            }
+          }
+        }, { passive: true });
+
+        function renderHandsFrame() {
+          if (window.__ABOUT_CLOSING_HANDS_REVEAL__ > 0.01) {
+            const now = Date.now();
+            for (let h = 0; h < hands.length; h++) {
+              const hand = hands[h];
+              if (!hand.cellList.length) continue;
+              let anyLit = false;
+              for (let i = 0; i < hand.cellList.length; i++) {
+                if (hand.cellList[i].highlightEndTime > now) { anyLit = true; break; }
+              }
+              if (!hand.dirty && !anyLit) continue;
+              hand.dirty = anyLit; // keep redrawing only while highlights decay, then sleep at 0% CPU!
+
+              const { ctx, cellList, cellSize: cs, baselineOffset, columns: cols, rows } = hand;
+              ctx.clearRect(0, 0, cols * cs, rows * cs);
+              ctx.font = `${fontSize}px monospace`;
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              for (let i = 0; i < cellList.length; i++) {
+                const cell = cellList[i];
+                if (cell.highlightEndTime > now) {
+                  ctx.fillStyle = hoverColor;
+                  ctx.fillRect(cell.col * cs, cell.row * cs, cs, cs);
+                  ctx.fillStyle = hoverCharColor;
+                } else {
+                  ctx.fillStyle = charColor;
+                }
+                ctx.fillText(cell.char, cell.col * cs + cs / 2, cell.row * cs + cs / 2 + baselineOffset);
+              }
+            }
+          }
+          requestAnimationFrame(renderHandsFrame);
+        }
+        requestAnimationFrame(renderHandsFrame);
+      })();
 
       /* ------------------------------------------------------------------------
          9. UNIFIED SMOOTH SCROLL & LERP LOOP + CUSTOM SCROLLBAR INDICATOR
@@ -4299,7 +4650,7 @@
 
         let mode = 'light';
         if (founderRect && founderRect.top <= 40) {
-          mode = (founderCurrentP < 0.11 || founderCurrentP >= 0.70) ? 'light' : 'dark';
+          mode = (founderCurrentP < 0.10 || founderCurrentP >= 0.64) ? 'light' : 'dark';
         } else if (watchRect && watchRect.top <= 40) {
           mode = watchCurrentP < 0.08 ? 'orange' : 'dark';
         } else if (camRect && camRect.top <= 40) {
@@ -4412,7 +4763,7 @@
           const fr = founderTrack.getBoundingClientRect();
           if (fr.top <= 10 && fr.bottom >= window.innerHeight - 10) {
             // Keep default speed (0.513) before split opens; increase by +20% (0.733) once founder images appear!
-            scrollFactor = founderCurrentP >= 0.13 ? 0.733 : 0.513;
+            scrollFactor = founderCurrentP >= 0.12 ? 0.733 : 0.513;
           }
         }
         targetY = Math.max(0, Math.min(maxScrollY, targetY + clampedDelta * scrollFactor));
