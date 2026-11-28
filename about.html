@@ -50,9 +50,10 @@
   <link rel="preload" as="image" href="assets/philosophy_3_unite_disciplines.png" />
   <link rel="preload" as="image" href="assets/philosophy_4_never_stand_still.png" />
 
-  <!-- Three.js & CGI Cinema Camera Engine -->
+  <!-- Three.js, CGI Cinema Camera Engine & CGI Luxury Watch Engine -->
   <script src="three.min.js"></script>
   <script src="aboutCameraCGI.js?v=20261128_macro_v3"></script>
+  <script src="aboutWatchCGI.js?v=20261128_watch_v1"></script>
 
   <style>
     /* ==========================================================================
@@ -1668,43 +1669,230 @@
       flex-shrink: 0;
     }
 
-    /* Orange Outro Panel */
-    .crafts-orange-outro {
+    /* ==========================================================================
+       11. SECTION 7 — ORANGE MANIFESTO PULL-UP + 3D CGI LUXURY WATCH TRACK RECORD
+           + PAGE PULL-UP INTO "THE PERSON BEHIND TECHUILLA"
+       ========================================================================== */
+    .watch-section-track {
+      position: relative;
+      height: 920vh;
+      width: 100%;
+      z-index: 48;
+      background: #020203;
+    }
+
+    .watch-sticky-stage {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #020203;
+    }
+
+    /* Orange Manifesto Panel ("What sets Techuilla apart...") — Enters Directly After OUR CRAFTS & Pulls Straight Up! */
+    .watch-manifesto-shutter {
       position: absolute;
       inset: 0;
       width: 100vw;
       height: 100vh;
       background: var(--color-orange);
-      z-index: 35;
+      z-index: 50;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 0 clamp(24px, 7vw, 120px);
-      transform: translate3d(0, 100%, 0);
-      will-change: transform;
+      padding: 0 clamp(28px, 7.5vw, 132px);
+      box-shadow: 0 32px 90px rgba(0, 0, 0, 0.55);
+      transform: translate3d(0, 0%, 0);
     }
 
-    .crafts-outro-text {
-      font-family: var(--font-display);
-      font-size: clamp(28px, 3.9vw, 62px);
+    .watch-manifesto-text {
+      font-family: var(--font-sans);
+      font-size: clamp(20px, 2.35vw, 38px);
       font-weight: 800;
-      line-height: 1.14;
-      letter-spacing: -0.025em;
-      text-transform: uppercase;
+      line-height: 1.32;
+      letter-spacing: -0.024em;
       color: #111111;
-      max-width: 1280px;
+      max-width: 1200px;
     }
 
-    .crafts-outro-tag {
-      margin-top: 28px;
+    .watch-manifesto-tag {
+      margin-top: 32px;
       font-family: var(--font-mono);
       font-size: 13px;
       font-weight: 700;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.20em;
       text-transform: uppercase;
       color: rgba(17, 17, 17, 0.72);
+    }
+
+    /* Three.js WebGL High-Detail 3D CGI Luxury Watch (Strictly Non-Interactive) */
+    .watch-cgi-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 15;
+      pointer-events: none !important;
+      display: block;
+    }
+
+    /* Compact Live Mechanical Stepper Counter — Strictly Top-Right Corner (Left & Right of Watch Empty!) */
+    .watch-live-stepper {
+      position: absolute;
+      top: 94px;
+      right: clamp(20px, 3vw, 44px);
+      z-index: 28;
+      background: rgba(14, 14, 17, 0.84);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 10px 14px 11px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      pointer-events: none;
+      transform-origin: right top;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55);
+    }
+
+    .watch-stepper-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-orange);
+      margin-bottom: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .watch-stepper-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-orange);
+      box-shadow: 0 0 8px rgba(255, 102, 0, 0.85);
+      animation: pulseCue 1.4s ease-in-out infinite;
+    }
+
+    .watch-stepper-grid {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .watch-step-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .watch-step-drums {
+      display: flex;
+      gap: 2px;
+      background: #070709;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 5px;
+      padding: 3px 4px;
+      box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.8), inset 0 -4px 8px rgba(0, 0, 0, 0.8);
+    }
+
+    .watch-drum-slot {
+      position: relative;
+      width: 13px;
+      height: 19px;
+      overflow: hidden;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 19px;
+      color: #F4F5F7;
+      text-align: center;
+    }
+
+    .watch-drum-strip {
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .watch-drum-strip span {
+      display: block;
+      height: 19px;
+      line-height: 19px;
+    }
+
+    .watch-step-label {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.48);
+    }
+
+    .watch-step-sep {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255, 102, 0, 0.65);
+      margin-bottom: 11px;
+    }
+
+    /* Final Page Pull-Up Panel: "THE PERSON BEHIND TECHUILLA" */
+    .person-behind-pullup {
+      position: absolute;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 60;
+      background: #FAF8F5;
+      background-image:
+        linear-gradient(to right, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+        linear-gradient(to right, rgba(255, 102, 0, 0.14) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 102, 0, 0.14) 1px, transparent 1px);
+      background-size: 80px 80px, 80px 80px, 320px 320px, 320px 320px;
+      border-top: 4px solid var(--color-orange);
+      box-shadow: 0 -28px 80px rgba(0, 0, 0, 0.55);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 clamp(24px, 6vw, 96px);
+      transform: translate3d(0, 102%, 0);
+    }
+
+    .person-behind-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-orange);
+      margin-bottom: 18px;
+    }
+
+    .person-behind-title {
+      font-family: var(--font-display);
+      font-size: clamp(46px, 7.6vw, 128px);
+      font-weight: 800;
+      letter-spacing: -0.042em;
+      line-height: 0.96;
+      text-transform: uppercase;
+      color: #111111;
+      max-width: 1240px;
+    }
+
+    .person-behind-title .accent-orange {
+      color: var(--color-orange);
     }
 
     @media (max-width: 960px) {
@@ -2219,14 +2407,40 @@
 
         <!-- Inside-Cylinder Concave 3D Proof-of-Work Gallery (2 per Service Section, Zero AI Automation, Zero Thumbnails) -->
         <div class="crafts-arc-stage" id="craftsArcStage"></div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Orange Outro Panel -->
-        <div class="crafts-orange-outro" id="craftsOrangeOutro">
-          <p class="crafts-outro-text">
-            “WORKING ACROSS DOMAINS LIKE ANIMATIONS, DEVELOPMENT, AUTOMATIONS AND CREATIVES TECHUILLA HAS ADVANCED UP TO ITS POTENTIAL”
-          </p>
-          <div class="crafts-outro-tag">TECHUILLA AGENCY • BUILD · CREATE · GROW</div>
+  <!-- ==========================================================================
+       SECTION 7: ORANGE MANIFESTO PULL-UP + 3D CGI LUXURY WATCH TRACK RECORD
+       + FINAL PAGE PULL-UP ("THE PERSON BEHIND TECHUILLA")
+       ========================================================================== -->
+  <section class="watch-section-track" id="watchSectionTrack" aria-label="Our Track Record — Luxury Horology CGI Experience">
+    <div class="watch-sticky-stage" id="watchStickyStage">
+      <!-- Orange Manifesto Panel Entering Directly After OUR CRAFTS -> Physical Page Pull-Up! -->
+      <div class="watch-manifesto-shutter" id="watchManifestoShutter">
+        <p class="watch-manifesto-text">
+          What sets Techuilla apart is our ability to bring technology, creativity, and strategy under one roof. Rather than relying on predefined solutions, we approach every challenge with a multidisciplinary perspective, crafting tailored solutions that align with business objectives. From the first concept to final execution, we focus on precision, adaptability, and outcomes that create lasting value.
+        </p>
+        <div class="watch-manifesto-tag">TECHUILLA AGENCY • OUR TRACK RECORD</div>
+      </div>
+
+      <!-- Three.js WebGL High-Detail 3D CGI Luxury Watch (Strictly Non-Interactive) -->
+      <canvas class="watch-cgi-canvas" id="watchCgiCanvas" aria-hidden="true"></canvas>
+
+      <!-- Compact Live Mechanical Stepper Counter — Strictly Top-Right Corner (Left & Right of Watch Empty!) -->
+      <div class="watch-live-stepper" id="watchLiveStepper" aria-label="Operating Since 4 May 2026">
+        <div class="watch-stepper-eyebrow">
+          <span>SINCE 4 MAY 2026</span>
+          <span class="watch-stepper-dot" aria-hidden="true"></span>
         </div>
+        <div class="watch-stepper-grid" id="watchStepperGrid"></div>
+      </div>
+
+      <!-- Final Page Pull-Up Panel: "THE PERSON BEHIND TECHUILLA" -->
+      <div class="person-behind-pullup" id="personBehindPullUp">
+        <div class="person-behind-eyebrow">TECHUILLA AGENCY • FOUNDER</div>
+        <h2 class="person-behind-title">THE PERSON BEHIND <span class="accent-orange">TECHUILLA</span></h2>
       </div>
     </div>
   </section>
@@ -3155,8 +3369,8 @@
           craftsOrangeIntro.style.transform = `translate3d(0, ${(-introPullUp * 102).toFixed(2)}%, 0)`;
         }
 
-        // Phase E (0.48 -> 0.92): Concave Repeating Single-Letter Background Wall + Inside-Cylinder 3D Proof-of-Work Gallery
-        const galleryP = clamp((P - 0.48) / 0.44, 0, 1);
+        // Phase E (0.48 -> 0.98): Concave Repeating Single-Letter Background Wall + Inside-Cylinder 3D Proof-of-Work Gallery
+        const galleryP = clamp((P - 0.48) / 0.50, 0, 1);
         craftsBgRows.forEach((row, idx) => {
           if (!row) return;
           const dir = idx % 2 === 0 ? -1 : 1;
@@ -3171,7 +3385,7 @@
 
         craftCardEls.forEach((card, idx) => {
           const delta = idx - travelFloat;
-          if (Math.abs(delta) > 2.5 || P < 0.45 || P > 0.95) {
+          if (Math.abs(delta) > 2.5 || P < 0.45) {
             card.style.opacity = '0';
             card.style.visibility = 'hidden';
             const vid = card.querySelector('video');
@@ -3192,18 +3406,136 @@
 
           const vid = card.querySelector('video');
           if (vid) {
-            if (Math.abs(delta) < 1.15 && P > 0.47 && P < 0.93) {
+            if (Math.abs(delta) < 1.15 && P > 0.47 && P < 0.98) {
               if (vid.paused) vid.play().catch(() => {});
             } else if (!vid.paused) {
               vid.pause();
             }
           }
         });
+      }
 
-        // Phase F (0.92 -> 0.99): Orange Outro Panel rises smoothly into view
-        const outroP = easeInOutCubic(clamp((P - 0.92) / 0.07, 0, 1));
-        if (craftsOrangeOutro) {
-          craftsOrangeOutro.style.transform = `translate3d(0, ${lerp(102, 0, outroP).toFixed(2)}%, 0)`;
+      /* ------------------------------------------------------------------------
+         8B. SECTION 7 — OUR TRACK RECORD (ORANGE MANIFESTO PULL-UP
+             + HIGH-DETAIL 3D CGI LUXURY WATCH + LIVE TOP-RIGHT STEPPER
+             + PAGE PULL-UP INTO "THE PERSON BEHIND TECHUILLA")
+         ------------------------------------------------------------------------ */
+      const watchTrack = document.getElementById('watchSectionTrack');
+      const watchManifestoShutter = document.getElementById('watchManifestoShutter');
+      const watchCgiCanvas = document.getElementById('watchCgiCanvas');
+      const watchLiveStepper = document.getElementById('watchLiveStepper');
+      const watchStepperGrid = document.getElementById('watchStepperGrid');
+      const personBehindPullUp = document.getElementById('personBehindPullUp');
+
+      const watchCgiController = (typeof window.initAboutWatchCGI === 'function' && watchCgiCanvas)
+        ? window.initAboutWatchCGI(watchCgiCanvas)
+        : null;
+
+      // Build Compact Live Mechanical Drum Stepper (Counting Continuously from 4 May 2026, 12:00 PM)
+      const STEPPER_UNITS = [
+        { key: 'yrs',  label: 'YRS',  digits: 2 },
+        { key: 'mos',  label: 'MOS',  digits: 2 },
+        { key: 'days', label: 'DAYS', digits: 2 },
+        { key: 'hrs',  label: 'HRS',  digits: 2 },
+        { key: 'mins', label: 'MIN',  digits: 2 },
+        { key: 'secs', label: 'SEC',  digits: 2 }
+      ];
+      const drumStripsByKey = {};
+
+      if (watchStepperGrid) {
+        const digitSpans = '0123456789'.split('').map(d => `<span>${d}</span>`).join('');
+        watchStepperGrid.innerHTML = STEPPER_UNITS.map((u, ui) => {
+          const slots = Array.from({ length: u.digits }, (_, di) =>
+            `<div class="watch-drum-slot"><div class="watch-drum-strip" data-unit="${u.key}" data-digit="${di}">${digitSpans}</div></div>`
+          ).join('');
+          const sep = ui < STEPPER_UNITS.length - 1 ? '<span class="watch-step-sep">:</span>' : '';
+          return `<div class="watch-step-unit"><div class="watch-step-drums">${slots}</div><span class="watch-step-label">${u.label}</span></div>${sep}`;
+        }).join('');
+
+        STEPPER_UNITS.forEach(u => {
+          drumStripsByKey[u.key] = Array.from(watchStepperGrid.querySelectorAll(`.watch-drum-strip[data-unit="${u.key}"]`));
+        });
+
+        function updateLiveAgencyClock() {
+          const startDate = new Date(2026, 4, 4, 12, 0, 0); // 4 May 2026, 12:00:00 PM
+          const now = new Date();
+          let diffMs = now.getTime() - startDate.getTime();
+          if (diffMs < 0) diffMs = 0;
+
+          // Calendar-accurate Years, Months, Days, Hours, Minutes, Seconds
+          let yrs = 0, mos = 0, days = 0, hrs = 0, mins = 0, secs = 0;
+          if (diffMs > 0) {
+            let cursor = new Date(startDate.getTime());
+            yrs = now.getFullYear() - cursor.getFullYear();
+            cursor.setFullYear(cursor.getFullYear() + yrs);
+            if (cursor > now) { yrs--; cursor.setFullYear(cursor.getFullYear() - 1); }
+
+            mos = (now.getMonth() - cursor.getMonth() + 12) % 12;
+            cursor.setMonth(cursor.getMonth() + mos);
+            if (cursor > now) {
+              mos = (mos + 11) % 12;
+              cursor = new Date(startDate.getTime());
+              cursor.setFullYear(cursor.getFullYear() + yrs);
+              cursor.setMonth(cursor.getMonth() + mos);
+            }
+
+            let remSec = Math.max(0, Math.floor((now.getTime() - cursor.getTime()) / 1000));
+            days = Math.floor(remSec / 86400); remSec %= 86400;
+            hrs  = Math.floor(remSec / 3600);  remSec %= 3600;
+            mins = Math.floor(remSec / 60);
+            secs = remSec % 60;
+          }
+
+          const vals = { yrs, mos, days, hrs, mins, secs };
+          STEPPER_UNITS.forEach(u => {
+            const str = String(Math.min(99, vals[u.key])).padStart(u.digits, '0');
+            const strips = drumStripsByKey[u.key] || [];
+            strips.forEach((strip, idx) => {
+              const digitVal = parseInt(str[idx], 10) || 0;
+              strip.style.transform = `translate3d(0, ${-digitVal * 19}px, 0)`;
+            });
+          });
+        }
+
+        updateLiveAgencyClock();
+        setInterval(updateLiveAgencyClock, 1000);
+      }
+
+      let watchTargetP = 0, watchCurrentP = 0;
+
+      function renderWatchTrackRecord(P) {
+        if (!watchTrack) return;
+        const safeP = clamp(P, 0, 1);
+
+        // 1. Orange Manifesto Panel Pull-Up (0.03 -> 0.12): Reveals ONLY the stationary 3D CGI Watch underneath!
+        const shutterP = easeInOutCubic(clamp((safeP - 0.03) / 0.09, 0, 1));
+        if (watchManifestoShutter) {
+          watchManifestoShutter.style.transform = `translate3d(0, ${(-shutterP * 102).toFixed(2)}%, 0)`;
+        }
+
+        // 2. Compact Top-Right Live Stepper: Appears once manifesto clears, then motion-blurs forward toward viewer when zooming in!
+        if (watchLiveStepper) {
+          const enterOp = clamp((safeP - 0.09) / 0.04, 0, 1);
+          const exitP = easeInOutCubic(clamp((safeP - 0.13) / 0.08, 0, 1));
+          const op = enterOp * clamp(1 - exitP * 1.25, 0, 1);
+          const sc = lerp(1.0, 1.38, exitP);
+          const blurPx = (exitP * 9).toFixed(1);
+          watchLiveStepper.style.opacity = op.toFixed(3);
+          watchLiveStepper.style.transform = `scale(${sc.toFixed(3)})`;
+          watchLiveStepper.style.filter = exitP > 0.01 && op > 0.01 ? `blur(${blurPx}px)` : 'none';
+        }
+
+        // 3. Drive High-Detail 3D CGI Watch Choreography
+        const wr = watchTrack.getBoundingClientRect();
+        const isWatchVisible = wr.top < window.innerHeight && wr.bottom > 0 && safeP < 0.99;
+        if (watchCgiController) {
+          watchCgiController.renderAtProgress(safeP, isWatchVisible);
+        }
+
+        // 4. Final Page Pull-Up Panel ("THE PERSON BEHIND TECHUILLA", 0.89 -> 0.99)
+        const personP = easeInOutCubic(clamp((safeP - 0.89) / 0.10, 0, 1));
+        if (personBehindPullUp) {
+          personBehindPullUp.style.transform = `translate3d(0, ${lerp(102, 0, personP).toFixed(2)}%, 0)`;
         }
       }
 
@@ -3240,6 +3572,12 @@
           cameraTargetP = clamp(-r.top / maxS, 0, 1);
         }
 
+        if (watchTrack) {
+          const r = watchTrack.getBoundingClientRect();
+          const maxS = Math.max(1, watchTrack.offsetHeight - winH);
+          watchTargetP = clamp(-r.top / maxS, 0, 1);
+        }
+
         if (scrollThumb) {
           const docH = Math.max(1, document.documentElement.scrollHeight - winH);
           const scrollPct = clamp(window.scrollY / docH, 0, 1);
@@ -3252,11 +3590,16 @@
       function updateAdaptiveNavbarTheme() {
         if (!siteNavEl) return;
         const camRect = cameraTrack ? cameraTrack.getBoundingClientRect() : null;
+        const watchRect = watchTrack ? watchTrack.getBoundingClientRect() : null;
 
         let mode = 'light';
-        if (camRect && camRect.top <= 40) {
+        if (watchRect && watchRect.top <= 40) {
+          if (watchCurrentP < 0.08) mode = 'orange';
+          else if (watchCurrentP > 0.93) mode = 'light';
+          else mode = 'dark';
+        } else if (camRect && camRect.top <= 40) {
           if (cameraCurrentP < 0.11) mode = 'light';
-          else if ((cameraCurrentP >= 0.39 && cameraCurrentP <= 0.48) || cameraCurrentP > 0.94) mode = 'orange';
+          else if (cameraCurrentP >= 0.39 && cameraCurrentP <= 0.48) mode = 'orange';
           else mode = 'dark';
         }
 
@@ -3269,6 +3612,7 @@
         renderPhilosophy(philCurrentP);
         renderApproach(approachCurrentP);
         renderCameraAndCrafts(cameraCurrentP);
+        renderWatchTrackRecord(watchCurrentP);
         updateAdaptiveNavbarTheme();
       }
 
@@ -3277,15 +3621,17 @@
         const dp = philTargetP - philCurrentP;
         const da = approachTargetP - approachCurrentP;
         const dc = cameraTargetP - cameraCurrentP;
+        const dw = watchTargetP - watchCurrentP;
 
         if (
           window.__ABOUT_INSTANT_SCRUB__ ||
-          (Math.abs(dh) < 0.0004 && Math.abs(dp) < 0.0004 && Math.abs(da) < 0.0004 && Math.abs(dc) < 0.0004)
+          (Math.abs(dh) < 0.0004 && Math.abs(dp) < 0.0004 && Math.abs(da) < 0.0004 && Math.abs(dc) < 0.0004 && Math.abs(dw) < 0.0004)
         ) {
           heroCurrentP = heroTargetP;
           philCurrentP = philTargetP;
           approachCurrentP = approachTargetP;
           cameraCurrentP = cameraTargetP;
+          watchCurrentP = watchTargetP;
           renderAllSections();
           masterRafId = null;
           return;
@@ -3295,6 +3641,7 @@
         philCurrentP += dp * 0.144;
         approachCurrentP += da * 0.144;
         cameraCurrentP += dc * 0.144;
+        watchCurrentP += dw * 0.144;
 
         renderAllSections();
         masterRafId = requestAnimationFrame(tickMaster);
@@ -3307,6 +3654,7 @@
           philCurrentP = philTargetP;
           approachCurrentP = approachTargetP;
           cameraCurrentP = cameraTargetP;
+          watchCurrentP = watchTargetP;
           renderAllSections();
           return;
         }
@@ -3377,6 +3725,7 @@
         philTargetP = philCurrentP = 0;
         approachTargetP = approachCurrentP = 0;
         cameraTargetP = cameraCurrentP = 0;
+        watchTargetP = watchCurrentP = 0;
         window.scrollTo(0, 0);
         renderAllSections();
         computeAllTargets();
@@ -3395,6 +3744,7 @@
         philCurrentP = philTargetP;
         approachCurrentP = approachTargetP;
         cameraCurrentP = cameraTargetP;
+        watchCurrentP = watchTargetP;
         renderAllSections();
       };
 
@@ -3404,6 +3754,7 @@
       philCurrentP = philTargetP;
       approachCurrentP = approachTargetP;
       cameraCurrentP = cameraTargetP;
+      watchCurrentP = watchTargetP;
       renderAllSections();
     })();
   </script>
