@@ -35,7 +35,7 @@
   <!-- Google Fonts: Exact Home Page Font Stack (Inter, Archivo, Space Grotesk, Newsreader, Playfair Display) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wdth,wght@125,800&family=Big+Shoulders+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Archivo:wdth,wght@125,800&family=Big+Shoulders+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Preload Critical Visuals -->
   <link rel="preload" as="image" href="Techuilla_logo.png" />
@@ -1710,13 +1710,14 @@
     }
 
     .watch-manifesto-text {
-      font-family: var(--font-sans);
-      font-size: clamp(30px, 3.65vw, 58px);
-      font-weight: 800;
-      line-height: 1.22;
-      letter-spacing: -0.028em;
+      font-family: "Anton", "Big Shoulders Display", "Archivo Black", sans-serif;
+      font-size: clamp(34px, 4.15vw, 66px);
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: 0.015em;
+      text-transform: uppercase;
       color: #111111;
-      max-width: 1420px;
+      max-width: 1380px;
     }
 
     .watch-manifesto-tag {
@@ -1875,7 +1876,7 @@
        ========================================================================== */
     .founder-section-track {
       position: relative;
-      height: 820vh;
+      height: 680vh;
       width: 100%;
       z-index: 52;
       background: #08080A;
@@ -4130,7 +4131,7 @@
         if (maxScrollY <= 0) return;
 
         const clampedDelta = Math.sign(e.deltaY) * Math.min(75, Math.abs(e.deltaY));
-        // Section-specific smooth scroll pacing: Watch (-15% slower -> 0.372), Founder (+15% faster -> 0.531)
+        // Section-specific smooth scroll pacing: Watch (0.372), Founder (+15% faster -> 0.611)
         let scrollFactor = 0.513;
         if (watchTrack) {
           const wr = watchTrack.getBoundingClientRect();
@@ -4141,7 +4142,7 @@
         if (founderTrack) {
           const fr = founderTrack.getBoundingClientRect();
           if (fr.top <= 10 && fr.bottom >= window.innerHeight - 10) {
-            scrollFactor = 0.531;
+            scrollFactor = 0.611;
           }
         }
         targetY = Math.max(0, Math.min(maxScrollY, targetY + clampedDelta * scrollFactor));
