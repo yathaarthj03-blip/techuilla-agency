@@ -1962,34 +1962,37 @@
       color: var(--color-orange);
     }
 
-    /* Continuous Vertical 3-Panel Filmstrip (Panel 2 Appears at 50% Scroll Right Behind Panel 1 — NOT Page Pull-Up!) */
+    /* 3 Layered Full-Bleed Founder Panels — Silky Parallax Depth + Soft Rounded Organic Reveal! */
     .founder-filmstrip {
       position: absolute;
-      top: 0;
-      left: 0;
+      inset: 0;
       width: 100vw;
-      display: flex;
-      flex-direction: column;
+      height: 100vh;
       z-index: 10;
-      transform: translate3d(0, 0, 0);
+      overflow: hidden;
     }
 
     .founder-panel {
-      position: relative;
+      position: absolute;
+      inset: 0;
       width: 100vw;
       height: 100vh;
-      flex-shrink: 0;
       overflow: hidden;
       background: #09090B;
+      box-shadow: 0 -24px 64px rgba(0, 0, 0, 0.55);
     }
+
+    .founder-panel-0 { z-index: 10; transform: translate3d(0, 0%, 0); }
+    .founder-panel-1 { z-index: 20; transform: translate3d(0, 102%, 0); }
+    .founder-panel-2 { z-index: 30; transform: translate3d(0, 102%, 0); }
 
     .founder-panel-photo {
       position: absolute;
-      inset: 0;
+      inset: -4% 0;
       width: 100%;
-      height: 100%;
+      height: 108%;
       object-fit: cover;
-      object-position: center 22%;
+      object-position: center 18%;
       display: block;
       filter: contrast(1.04) saturate(1.02);
     }
@@ -1998,22 +2001,21 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.08) 25%, rgba(0, 0, 0, 0.42) 100%);
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.04) 45%, rgba(0, 0, 0, 0.48) 100%);
       pointer-events: none;
       z-index: 2;
     }
 
-    /* Curved Semicircle Dual-Layer Infinite Text Carousel (Shrinks Smoothly as it Rises Upward on Scroll!) */
+    /* Deep Curved Semicircle Carousel Positioned Cleanly at 70% of Screen Height (Never Covering Face!) */
     .founder-arc-overlay {
       position: absolute;
-      left: -6vw;
-      width: 112vw;
-      height: 60vh;
-      top: 30vh;
+      left: -4vw;
+      width: 108vw;
+      height: 44vh;
+      top: 52vh;
       z-index: 6;
       pointer-events: none;
       overflow: visible;
-      transform-origin: center center;
     }
 
     .founder-arc-svg {
@@ -2025,7 +2027,7 @@
 
     .founder-arc-bold {
       font-family: "Big Shoulders Display", "Archivo Black", sans-serif;
-      font-size: 168px;
+      font-size: 158px;
       font-weight: 900;
       letter-spacing: 0.02em;
       text-transform: uppercase;
@@ -2036,7 +2038,7 @@
 
     .founder-arc-script {
       font-family: "Pinyon Script", cursive;
-      font-size: 118px;
+      font-size: 112px;
       font-weight: 400;
       letter-spacing: 0.01em;
     }
@@ -2569,7 +2571,7 @@
       <!-- Orange Manifesto Panel Entering Directly After OUR CRAFTS -> Physical Page Pull-Up! -->
       <div class="watch-manifesto-shutter" id="watchManifestoShutter">
         <p class="watch-manifesto-text">
-          What sets Techuilla apart is our ability to bring technology, creativity, and strategy under one roof. Rather than relying on predefined solutions, we approach every challenge with a multidisciplinary perspective, crafting tailored solutions that align with business objectives. From the first concept to final execution, we focus on precision, adaptability, and outcomes that create lasting value.
+          We unite technology, creativity, and strategy to deliver solutions tailored to every challenge. Our multidisciplinary approach turns complex ideas into purposeful execution and measurable impact.
         </p>
         <div class="watch-manifesto-tag">TECHUILLA AGENCY • OUR TRACK RECORD</div>
       </div>
@@ -2625,7 +2627,7 @@
           <div class="founder-arc-overlay" id="founderArcWrap0" aria-hidden="true">
             <svg class="founder-arc-svg" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMid slice">
               <defs>
-                <path id="founderArcPath0" d="M -1800,-120 Q 720,460 3240,-120" />
+                <path id="founderArcPath0" d="M -320,-35 Q 720,445 1760,-35" />
               </defs>
               <text class="founder-arc-bold is-orange">
                 <textPath id="founderBoldTP0" href="#founderArcPath0" startOffset="0"></textPath>
@@ -2643,7 +2645,7 @@
           <div class="founder-arc-overlay" id="founderArcWrap1" aria-hidden="true">
             <svg class="founder-arc-svg" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMid slice">
               <defs>
-                <path id="founderArcPath1" d="M -1800,-120 Q 720,460 3240,-120" />
+                <path id="founderArcPath1" d="M -320,-35 Q 720,445 1760,-35" />
               </defs>
               <text class="founder-arc-bold is-white">
                 <textPath id="founderBoldTP1" href="#founderArcPath1" startOffset="0"></textPath>
@@ -2661,7 +2663,7 @@
           <div class="founder-arc-overlay" id="founderArcWrap2" aria-hidden="true">
             <svg class="founder-arc-svg" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMid slice">
               <defs>
-                <path id="founderArcPath2" d="M -1800,-120 Q 720,460 3240,-120" />
+                <path id="founderArcPath2" d="M -320,-35 Q 720,445 1760,-35" />
               </defs>
               <text class="founder-arc-bold is-orange">
                 <textPath id="founderBoldTP2" href="#founderArcPath2" startOffset="0"></textPath>
@@ -3769,19 +3771,19 @@
 
       /* ------------------------------------------------------------------------
          8C. SECTION 8 — "THE PERSON BEHIND TECHUILLA" CENTER SPLIT-WIPE
-             + CONTINUOUS VERTICAL 3-PANEL FILMSTRIP + SHRINKING SEMICIRCLE
-             + PIXEL-MEASURED 100% SEAMLESS INFINITE CURVED TEXT CAROUSEL
+             + 3 LAYERED PARALLAX FOUNDER PANELS + DEEP CURVED SEMICIRCLE AT 70%
+             + BIDIRECTIONAL SEAMLESS INFINITE CAROUSEL (R->L DOWN, L->R UP!)
          ------------------------------------------------------------------------ */
       const founderTrack = document.getElementById('founderSectionTrack');
       const founderSplitCurtain = document.getElementById('founderSplitCurtain');
       const founderSplitLeft = document.getElementById('founderSplitLeft');
       const founderSplitRight = document.getElementById('founderSplitRight');
-      const founderFilmstrip = document.getElementById('founderFilmstrip');
-      const founderArcWraps = [
-        document.getElementById('founderArcWrap0'),
-        document.getElementById('founderArcWrap1'),
-        document.getElementById('founderArcWrap2')
+      const founderPanels = [
+        document.getElementById('founderPanel0'),
+        document.getElementById('founderPanel1'),
+        document.getElementById('founderPanel2')
       ];
+      const founderPhotos = founderPanels.map(p => p ? p.querySelector('.founder-panel-photo') : null);
       const founderBoldTPs = [
         document.getElementById('founderBoldTP0'),
         document.getElementById('founderBoldTP1'),
@@ -3799,16 +3801,15 @@
         'Designer & Integrator\u00A0\u00A0\u00A0\u00A0',
         'Creative\u00A0\u00A0\u00A0\u00A0'
       ];
-      const boldUnitLens = [560, 560, 560];
-      const scriptUnitLens = [420, 860, 380];
+      const boldUnitLens = [520, 520, 520];
+      const scriptUnitLens = [390, 810, 350];
 
-      // Populate repeating units & measure exact SVG pixel length for 100% seamless zero-jump infinite wrap!
       for (let i = 0; i < 3; i++) {
         if (founderBoldTPs[i]) {
-          founderBoldTPs[i].textContent = FOUNDER_BOLD_UNIT.repeat(14);
+          founderBoldTPs[i].textContent = FOUNDER_BOLD_UNIT.repeat(12);
         }
         if (founderScriptTPs[i]) {
-          founderScriptTPs[i].textContent = FOUNDER_SCRIPT_UNITS[i].repeat(14);
+          founderScriptTPs[i].textContent = FOUNDER_SCRIPT_UNITS[i].repeat(12);
         }
       }
 
@@ -3832,6 +3833,8 @@
       }
 
       let founderTargetP = 0, founderCurrentP = 0;
+      let prevFounderP = 0;
+      let carouselDir = 1; // +1 = Right->Left (scrolling down), -1 = Left->Right (scrolling up!)
       let founderBoldPx = 0;
       let founderScriptPx = 0;
       let lastFounderTick = performance.now();
@@ -3840,8 +3843,18 @@
         if (!founderTrack) return;
         const safeP = clamp(P, 0, 1);
 
-        // Phase A (0.05 -> 0.22): Center Split-Wipe! Left half wipes left, Right half wipes right!
-        const splitP = easeInOutCubic(clamp((safeP - 0.05) / 0.17, 0, 1));
+        // Detect scroll direction cleanly for bidirectional curved carousel!
+        const dp = safeP - prevFounderP;
+        if (Math.abs(dp) > 0.00015) {
+          carouselDir = dp > 0 ? 1 : -1;
+          // Immediate tactile scroll coupling (Right->Left on scroll down, Left->Right on scroll up!)
+          founderBoldPx += dp * 1450;
+          founderScriptPx += dp * 1720;
+        }
+        prevFounderP = safeP;
+
+        // Phase A (0.04 -> 0.20): Center Split-Wipe! Left half wipes left, Right half wipes right!
+        const splitP = easeInOutCubic(clamp((safeP - 0.04) / 0.16, 0, 1));
         if (founderSplitLeft && founderSplitRight) {
           founderSplitLeft.style.transform = `translate3d(${(-splitP * 102).toFixed(2)}%, 0, 0)`;
           founderSplitRight.style.transform = `translate3d(${(splitP * 102).toFixed(2)}%, 0, 0)`;
@@ -3850,29 +3863,52 @@
           founderSplitCurtain.style.opacity = splitP >= 0.999 ? '0' : '1';
         }
 
-        // Phase B (0.22 -> 1.00): Continuous Vertical 3-Panel Filmstrip (NOT Page Pull-Up!)
-        //   Panel 1 scrolls up and as it passes 50%, Panel 2 is already rising smoothly right behind it, then Panel 3!
-        const filmstripP = clamp((safeP - 0.22) / 0.78, 0, 1);
-        const stripOffsetVH = filmstripP * 200; // 0vh -> 200vh across 3 stacked 100vh panels
-        if (founderFilmstrip) {
-          founderFilmstrip.style.transform = `translate3d(0, ${(-stripOffsetVH).toFixed(2)}vh, 0)`;
+        // Phase B (0.34 -> 0.64): Panel 2 smoothly layers over Panel 1 (rounded organic top reveal + Panel 1 depth parallax!)
+        const p2Enter = easeInOutCubic(clamp((safeP - 0.34) / 0.30, 0, 1));
+        // Phase C (0.64 -> 0.94): Panel 3 smoothly layers over Panel 2 (rounded organic top reveal + Panel 2 depth parallax!)
+        const p3Enter = easeInOutCubic(clamp((safeP - 0.64) / 0.30, 0, 1));
+
+        // Panel 0 (Founder 1): subtle upward parallax + gentle depth dim as Panel 2 arrives
+        if (founderPanels[0]) {
+          founderPanels[0].style.transform = `translate3d(0, ${(-p2Enter * 24).toFixed(2)}%, 0)`;
+          if (founderPhotos[0]) {
+            const sc0 = lerp(1.0, 1.06, p2Enter);
+            const br0 = lerp(1.0, 0.58, p2Enter);
+            founderPhotos[0].style.transform = `scale(${sc0.toFixed(3)})`;
+            founderPhotos[0].style.filter = `contrast(1.04) saturate(1.02) brightness(${br0.toFixed(2)})`;
+          }
         }
 
-        // Curved Semicircle Shrink-on-Upward-Scroll (Exact Match to Reference Video!):
-        //   As each panel rises from bottom (+1) through center (0) toward top (-1), its curved semicircle
-        //   travels upward AND smoothly shrinks (scale 1.22 -> 0.66)!
-        for (let i = 0; i < 3; i++) {
-          const wrap = founderArcWraps[i];
-          if (!wrap) continue;
-          const panelCenterOffset = (i * 100 - stripOffsetVH) / 100; // +1 bottom, 0 center, -1 top
-          const rise = clamp(0.5 - panelCenterOffset * 0.5, 0, 1);
-          const arcScale = lerp(1.22, 0.66, rise);
-          const arcShiftY = lerp(14, -18, rise);
-          wrap.style.transform = `translate3d(0, ${arcShiftY.toFixed(2)}vh, 0) scale(${arcScale.toFixed(3)})`;
+        // Panel 1 (Founder 2): rises smoothly with organic rounded top corner settling flat, then parallax-dims as Panel 3 arrives
+        if (founderPanels[1]) {
+          const y1 = lerp(102, 0, p2Enter) - p3Enter * 24;
+          const rad1 = p2Enter > 0.01 && p2Enter < 0.98 ? Math.round((1 - p2Enter) * 44) : 0;
+          founderPanels[1].style.transform = `translate3d(0, ${y1.toFixed(2)}%, 0)`;
+          founderPanels[1].style.borderTopLeftRadius = `${rad1}px`;
+          founderPanels[1].style.borderTopRightRadius = `${rad1}px`;
+          if (founderPhotos[1]) {
+            const sc1 = lerp(1.04, 1.0, p2Enter) + p3Enter * 0.06;
+            const br1 = lerp(1.0, 0.58, p3Enter);
+            founderPhotos[1].style.transform = `scale(${sc1.toFixed(3)})`;
+            founderPhotos[1].style.filter = `contrast(1.04) saturate(1.02) brightness(${br1.toFixed(2)})`;
+          }
+        }
+
+        // Panel 2 (Founder 3): rises smoothly with organic rounded top corner settling flat
+        if (founderPanels[2]) {
+          const y2 = lerp(102, 0, p3Enter);
+          const rad2 = p3Enter > 0.01 && p3Enter < 0.98 ? Math.round((1 - p3Enter) * 44) : 0;
+          founderPanels[2].style.transform = `translate3d(0, ${y2.toFixed(2)}%, 0)`;
+          founderPanels[2].style.borderTopLeftRadius = `${rad2}px`;
+          founderPanels[2].style.borderTopRightRadius = `${rad2}px`;
+          if (founderPhotos[2]) {
+            const sc2 = lerp(1.04, 1.0, p3Enter);
+            founderPhotos[2].style.transform = `scale(${sc2.toFixed(3)})`;
+          }
         }
       }
 
-      // 100% Seamless Pixel-Measured 60fps Infinite Curved Carousel Loop (Zero Jumps, Zero Resets!)
+      // 100% Seamless Bidirectional 60fps Infinite Curved Carousel (R->L on scroll down, L->R on scroll up!)
       function tickFounderCarousel() {
         const now = performance.now();
         const dt = Math.min(0.05, (now - lastFounderTick) / 1000);
@@ -3881,20 +3917,20 @@
         if (founderTrack) {
           const fr = founderTrack.getBoundingClientRect();
           if (fr.top < window.innerHeight && fr.bottom > 0 && founderCurrentP > 0.04) {
-            founderBoldPx += dt * 155;   // Smooth continuous horizontal glide along semicircle
-            founderScriptPx += dt * 195; // Slightly faster delicate cursive counter-parallax!
+            founderBoldPx += carouselDir * dt * 135;
+            founderScriptPx += carouselDir * dt * 168;
 
             for (let i = 0; i < 3; i++) {
-              const bUnit = boldUnitLens[i] || 560;
-              const sUnit = scriptUnitLens[i] || 420;
-              // Seamless modulo by exact measured unit width + scroll boost
-              const bOff = -((founderBoldPx + founderCurrentP * 920) % bUnit);
-              const sOff = -((founderScriptPx + founderCurrentP * 1140) % sUnit);
+              const bUnit = boldUnitLens[i] || 520;
+              const sUnit = scriptUnitLens[i] || 390;
+              // Bidirectional positive modulo -> seamless infinite wrap in BOTH directions (zero jump!)
+              const bMod = ((founderBoldPx % bUnit) + bUnit) % bUnit;
+              const sMod = ((founderScriptPx % sUnit) + sUnit) % sUnit;
               if (founderBoldTPs[i]) {
-                founderBoldTPs[i].setAttribute('startOffset', `${bOff.toFixed(1)}`);
+                founderBoldTPs[i].setAttribute('startOffset', `${(-bMod).toFixed(1)}`);
               }
               if (founderScriptTPs[i]) {
-                founderScriptTPs[i].setAttribute('startOffset', `${sOff.toFixed(1)}`);
+                founderScriptTPs[i].setAttribute('startOffset', `${(-sMod).toFixed(1)}`);
               }
             }
           }
