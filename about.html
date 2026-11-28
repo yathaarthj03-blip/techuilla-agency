@@ -35,7 +35,7 @@
   <!-- Google Fonts: Exact Home Page Font Stack (Inter, Archivo, Space Grotesk, Newsreader, Playfair Display) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wdth,wght@125,800&family=Big+Shoulders+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wdth,wght@125,800&family=Big+Shoulders+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Preload Critical Visuals -->
   <link rel="preload" as="image" href="Techuilla_logo.png" />
@@ -1869,13 +1869,43 @@
       text-shadow: none;
     }
 
-    /* Final Page Pull-Up Panel: "THE PERSON BEHIND TECHUILLA" */
-    .person-behind-pullup {
+    /* ==========================================================================
+       12. SECTION 8 — "THE PERSON BEHIND TECHUILLA" CENTER SPLIT-WIPE
+           + 3-PANEL FULL-BLEED FOUNDER SHOWCASE WITH CURVED INFINITE TEXT ARC
+       ========================================================================== */
+    .founder-section-track {
+      position: relative;
+      height: 580vh;
+      width: 100%;
+      z-index: 52;
+      background: #08080A;
+    }
+
+    .founder-sticky-stage {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #08080A;
+    }
+
+    /* Center-Split Curtain Doors for 3-Line "THE PERSON / BEHIND / TECHUILLA" */
+    .founder-split-curtain {
       position: absolute;
       inset: 0;
       width: 100vw;
       height: 100vh;
-      z-index: 60;
+      z-index: 45;
+      pointer-events: none;
+    }
+
+    .founder-split-half {
+      position: absolute;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
       background: #FAF8F5;
       background-image:
         linear-gradient(to right, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
@@ -1884,14 +1914,23 @@
         linear-gradient(to bottom, rgba(255, 102, 0, 0.14) 1px, transparent 1px);
       background-size: 80px 80px, 80px 80px, 320px 320px, 320px 320px;
       border-top: 4px solid var(--color-orange);
-      box-shadow: 0 -28px 80px rgba(0, 0, 0, 0.55);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
       padding: 0 clamp(24px, 6vw, 96px);
-      transform: translate3d(0, 102%, 0);
+      overflow: hidden;
+    }
+
+    .founder-split-left {
+      clip-path: inset(0 50% 0 0);
+      -webkit-clip-path: inset(0 50% 0 0);
+    }
+
+    .founder-split-right {
+      clip-path: inset(0 0 0 50%);
+      -webkit-clip-path: inset(0 0 0 50%);
     }
 
     .person-behind-eyebrow {
@@ -1915,9 +1954,88 @@
       max-width: 1240px;
     }
 
+    .person-behind-title span.line-block {
+      display: block;
+    }
+
     .person-behind-title .accent-orange {
       color: var(--color-orange);
     }
+
+    /* 3 Full-Bleed 16:9 Stacked Portrait Panels with Vertical Scroll Wipe */
+    .founder-panel {
+      position: absolute;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #09090B;
+    }
+
+    .founder-panel-0 { z-index: 10; transform: translate3d(0, 0%, 0); }
+    .founder-panel-1 { z-index: 20; transform: translate3d(0, 102%, 0); }
+    .founder-panel-2 { z-index: 30; transform: translate3d(0, 102%, 0); }
+
+    .founder-panel-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 22%;
+      display: block;
+      filter: contrast(1.04) saturate(1.02);
+    }
+
+    /* Subtle dark cinema vignette so curved bold & script typography always pops cleanly */
+    .founder-panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.08) 25%, rgba(0, 0, 0, 0.42) 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Curved Smile-Arc Dual-Layer Infinite Text Carousel (Exact Match to Reference Video!) */
+    .founder-arc-overlay {
+      position: absolute;
+      left: -4vw;
+      width: 108vw;
+      height: 62vh;
+      top: 32vh;
+      z-index: 6;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    .founder-arc-svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      display: block;
+    }
+
+    .founder-arc-bold {
+      font-family: "Big Shoulders Display", "Archivo Black", sans-serif;
+      font-size: 168px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .founder-arc-bold.is-orange { fill: #FF6600; }
+    .founder-arc-bold.is-white  { fill: #FFFFFF; }
+
+    .founder-arc-script {
+      font-family: "Pinyon Script", cursive;
+      font-size: 118px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+
+    .founder-arc-script.is-white  { fill: #FFFFFF; }
+    .founder-arc-script.is-orange { fill: #FF6600; }
 
     @media (max-width: 960px) {
       .nav-brand-logo { height: 48px; }
@@ -2463,11 +2581,99 @@
       <div class="watch-live-stepper" id="watchLiveStepper" aria-label="Operating Duration">
         <div class="watch-stepper-grid" id="watchStepperGrid"></div>
       </div>
+    </div>
+  </section>
 
-      <!-- Final Page Pull-Up Panel: "THE PERSON BEHIND TECHUILLA" -->
-      <div class="person-behind-pullup" id="personBehindPullUp">
-        <div class="person-behind-eyebrow">TECHUILLA AGENCY • FOUNDER</div>
-        <h2 class="person-behind-title">THE PERSON BEHIND <span class="accent-orange">TECHUILLA</span></h2>
+  <!-- ==========================================================================
+       SECTION 8: "THE PERSON BEHIND TECHUILLA" CENTER SPLIT-WIPE
+       + 3-PANEL FULL-BLEED FOUNDER SHOWCASE WITH CURVED INFINITE TEXT ARC
+       ========================================================================== -->
+  <section class="founder-section-track" id="founderSectionTrack" aria-label="The Person Behind Techuilla — Founder">
+    <div class="founder-sticky-stage" id="founderStickyStage">
+      <!-- Center Split-Wipe Curtain (3 Lines: THE PERSON / BEHIND / TECHUILLA — Splits Down Middle & Wipes Left/Right!) -->
+      <div class="founder-split-curtain" id="founderSplitCurtain">
+        <div class="founder-split-half founder-split-left" id="founderSplitLeft">
+          <div class="person-behind-eyebrow">TECHUILLA AGENCY • FOUNDER</div>
+          <h2 class="person-behind-title">
+            <span class="line-block">THE PERSON</span>
+            <span class="line-block">BEHIND</span>
+            <span class="line-block accent-orange">TECHUILLA</span>
+          </h2>
+        </div>
+        <div class="founder-split-half founder-split-right" id="founderSplitRight" aria-hidden="true">
+          <div class="person-behind-eyebrow">TECHUILLA AGENCY • FOUNDER</div>
+          <div class="person-behind-title">
+            <span class="line-block">THE PERSON</span>
+            <span class="line-block">BEHIND</span>
+            <span class="line-block accent-orange">TECHUILLA</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 1: Founder Portrait 1 + Curved Infinite "FOUNDER •" (Orange) & Thin Cursive "Developer" (White) -->
+      <div class="founder-panel founder-panel-0" id="founderPanel0">
+        <img src="assets/founder_1.jpg" alt="Yathaarth Jaju — Founder & Developer" class="founder-panel-photo" loading="eager" />
+        <div class="founder-arc-overlay" id="founderArcWrap0" aria-hidden="true">
+          <svg class="founder-arc-svg" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <path id="founderArcPath0" d="M -900,40 Q 720,410 2340,40" />
+            </defs>
+            <text class="founder-arc-bold is-orange">
+              <textPath id="founderBoldTP0" href="#founderArcPath0" startOffset="0%">
+                FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER •
+              </textPath>
+            </text>
+            <text class="founder-arc-script is-white" dy="16">
+              <textPath id="founderScriptTP0" href="#founderArcPath0" startOffset="6%">
+                Developer   Developer   Developer   Developer   Developer   Developer   Developer   Developer
+              </textPath>
+            </text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Panel 2: Founder Portrait 2 + Curved Infinite "FOUNDER •" (White) & Thin Cursive "Designer & Integrator" (Orange) -->
+      <div class="founder-panel founder-panel-1" id="founderPanel1">
+        <img src="assets/founder_2.jpg" alt="Yathaarth Jaju — Founder, Designer & Integrator" class="founder-panel-photo" loading="eager" />
+        <div class="founder-arc-overlay" id="founderArcWrap1" aria-hidden="true">
+          <svg class="founder-arc-svg" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <path id="founderArcPath1" d="M -900,40 Q 720,410 2340,40" />
+            </defs>
+            <text class="founder-arc-bold is-white">
+              <textPath id="founderBoldTP1" href="#founderArcPath1" startOffset="0%">
+                FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER •
+              </textPath>
+            </text>
+            <text class="founder-arc-script is-orange" dy="16">
+              <textPath id="founderScriptTP1" href="#founderArcPath1" startOffset="4%">
+                Designer &amp; Integrator   Designer &amp; Integrator   Designer &amp; Integrator   Designer &amp; Integrator
+              </textPath>
+            </text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Panel 3: Founder Portrait 3 + Curved Infinite "FOUNDER •" (Orange) & Thin Cursive "Creative" (White) -->
+      <div class="founder-panel founder-panel-2" id="founderPanel2">
+        <img src="assets/founder_3.jpg" alt="Yathaarth Jaju — Founder & Creative" class="founder-panel-photo" loading="eager" />
+        <div class="founder-arc-overlay" id="founderArcWrap2" aria-hidden="true">
+          <svg class="founder-arc-svg" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <path id="founderArcPath2" d="M -900,40 Q 720,410 2340,40" />
+            </defs>
+            <text class="founder-arc-bold is-orange">
+              <textPath id="founderBoldTP2" href="#founderArcPath2" startOffset="0%">
+                FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER •
+              </textPath>
+            </text>
+            <text class="founder-arc-script is-white" dy="16">
+              <textPath id="founderScriptTP2" href="#founderArcPath2" startOffset="8%">
+                Creative   Creative   Creative   Creative   Creative   Creative   Creative   Creative   Creative
+              </textPath>
+            </text>
+          </svg>
+        </div>
       </div>
     </div>
   </section>
@@ -3556,17 +3762,109 @@
 
         // 3. Drive Photorealistic 3D CGI Watch Choreography
         const wr = watchTrack.getBoundingClientRect();
-        const isWatchVisible = wr.top < window.innerHeight && wr.bottom > 0 && safeP < 0.99;
+        const isWatchVisible = wr.top < window.innerHeight && wr.bottom > 0;
         if (watchCgiController) {
           watchCgiController.renderAtProgress(safeP, isWatchVisible);
         }
+      }
 
-        // 4. Final Page Pull-Up Panel ("THE PERSON BEHIND TECHUILLA", 0.93 -> 0.995 — after full watch body zooms back out!)
-        const personP = easeInOutCubic(clamp((safeP - 0.93) / 0.065, 0, 1));
-        if (personBehindPullUp) {
-          personBehindPullUp.style.transform = `translate3d(0, ${lerp(102, 0, personP).toFixed(2)}%, 0)`;
+      /* ------------------------------------------------------------------------
+         8C. SECTION 8 — "THE PERSON BEHIND TECHUILLA" CENTER SPLIT-WIPE
+             + 3-PANEL FULL-BLEED FOUNDER SHOWCASE WITH CURVED INFINITE TEXT ARC
+         ------------------------------------------------------------------------ */
+      const founderTrack = document.getElementById('founderSectionTrack');
+      const founderSplitCurtain = document.getElementById('founderSplitCurtain');
+      const founderSplitLeft = document.getElementById('founderSplitLeft');
+      const founderSplitRight = document.getElementById('founderSplitRight');
+      const founderPanel0 = document.getElementById('founderPanel0');
+      const founderPanel1 = document.getElementById('founderPanel1');
+      const founderPanel2 = document.getElementById('founderPanel2');
+      const founderArcWraps = [
+        document.getElementById('founderArcWrap0'),
+        document.getElementById('founderArcWrap1'),
+        document.getElementById('founderArcWrap2')
+      ];
+      const founderBoldTPs = [
+        document.getElementById('founderBoldTP0'),
+        document.getElementById('founderBoldTP1'),
+        document.getElementById('founderBoldTP2')
+      ];
+      const founderScriptTPs = [
+        document.getElementById('founderScriptTP0'),
+        document.getElementById('founderScriptTP1'),
+        document.getElementById('founderScriptTP2')
+      ];
+
+      let founderTargetP = 0, founderCurrentP = 0;
+      let founderMarqueePhase = 0;
+      let lastFounderTick = performance.now();
+
+      function renderFounderSection(P) {
+        if (!founderTrack) return;
+        const safeP = clamp(P, 0, 1);
+
+        // Phase A (0.06 -> 0.24): Center Split-Wipe! Left half wipes left, Right half wipes right!
+        const splitP = easeInOutCubic(clamp((safeP - 0.06) / 0.18, 0, 1));
+        if (founderSplitLeft && founderSplitRight) {
+          founderSplitLeft.style.transform = `translate3d(${(-splitP * 102).toFixed(2)}%, 0, 0)`;
+          founderSplitRight.style.transform = `translate3d(${(splitP * 102).toFixed(2)}%, 0, 0)`;
+        }
+        if (founderSplitCurtain) {
+          founderSplitCurtain.style.opacity = splitP >= 0.999 ? '0' : '1';
+        }
+
+        // Phase B (0.24 -> 0.44): Panel 1 ("Developer") subtle arc rise parallax
+        const p1ArcP = easeOutCubic(clamp((safeP - 0.14) / 0.28, 0, 1));
+        if (founderArcWraps[0]) {
+          founderArcWraps[0].style.transform = `translate3d(0, ${lerp(14, -4, p1ArcP).toFixed(2)}vh, 0)`;
+        }
+
+        // Phase C (0.44 -> 0.68): Panel 2 ("Designer & Integrator") physically slides straight UP over Panel 1!
+        const p2Enter = easeInOutCubic(clamp((safeP - 0.44) / 0.22, 0, 1));
+        if (founderPanel1) {
+          founderPanel1.style.transform = `translate3d(0, ${lerp(102, 0, p2Enter).toFixed(2)}%, 0)`;
+        }
+        if (founderArcWraps[1]) {
+          founderArcWraps[1].style.transform = `translate3d(0, ${lerp(18, -4, p2Enter).toFixed(2)}vh, 0)`;
+        }
+
+        // Phase D (0.68 -> 0.94): Panel 3 ("Creative") physically slides straight UP over Panel 2!
+        const p3Enter = easeInOutCubic(clamp((safeP - 0.68) / 0.24, 0, 1));
+        if (founderPanel2) {
+          founderPanel2.style.transform = `translate3d(0, ${lerp(102, 0, p3Enter).toFixed(2)}%, 0)`;
+        }
+        if (founderArcWraps[2]) {
+          founderArcWraps[2].style.transform = `translate3d(0, ${lerp(18, -4, p3Enter).toFixed(2)}vh, 0)`;
         }
       }
+
+      // Continuous 60fps Curved Infinite Carousel Loop for Founder Text Arcs (Runs ONLY when Founder section is in view!)
+      function tickFounderCarousel() {
+        const now = performance.now();
+        const dt = Math.min(0.05, (now - lastFounderTick) / 1000);
+        lastFounderTick = now;
+
+        if (founderTrack) {
+          const fr = founderTrack.getBoundingClientRect();
+          if (fr.top < window.innerHeight && fr.bottom > 0 && founderCurrentP > 0.05) {
+            founderMarqueePhase = (founderMarqueePhase + dt * 3.8) % 100;
+            // Combine continuous motion + gentle scroll offset for tactile response
+            const boldOff = -((founderMarqueePhase + founderCurrentP * 32) % 25);
+            const scriptOff = -(((founderMarqueePhase * 1.18 + founderCurrentP * 38) + 6) % 25);
+
+            for (let i = 0; i < 3; i++) {
+              if (founderBoldTPs[i]) {
+                founderBoldTPs[i].setAttribute('startOffset', `${boldOff.toFixed(2)}%`);
+              }
+              if (founderScriptTPs[i]) {
+                founderScriptTPs[i].setAttribute('startOffset', `${scriptOff.toFixed(2)}%`);
+              }
+            }
+          }
+        }
+        requestAnimationFrame(tickFounderCarousel);
+      }
+      requestAnimationFrame(tickFounderCarousel);
 
       /* ------------------------------------------------------------------------
          9. UNIFIED SMOOTH SCROLL & LERP LOOP + CUSTOM SCROLLBAR INDICATOR
@@ -3607,6 +3905,12 @@
           watchTargetP = clamp(-r.top / maxS, 0, 1);
         }
 
+        if (founderTrack) {
+          const r = founderTrack.getBoundingClientRect();
+          const maxS = Math.max(1, founderTrack.offsetHeight - winH);
+          founderTargetP = clamp(-r.top / maxS, 0, 1);
+        }
+
         if (scrollThumb) {
           const docH = Math.max(1, document.documentElement.scrollHeight - winH);
           const scrollPct = clamp(window.scrollY / docH, 0, 1);
@@ -3620,12 +3924,13 @@
         if (!siteNavEl) return;
         const camRect = cameraTrack ? cameraTrack.getBoundingClientRect() : null;
         const watchRect = watchTrack ? watchTrack.getBoundingClientRect() : null;
+        const founderRect = founderTrack ? founderTrack.getBoundingClientRect() : null;
 
         let mode = 'light';
-        if (watchRect && watchRect.top <= 40) {
-          if (watchCurrentP < 0.08) mode = 'orange';
-          else if (watchCurrentP > 0.93) mode = 'light';
-          else mode = 'dark';
+        if (founderRect && founderRect.top <= 40) {
+          mode = founderCurrentP < 0.14 ? 'light' : 'dark';
+        } else if (watchRect && watchRect.top <= 40) {
+          mode = watchCurrentP < 0.08 ? 'orange' : 'dark';
         } else if (camRect && camRect.top <= 40) {
           if (cameraCurrentP < 0.11) mode = 'light';
           else if (cameraCurrentP >= 0.39 && cameraCurrentP <= 0.48) mode = 'orange';
@@ -3642,6 +3947,7 @@
         renderApproach(approachCurrentP);
         renderCameraAndCrafts(cameraCurrentP);
         renderWatchTrackRecord(watchCurrentP);
+        renderFounderSection(founderCurrentP);
         updateAdaptiveNavbarTheme();
       }
 
@@ -3651,16 +3957,18 @@
         const da = approachTargetP - approachCurrentP;
         const dc = cameraTargetP - cameraCurrentP;
         const dw = watchTargetP - watchCurrentP;
+        const df = founderTargetP - founderCurrentP;
 
         if (
           window.__ABOUT_INSTANT_SCRUB__ ||
-          (Math.abs(dh) < 0.0004 && Math.abs(dp) < 0.0004 && Math.abs(da) < 0.0004 && Math.abs(dc) < 0.0004 && Math.abs(dw) < 0.0004)
+          (Math.abs(dh) < 0.0004 && Math.abs(dp) < 0.0004 && Math.abs(da) < 0.0004 && Math.abs(dc) < 0.0004 && Math.abs(dw) < 0.0004 && Math.abs(df) < 0.0004)
         ) {
           heroCurrentP = heroTargetP;
           philCurrentP = philTargetP;
           approachCurrentP = approachTargetP;
           cameraCurrentP = cameraTargetP;
           watchCurrentP = watchTargetP;
+          founderCurrentP = founderTargetP;
           renderAllSections();
           masterRafId = null;
           return;
@@ -3671,6 +3979,7 @@
         approachCurrentP += da * 0.144;
         cameraCurrentP += dc * 0.144;
         watchCurrentP += dw * 0.144;
+        founderCurrentP += df * 0.144;
 
         renderAllSections();
         masterRafId = requestAnimationFrame(tickMaster);
@@ -3684,6 +3993,7 @@
           approachCurrentP = approachTargetP;
           cameraCurrentP = cameraTargetP;
           watchCurrentP = watchTargetP;
+          founderCurrentP = founderTargetP;
           renderAllSections();
           return;
         }
@@ -3763,6 +4073,7 @@
         approachTargetP = approachCurrentP = 0;
         cameraTargetP = cameraCurrentP = 0;
         watchTargetP = watchCurrentP = 0;
+        founderTargetP = founderCurrentP = 0;
         window.scrollTo(0, 0);
         renderAllSections();
         computeAllTargets();
@@ -3782,6 +4093,7 @@
         approachCurrentP = approachTargetP;
         cameraCurrentP = cameraTargetP;
         watchCurrentP = watchTargetP;
+        founderCurrentP = founderTargetP;
         renderAllSections();
       };
 
@@ -3792,6 +4104,7 @@
       approachCurrentP = approachTargetP;
       cameraCurrentP = cameraTargetP;
       watchCurrentP = watchTargetP;
+      founderCurrentP = founderTargetP;
       renderAllSections();
     })();
   </script>
