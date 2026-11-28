@@ -3828,57 +3828,72 @@ Best regards,
       });
 
       /* ------------------------------------------------------------------------
-         2. STRUCTURED CONVERSATION DATASET
+         2. STRUCTURED CONVERSATION DATASET (Matching Smooth Q&A Reference)
          ------------------------------------------------------------------------ */
       const CONVERSATION_DATA = [
         {
           id: 1,
-          type: 'incoming', // Client
-          sender: 'Potential Client',
-          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. We're exploring a new project.",
+          type: 'incoming', // Client Question 1
+          sender: 'Prospective Client',
+          text: "Do you work with teams outside your timezone?",
+          bubbleW: 660,
+          bubbleH: 88,
           time: '10:42 AM'
         },
         {
           id: 2,
-          type: 'outgoing', // Techuilla
+          type: 'outgoing', // Techuilla Answer 1
           sender: 'Techuilla',
-          text: "Lorem ipsum dolor sit amet. We'd love to understand your vision and help bring it to life.",
+          text: "Every day, and it's never been a problem. We keep a few overlapping hours for live calls, and everything else runs async through a shared board. You always know what's happening, wherever you are.",
+          bubbleW: 940,
+          bubbleH: 158,
           time: '10:43 AM'
         },
         {
           id: 3,
-          type: 'incoming', // Client
-          sender: 'Potential Client',
-          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. We have a few ideas we'd like to discuss.",
+          type: 'incoming', // Client Question 2
+          sender: 'Prospective Client',
+          text: "What happens after the project ships?",
+          bubbleW: 580,
+          bubbleH: 88,
           time: '10:44 AM'
         },
         {
           id: 4,
-          type: 'outgoing', // Techuilla
+          type: 'outgoing', // Techuilla Answer 2
           sender: 'Techuilla',
-          text: "Lorem ipsum dolor sit amet. Our team can help with strategy, design, development, and growth.",
+          text: "We don't disappear the moment it's live. You get thirty days of support to catch anything that slipped through, no questions asked. After that, we're one message away whenever you need us.",
+          bubbleW: 940,
+          bubbleH: 158,
           time: '10:44 AM'
         },
         {
           id: 5,
-          type: 'incoming', // Client
-          sender: 'Potential Client',
-          text: "Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut labore. What's the best way to get started?",
+          type: 'incoming', // Client Question 3
+          sender: 'Prospective Client',
+          text: "Who actually owns the work?",
+          bubbleW: 480,
+          bubbleH: 88,
           time: '10:45 AM'
         },
         {
           id: 6,
-          type: 'outgoing', // Techuilla
+          type: 'outgoing', // Techuilla Answer 3
           sender: 'Techuilla',
-          text: "Lorem ipsum dolor sit amet. Tell us a little about your project using the form below, and let's take it forward.",
+          text: "You do, fully, the day we hand it over. Files, source, accounts, all of it transfers to you with no strings and no lock-in. It's yours to run, change, or move whenever you want.",
+          bubbleW: 940,
+          bubbleH: 158,
           time: '10:45 AM'
         }
       ];
 
-      // Forward-only revealed states and animation start timestamps
+      // Smooth Scroll-Scrubbed Continuous Conversation Progress (0.0 -> 1.0)
       const revealedStates = [false, false, false, false, false, false];
       const popStartTimes = [0, 0, 0, 0, 0, 0];
       let revealedCount = 0;
+      let chatTargetP = 0;
+      let chatCurrentP = 0;
+      let chatRafId = null;
 
       /* ------------------------------------------------------------------------
          3. DYNAMIC 2D CANVAS CHAT TEXTURE GENERATOR (Creamish Editorial Theme)
@@ -3999,103 +4014,122 @@ Best regards,
         ctx.rect(0, 88, W, H - 176);
         ctx.clip();
 
-        // Render revealed messages with authentic iPhone spring pop
-        const rowStep = 142;
-        const startY = 118;
+        function easeOutCubicChat(x) { return 1 - Math.pow(1 - x, 3); }
+        function easeInOutCubicChat(x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
+        function clampChat(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+        // Smooth vertical feed offset so conversation glides upward like the reference video
+        const feedScrollY = easeInOutCubicChat(clampChat((chatCurrentP - 0.14) / 0.78, 0, 1)) * 410;
+
+        // Intro Title inside Laptop Screen ("YOUR QUESTIONS ANSWERED") gliding upward smoothly
+        const titleY = 230 - feedScrollY * 1.15;
+        if (titleY > -120) {
+          ctx.save();
+          ctx.fillStyle = '#111111';
+          ctx.font = '900 74px Inter, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('YOUR QUESTIONS', W / 2, titleY);
+          ctx.fillStyle = '#FF6600';
+          ctx.fillText('ANSWERED', W / 2, titleY + 78);
+          ctx.textAlign = 'left';
+          ctx.restore();
+        }
+
+        // Compute vertical layout slots for all 6 bubbles
+        let cursorY = 390 - feedScrollY;
+        const msgWindows = [
+          { start: 0.04, end: 0.18 },
+          { start: 0.16, end: 0.34 },
+          { start: 0.32, end: 0.46 },
+          { start: 0.44, end: 0.62 },
+          { start: 0.60, end: 0.74 },
+          { start: 0.72, end: 0.90 }
+        ];
 
         CONVERSATION_DATA.forEach((msg, idx) => {
-          if (!revealedStates[idx]) return;
+          const win = msgWindows[idx];
+          const localT = clampChat((chatCurrentP - win.start) / (win.end - win.start), 0, 1);
+          const fullW = msg.bubbleW || 920;
+          const fullH = msg.bubbleH || 130;
+          const slotY = cursorY;
+          cursorY += fullH + 46;
+
+          if (localT <= 0.005) return;
 
           const isIncoming = msg.type === 'incoming';
-          const bubbleW = 960;
-          const bubbleH = 94;
-          const bubbleX = isIncoming ? 50 : (W - bubbleW - 50);
-          const bubbleY = startY + idx * rowStep;
 
-          // Calculate spring pop progress
-          let scale = 1.0;
-          let alpha = 1.0;
-          if (popStartTimes[idx] > 0) {
-            const elapsed = now - popStartTimes[idx];
-            const duration = 440; // 440ms juicy spring pop
-            if (elapsed < duration) {
-              const t = Math.max(0, Math.min(1, elapsed / duration));
-              // Elastic spring overshoots slightly then settles to 1.0
-              scale = 0.5 + 0.5 * (1 - Math.pow(2, -10 * t) * Math.cos(t * Math.PI * 2.5));
-              alpha = Math.min(1, t * 2.8);
-            }
-          }
+          // Stage 1 (0.00 -> 0.28): Typing dot circle pops smoothly in
+          const dotPop = easeOutCubicChat(clampChat(localT / 0.28, 0, 1));
+          // Stage 2 (0.26 -> 0.68): Circular dot morphs & expands smoothly into full rounded bubble
+          const expandT = easeInOutCubicChat(clampChat((localT - 0.26) / 0.42, 0, 1));
+          // Stage 3 (0.58 -> 1.00): Text sharpens from soft blur & fades in crisply inside bubble
+          const textT = easeOutCubicChat(clampChat((localT - 0.58) / 0.42, 0, 1));
 
-          // Anchor point from the message corner
-          const anchorX = isIncoming ? bubbleX + 32 : bubbleX + bubbleW - 32;
-          const anchorY = bubbleY + bubbleH / 2;
+          const dotSize = 68;
+          const curW = (dotSize + (fullW - dotSize) * expandT) * (0.4 + 0.6 * dotPop);
+          const curH = (dotSize + (fullH - dotSize) * expandT) * (0.4 + 0.6 * dotPop);
+          const curRadius = (curH / 2) * (1 - expandT) + 24 * expandT;
+
+          // Incoming anchors left; Outgoing anchors right
+          const bubbleX = isIncoming ? 58 : (W - 58 - curW);
+          const bubbleY = slotY + (1 - dotPop) * 28;
 
           ctx.save();
-          ctx.translate(anchorX, anchorY);
-          ctx.scale(scale, scale);
-          ctx.translate(-anchorX, -anchorY);
-          ctx.globalAlpha = alpha;
+          ctx.globalAlpha = clampChat(dotPop * 1.4, 0, 1);
 
-          // Sender Meta above bubble (+15%: 14px -> 16px)
-          ctx.fillStyle = isIncoming ? '#757582' : '#FF6600';
-          ctx.font = 'bold 16px "Space Grotesk", monospace';
-          const senderLabel = isIncoming ? '● PROSPECTIVE CLIENT' : '● TECHUILLA STRATEGY';
-          ctx.fillText(senderLabel, bubbleX + 8, bubbleY - 8);
-
+          // Draw morphing bubble shape
           if (isIncoming) {
-            // Incoming (Client) Bubble: Crisp White with Dark Text and subtle shadow
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.06)';
-            ctx.shadowBlur = 12;
-            ctx.shadowOffsetY = 4;
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.08)';
+            ctx.shadowBlur = 16;
+            ctx.shadowOffsetY = 5;
             ctx.fillStyle = '#FFFFFF';
-            drawRoundedRect(ctx, bubbleX, bubbleY, bubbleW, bubbleH, [20, 20, 20, 6]);
-
-            // Subtle border
-            ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
-            ctx.lineWidth = 1.2;
+            drawRoundedRect(ctx, bubbleX, bubbleY, curW, curH, curRadius);
+            ctx.shadowColor = 'transparent';
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.10)';
+            ctx.lineWidth = 1.6;
             ctx.stroke();
-
-            // Clear shadow for text (+15% text size: 22px -> 25.5px, line height 28px -> 32px)
-            ctx.shadowColor = 'transparent';
-            ctx.fillStyle = '#111111';
-            ctx.font = '500 25.5px Inter, sans-serif';
-            wrapText(ctx, msg.text, bubbleX + 28, bubbleY + 40, bubbleW - 140, 32);
-
-            ctx.fillStyle = '#787884';
-            ctx.font = '600 15px "Space Grotesk", monospace';
-            ctx.fillText(msg.time, bubbleX + bubbleW - 90, bubbleY + bubbleH - 16);
-
           } else {
-            // Outgoing (Techuilla) Bubble: Techuilla Orange with High Contrast Dark Text
-            ctx.shadowColor = 'rgba(255, 102, 0, 0.22)';
-            ctx.shadowBlur = 14;
-            ctx.shadowOffsetY = 4;
+            ctx.shadowColor = 'rgba(255, 102, 0, 0.24)';
+            ctx.shadowBlur = 18;
+            ctx.shadowOffsetY = 5;
             ctx.fillStyle = '#FF6600';
-            drawRoundedRect(ctx, bubbleX, bubbleY, bubbleW, bubbleH, [20, 20, 6, 20]);
-
-            // Clear shadow for text (+15% text size: 22px -> 25.5px, line height 28px -> 32px)
+            drawRoundedRect(ctx, bubbleX, bubbleY, curW, curH, curRadius);
             ctx.shadowColor = 'transparent';
-            ctx.fillStyle = '#0A0A0A';
-            ctx.font = 'bold 25.5px Inter, sans-serif';
-            wrapText(ctx, msg.text, bubbleX + 28, bubbleY + 40, bubbleW - 140, 32);
+          }
 
-            ctx.fillStyle = '#1A1A1E';
-            ctx.font = '700 15px "Space Grotesk", monospace';
-            ctx.fillText(msg.time, bubbleX + bubbleW - 90, bubbleY + bubbleH - 16);
+          // Typing indicator dots (•••) visible during dot phase, fading out as bubble expands
+          const dotsAlpha = clampChat(dotPop * (1 - expandT * 2.2), 0, 1);
+          if (dotsAlpha > 0.02) {
+            ctx.save();
+            ctx.globalAlpha = dotsAlpha;
+            ctx.fillStyle = isIncoming ? '#55555E' : '#111111';
+            const dcx = bubbleX + curW / 2;
+            const dcy = bubbleY + curH / 2;
+            [-13, 0, 13].forEach((ox, dIdx) => {
+              const bounce = Math.sin(now * 0.008 + dIdx * 0.9) * 3.5;
+              ctx.beginPath();
+              ctx.arc(dcx + ox, dcy + bounce, 4.5, 0, Math.PI * 2);
+              ctx.fill();
+            });
+            ctx.restore();
+          }
+
+          // Smooth Blur-to-Sharp Text Reveal inside Expanded Bubble (Exact Reference Style!)
+          if (textT > 0.02 && expandT > 0.55) {
+            ctx.save();
+            ctx.globalAlpha = textT;
+            const blurPx = (1 - textT) * 7;
+            if (blurPx > 0.35 && 'filter' in ctx) {
+              ctx.filter = `blur(${blurPx.toFixed(1)}px)`;
+            }
+            ctx.fillStyle = isIncoming ? '#111111' : '#0B0B0B';
+            ctx.font = isIncoming ? '600 25px Inter, sans-serif' : '600 24px Inter, sans-serif';
+            wrapText(ctx, msg.text, bubbleX + 30, bubbleY + 46, fullW - 64, 34);
+            ctx.restore();
           }
 
           ctx.restore();
         });
-
-        // --------------------------------------------------------------------
-        // CHAT ENDED STATE: DULL OVERLAY (ORANGE CTA DISPLAYED VIA HTML OVERLAY)
-        // --------------------------------------------------------------------
-        const allRevealed = revealedStates.every(Boolean);
-        if (allRevealed) {
-          // Subtle dulling veil over message area
-          ctx.fillStyle = 'rgba(245, 243, 238, 0.28)'; // Soft, light veil to maintain high brightness
-          ctx.fillRect(0, 88, W, H - 176);
-        }
 
         ctx.restore();
 
@@ -4421,7 +4455,7 @@ Best regards,
       init3DLaptop();
 
       /* ------------------------------------------------------------------------
-         5. SCROLL-DRIVEN SEQUENTIAL REVEAL ENGINE & STATIC UNPINNING
+         5. SILKY SCROLL-SCRUBBED CONVERSATION ENGINE (Bidirectional Smooth Morph)
          ------------------------------------------------------------------------ */
       const scrollTrack = document.getElementById('laptopScrollTrack');
       const laptopCtaOverlay = document.getElementById('laptopScreenCta');
@@ -4429,159 +4463,68 @@ Best regards,
       let isNavigatingToForm = false;
 
       function makeLaptopStatic() {
-        if (isLaptopStatic || !scrollTrack || isNavigatingToForm) return;
-        isLaptopStatic = true;
-        scrollTrack.classList.add('is-static');
-
-        // Ensure all messages and CTA are set
-        revealedStates.fill(true);
-        revealedCount = 6;
-        renderChatScreen();
-        if (laptopCtaOverlay) {
-          laptopCtaOverlay.classList.add('is-active');
-        }
+        // Keep bidirectional smooth scrubbing enabled so scrolling back up replays cleanly!
+        chatTargetP = 1;
+        if (laptopCtaOverlay) laptopCtaOverlay.classList.add('is-active');
       }
 
-      // ------------------------------------------------------------------------
-      // SCROLL NOTCH CADENCE HANDLER
-      // User specification:
-      // 1 scroll -> 1st message pops (step 1)
-      // 2 scrolls -> 2nd message pops (step 3)
-      // 2 scrolls -> 3rd message pops (step 5)
-      // 2 scrolls -> 4th message pops (step 7)
-      // 2 scrolls -> 5th message pops (step 9)
-      // 2 scrolls -> 6th message pops (step 11)
-      // after 6th message appears, 2 scrolls again -> CTA button pops (step 13)
-      // ------------------------------------------------------------------------
-      let wheelNotchCount = 0;
-      let lastWheelTime = 0;
-      const WHEEL_DEBOUNCE_MS = 240; // Controlled pacing prevents momentum over-scroll
-
-      function applyCadenceStep(step) {
-        const now = performance.now();
-        // step 1: msg 0 (1st)
-        // step 3: msg 1 (2nd)
-        // step 5: msg 2 (3rd)
-        // step 7: msg 3 (4th)
-        // step 9: msg 4 (5th)
-        // step 11: msg 5 (6th)
-        // step 13: CTA button (2 scrolls after 6th message)
-        if (step >= 1 && !revealedStates[0]) {
-          revealedStates[0] = true;
-          popStartTimes[0] = now;
-        }
-        if (step >= 3 && !revealedStates[1]) {
-          revealedStates[1] = true;
-          popStartTimes[1] = now;
-        }
-        if (step >= 5 && !revealedStates[2]) {
-          revealedStates[2] = true;
-          popStartTimes[2] = now;
-        }
-        if (step >= 7 && !revealedStates[3]) {
-          revealedStates[3] = true;
-          popStartTimes[3] = now;
-        }
-        if (step >= 9 && !revealedStates[4]) {
-          revealedStates[4] = true;
-          popStartTimes[4] = now;
-        }
-        if (step >= 11 && !revealedStates[5]) {
-          revealedStates[5] = true;
-          popStartTimes[5] = now;
-        }
-
-        const count = revealedStates.filter(Boolean).length;
-        if (count !== revealedCount) {
-          revealedCount = count;
-          renderChatScreen(now);
-        }
-
-        // CTA button appears only after 2 scrolls after 6th message (step >= 13)
-        if (step >= 13 && laptopCtaOverlay) {
-          laptopCtaOverlay.classList.add('is-active');
-        } else if (step < 13 && laptopCtaOverlay) {
-          laptopCtaOverlay.classList.remove('is-active');
-        }
-
+      function syncChatDots(p) {
+        const count = Math.min(6, Math.floor(p * 6.4));
+        revealedCount = count;
         for (let i = 0; i < 6; i++) {
+          revealedStates[i] = i < count;
           const dot = document.getElementById(`dot-${i}`);
-          if (dot) {
-            if (i < revealedCount) {
-              dot.classList.add('is-active');
-            } else {
-              dot.classList.remove('is-active');
-            }
-          }
+          if (dot) dot.classList.toggle('is-active', i < count);
+        }
+        if (laptopCtaOverlay) {
+          laptopCtaOverlay.classList.toggle('is-active', p >= 0.90);
         }
       }
 
-      window._revealedStates = revealedStates;
-      window._applyCadenceStep = applyCadenceStep;
-      window._setWheelNotch = function(n) { wheelNotchCount = n; applyCadenceStep(n); };
-
-      window.addEventListener('wheel', (e) => {
-        if (isLaptopStatic || !scrollTrack || isNavigatingToForm) return;
-
-        const rect = scrollTrack.getBoundingClientRect();
-        // Active when laptop stage is pinned within viewport
-        const isPinned = (rect.top <= 15 && rect.bottom >= window.innerHeight + 15);
-        if (!isPinned) return;
-
-        const now = performance.now();
-        if (now - lastWheelTime < WHEEL_DEBOUNCE_MS) return;
-        lastWheelTime = now;
-
-        if (e.deltaY > 0) {
-          wheelNotchCount = Math.min(13, wheelNotchCount + 1);
-          applyCadenceStep(wheelNotchCount);
-        } else if (e.deltaY < 0 && wheelNotchCount > 0) {
-          wheelNotchCount = Math.max(0, wheelNotchCount - 1);
-          applyCadenceStep(wheelNotchCount);
+      function tickSmoothChat() {
+        const diff = chatTargetP - chatCurrentP;
+        if (Math.abs(diff) < 0.0005) {
+          chatCurrentP = chatTargetP;
+          syncChatDots(chatCurrentP);
+          renderChatScreen(performance.now());
+          chatRafId = null;
+          return;
         }
-      }, { passive: true });
+        chatCurrentP += diff * 0.11;
+        syncChatDots(chatCurrentP);
+        renderChatScreen(performance.now());
+        chatRafId = requestAnimationFrame(tickSmoothChat);
+      }
 
       function updateConversationProgress() {
-        if (!scrollTrack || isLaptopStatic || isNavigatingToForm) return;
-
+        if (!scrollTrack || isNavigatingToForm) return;
         const rect = scrollTrack.getBoundingClientRect();
         const trackHeight = rect.height - window.innerHeight;
         if (trackHeight <= 0) return;
 
-        // Progress fraction through the pinned track (0.0 to 1.0)
-        const progress = Math.max(0, Math.min(1, -rect.top / trackHeight));
-
-        // Paced milestone steps across 380vh track synchronized to cadence notches
-        const stepFromProgress = Math.min(13, Math.floor(progress * 13) + 1);
-        const effectiveStep = Math.max(wheelNotchCount, stepFromProgress);
-        applyCadenceStep(effectiveStep);
-
-        // Once chat is finished and user scrolls past the track into the form:
-        // Transition to static scroll so scrolling back up has zero delay!
-        if (revealedCount >= 6 && rect.bottom <= window.innerHeight + 30) {
-          makeLaptopStatic();
-          return;
+        chatTargetP = Math.max(0, Math.min(1, -rect.top / trackHeight));
+        if (!chatRafId) {
+          chatRafId = requestAnimationFrame(tickSmoothChat);
         }
       }
 
+      window._setChatProgressInstant = function(p) {
+        chatTargetP = Math.max(0, Math.min(1, p));
+        chatCurrentP = chatTargetP;
+        syncChatDots(chatCurrentP);
+        renderChatScreen(performance.now());
+      };
+
       window.addEventListener('scroll', updateConversationProgress, { passive: true });
+      updateConversationProgress();
 
       function scrollToContactForm() {
         const formTarget = document.getElementById('contact-form');
         if (!formTarget) return;
 
         isNavigatingToForm = true;
+        window._setChatProgressInstant(1);
 
-        // Ensure all messages and CTA are active
-        revealedStates.fill(true);
-        revealedCount = 6;
-        wheelNotchCount = 13;
-        renderChatScreen();
-        if (laptopCtaOverlay) {
-          laptopCtaOverlay.classList.add('is-active');
-        }
-
-        // Target the bold section divider title
         const titleDivider = document.querySelector('.form-transition-divider') || formTarget;
         const targetTop = titleDivider.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) - 24;
 
@@ -4590,7 +4533,6 @@ Best regards,
           behavior: 'smooth'
         });
 
-        // Allow smooth scroll to arrive cleanly without any interruptive jump
         setTimeout(() => {
           isNavigatingToForm = false;
           if (!isLaptopStatic && scrollTrack) {

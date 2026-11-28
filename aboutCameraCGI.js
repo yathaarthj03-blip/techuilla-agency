@@ -95,6 +95,64 @@
     return tex;
   }
 
+  // Photorealistic Multi-Coated Curved Camera Lens Element Texture (No Greenish/Bluish Flat Layer)
+  function createCameraLensGlassTexture() {
+    const c = document.createElement('canvas');
+    c.width = 1024;
+    c.height = 1024;
+    const ctx = c.getContext('2d');
+    const cx = 512, cy = 512;
+
+    // Deep obsidian multi-element optical barrel base
+    const baseGrad = ctx.createRadialGradient(cx, cy, 40, cx, cy, 500);
+    baseGrad.addColorStop(0.00, 'rgba(3, 3, 5, 0.25)');
+    baseGrad.addColorStop(0.42, 'rgba(8, 8, 12, 0.72)');
+    baseGrad.addColorStop(0.68, 'rgba(18, 16, 22, 0.90)');
+    baseGrad.addColorStop(0.86, 'rgba(10, 10, 14, 0.96)');
+    baseGrad.addColorStop(1.00, 'rgba(4, 4, 6, 1.0)');
+    ctx.fillStyle = baseGrad;
+    ctx.fillRect(0, 0, 1024, 1024);
+
+    // Subtle concentric optical internal lens element rings
+    [455, 395, 330, 265].forEach((r, idx) => {
+      ctx.strokeStyle = idx % 2 === 0 ? 'rgba(255, 255, 255, 0.14)' : 'rgba(255, 168, 96, 0.12)';
+      ctx.lineWidth = idx === 0 ? 4 : 2.5;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.stroke();
+    });
+
+    // Realistic curved convex glass studio softbox reflection (upper-right warm tungsten arc)
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(-0.55);
+    const ref1 = ctx.createLinearGradient(-160, -340, 180, -180);
+    ref1.addColorStop(0, 'rgba(255, 236, 214, 0.0)');
+    ref1.addColorStop(0.45, 'rgba(255, 236, 214, 0.36)');
+    ref1.addColorStop(1, 'rgba(255, 190, 130, 0.0)');
+    ctx.strokeStyle = ref1;
+    ctx.lineWidth = 42;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.arc(0, 0, 345, -1.35, -0.35);
+    ctx.stroke();
+
+    // Subtle anti-reflective warm magenta/amber secondary coating sheen (lower-left)
+    const ref2 = ctx.createLinearGradient(-220, 160, 120, 340);
+    ref2.addColorStop(0, 'rgba(255, 110, 48, 0.0)');
+    ref2.addColorStop(0.5, 'rgba(210, 110, 185, 0.22)');
+    ref2.addColorStop(1, 'rgba(255, 110, 48, 0.0)');
+    ctx.strokeStyle = ref2;
+    ctx.lineWidth = 28;
+    ctx.beginPath();
+    ctx.arc(0, 0, 290, 1.75, 2.75);
+    ctx.stroke();
+    ctx.restore();
+
+    const tex = new THREE.CanvasTexture(c);
+    return tex;
+  }
+
   window.initAboutCameraCGI = function (canvasEl) {
     if (!canvasEl || typeof THREE === 'undefined') return null;
 
@@ -360,31 +418,27 @@
     baffle2.position.set(0, 0, 0.50);
     lensGroup.add(baffle2);
 
-    // Realistic Organic Multi-Element Curved Optical Glass Rim (NO greenish-bluish flat layer!)
-    const opticalRimGlassMat = new THREE.MeshPhysicalMaterial({
-      color: 0x050507,
-      roughness: 0.04,
-      metalness: 0.20,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.04,
+    // Realistic Multi-Coated Photorealistic Camera Lens Glass Element (Zero Greenish/Bluish Tint!)
+    const lensGlassTex = createCameraLensGlassTexture();
+    const opticalRimGlassMat = new THREE.MeshBasicMaterial({
+      map: lensGlassTex,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.94,
       side: THREE.DoubleSide
     });
-    // Outer curved glass meniscus ring (keeps center crystal-clear dark optical bore)
-    const meniscusRing = new THREE.Mesh(new THREE.RingGeometry(0.32, 0.56, 64), opticalRimGlassMat);
-    meniscusRing.position.set(0, 0, 0.66);
+    const meniscusRing = new THREE.Mesh(new THREE.RingGeometry(0.18, 0.56, 64), opticalRimGlassMat);
+    meniscusRing.position.set(0, 0, 0.67);
     lensGroup.add(meniscusRing);
 
-    // Subtle Organic Lens Specular Arc Glint (Realistic warm studio light reflection on curved glass)
+    // Subtle Secondary Curved Specular Glint Rim
     const glintMat = new THREE.MeshBasicMaterial({
-      color: 0xffead2,
+      color: 0xffeedd,
       transparent: true,
-      opacity: 0.28,
+      opacity: 0.26,
       side: THREE.DoubleSide
     });
-    const lensGlintArc = new THREE.Mesh(new THREE.RingGeometry(0.38, 0.44, 32, 1, 0.45, 1.15), glintMat);
-    lensGlintArc.position.set(0, 0, 0.69);
+    const lensGlintArc = new THREE.Mesh(new THREE.RingGeometry(0.41, 0.45, 48, 1, 0.55, 0.95), glintMat);
+    lensGlintArc.position.set(0, 0, 0.70);
     lensGroup.add(lensGlintArc);
 
     // 9-Blade Mechanical Organic Camera Iris Diaphragm (Opens smoothly from exact center on scroll!)

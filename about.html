@@ -295,6 +295,8 @@
 
     /* Adaptive Navbar Themes (Dark Camera/Gallery -> Cream text; Orange Intro/Outro -> Black logo & button) */
     .site-nav.theme-dark-bg .nav-brand-text { color: #FAF8F5 !important; }
+    body.menu-open .site-nav .nav-brand-text { color: #111111 !important; }
+    body.menu-open .site-nav .nav-brand-logo { filter: none !important; }
     .site-nav.theme-orange-bg .nav-brand-text { color: #111111 !important; }
     .site-nav.theme-orange-bg .nav-brand-logo { filter: brightness(0) !important; }
     .site-nav.theme-orange-bg .btn-enquire {
@@ -613,7 +615,7 @@
     }
     .reel-panel-card:hover .reel-card-tag { background: var(--color-orange-soft); color: #FFFFFF; }
 
-    .menu-nav-right-col { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px 48px; position: relative; z-index: 5; }
+    .menu-nav-right-col { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 92px 48px 40px 48px; position: relative; z-index: 5; }
     .menu-nav-inner { width: 100%; max-width: 580px; display: flex; flex-direction: column; align-items: center; text-align: center; margin: 0 auto; }
     .menu-nav-list { list-style: none; display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; }
     .menu-nav-list li { width: 100%; display: flex; justify-content: center; }
@@ -1529,15 +1531,16 @@
     }
 
     /* ==========================================================================
-       10. SECTION 6 — OUR CRAFTS (Single Intro + Curved Repeating Letter Wall
-           + Clean Horizontal Right-to-Left Proof-of-Work Ribbon + Orange Outro)
+       10. SECTION 6 — OUR CRAFTS (Seamless Direct Lens Entry + Page Pull-Up Intro
+           + Curved Concave Cylinder Letter Wall + Inside-Cylinder 3D Proof-of-Work Gallery)
        ========================================================================== */
     .crafts-section-track {
       position: relative;
       height: 760vh;
       width: 100%;
+      margin-top: -100vh; /* Seamless direct handoff from Camera Lens into OUR CRAFTS — ZERO empty orange gap! */
       z-index: 46;
-      background: var(--color-orange);
+      background: transparent;
     }
 
     .crafts-sticky-stage {
@@ -1548,9 +1551,12 @@
       height: 100vh;
       overflow: hidden;
       background: #080706;
+      opacity: 0;
+      pointer-events: none;
+      will-change: opacity;
     }
 
-    /* Single Orange Intro ("OUR CRAFTS" + "PROOF OF WORK • ACROSS EVERY DOMAIN") — Clean Fade Reveal (No Upward Scroll Bar) */
+    /* Single Orange Intro ("OUR CRAFTS" + "PROOF OF WORK • ACROSS EVERY DOMAIN") — Physical Page Pull-Up! */
     .crafts-orange-intro {
       position: absolute;
       inset: 0;
@@ -1563,7 +1569,9 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      will-change: opacity, transform;
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.55);
+      will-change: transform;
+      transform: translate3d(0, 0%, 0);
     }
 
     .crafts-intro-title {
@@ -1617,13 +1625,16 @@
       text-align: center;
     }
 
-    /* Clean Horizontal Right-to-Left Proof-of-Work Cinema Ribbon (Exact Match to Reference Motion!) */
+    /* Inside-Cylinder Concave 3D Proof-of-Work Stage (Viewer Standing Inside Cylinder Looking at Inner Wall!) */
     .crafts-arc-stage {
       position: absolute;
       inset: 0;
       width: 100vw;
       height: 100vh;
       z-index: 15;
+      perspective: 1100px;
+      perspective-origin: 50% 50%;
+      transform-style: preserve-3d;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1634,15 +1645,16 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: clamp(320px, 34vw, 520px);
+      width: clamp(320px, 33vw, 500px);
       aspect-ratio: 16 / 10.5;
-      border-radius: 6px;
+      border-radius: 8px;
       overflow: hidden;
       background: #121110;
-      border: 1.5px solid rgba(255, 102, 0, 0.45);
+      border: 1.5px solid rgba(255, 102, 0, 0.50);
       box-shadow: 0 28px 68px rgba(0, 0, 0, 0.72);
       will-change: transform, opacity;
       transform-origin: center center;
+      backface-visibility: hidden;
     }
 
     .craft-arc-card img,
@@ -2214,8 +2226,11 @@
         </div>
       </div>
 
-      <!-- Pure Orange Circular Lens Aperture Portal Centered at Exact (50%, 50%) — Dissolves Directly into Single OUR CRAFTS -->
-      <div class="camera-lens-portal-reveal" id="cameraLensPortalReveal" aria-hidden="true"></div>
+      <!-- Direct Lens Aperture Portal Revealing OUR CRAFTS Straight Through the Camera Lens (Zero Empty Orange Gap!) -->
+      <div class="camera-lens-portal-reveal" id="cameraLensPortalReveal" aria-hidden="true">
+        <h2 class="crafts-intro-title">OUR CRAFTS</h2>
+        <div class="crafts-intro-sub">PROOF OF WORK • ACROSS EVERY DOMAIN</div>
+      </div>
     </div>
   </section>
 
@@ -2846,28 +2861,36 @@
 
       function renderApproach(P) {
         if (!approachTrack || !approachWallLayer) return;
+        if (!baseWinMetrics || baseWinMetrics.w < 40) {
+          measureBaseMiddleWindow();
+        }
 
-        // 1. Poppy 3D Bottom-to-Top Reveal for all 5 Airplane Windows
+        const safeP = clamp(P, 0, 1);
+
+        // 1. Poppy 3D Bottom-to-Top Reveal for all 5 Airplane Windows (Bidirectional, Glitch-Free on Reverse Scroll!)
         let middleRevealP = 0;
         PILL_REVEAL_WINDOWS.forEach((win, idx) => {
           const pill = approachPills[idx];
           if (!pill) return;
-          const localP = clamp((P - win.start) / (win.end - win.start), 0, 1);
+          const localP = clamp((safeP - win.start) / (win.end - win.start), 0, 1);
           if (idx === 2) middleRevealP = localP;
           if (localP <= 0.001) {
             pill.style.transform = 'translate3d(0, 118%, 0) scale(0.86) rotateX(18deg)';
             pill.style.opacity = '0';
+          } else if (localP >= 0.999) {
+            pill.style.transform = 'translate3d(0, 0%, 0) scale(1) rotateX(0deg)';
+            pill.style.opacity = '1';
           } else {
             const popE = easeOutBack(localP);
             const yPct = lerp(115, 0, popE);
-            const sc = lerp(0.86, 1.0, popE);
+            const sc = clamp(lerp(0.86, 1.0, popE), 0.86, 1.03);
             const rx = lerp(18, 0, easeOutCubic(localP));
             pill.style.transform = `translate3d(0, ${yPct.toFixed(2)}%, 0) scale(${sc.toFixed(3)}) rotateX(${rx.toFixed(2)}deg)`;
             pill.style.opacity = clamp(localP * 2.5, 0, 1).toFixed(3);
           }
         });
 
-        // Synchronize the SVG transparent cutout with Middle Airplane Window (opens as Window 3 pops up!)
+        // Synchronize the SVG transparent cutout with Middle Airplane Window (opens smoothly as Window 3 pops up!)
         if (maskCutoutPill) {
           const inset = 14;
           const openRatio = easeOutCubic(middleRevealP);
@@ -2885,30 +2908,28 @@
         }
 
         // 2. Continuous Smooth Camera-Style Zoom Through Middle Airplane Window (P: 0.52 -> 0.90)
-        //    ZERO Cut-Short! Stationary CREATE · BUILD · GROW stays rock-steady behind the glass while
-        //    the entire 5-window wall zooms smoothly toward the viewer and side windows blur naturally!
-        const rawZoom = clamp((P - 0.52) / 0.36, 0, 1);
+        //    Never toggles visibility:hidden (prevents Chromium GPU composite glitch when scrolling back up!)
+        const rawZoom = clamp((safeP - 0.52) / 0.36, 0, 1);
         const zoomE = easeInOutCubic(rawZoom);
 
-        // Exponential-feeling dolly zoom scale (1.0 -> 7.2) so middle airplane window clears the entire viewport smoothly
-        const wallScale = 1.0 + Math.pow(zoomE, 1.45) * 6.4;
-        const wallFadeOut = clamp(1 - Math.max(0, (rawZoom - 0.84) / 0.16), 0, 1);
+        const wallScale = 1.0 + Math.pow(zoomE, 1.38) * 4.6;
+        const wallFadeOut = clamp(1 - Math.max(0, (rawZoom - 0.82) / 0.18), 0, 1);
 
-        approachWallLayer.style.transform = `scale(${wallScale.toFixed(4)})`;
+        approachWallLayer.style.transform = `translate3d(0, 0, 0) scale(${wallScale.toFixed(4)})`;
         approachWallLayer.style.opacity = wallFadeOut.toFixed(3);
-        approachWallLayer.style.visibility = wallFadeOut <= 0.01 ? 'hidden' : 'visible';
 
-        // Progressive Depth-of-Field Blur on Side Airplane Windows (1, 2, 4, 5) & Header as they come closer to camera!
-        const sideBlur = (zoomE * 14).toFixed(1);
+        // Progressive Depth-of-Field Blur on Side Airplane Windows (capped at 8px so GPU never corrupts tiles on reverse!)
+        const sideBlur = (zoomE * 8).toFixed(1);
         const sideOp = clamp(1 - zoomE * 1.15, 0, 1).toFixed(3);
+        const useBlur = zoomE > 0.02 && wallFadeOut > 0.02;
         approachMasks.forEach((mask, idx) => {
           if (!mask || idx === 2) return;
-          mask.style.filter = zoomE > 0.01 ? `blur(${sideBlur}px)` : 'none';
+          mask.style.filter = useBlur ? `blur(${sideBlur}px)` : 'none';
           mask.style.opacity = sideOp;
         });
 
         if (approachHeader) {
-          approachHeader.style.filter = zoomE > 0.01 ? `blur(${(zoomE * 10).toFixed(1)}px)` : 'none';
+          approachHeader.style.filter = useBlur ? `blur(${(zoomE * 6).toFixed(1)}px)` : 'none';
           approachHeader.style.opacity = clamp(1 - zoomE * 1.8, 0, 1).toFixed(3);
         }
       }
@@ -3029,6 +3050,7 @@
       ];
 
       const craftsTrack = document.getElementById('craftsSectionTrack');
+      const craftsStickyStage = document.getElementById('craftsStickyStage');
       const craftsOrangeIntro = document.getElementById('craftsOrangeIntro');
       const craftsArcStage = document.getElementById('craftsArcStage');
       const craftsOrangeOutro = document.getElementById('craftsOrangeOutro');
@@ -3040,7 +3062,7 @@
         document.getElementById('craftsBgRow4')
       ];
 
-      // Build 18 Curated Proof-of-Work Cards inside the Horizontal Cinema Ribbon
+      // Build 18 Curated Proof-of-Work Cards inside the Concave Inside-Cylinder Stage
       const craftCardEls = [];
       if (craftsArcStage) {
         craftsArcStage.innerHTML = OUR_CRAFTS_PROOF_ITEMS.map((item, idx) => {
@@ -3066,33 +3088,40 @@
         if (!craftsTrack) return;
         const winW = window.innerWidth;
 
-        // 1. Single Orange Intro ("OUR CRAFTS" + "PROOF OF WORK • ACROSS EVERY DOMAIN") fades cleanly without upward scroll bar!
-        const introExit = easeInOutCubic(clamp((P - 0.04) / 0.09, 0, 1));
-        if (craftsOrangeIntro) {
-          craftsOrangeIntro.style.opacity = clamp(1 - introExit, 0, 1).toFixed(3);
-          craftsOrangeIntro.style.transform = `scale(${lerp(1.0, 1.06, introExit).toFixed(3)})`;
-          craftsOrangeIntro.style.visibility = introExit >= 0.99 ? 'hidden' : 'visible';
+        // Activate craftsStickyStage seamlessly ONLY once the camera lens dissolve has filled the screen (zero empty orange gap!)
+        if (craftsStickyStage) {
+          const isReady = P > 0.001 || cameraCurrentP >= 0.96;
+          craftsStickyStage.style.opacity = isReady ? '1' : '0';
+          craftsStickyStage.style.pointerEvents = isReady ? 'auto' : 'none';
         }
 
-        // 2. Curved Repeating Single-Letter Background Wall (C / R / A / F / T)
-        const galleryP = clamp((P - 0.11) / 0.77, 0, 1);
+        // 1. Physical PAGE PULL-UP Animation on OUR CRAFTS Intro (P: 0.02 -> 0.12)
+        const introPullUp = easeInOutCubic(clamp((P - 0.02) / 0.10, 0, 1));
+        if (craftsOrangeIntro) {
+          craftsOrangeIntro.style.transform = `translate3d(0, ${(-introPullUp * 102).toFixed(2)}%, 0)`;
+        }
+
+        // 2. Concave Curved Repeating Single-Letter Background Wall (C / R / A / F / T)
+        const galleryP = clamp((P - 0.08) / 0.80, 0, 1);
         craftsBgRows.forEach((row, idx) => {
           if (!row) return;
           const dir = idx % 2 === 0 ? -1 : 1;
-          const shift = dir * galleryP * 340;
-          const curveRot = (idx - 2) * 3.8; // Subtle concave lens curvature matching reference
+          const shift = dir * galleryP * 380;
+          const curveRot = (idx - 2) * 4.5;
           row.style.transform = `translate3d(${shift.toFixed(1)}px, 0, 0) rotateX(${curveRot.toFixed(1)}deg)`;
         });
 
-        // 3. Clean Horizontal Right-to-Left Proof-of-Work Cinema Ribbon (Exact Match to Reference Video!)
+        // 3. TRUE INSIDE-OF-A-CYLINDER CONCAVE 3D MOVEMENT (Viewer standing INSIDE cylinder looking at inner curved wall!)
+        //    As cards travel right -> left along the inner wall of radius R:
+        //    theta = delta * 0.48 rad -> x = sin(theta)*R, z = -(cos(theta) - 1)*R (curves FORWARD toward viewer on left & right!),
+        //    rotateY = -theta (angles inward along the concave inner cylinder wall!)
         const total = craftCardEls.length;
-        const cardSpacing = clamp(winW * 0.42, 390, 620);
-        // Travels smoothly from right off-screen -> across center -> left off-screen
-        const travelFloat = lerp(-1.1, total + 0.1, galleryP);
+        const travelFloat = lerp(-1.2, total + 0.2, galleryP);
+        const cylRadius = clamp(winW * 0.68, 560, 1080);
 
         craftCardEls.forEach((card, idx) => {
           const delta = idx - travelFloat;
-          if (Math.abs(delta) > 2.6 || P < 0.08 || P > 0.92) {
+          if (Math.abs(delta) > 2.5 || P < 0.05 || P > 0.93) {
             card.style.opacity = '0';
             card.style.visibility = 'hidden';
             const vid = card.querySelector('video');
@@ -3101,17 +3130,19 @@
           }
 
           card.style.visibility = 'visible';
-          const x = delta * cardSpacing;
-          const scale = clamp(1.02 - Math.abs(delta) * 0.06, 0.88, 1.02);
-          const op = clamp(1.25 - Math.abs(delta) * 0.35, 0, 1);
+          const theta = delta * 0.50; // Angular spacing along inner cylinder wall
+          const x = Math.sin(theta) * cylRadius;
+          const z = -(Math.cos(theta) - 1) * cylRadius * 0.85; // Positive Z on sides -> true concave inside-cylinder wrap!
+          const rotY = -theta * (180 / Math.PI) * 0.92;        // Faces inward toward the viewer at cylinder center!
+          const op = clamp(1.25 - Math.abs(delta) * 0.42, 0, 1);
 
           card.style.opacity = op.toFixed(3);
-          card.style.zIndex = String(30 - Math.round(Math.abs(delta) * 5));
-          card.style.transform = `translate3d(calc(-50% + ${x.toFixed(1)}px), -50%, 0) scale(${scale.toFixed(3)})`;
+          card.style.zIndex = String(30 - Math.round(Math.abs(delta) * 6));
+          card.style.transform = `translate3d(calc(-50% + ${x.toFixed(1)}px), -50%, ${z.toFixed(1)}px) rotateY(${rotY.toFixed(2)}deg)`;
 
           const vid = card.querySelector('video');
           if (vid) {
-            if (Math.abs(delta) < 1.15 && P > 0.10 && P < 0.90) {
+            if (Math.abs(delta) < 1.15 && P > 0.08 && P < 0.90) {
               if (vid.paused) vid.play().catch(() => {});
             } else if (!vid.paused) {
               vid.pause();
