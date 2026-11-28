@@ -1872,14 +1872,15 @@
 
     /* ==========================================================================
        12. SECTION 8 — "THE PERSON BEHIND TECHUILLA" CENTER SPLIT-WIPE
-           + 3-PANEL FULL-BLEED FOUNDER SHOWCASE WITH CURVED INFINITE TEXT ARC
+           + 6-PANEL FULL-BLEED FOUNDER SHOWCASE WITH CURVED INFINITE TEXT ARC
+           + FULL-CIRCLE REVERSE CLOSING TO "TECHUILLA AGENCY"
        ========================================================================== */
     .founder-section-track {
       position: relative;
-      height: 680vh;
+      height: 940vh;
       width: 100%;
       z-index: 52;
-      background: #08080A;
+      background: #FAF8F5;
     }
 
     .founder-sticky-stage {
@@ -1889,7 +1890,60 @@
       width: 100vw;
       height: 100vh;
       overflow: hidden;
-      background: #08080A;
+      background: #FAF8F5;
+      background-image:
+        linear-gradient(to right, rgba(0, 0, 0, 0.055) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.055) 1px, transparent 1px),
+        linear-gradient(to right, rgba(255, 102, 0, 0.12) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 102, 0, 0.12) 1px, transparent 1px);
+      background-size: 80px 80px, 80px 80px, 320px 320px, 320px 320px;
+    }
+
+    /* Full-Circle Closing Wordmark Layer (Behind Shrinking Filmstrip — Exact Match to Hero "Techuilla Agency") */
+    .founder-closing-backdrop {
+      position: absolute;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 4;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .founder-closing-wordmark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0px;
+      height: 0px;
+      pointer-events: none;
+    }
+
+    .founder-closing-word {
+      position: absolute;
+      top: 0;
+      font-family: var(--font-sans);
+      font-size: clamp(51px, 6.2vw, 94px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 0.96;
+      white-space: nowrap;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+
+    .founder-closing-techuilla {
+      right: 0;
+      color: var(--color-orange);
+      padding-right: 0.16em;
+      transform: translate3d(-32vw, -50%, 0);
+    }
+
+    .founder-closing-agency {
+      left: 0;
+      color: #111111;
+      padding-left: 0.16em;
+      transform: translate3d(32vw, -50%, 0);
     }
 
     /* Center-Split Curtain Doors for 3-Line "THE PERSON / BEHIND / TECHUILLA" */
@@ -1963,21 +2017,36 @@
       color: var(--color-orange);
     }
 
-    /* 3 Layered Full-Bleed Founder Panels — Silky Parallax Depth + Soft Rounded Organic Reveal! */
+    /* 6 Layered Full-Bleed Founder Panels — Shrinks, Rotates Left & Vanishes into Closing Wordmark */
     .founder-filmstrip {
       position: absolute;
-      inset: 0;
+      top: 50%;
+      left: 50%;
       width: 100vw;
       height: 100vh;
+      transform: translate3d(-50%, -50%, 0) rotate(0deg);
       z-index: 10;
       overflow: hidden;
+      background: #09090B;
+      will-change: transform, width, height, border-radius, opacity;
+    }
+
+    .founder-filmstrip-orange-veil {
+      position: absolute;
+      inset: 0;
+      background: #FF6600;
+      opacity: 0;
+      z-index: 90;
+      pointer-events: none;
     }
 
     .founder-panel {
       position: absolute;
-      inset: 0;
+      top: 50%;
+      left: 50%;
       width: 100vw;
       height: 100vh;
+      transform: translate3d(-50%, -50%, 0);
       overflow: hidden;
       background: #09090B;
     }
@@ -1987,6 +2056,7 @@
     .founder-panel-2 { z-index: 30; clip-path: url(#founderArchClip2); -webkit-clip-path: url(#founderArchClip2); opacity: 0; }
     .founder-panel-3 { z-index: 40; clip-path: url(#founderArchClip3); -webkit-clip-path: url(#founderArchClip3); opacity: 0; }
     .founder-panel-4 { z-index: 50; clip-path: url(#founderArchClip4); -webkit-clip-path: url(#founderArchClip4); opacity: 0; }
+    .founder-panel-5 { z-index: 60; clip-path: url(#founderArchClip5); -webkit-clip-path: url(#founderArchClip5); opacity: 0; }
 
     .founder-panel-photo {
       position: absolute;
@@ -2621,21 +2691,32 @@
         </div>
       </div>
 
-      <!-- Dynamic SVG Upward-Curved Arch ClipPaths (5.5% Center Upward Arch Dissolve Reveal!) -->
+      <!-- Full-Circle Closing Wordmark Backdrop (Revealed as Filmstrip Closes into Rectangle -> Rotating Square -> Vanish) -->
+      <div class="founder-closing-backdrop" id="founderClosingBackdrop" aria-label="Techuilla Agency">
+        <div class="founder-closing-wordmark" id="founderClosingWordmark">
+          <span class="founder-closing-word founder-closing-techuilla" id="founderClosingTechuilla">Techuilla</span>
+          <span class="founder-closing-word founder-closing-agency" id="founderClosingAgency">Agency</span>
+        </div>
+      </div>
+
+      <!-- Dynamic SVG Upward-Curved Arch ClipPaths (6% Center Upward Arch Dissolve Reveal!) -->
       <svg width="0" height="0" style="position:absolute;pointer-events:none;" aria-hidden="true">
         <defs>
           <clipPath id="founderArchClip1" clipPathUnits="objectBoundingBox"><path id="founderArchPathClip1" d="M 0,1.1 L 0,1.08 Q 0.5,1.02 1,1.08 L 1,1.1 Z" /></clipPath>
           <clipPath id="founderArchClip2" clipPathUnits="objectBoundingBox"><path id="founderArchPathClip2" d="M 0,1.1 L 0,1.08 Q 0.5,1.02 1,1.08 L 1,1.1 Z" /></clipPath>
           <clipPath id="founderArchClip3" clipPathUnits="objectBoundingBox"><path id="founderArchPathClip3" d="M 0,1.1 L 0,1.08 Q 0.5,1.02 1,1.08 L 1,1.1 Z" /></clipPath>
           <clipPath id="founderArchClip4" clipPathUnits="objectBoundingBox"><path id="founderArchPathClip4" d="M 0,1.1 L 0,1.08 Q 0.5,1.02 1,1.08 L 1,1.1 Z" /></clipPath>
+          <clipPath id="founderArchClip5" clipPathUnits="objectBoundingBox"><path id="founderArchPathClip5" d="M 0,1.1 L 0,1.08 Q 0.5,1.02 1,1.08 L 1,1.1 Z" /></clipPath>
         </defs>
       </svg>
 
-      <!-- 5-Panel Continuous Overlapping Curved-Arch Sequence (1 -> 2 -> 3 -> 1 (4th) -> 2 (5th)) -->
+      <!-- 6-Panel Continuous Overlapping Curved-Arch Sequence (1 -> 2 -> 3 -> 4 -> 5 -> 2) -->
       <div class="founder-filmstrip" id="founderFilmstrip">
-        <!-- Panel 0 (1st): Founder Portrait 1 — Developer -->
+        <div class="founder-filmstrip-orange-veil" id="founderFilmstripOrangeVeil" aria-hidden="true"></div>
+
+        <!-- Panel 0 (1st): Founder Portrait 1 — Entrepreneur -->
         <div class="founder-panel founder-panel-0" id="founderPanel0">
-          <img src="assets/founder_1.jpg" alt="Yathaarth Jaju — Founder & Developer" class="founder-panel-photo" loading="eager" />
+          <img src="assets/founder_1.jpg" alt="Yathaarth Jaju — Founder & Entrepreneur" class="founder-panel-photo" loading="eager" />
           <div class="founder-arc-overlay" id="founderArcWrap0" aria-hidden="true">
             <svg class="founder-arc-svg" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMid slice">
               <defs><path id="founderArcPath0" d="M -320,-35 Q 720,445 1760,-35" /></defs>
@@ -2657,9 +2738,9 @@
           </div>
         </div>
 
-        <!-- Panel 2 (3rd): Founder Portrait 3 — Creative -->
+        <!-- Panel 2 (3rd): Founder Portrait 3 — Creator & Developer -->
         <div class="founder-panel founder-panel-2" id="founderPanel2">
-          <img src="assets/founder_3.jpg" alt="Yathaarth Jaju — Founder & Creative" class="founder-panel-photo" loading="eager" />
+          <img src="assets/founder_3.jpg" alt="Yathaarth Jaju — Founder, Creator & Developer" class="founder-panel-photo" loading="eager" />
           <div class="founder-arc-overlay" id="founderArcWrap2" aria-hidden="true">
             <svg class="founder-arc-svg" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMid slice">
               <defs><path id="founderArcPath2" d="M -320,-35 Q 720,445 1760,-35" /></defs>
@@ -2669,26 +2750,38 @@
           </div>
         </div>
 
-        <!-- Panel 3 (4th — Cycle Repeat of Portrait 1): Developer -->
+        <!-- Panel 3 (4th): Team Winner Photo — Entrepreneur -->
         <div class="founder-panel founder-panel-3" id="founderPanel3">
-          <img src="assets/founder_1.jpg" alt="Yathaarth Jaju — Founder & Developer" class="founder-panel-photo" loading="eager" />
+          <img src="assets/founder_4.jpg" alt="Yathaarth Jaju — Techuilla Team Winner" class="founder-panel-photo" style="object-position: center 22%;" loading="eager" />
           <div class="founder-arc-overlay" id="founderArcWrap3" aria-hidden="true">
             <svg class="founder-arc-svg" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMid slice">
               <defs><path id="founderArcPath3" d="M -320,-35 Q 720,445 1760,-35" /></defs>
-              <text class="founder-arc-bold is-orange"><textPath id="founderBoldTP3" href="#founderArcPath3" startOffset="0"></textPath></text>
-              <text class="founder-arc-script is-white" dy="18"><textPath id="founderScriptTP3" href="#founderArcPath3" startOffset="0"></textPath></text>
+              <text class="founder-arc-bold is-white"><textPath id="founderBoldTP3" href="#founderArcPath3" startOffset="0"></textPath></text>
+              <text class="founder-arc-script is-orange" dy="18"><textPath id="founderScriptTP3" href="#founderArcPath3" startOffset="0"></textPath></text>
             </svg>
           </div>
         </div>
 
-        <!-- Panel 4 (5th — Cycle Repeat of Portrait 2): Designer & Integrator -->
+        <!-- Panel 4 (5th): Founder Presenting — Creator & Developer -->
         <div class="founder-panel founder-panel-4" id="founderPanel4">
-          <img src="assets/founder_2.jpg" alt="Yathaarth Jaju — Founder, Designer & Integrator" class="founder-panel-photo" loading="eager" />
+          <img src="assets/founder_5.jpg" alt="Yathaarth Jaju — Founder Presenting" class="founder-panel-photo" style="object-position: center 22%;" loading="eager" />
           <div class="founder-arc-overlay" id="founderArcWrap4" aria-hidden="true">
             <svg class="founder-arc-svg" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMid slice">
               <defs><path id="founderArcPath4" d="M -320,-35 Q 720,445 1760,-35" /></defs>
-              <text class="founder-arc-bold is-white"><textPath id="founderBoldTP4" href="#founderArcPath4" startOffset="0"></textPath></text>
-              <text class="founder-arc-script is-orange" dy="18"><textPath id="founderScriptTP4" href="#founderArcPath4" startOffset="0"></textPath></text>
+              <text class="founder-arc-bold is-orange"><textPath id="founderBoldTP4" href="#founderArcPath4" startOffset="0"></textPath></text>
+              <text class="founder-arc-script is-white" dy="18"><textPath id="founderScriptTP4" href="#founderArcPath4" startOffset="0"></textPath></text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Panel 5 (6th — Repeat of 2nd Image): Designer & Integrator -->
+        <div class="founder-panel founder-panel-5" id="founderPanel5">
+          <img src="assets/founder_2.jpg" alt="Yathaarth Jaju — Founder, Designer & Integrator" class="founder-panel-photo" loading="eager" />
+          <div class="founder-arc-overlay" id="founderArcWrap5" aria-hidden="true">
+            <svg class="founder-arc-svg" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMid slice">
+              <defs><path id="founderArcPath5" d="M -320,-35 Q 720,445 1760,-35" /></defs>
+              <text class="founder-arc-bold is-white"><textPath id="founderBoldTP5" href="#founderArcPath5" startOffset="0"></textPath></text>
+              <text class="founder-arc-script is-orange" dy="18"><textPath id="founderScriptTP5" href="#founderArcPath5" startOffset="0"></textPath></text>
             </svg>
           </div>
         </div>
@@ -3789,42 +3882,40 @@
 
       /* ------------------------------------------------------------------------
          8C. SECTION 8 — "THE PERSON BEHIND TECHUILLA" CENTER SPLIT-WIPE
-             + 5-PANEL OVERLAPPING CURVED-ARCH DISSOLVE (1 -> 2 -> 3 -> 1 -> 2)
+             + 6-PANEL OVERLAPPING CURVED-ARCH DISSOLVE (1 -> 2 -> 3 -> 4 -> 5 -> 2)
              + DEEP 25% CURVED BIDIRECTIONAL INFINITE CAROUSEL AT 70% HEIGHT
+             + FULL-CIRCLE REVERSE CLOSING TO "TECHUILLA AGENCY"
          ------------------------------------------------------------------------ */
       const founderTrack = document.getElementById('founderSectionTrack');
       const founderSplitCurtain = document.getElementById('founderSplitCurtain');
       const founderSplitLeft = document.getElementById('founderSplitLeft');
       const founderSplitRight = document.getElementById('founderSplitRight');
+      const founderFilmstrip = document.getElementById('founderFilmstrip');
+      const founderFilmstripOrangeVeil = document.getElementById('founderFilmstripOrangeVeil');
+      const founderClosingTechuilla = document.getElementById('founderClosingTechuilla');
+      const founderClosingAgency = document.getElementById('founderClosingAgency');
+
+      const FOUNDER_PANEL_COUNT = 6;
       const founderPanels = [
         document.getElementById('founderPanel0'),
         document.getElementById('founderPanel1'),
         document.getElementById('founderPanel2'),
         document.getElementById('founderPanel3'),
-        document.getElementById('founderPanel4')
+        document.getElementById('founderPanel4'),
+        document.getElementById('founderPanel5')
       ];
       const founderArchPaths = [
         null,
         document.getElementById('founderArchPathClip1'),
         document.getElementById('founderArchPathClip2'),
         document.getElementById('founderArchPathClip3'),
-        document.getElementById('founderArchPathClip4')
+        document.getElementById('founderArchPathClip4'),
+        document.getElementById('founderArchPathClip5')
       ];
       const founderPhotos = founderPanels.map(p => p ? p.querySelector('.founder-panel-photo') : null);
-      const founderBoldTPs = [
-        document.getElementById('founderBoldTP0'),
-        document.getElementById('founderBoldTP1'),
-        document.getElementById('founderBoldTP2'),
-        document.getElementById('founderBoldTP3'),
-        document.getElementById('founderBoldTP4')
-      ];
-      const founderScriptTPs = [
-        document.getElementById('founderScriptTP0'),
-        document.getElementById('founderScriptTP1'),
-        document.getElementById('founderScriptTP2'),
-        document.getElementById('founderScriptTP3'),
-        document.getElementById('founderScriptTP4')
-      ];
+      const founderArcWraps = founderPanels.map((_, i) => document.getElementById(`founderArcWrap${i}`));
+      const founderBoldTPs = founderPanels.map((_, i) => document.getElementById(`founderBoldTP${i}`));
+      const founderScriptTPs = founderPanels.map((_, i) => document.getElementById(`founderScriptTP${i}`));
 
       const FOUNDER_BOLD_UNIT = 'FOUNDER • ';
       const FOUNDER_SCRIPT_UNITS = [
@@ -3832,12 +3923,13 @@
         'Designer & Integrator\u00A0\u00A0\u00A0\u00A0',
         'Creator & Developer\u00A0\u00A0\u00A0\u00A0',
         'Entrepreneur\u00A0\u00A0\u00A0\u00A0',
+        'Creator & Developer\u00A0\u00A0\u00A0\u00A0',
         'Designer & Integrator\u00A0\u00A0\u00A0\u00A0'
       ];
-      const boldUnitLens = [520, 520, 520, 520, 520];
-      const scriptUnitLens = [480, 810, 740, 480, 810];
+      const boldUnitLens = [520, 520, 520, 520, 520, 520];
+      const scriptUnitLens = [480, 810, 740, 480, 740, 810];
 
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < FOUNDER_PANEL_COUNT; i++) {
         if (founderBoldTPs[i]) {
           founderBoldTPs[i].textContent = FOUNDER_BOLD_UNIT.repeat(12);
         }
@@ -3847,7 +3939,7 @@
       }
 
       function measureFounderCarouselUnits() {
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < FOUNDER_PANEL_COUNT; i++) {
           try {
             if (founderBoldTPs[i] && founderBoldTPs[i].parentNode && founderBoldTPs[i].parentNode.getSubStringLength) {
               const bl = founderBoldTPs[i].parentNode.getSubStringLength(0, FOUNDER_BOLD_UNIT.length);
@@ -3880,13 +3972,13 @@
         const dp = safeP - prevFounderP;
         if (Math.abs(dp) > 0.00015) {
           carouselDir = dp > 0 ? 1 : -1;
-          founderBoldPx += dp * 1650;
-          founderScriptPx += dp * 1950;
+          founderBoldPx += dp * 1950;
+          founderScriptPx += dp * 2250;
         }
         prevFounderP = safeP;
 
-        // Phase A (0.03 -> 0.16): Center Split-Wipe! Left half wipes left, Right half wipes right!
-        const splitP = easeInOutCubic(clamp((safeP - 0.03) / 0.13, 0, 1));
+        // Phase A (0.02 -> 0.13): Center Split-Wipe! Left half wipes left, Right half wipes right!
+        const splitP = easeInOutCubic(clamp((safeP - 0.02) / 0.11, 0, 1));
         if (founderSplitLeft && founderSplitRight) {
           founderSplitLeft.style.transform = `translate3d(${(-splitP * 102).toFixed(2)}%, 0, 0)`;
           founderSplitRight.style.transform = `translate3d(${(splitP * 102).toFixed(2)}%, 0, 0)`;
@@ -3895,18 +3987,17 @@
           founderSplitCurtain.style.opacity = splitP >= 0.999 ? '0' : '1';
         }
 
-        // Phase B (0.16 -> 1.00): 5-Panel Continuous Overlapping Upward-Arch Dissolve Sequence (1 -> 2 -> 3 -> 1 -> 2)
-        //   When panel k-1 hits 100% visibility, panel k is ALREADY ~25-28% visible rising with a 6% upward center arch!
-        const seqFloat = clamp((safeP - 0.16) / 0.84, 0, 1) * 4.0;
-        const OVERLAP = 0.36; // At seqFloat = k-1 -> localP = 0.36/1.36 = 0.265 -> literally 25-27% into the viewport!
+        // Phase B (0.13 -> 0.80): 6-Panel Continuous Overlapping Upward-Arch Dissolve Sequence (1 -> 2 -> 3 -> 4 -> 5 -> 2)
+        //   Panel 1 starts at 0 so Image 1 is 100% full-screen when THE PERSON BEHIND TECHUILLA opens;
+        //   Panels 2..5 start with 0.36 overlap so each next image is already ~25-27% rising as the previous hits 100%!
+        const seqFloat = clamp((safeP - 0.13) / 0.67, 0, 1) * 5.0;
+        const OVERLAP = 0.36;
 
-        for (let k = 1; k < 5; k++) {
+        for (let k = 1; k < FOUNDER_PANEL_COUNT; k++) {
           const panel = founderPanels[k];
           const pathEl = founderArchPaths[k];
           if (!panel || !pathEl) continue;
 
-          // Panel 1 (2nd image) starts cleanly at 0 so Image 1 is 100% full-screen when THE PERSON BEHIND TECHUILLA opens!
-          // Panels 2, 3, 4 start with 0.36 overlap so each next image is already ~25% visible as the previous hits 100%!
           const startPos = k === 1 ? 0.0 : (k - 1) - OVERLAP;
           const span = k === 1 ? 1.0 : (1.0 + OVERLAP);
           const localP = clamp((seqFloat - startPos) / span, 0, 1);
@@ -3915,26 +4006,112 @@
             panel.style.opacity = '0';
             pathEl.setAttribute('d', 'M 0,1.12 L 0,1.08 Q 0.5,1.04 1,1.08 L 1,1.12 Z');
           } else {
-            // Smooth linear-dominant rise so 25% scroll overlap equals a true 25% screen-height arch reveal!
             const smoothP = lerp(localP, easeInOutCubic(localP), 0.22);
             const op = clamp(localP * 4.5, 0, 1);
             panel.style.opacity = op.toFixed(3);
 
-            // Top edge rises from 1.04 -> -0.05 with a smooth ~6% upward arch peaking right at center (x = 0.5)!
             const yEdge = lerp(1.04, -0.05, smoothP);
             const archLift = 0.062 * Math.sin(localP * Math.PI);
-            const yCtrl = yEdge - archLift * 2.0; // Exact midpoint height = yEdge - archLift (~6.2% upward curve!)
+            const yCtrl = yEdge - archLift * 2.0;
             pathEl.setAttribute(
               'd',
               `M 0,1.12 L 0,${yEdge.toFixed(4)} Q 0.5,${yCtrl.toFixed(4)} 1,${yEdge.toFixed(4)} L 1,1.12 Z`
             );
 
-            // Subtle breathing inner photo parallax as each portrait dissolves in
             if (founderPhotos[k]) {
               const sc = lerp(1.06, 1.0, smoothP);
               founderPhotos[k].style.transform = `scale(${sc.toFixed(3)})`;
             }
           }
+        }
+
+        // Phase C (0.63 -> 0.98): Full-Circle Reverse Closing Choreography (Overlapping 5th & 6th Images!)
+        //   C1 (0.63 -> 0.78): Sides close inward first (100vw -> sleek vertical rectangle) while Techuilla & Agency appear on Left & Right.
+        //   C2 (0.78 -> 0.91): Top & bottom shrink + rectangle rotates toward left (-60deg) contracting into a small square.
+        //   C3 (0.91 -> 0.98): Small rotating square contracts to 0 & disappears; Techuilla & Agency glide together dead-center!
+        const winW = window.innerWidth || 1440;
+        const winH = window.innerHeight || 900;
+
+        const c1 = easeInOutCubic(clamp((safeP - 0.63) / 0.15, 0, 1)); // Side squeeze -> vertical rectangle
+        const c2 = easeInOutCubic(clamp((safeP - 0.78) / 0.13, 0, 1)); // Top/bottom shrink + left rotation -> small square
+        const c3 = easeInOutCubic(clamp((safeP - 0.91) / 0.07, 0, 1)); // Final contraction to 0 & vanish
+
+        const rectW = clamp(winW * 0.16, 150, 260);
+        const rectH = winH * 0.88;
+        const sqSize = clamp(Math.min(winW, winH) * 0.105, 68, 108);
+
+        let curW = winW;
+        let curH = winH;
+        let rotDeg = 0;
+        let filmScale = 1;
+        let filmOp = 1;
+        let radiusPx = 0;
+
+        if (safeP > 0.63) {
+          // Width: 100vw -> vertical rectangle -> small square
+          const w1 = lerp(winW, rectW, c1);
+          curW = lerp(w1, sqSize, c2);
+
+          // Height: stays full longer, gently dips to 88vh in C1, then shrinks top & bottom to square in C2
+          const h1 = lerp(winH, rectH, c1 * 0.85);
+          curH = lerp(h1, sqSize, c2);
+
+          // Smooth left-side (counter-clockwise) rotation starts right as vertical rectangle forms & continues through C3
+          rotDeg = lerp(0, -58, c2) + lerp(0, -32, c3);
+
+          // Final contraction to zero in C3
+          filmScale = lerp(1, 0, c3);
+          filmOp = clamp(1 - c3 * 1.15, 0, 1);
+
+          // Subtle editorial corner softening as it pulls away from viewport edges
+          radiusPx = lerp(0, 8, c1) + lerp(0, 4, c2);
+        }
+
+        if (founderFilmstrip) {
+          founderFilmstrip.style.width = `${curW.toFixed(1)}px`;
+          founderFilmstrip.style.height = `${curH.toFixed(1)}px`;
+          founderFilmstrip.style.borderRadius = `${radiusPx.toFixed(1)}px`;
+          founderFilmstrip.style.opacity = filmOp.toFixed(3);
+          founderFilmstrip.style.transform = `translate3d(-50%, -50%, 0) rotate(${rotDeg.toFixed(2)}deg) scale(${filmScale.toFixed(4)})`;
+        }
+
+        // Subtle brand-orange glow bloom right before the small rotating square vanishes (matching reference f_08 -> f_09)
+        if (founderFilmstripOrangeVeil) {
+          const orangeBloom = clamp((c2 - 0.55) / 0.45, 0, 1) * 0.88 + c3 * 0.12;
+          founderFilmstripOrangeVeil.style.opacity = (safeP > 0.78 ? orangeBloom : 0).toFixed(3);
+        }
+
+        // Gently fade out the curved FOUNDER text as the sides close in so the closing rectangle stays super clean
+        const arcOp = clamp(1 - c1 * 1.45, 0, 1);
+        const minScaleToCover = Math.max(curW / winW, curH / winH);
+        const innerSc = safeP > 0.63 ? Math.max(minScaleToCover * 1.02, lerp(1.0, 0.56, c2)) : 1.0;
+        for (let i = 0; i < FOUNDER_PANEL_COUNT; i++) {
+          if (founderArcWraps[i]) {
+            founderArcWraps[i].style.opacity = arcOp.toFixed(3);
+          }
+          // Smoothly frame inner portrait inside shrinking rectangle/square with zero black gaps
+          if (founderPanels[i]) {
+            founderPanels[i].style.transform = `translate3d(-50%, -50%, 0) scale(${innerSc.toFixed(3)})`;
+          }
+        }
+
+        // Closing "Techuilla" (Left -> Center) & "Agency" (Right -> Center) gliding back together cleanly!
+        //   Stays cleanly outside the vertical rectangle (C1) & rotating square (C2), then unites at 0px as square vanishes (C3).
+        const wordRevealOp = clamp((safeP - 0.65) / 0.08, 0, 1);
+        const shiftStart = clamp(winW * 0.25, 170, 380);
+        const shiftAfterC1 = clamp(winW * 0.165, 125, 240);
+        const shiftAfterC2 = clamp(winW * 0.085, 78, 125);
+        const s1 = lerp(shiftStart, shiftAfterC1, c1);
+        const s2 = lerp(s1, shiftAfterC2, c2);
+        const curShiftPx = lerp(s2, 0, c3);
+
+        if (founderClosingTechuilla) {
+          founderClosingTechuilla.style.opacity = wordRevealOp.toFixed(3);
+          founderClosingTechuilla.style.transform = `translate3d(${(-curShiftPx).toFixed(1)}px, -50%, 0)`;
+        }
+        if (founderClosingAgency) {
+          founderClosingAgency.style.opacity = wordRevealOp.toFixed(3);
+          founderClosingAgency.style.transform = `translate3d(${curShiftPx.toFixed(1)}px, -50%, 0)`;
         }
       }
 
@@ -3946,13 +4123,13 @@
 
         if (founderTrack) {
           const fr = founderTrack.getBoundingClientRect();
-          if (fr.top < window.innerHeight && fr.bottom > 0 && founderCurrentP > 0.03) {
+          if (fr.top < window.innerHeight && fr.bottom > 0 && founderCurrentP > 0.03 && founderCurrentP < 0.78) {
             founderBoldPx += carouselDir * dt * 135;
             founderScriptPx += carouselDir * dt * 168;
 
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < FOUNDER_PANEL_COUNT; i++) {
               const bUnit = boldUnitLens[i] || 520;
-              const sUnit = scriptUnitLens[i] || 390;
+              const sUnit = scriptUnitLens[i] || 480;
               const bMod = ((founderBoldPx % bUnit) + bUnit) % bUnit;
               const sMod = ((founderScriptPx % sUnit) + sUnit) % sUnit;
               if (founderBoldTPs[i]) {
@@ -4030,7 +4207,7 @@
 
         let mode = 'light';
         if (founderRect && founderRect.top <= 40) {
-          mode = founderCurrentP < 0.14 ? 'light' : 'dark';
+          mode = (founderCurrentP < 0.11 || founderCurrentP >= 0.70) ? 'light' : 'dark';
         } else if (watchRect && watchRect.top <= 40) {
           mode = watchCurrentP < 0.08 ? 'orange' : 'dark';
         } else if (camRect && camRect.top <= 40) {
@@ -4143,7 +4320,7 @@
           const fr = founderTrack.getBoundingClientRect();
           if (fr.top <= 10 && fr.bottom >= window.innerHeight - 10) {
             // Keep default speed (0.513) before split opens; increase by +20% (0.733) once founder images appear!
-            scrollFactor = founderCurrentP >= 0.16 ? 0.733 : 0.513;
+            scrollFactor = founderCurrentP >= 0.13 ? 0.733 : 0.513;
           }
         }
         targetY = Math.max(0, Math.min(maxScrollY, targetY + clampedDelta * scrollFactor));
