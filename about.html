@@ -2017,7 +2017,7 @@
       color: var(--color-orange);
     }
 
-    /* 6 Layered Full-Bleed Founder Panels — Shrinks, Rotates Left & Vanishes into Closing Wordmark */
+    /* 6 Layered Full-Bleed Founder Panels — Pure GPU Compositor Clip + Rotate + Vanish (Zero Layout Thrash!) */
     .founder-filmstrip {
       position: absolute;
       top: 50%;
@@ -2028,7 +2028,8 @@
       z-index: 10;
       overflow: hidden;
       background: #09090B;
-      will-change: transform, width, height, border-radius, opacity;
+      contain: layout style paint;
+      will-change: transform, clip-path, opacity;
     }
 
     .founder-filmstrip-orange-veil {
@@ -2038,6 +2039,7 @@
       opacity: 0;
       z-index: 90;
       pointer-events: none;
+      will-change: opacity;
     }
 
     .founder-panel {
@@ -2049,6 +2051,8 @@
       transform: translate3d(-50%, -50%, 0);
       overflow: hidden;
       background: #09090B;
+      contain: layout style paint;
+      will-change: transform, opacity;
     }
 
     .founder-panel-0 { z-index: 10; }
@@ -3964,6 +3968,37 @@
       let founderScriptPx = 0;
       let lastFounderTick = performance.now();
 
+      // Eagerly pre-decode & cache all 6 Founder bitmaps into memory/GPU before scrolling reaches Section 8
+      const founderDecodedCache = [];
+      founderPhotos.forEach((img) => {
+        if (!img) return;
+        const pre = new Image();
+        pre.src = img.currentSrc || img.src;
+        founderDecodedCache.push(pre);
+        if (typeof img.decode === 'function') {
+          img.decode().catch(() => {});
+        }
+        if (typeof pre.decode === 'function') {
+          pre.decode().catch(() => {});
+        }
+      });
+
+      // Cached viewport dimensions & visibility/DOM state (eliminates forced reflows & redundant SVG/DOM writes!)
+      let cachedFounderW = window.innerWidth || 1440;
+      let cachedFounderH = window.innerHeight || 900;
+      let isFounderInViewport = false;
+      let lastFounderArcOp = 1;
+      const founderPanelVisible = [true, false, false, false, false, false];
+      const founderPanelDisplay = ['block', 'none', 'none', 'none', 'none', 'none'];
+      const founderPanelClipMode = ['none', 'url', 'url', 'url', 'url', 'url'];
+      for (let i = 1; i < FOUNDER_PANEL_COUNT; i++) {
+        if (founderPanels[i]) founderPanels[i].style.display = 'none';
+      }
+      window.addEventListener('resize', () => {
+        cachedFounderW = window.innerWidth || 1440;
+        cachedFounderH = window.innerHeight || 900;
+      }, { passive: true });
+
       function renderFounderSection(P) {
         if (!founderTrack) return;
         const safeP = clamp(P, 0, 1);
@@ -3979,59 +4014,86 @@
 
         // Phase A (0.02 -> 0.13): Center Split-Wipe! Left half wipes left, Right half wipes right!
         const splitP = easeInOutCubic(clamp((safeP - 0.02) / 0.11, 0, 1));
-        if (founderSplitLeft && founderSplitRight) {
-          founderSplitLeft.style.transform = `translate3d(${(-splitP * 102).toFixed(2)}%, 0, 0)`;
-          founderSplitRight.style.transform = `translate3d(${(splitP * 102).toFixed(2)}%, 0, 0)`;
-        }
         if (founderSplitCurtain) {
-          founderSplitCurtain.style.opacity = splitP >= 0.999 ? '0' : '1';
+          const splitHidden = splitP >= 0.999;
+          founderSplitCurtain.style.display = splitHidden ? 'none' : 'block';
+          if (!splitHidden && founderSplitLeft && founderSplitRight) {
+            founderSplitLeft.style.transform = `translate3d(${(-splitP * 102).toFixed(2)}%, 0, 0)`;
+            founderSplitRight.style.transform = `translate3d(${(splitP * 102).toFixed(2)}%, 0, 0)`;
+          }
         }
 
         // Phase B (0.13 -> 0.76): 6-Panel Continuous Overlapping Upward-Arch Dissolve Sequence (1 -> 2 -> 3 -> 4 -> 5 -> 2)
-        //   Panel 1 starts at 0 so Image 1 is 100% full-screen when THE PERSON BEHIND TECHUILLA opens;
-        //   Panels 2..5 start with 0.36 overlap so each next image is already ~25-27% rising as the previous hits 100%,
-        //   and Panel 5 (the winking 2nd photo) hits 100% cleanly right as the vertical closing rectangle forms!
+        //   With occlusion culling: once Panel k hits 100%, all panels underneath are hidden (display:none)
+        //   and Panel k's SVG clipPath is removed so GPU only composites 1-2 active panels at 60fps!
         const seqFloat = clamp((safeP - 0.13) / 0.63, 0, 1) * 5.0;
         const OVERLAP = 0.36;
 
+        const localPs = [1, 0, 0, 0, 0, 0];
+        let highestOpaquePanel = 0;
         for (let k = 1; k < FOUNDER_PANEL_COUNT; k++) {
-          const panel = founderPanels[k];
-          const pathEl = founderArchPaths[k];
-          if (!panel || !pathEl) continue;
-
           const startPos = k === 1 ? 0.0 : (k - 1) - OVERLAP;
           const span = k === 1 ? 1.0 : (1.0 + OVERLAP);
-          const localP = clamp((seqFloat - startPos) / span, 0, 1);
+          const lp = clamp((seqFloat - startPos) / span, 0, 1);
+          localPs[k] = lp;
+          if (lp >= 0.999) highestOpaquePanel = k;
+        }
 
-          if (localP <= 0.001) {
-            panel.style.opacity = '0';
-            pathEl.setAttribute('d', 'M 0,1.12 L 0,1.08 Q 0.5,1.04 1,1.08 L 1,1.12 Z');
+        // Determine visibility & update only actively visible panels
+        for (let i = 0; i < FOUNDER_PANEL_COUNT; i++) {
+          const panel = founderPanels[i];
+          if (!panel) continue;
+          const shouldShow = (i >= highestOpaquePanel) && (i === 0 || localPs[i] > 0.001);
+          founderPanelVisible[i] = shouldShow;
+          const wantDisplay = shouldShow ? 'block' : 'none';
+          if (founderPanelDisplay[i] !== wantDisplay) {
+            founderPanelDisplay[i] = wantDisplay;
+            panel.style.display = wantDisplay;
+          }
+          if (!shouldShow || i === 0) continue;
+
+          const lp = localPs[i];
+          const pathEl = founderArchPaths[i];
+          if (lp >= 0.999) {
+            panel.style.opacity = '1';
+            // Drop SVG objectBoundingBox clipPath once 100% open -> huge GPU savings during closing rotation!
+            if (founderPanelClipMode[i] !== 'none') {
+              founderPanelClipMode[i] = 'none';
+              panel.style.clipPath = 'none';
+              panel.style.webkitClipPath = 'none';
+            }
+            if (founderPhotos[i]) founderPhotos[i].style.transform = 'scale(1)';
           } else {
-            const smoothP = lerp(localP, easeInOutCubic(localP), 0.22);
-            const op = clamp(localP * 4.5, 0, 1);
+            if (founderPanelClipMode[i] !== 'url') {
+              founderPanelClipMode[i] = 'url';
+              const clipUrl = `url(#founderArchClip${i})`;
+              panel.style.clipPath = clipUrl;
+              panel.style.webkitClipPath = clipUrl;
+            }
+            const smoothP = lerp(lp, easeInOutCubic(lp), 0.22);
+            const op = clamp(lp * 4.5, 0, 1);
             panel.style.opacity = op.toFixed(3);
 
-            const yEdge = lerp(1.04, -0.05, smoothP);
-            const archLift = 0.062 * Math.sin(localP * Math.PI);
-            const yCtrl = yEdge - archLift * 2.0;
-            pathEl.setAttribute(
-              'd',
-              `M 0,1.12 L 0,${yEdge.toFixed(4)} Q 0.5,${yCtrl.toFixed(4)} 1,${yEdge.toFixed(4)} L 1,1.12 Z`
-            );
-
-            if (founderPhotos[k]) {
+            if (pathEl) {
+              const yEdge = lerp(1.04, -0.05, smoothP);
+              const archLift = 0.062 * Math.sin(lp * Math.PI);
+              const yCtrl = yEdge - archLift * 2.0;
+              pathEl.setAttribute(
+                'd',
+                `M 0,1.12 L 0,${yEdge.toFixed(4)} Q 0.5,${yCtrl.toFixed(4)} 1,${yEdge.toFixed(4)} L 1,1.12 Z`
+              );
+            }
+            if (founderPhotos[i]) {
               const sc = lerp(1.06, 1.0, smoothP);
-              founderPhotos[k].style.transform = `scale(${sc.toFixed(3)})`;
+              founderPhotos[i].style.transform = `scale(${sc.toFixed(3)})`;
             }
           }
         }
 
-        // Phase C (0.63 -> 0.98): Full-Circle Reverse Closing Choreography (Overlapping 5th & 6th Images!)
-        //   C1 (0.63 -> 0.78): Sides close inward first (100vw -> sleek vertical rectangle) while Techuilla & Agency appear on Left & Right.
-        //   C2 (0.78 -> 0.91): Top & bottom shrink + rectangle rotates toward left (-60deg) contracting into a small square.
-        //   C3 (0.91 -> 0.98): Small rotating square contracts to 0 & disappears; Techuilla & Agency glide together dead-center!
-        const winW = window.innerWidth || 1440;
-        const winH = window.innerHeight || 900;
+        // Phase C (0.63 -> 0.98): Pure GPU-Composited Closing Choreography (Zero Layout Thrash!)
+        //   Uses compositor-only clip-path: inset(...) + transform: rotate()/scale() instead of width/height!
+        const winW = cachedFounderW;
+        const winH = cachedFounderH;
 
         const c1 = easeInOutCubic(clamp((safeP - 0.63) / 0.15, 0, 1)); // Side squeeze -> vertical rectangle
         const c2 = easeInOutCubic(clamp((safeP - 0.78) / 0.13, 0, 1)); // Top/bottom shrink + left rotation -> small square
@@ -4049,44 +4111,52 @@
         let radiusPx = 0;
 
         if (safeP > 0.63) {
-          // Width: 100vw -> vertical rectangle -> small square
           const w1 = lerp(winW, rectW, c1);
           curW = lerp(w1, sqSize, c2);
 
-          // Height: stays full longer, gently dips to 88vh in C1, then shrinks top & bottom to square in C2
           const h1 = lerp(winH, rectH, c1 * 0.85);
           curH = lerp(h1, sqSize, c2);
 
-          // Smooth left-side (counter-clockwise) rotation starts right as vertical rectangle forms & continues through C3
           rotDeg = lerp(0, -58, c2) + lerp(0, -32, c3);
-
-          // Final contraction to zero in C3
           filmScale = lerp(1, 0, c3);
           filmOp = clamp(1 - c3 * 1.15, 0, 1);
-
-          // Subtle editorial corner softening as it pulls away from viewport edges
           radiusPx = lerp(0, 8, c1) + lerp(0, 4, c2);
         }
 
         if (founderFilmstrip) {
-          founderFilmstrip.style.width = `${curW.toFixed(1)}px`;
-          founderFilmstrip.style.height = `${curH.toFixed(1)}px`;
-          founderFilmstrip.style.borderRadius = `${radiusPx.toFixed(1)}px`;
-          founderFilmstrip.style.opacity = filmOp.toFixed(3);
-          founderFilmstrip.style.transform = `translate3d(-50%, -50%, 0) rotate(${rotDeg.toFixed(2)}deg) scale(${filmScale.toFixed(4)})`;
+          if (filmOp <= 0.001) {
+            founderFilmstrip.style.visibility = 'hidden';
+          } else {
+            founderFilmstrip.style.visibility = 'visible';
+            if (safeP > 0.63) {
+              const insetX = Math.max(0, (winW - curW) * 0.5).toFixed(1);
+              const insetY = Math.max(0, (winH - curH) * 0.5).toFixed(1);
+              const insetStr = `inset(${insetY}px ${insetX}px ${insetY}px ${insetX}px round ${radiusPx.toFixed(1)}px)`;
+              founderFilmstrip.style.clipPath = insetStr;
+              founderFilmstrip.style.webkitClipPath = insetStr;
+            } else {
+              founderFilmstrip.style.clipPath = 'none';
+              founderFilmstrip.style.webkitClipPath = 'none';
+            }
+            founderFilmstrip.style.opacity = filmOp.toFixed(3);
+            founderFilmstrip.style.transform = `translate3d(-50%, -50%, 0) rotate(${rotDeg.toFixed(2)}deg) scale(${filmScale.toFixed(4)})`;
+          }
         }
 
         // Subtle brand-orange glow bloom right before the small rotating square vanishes (matching reference f_08 -> f_09)
         if (founderFilmstripOrangeVeil) {
-          const orangeBloom = clamp((c2 - 0.55) / 0.45, 0, 1) * 0.88 + c3 * 0.12;
-          founderFilmstripOrangeVeil.style.opacity = (safeP > 0.78 ? orangeBloom : 0).toFixed(3);
+          const orangeBloom = safeP > 0.78 ? (clamp((c2 - 0.55) / 0.45, 0, 1) * 0.88 + c3 * 0.12) : 0;
+          founderFilmstripOrangeVeil.style.opacity = orangeBloom.toFixed(3);
         }
 
-        // Gently fade out the curved FOUNDER text as the sides close in so the closing rectangle stays super clean
+        // Gently fade out the curved FOUNDER text as the sides close in; only touch visible panels!
         const arcOp = clamp(1 - c1 * 1.45, 0, 1);
+        lastFounderArcOp = arcOp;
         const minScaleToCover = Math.max(curW / winW, curH / winH);
         const innerSc = safeP > 0.63 ? Math.max(minScaleToCover * 1.02, lerp(1.0, 0.56, c2)) : 1.0;
+
         for (let i = 0; i < FOUNDER_PANEL_COUNT; i++) {
+          if (!founderPanelVisible[i]) continue;
           if (founderArcWraps[i]) {
             founderArcWraps[i].style.opacity = arcOp.toFixed(3);
           }
@@ -4099,7 +4169,6 @@
         }
 
         // Closing "Techuilla" (Left -> Center) & "Agency" (Right -> Center) gliding back together cleanly!
-        //   Stays cleanly outside the vertical rectangle (C1) & rotating square (C2), then unites at 0px as square vanishes (C3).
         const wordRevealOp = clamp((safeP - 0.65) / 0.08, 0, 1);
         const shiftStart = clamp(winW * 0.25, 170, 380);
         const shiftAfterC1 = clamp(winW * 0.165, 125, 240);
@@ -4118,29 +4187,27 @@
         }
       }
 
-      // 100% Seamless Bidirectional 60fps Infinite Curved Carousel (R->L on scroll down, L->R on scroll up!)
+      // 100% Seamless Bidirectional 60fps Infinite Curved Carousel — Only updates visible panels & skips when faded out!
       function tickFounderCarousel() {
         const now = performance.now();
         const dt = Math.min(0.05, (now - lastFounderTick) / 1000);
         lastFounderTick = now;
 
-        if (founderTrack) {
-          const fr = founderTrack.getBoundingClientRect();
-          if (fr.top < window.innerHeight && fr.bottom > 0 && founderCurrentP > 0.03 && founderCurrentP < 0.78) {
-            founderBoldPx += carouselDir * dt * 135;
-            founderScriptPx += carouselDir * dt * 168;
+        if (isFounderInViewport && founderCurrentP > 0.03 && lastFounderArcOp > 0.01) {
+          founderBoldPx += carouselDir * dt * 135;
+          founderScriptPx += carouselDir * dt * 168;
 
-            for (let i = 0; i < FOUNDER_PANEL_COUNT; i++) {
-              const bUnit = boldUnitLens[i] || 520;
-              const sUnit = scriptUnitLens[i] || 480;
-              const bMod = ((founderBoldPx % bUnit) + bUnit) % bUnit;
-              const sMod = ((founderScriptPx % sUnit) + sUnit) % sUnit;
-              if (founderBoldTPs[i]) {
-                founderBoldTPs[i].setAttribute('startOffset', `${(-bMod).toFixed(1)}`);
-              }
-              if (founderScriptTPs[i]) {
-                founderScriptTPs[i].setAttribute('startOffset', `${(-sMod).toFixed(1)}`);
-              }
+          for (let i = 0; i < FOUNDER_PANEL_COUNT; i++) {
+            if (!founderPanelVisible[i]) continue;
+            const bUnit = boldUnitLens[i] || 520;
+            const sUnit = scriptUnitLens[i] || 480;
+            const bMod = ((founderBoldPx % bUnit) + bUnit) % bUnit;
+            const sMod = ((founderScriptPx % sUnit) + sUnit) % sUnit;
+            if (founderBoldTPs[i]) {
+              founderBoldTPs[i].setAttribute('startOffset', `${(-bMod).toFixed(1)}`);
+            }
+            if (founderScriptTPs[i]) {
+              founderScriptTPs[i].setAttribute('startOffset', `${(-sMod).toFixed(1)}`);
             }
           }
         }
@@ -4191,6 +4258,7 @@
           const r = founderTrack.getBoundingClientRect();
           const maxS = Math.max(1, founderTrack.offsetHeight - winH);
           founderTargetP = clamp(-r.top / maxS, 0, 1);
+          isFounderInViewport = r.top < winH && r.bottom > 0;
         }
 
         if (scrollThumb) {
