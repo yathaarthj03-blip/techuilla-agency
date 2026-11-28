@@ -4991,6 +4991,52 @@ Best regards,
         });
       })();
 
+      /* ========================================================================
+         CONTACT PAGE SMOOTH SCROLL CONTROLLER (-10% Slower Than Default!)
+         ======================================================================== */
+      (function initContactSmoothScroll() {
+        let curY = window.scrollY;
+        let tgtY = window.scrollY;
+        let active = false;
+        let rafId = null;
+
+        window.addEventListener('scroll', () => {
+          if (!active) {
+            curY = window.scrollY;
+            tgtY = window.scrollY;
+          }
+        }, { passive: true });
+
+        window.addEventListener('wheel', (e) => {
+          if (document.body.classList.contains('menu-open')) return;
+          if (e.target && e.target.closest && e.target.closest('textarea, select')) return;
+
+          e.preventDefault();
+          const maxScrollY = document.documentElement.scrollHeight - window.innerHeight;
+          if (maxScrollY <= 0) return;
+
+          // 10% slower than default (0.90x) with smooth inertial glide
+          tgtY = Math.max(0, Math.min(maxScrollY, tgtY + e.deltaY * 0.90));
+          if (!active) {
+            active = true;
+            rafId = requestAnimationFrame(tick);
+          }
+        }, { passive: false });
+
+        function tick() {
+          const diff = tgtY - curY;
+          if (Math.abs(diff) > 0.4) {
+            curY += diff * 0.14;
+            window.scrollTo(0, curY);
+            rafId = requestAnimationFrame(tick);
+          } else {
+            curY = tgtY;
+            window.scrollTo(0, curY);
+            active = false;
+          }
+        }
+      })();
+
     })();
   </script>
   <!-- Techuilla Media & 3D Cache Service Worker -->

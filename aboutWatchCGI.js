@@ -920,27 +920,33 @@
       let camRoll = 0;
 
       if (currentWatchP <= 0.12) {
-        camX = 0; camY = 0; camZ = 9.6;
+        // Gentle slow breathing push-in on hero watch so camera is always alive
+        const t = clamp(currentWatchP / 0.12, 0, 1);
+        camX = 0; camY = 0; camZ = lerp(9.7, 9.2, t);
         lookX = 0; lookY = 0; lookZ = 0;
       } else if (currentWatchP <= 0.34) {
-        // Zoom into 9 o'clock Stepper ("150 + / clients")
-        const t = easeInOutCubic(clamp((currentWatchP - 0.12) / 0.16, 0, 1));
-        camX = lerp(0, -1.06, t);
-        camY = lerp(0, -0.02, t);
-        camZ = lerp(9.6, 2.18, t);
-        lookX = lerp(0, -0.94, t);
-        lookY = lerp(0, 0.0, t);
-        lookZ = lerp(0, 0.02, t);
+        // Continuous non-stop zoom & subtle orbital angle drift around 9 o'clock Stepper ("150 + / clients") — NEVER stops!
+        const rawT = clamp((currentWatchP - 0.12) / 0.22, 0, 1);
+        const zoomT = easeOutCubic(clamp(rawT / 0.62, 0, 1));
+        const orbitT = rawT; // Keeps drifting smoothly through the entire 0.12 -> 0.34 window!
+        camX = lerp(0, -1.16, zoomT) + orbitT * 0.22;
+        camY = lerp(0, 0.14, zoomT) - orbitT * 0.44;
+        camZ = lerp(9.2, 2.26, zoomT) - orbitT * 0.22;
+        lookX = lerp(0, -0.96, zoomT) + orbitT * 0.10;
+        lookY = lerp(0, 0.0, zoomT) + orbitT * 0.04;
+        lookZ = lerp(0, 0.02, zoomT);
+        camRoll = -orbitT * 0.04;
       } else if (currentWatchP <= 0.50) {
-        // Dramatic Low-Angle Diagonal Glide from 9:00 -> 1:30 Hour Hand ("25+ HAPPY CLIENTS")
-        const t = easeInOutCubic(clamp((currentWatchP - 0.34) / 0.15, 0, 1));
-        camX = lerp(-1.06, 0.42, t);
-        camY = lerp(-0.02, -1.38, t);
-        camZ = lerp(2.18, 1.38, t);
-        lookX = lerp(-0.94, 0.48, t);
-        lookY = lerp(0.0, 0.48, t);
-        lookZ = lerp(0.02, 0.06, t);
-        camRoll = lerp(0, -0.09, t);
+        // Continuous low-angle diagonal sweep & glide across 1:30 Hour Hand ("25+ HAPPY CLIENTS") — NEVER stops!
+        const t = clamp((currentWatchP - 0.34) / 0.16, 0, 1);
+        const glideT = easeInOutCubic(t);
+        camX = lerp(-0.94, 0.56, glideT);
+        camY = lerp(-0.30, -1.44, glideT) + Math.sin(t * Math.PI) * 0.12;
+        camZ = lerp(2.04, 1.32, glideT);
+        lookX = lerp(-0.86, 0.56, glideT);
+        lookY = lerp(0.04, 0.54, glideT);
+        lookZ = lerp(0.02, 0.06, glideT);
+        camRoll = lerp(-0.04, -0.10, glideT);
       } else if (currentWatchP <= 0.70) {
         // Elevate smoothly to angled overhead macro tracking sweeping hour hand across 5:00 -> 7:00 ("Since May 2026")
         const t = easeInOutCubic(clamp((currentWatchP - 0.50) / 0.20, 0, 1));
@@ -948,13 +954,13 @@
         const trackCamX = tip.x * 0.72;
         const trackCamY = tip.y * 0.72 - 0.52;
         const trackCamZ = 2.48;
-        camX = lerp(0.42, trackCamX, t);
-        camY = lerp(-1.38, trackCamY, t);
-        camZ = lerp(1.38, trackCamZ, t);
-        lookX = lerp(0.48, tip.x * 0.88, t);
-        lookY = lerp(0.48, tip.y * 0.88, t);
+        camX = lerp(0.56, trackCamX, t);
+        camY = lerp(-1.44, trackCamY, t);
+        camZ = lerp(1.32, trackCamZ, t);
+        lookX = lerp(0.56, tip.x * 0.88, t);
+        lookY = lerp(0.54, tip.y * 0.88, t);
         lookZ = 0.04;
-        camRoll = lerp(-0.09, 0.06, t);
+        camRoll = lerp(-0.10, 0.06, t);
       } else if (currentWatchP <= 0.84) {
         // Rotating Bottom-to-Top Ascent Following Needle from 7:00 -> 12:00
         const t = easeInOutCubic(clamp((currentWatchP - 0.70) / 0.14, 0, 1));
@@ -970,8 +976,8 @@
         lookZ = 0.02;
         camRoll = lerp(0.06, -0.05 * (1 - t), t);
       } else {
-        // Past 12:00 (0.84 -> 0.94): Zoom ALL THE WAY OUT until the FULL BODY of the watch is visible again before next page pulls up!
-        const t = easeInOutCubic(clamp((currentWatchP - 0.84) / 0.10, 0, 1));
+        // Past 12:00 (0.84 -> 0.98): Zoom ALL THE WAY OUT continuously until the FULL BODY of the watch is visible again!
+        const t = easeInOutCubic(clamp((currentWatchP - 0.84) / 0.14, 0, 1));
         camX = lerp(0.16, 0, t);
         camY = lerp(0.22, 0.0, t);
         camZ = lerp(6.2, 9.6, t);

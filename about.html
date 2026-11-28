@@ -53,7 +53,7 @@
   <!-- Three.js, CGI Cinema Camera Engine & CGI Luxury Watch Engine -->
   <script src="three.min.js"></script>
   <script src="aboutCameraCGI.js?v=20261128_macro_v3"></script>
-  <script src="aboutWatchCGI.js?v=20261128_watch_v4_final"></script>
+  <script src="aboutWatchCGI.js?v=20261128_watch_v5_continuous"></script>
 
   <style>
     /* ==========================================================================
@@ -1711,12 +1711,12 @@
 
     .watch-manifesto-text {
       font-family: var(--font-sans);
-      font-size: clamp(24px, 2.85vw, 46px);
+      font-size: clamp(30px, 3.65vw, 58px);
       font-weight: 800;
-      line-height: 1.28;
-      letter-spacing: -0.025em;
+      line-height: 1.22;
+      letter-spacing: -0.028em;
       color: #111111;
-      max-width: 1340px;
+      max-width: 1420px;
     }
 
     .watch-manifesto-tag {
@@ -1758,10 +1758,10 @@
 
     .watch-left-heading {
       font-family: "Archivo Black", "Inter", sans-serif;
-      font-size: clamp(27px, 2.75vw, 44px);
+      font-size: clamp(34px, 3.55vw, 57px);
       font-weight: 900;
-      line-height: 1.02;
-      letter-spacing: -0.02em;
+      line-height: 0.98;
+      letter-spacing: -0.025em;
       text-transform: uppercase;
       color: #FFFFFF;
       text-shadow: none;
@@ -1780,15 +1780,15 @@
       text-transform: uppercase;
       color: #FFFFFF;
       text-shadow: none;
-      margin-top: 10px;
+      margin-top: 12px;
     }
 
     .watch-left-date {
       font-family: "Archivo Black", "Inter", sans-serif;
-      font-size: clamp(27px, 2.95vw, 46px);
+      font-size: clamp(36px, 3.95vw, 62px);
       font-weight: 900;
-      line-height: 1.02;
-      letter-spacing: -0.015em;
+      line-height: 0.98;
+      letter-spacing: -0.02em;
       text-transform: uppercase;
       color: var(--color-orange);
       text-shadow: none;
@@ -1962,19 +1962,26 @@
       color: var(--color-orange);
     }
 
-    /* 3 Full-Bleed 16:9 Stacked Portrait Panels with Vertical Scroll Wipe */
-    .founder-panel {
+    /* Continuous Vertical 3-Panel Filmstrip (Panel 2 Appears at 50% Scroll Right Behind Panel 1 — NOT Page Pull-Up!) */
+    .founder-filmstrip {
       position: absolute;
-      inset: 0;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      z-index: 10;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .founder-panel {
+      position: relative;
       width: 100vw;
       height: 100vh;
+      flex-shrink: 0;
       overflow: hidden;
       background: #09090B;
     }
-
-    .founder-panel-0 { z-index: 10; transform: translate3d(0, 0%, 0); }
-    .founder-panel-1 { z-index: 20; transform: translate3d(0, 102%, 0); }
-    .founder-panel-2 { z-index: 30; transform: translate3d(0, 102%, 0); }
 
     .founder-panel-photo {
       position: absolute;
@@ -1987,7 +1994,6 @@
       filter: contrast(1.04) saturate(1.02);
     }
 
-    /* Subtle dark cinema vignette so curved bold & script typography always pops cleanly */
     .founder-panel::after {
       content: "";
       position: absolute;
@@ -1997,16 +2003,17 @@
       z-index: 2;
     }
 
-    /* Curved Smile-Arc Dual-Layer Infinite Text Carousel (Exact Match to Reference Video!) */
+    /* Curved Semicircle Dual-Layer Infinite Text Carousel (Shrinks Smoothly as it Rises Upward on Scroll!) */
     .founder-arc-overlay {
       position: absolute;
-      left: -4vw;
-      width: 108vw;
-      height: 62vh;
-      top: 32vh;
+      left: -6vw;
+      width: 112vw;
+      height: 60vh;
+      top: 30vh;
       z-index: 6;
       pointer-events: none;
       overflow: visible;
+      transform-origin: center center;
     }
 
     .founder-arc-svg {
@@ -2610,69 +2617,60 @@
         </div>
       </div>
 
-      <!-- Panel 1: Founder Portrait 1 + Curved Infinite "FOUNDER •" (Orange) & Thin Cursive "Developer" (White) -->
-      <div class="founder-panel founder-panel-0" id="founderPanel0">
-        <img src="assets/founder_1.jpg" alt="Yathaarth Jaju — Founder & Developer" class="founder-panel-photo" loading="eager" />
-        <div class="founder-arc-overlay" id="founderArcWrap0" aria-hidden="true">
-          <svg class="founder-arc-svg" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMid slice">
-            <defs>
-              <path id="founderArcPath0" d="M -900,40 Q 720,410 2340,40" />
-            </defs>
-            <text class="founder-arc-bold is-orange">
-              <textPath id="founderBoldTP0" href="#founderArcPath0" startOffset="0%">
-                FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER •
-              </textPath>
-            </text>
-            <text class="founder-arc-script is-white" dy="16">
-              <textPath id="founderScriptTP0" href="#founderArcPath0" startOffset="6%">
-                Developer   Developer   Developer   Developer   Developer   Developer   Developer   Developer
-              </textPath>
-            </text>
-          </svg>
+      <!-- Continuous Vertical 3-Panel Filmstrip (Panel 2 Enters at 50% Scroll Right Behind Panel 1!) -->
+      <div class="founder-filmstrip" id="founderFilmstrip">
+        <!-- Panel 1: Founder Portrait 1 + Curved Infinite "FOUNDER •" (Orange) & Thin Cursive "Developer" (White) -->
+        <div class="founder-panel founder-panel-0" id="founderPanel0">
+          <img src="assets/founder_1.jpg" alt="Yathaarth Jaju — Founder & Developer" class="founder-panel-photo" loading="eager" />
+          <div class="founder-arc-overlay" id="founderArcWrap0" aria-hidden="true">
+            <svg class="founder-arc-svg" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <path id="founderArcPath0" d="M -1800,-120 Q 720,460 3240,-120" />
+              </defs>
+              <text class="founder-arc-bold is-orange">
+                <textPath id="founderBoldTP0" href="#founderArcPath0" startOffset="0"></textPath>
+              </text>
+              <text class="founder-arc-script is-white" dy="18">
+                <textPath id="founderScriptTP0" href="#founderArcPath0" startOffset="0"></textPath>
+              </text>
+            </svg>
+          </div>
         </div>
-      </div>
 
-      <!-- Panel 2: Founder Portrait 2 + Curved Infinite "FOUNDER •" (White) & Thin Cursive "Designer & Integrator" (Orange) -->
-      <div class="founder-panel founder-panel-1" id="founderPanel1">
-        <img src="assets/founder_2.jpg" alt="Yathaarth Jaju — Founder, Designer & Integrator" class="founder-panel-photo" loading="eager" />
-        <div class="founder-arc-overlay" id="founderArcWrap1" aria-hidden="true">
-          <svg class="founder-arc-svg" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMid slice">
-            <defs>
-              <path id="founderArcPath1" d="M -900,40 Q 720,410 2340,40" />
-            </defs>
-            <text class="founder-arc-bold is-white">
-              <textPath id="founderBoldTP1" href="#founderArcPath1" startOffset="0%">
-                FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER •
-              </textPath>
-            </text>
-            <text class="founder-arc-script is-orange" dy="16">
-              <textPath id="founderScriptTP1" href="#founderArcPath1" startOffset="4%">
-                Designer &amp; Integrator   Designer &amp; Integrator   Designer &amp; Integrator   Designer &amp; Integrator
-              </textPath>
-            </text>
-          </svg>
+        <!-- Panel 2: Founder Portrait 2 + Curved Infinite "FOUNDER •" (White) & Thin Cursive "Designer & Integrator" (Orange) -->
+        <div class="founder-panel founder-panel-1" id="founderPanel1">
+          <img src="assets/founder_2.jpg" alt="Yathaarth Jaju — Founder, Designer & Integrator" class="founder-panel-photo" loading="eager" />
+          <div class="founder-arc-overlay" id="founderArcWrap1" aria-hidden="true">
+            <svg class="founder-arc-svg" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <path id="founderArcPath1" d="M -1800,-120 Q 720,460 3240,-120" />
+              </defs>
+              <text class="founder-arc-bold is-white">
+                <textPath id="founderBoldTP1" href="#founderArcPath1" startOffset="0"></textPath>
+              </text>
+              <text class="founder-arc-script is-orange" dy="18">
+                <textPath id="founderScriptTP1" href="#founderArcPath1" startOffset="0"></textPath>
+              </text>
+            </svg>
+          </div>
         </div>
-      </div>
 
-      <!-- Panel 3: Founder Portrait 3 + Curved Infinite "FOUNDER •" (Orange) & Thin Cursive "Creative" (White) -->
-      <div class="founder-panel founder-panel-2" id="founderPanel2">
-        <img src="assets/founder_3.jpg" alt="Yathaarth Jaju — Founder & Creative" class="founder-panel-photo" loading="eager" />
-        <div class="founder-arc-overlay" id="founderArcWrap2" aria-hidden="true">
-          <svg class="founder-arc-svg" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMid slice">
-            <defs>
-              <path id="founderArcPath2" d="M -900,40 Q 720,410 2340,40" />
-            </defs>
-            <text class="founder-arc-bold is-orange">
-              <textPath id="founderBoldTP2" href="#founderArcPath2" startOffset="0%">
-                FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER • FOUNDER •
-              </textPath>
-            </text>
-            <text class="founder-arc-script is-white" dy="16">
-              <textPath id="founderScriptTP2" href="#founderArcPath2" startOffset="8%">
-                Creative   Creative   Creative   Creative   Creative   Creative   Creative   Creative   Creative
-              </textPath>
-            </text>
-          </svg>
+        <!-- Panel 3: Founder Portrait 3 + Curved Infinite "FOUNDER •" (Orange) & Thin Cursive "Creative" (White) -->
+        <div class="founder-panel founder-panel-2" id="founderPanel2">
+          <img src="assets/founder_3.jpg" alt="Yathaarth Jaju — Founder & Creative" class="founder-panel-photo" loading="eager" />
+          <div class="founder-arc-overlay" id="founderArcWrap2" aria-hidden="true">
+            <svg class="founder-arc-svg" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <path id="founderArcPath2" d="M -1800,-120 Q 720,460 3240,-120" />
+              </defs>
+              <text class="founder-arc-bold is-orange">
+                <textPath id="founderBoldTP2" href="#founderArcPath2" startOffset="0"></textPath>
+              </text>
+              <text class="founder-arc-script is-white" dy="18">
+                <textPath id="founderScriptTP2" href="#founderArcPath2" startOffset="0"></textPath>
+              </text>
+            </svg>
+          </div>
         </div>
       </div>
     </div>
@@ -3771,15 +3769,14 @@
 
       /* ------------------------------------------------------------------------
          8C. SECTION 8 — "THE PERSON BEHIND TECHUILLA" CENTER SPLIT-WIPE
-             + 3-PANEL FULL-BLEED FOUNDER SHOWCASE WITH CURVED INFINITE TEXT ARC
+             + CONTINUOUS VERTICAL 3-PANEL FILMSTRIP + SHRINKING SEMICIRCLE
+             + PIXEL-MEASURED 100% SEAMLESS INFINITE CURVED TEXT CAROUSEL
          ------------------------------------------------------------------------ */
       const founderTrack = document.getElementById('founderSectionTrack');
       const founderSplitCurtain = document.getElementById('founderSplitCurtain');
       const founderSplitLeft = document.getElementById('founderSplitLeft');
       const founderSplitRight = document.getElementById('founderSplitRight');
-      const founderPanel0 = document.getElementById('founderPanel0');
-      const founderPanel1 = document.getElementById('founderPanel1');
-      const founderPanel2 = document.getElementById('founderPanel2');
+      const founderFilmstrip = document.getElementById('founderFilmstrip');
       const founderArcWraps = [
         document.getElementById('founderArcWrap0'),
         document.getElementById('founderArcWrap1'),
@@ -3796,16 +3793,55 @@
         document.getElementById('founderScriptTP2')
       ];
 
+      const FOUNDER_BOLD_UNIT = 'FOUNDER • ';
+      const FOUNDER_SCRIPT_UNITS = [
+        'Developer\u00A0\u00A0\u00A0\u00A0',
+        'Designer & Integrator\u00A0\u00A0\u00A0\u00A0',
+        'Creative\u00A0\u00A0\u00A0\u00A0'
+      ];
+      const boldUnitLens = [560, 560, 560];
+      const scriptUnitLens = [420, 860, 380];
+
+      // Populate repeating units & measure exact SVG pixel length for 100% seamless zero-jump infinite wrap!
+      for (let i = 0; i < 3; i++) {
+        if (founderBoldTPs[i]) {
+          founderBoldTPs[i].textContent = FOUNDER_BOLD_UNIT.repeat(14);
+        }
+        if (founderScriptTPs[i]) {
+          founderScriptTPs[i].textContent = FOUNDER_SCRIPT_UNITS[i].repeat(14);
+        }
+      }
+
+      function measureFounderCarouselUnits() {
+        for (let i = 0; i < 3; i++) {
+          try {
+            if (founderBoldTPs[i] && founderBoldTPs[i].parentNode && founderBoldTPs[i].parentNode.getSubStringLength) {
+              const bl = founderBoldTPs[i].parentNode.getSubStringLength(0, FOUNDER_BOLD_UNIT.length);
+              if (bl > 40) boldUnitLens[i] = bl;
+            }
+            if (founderScriptTPs[i] && founderScriptTPs[i].parentNode && founderScriptTPs[i].parentNode.getSubStringLength) {
+              const sl = founderScriptTPs[i].parentNode.getSubStringLength(0, FOUNDER_SCRIPT_UNITS[i].length);
+              if (sl > 40) scriptUnitLens[i] = sl;
+            }
+          } catch (e) {}
+        }
+      }
+      setTimeout(measureFounderCarouselUnits, 120);
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(measureFounderCarouselUnits).catch(() => {});
+      }
+
       let founderTargetP = 0, founderCurrentP = 0;
-      let founderMarqueePhase = 0;
+      let founderBoldPx = 0;
+      let founderScriptPx = 0;
       let lastFounderTick = performance.now();
 
       function renderFounderSection(P) {
         if (!founderTrack) return;
         const safeP = clamp(P, 0, 1);
 
-        // Phase A (0.06 -> 0.24): Center Split-Wipe! Left half wipes left, Right half wipes right!
-        const splitP = easeInOutCubic(clamp((safeP - 0.06) / 0.18, 0, 1));
+        // Phase A (0.05 -> 0.22): Center Split-Wipe! Left half wipes left, Right half wipes right!
+        const splitP = easeInOutCubic(clamp((safeP - 0.05) / 0.17, 0, 1));
         if (founderSplitLeft && founderSplitRight) {
           founderSplitLeft.style.transform = `translate3d(${(-splitP * 102).toFixed(2)}%, 0, 0)`;
           founderSplitRight.style.transform = `translate3d(${(splitP * 102).toFixed(2)}%, 0, 0)`;
@@ -3814,32 +3850,29 @@
           founderSplitCurtain.style.opacity = splitP >= 0.999 ? '0' : '1';
         }
 
-        // Phase B (0.24 -> 0.44): Panel 1 ("Developer") subtle arc rise parallax
-        const p1ArcP = easeOutCubic(clamp((safeP - 0.14) / 0.28, 0, 1));
-        if (founderArcWraps[0]) {
-          founderArcWraps[0].style.transform = `translate3d(0, ${lerp(14, -4, p1ArcP).toFixed(2)}vh, 0)`;
+        // Phase B (0.22 -> 1.00): Continuous Vertical 3-Panel Filmstrip (NOT Page Pull-Up!)
+        //   Panel 1 scrolls up and as it passes 50%, Panel 2 is already rising smoothly right behind it, then Panel 3!
+        const filmstripP = clamp((safeP - 0.22) / 0.78, 0, 1);
+        const stripOffsetVH = filmstripP * 200; // 0vh -> 200vh across 3 stacked 100vh panels
+        if (founderFilmstrip) {
+          founderFilmstrip.style.transform = `translate3d(0, ${(-stripOffsetVH).toFixed(2)}vh, 0)`;
         }
 
-        // Phase C (0.44 -> 0.68): Panel 2 ("Designer & Integrator") physically slides straight UP over Panel 1!
-        const p2Enter = easeInOutCubic(clamp((safeP - 0.44) / 0.22, 0, 1));
-        if (founderPanel1) {
-          founderPanel1.style.transform = `translate3d(0, ${lerp(102, 0, p2Enter).toFixed(2)}%, 0)`;
-        }
-        if (founderArcWraps[1]) {
-          founderArcWraps[1].style.transform = `translate3d(0, ${lerp(18, -4, p2Enter).toFixed(2)}vh, 0)`;
-        }
-
-        // Phase D (0.68 -> 0.94): Panel 3 ("Creative") physically slides straight UP over Panel 2!
-        const p3Enter = easeInOutCubic(clamp((safeP - 0.68) / 0.24, 0, 1));
-        if (founderPanel2) {
-          founderPanel2.style.transform = `translate3d(0, ${lerp(102, 0, p3Enter).toFixed(2)}%, 0)`;
-        }
-        if (founderArcWraps[2]) {
-          founderArcWraps[2].style.transform = `translate3d(0, ${lerp(18, -4, p3Enter).toFixed(2)}vh, 0)`;
+        // Curved Semicircle Shrink-on-Upward-Scroll (Exact Match to Reference Video!):
+        //   As each panel rises from bottom (+1) through center (0) toward top (-1), its curved semicircle
+        //   travels upward AND smoothly shrinks (scale 1.22 -> 0.66)!
+        for (let i = 0; i < 3; i++) {
+          const wrap = founderArcWraps[i];
+          if (!wrap) continue;
+          const panelCenterOffset = (i * 100 - stripOffsetVH) / 100; // +1 bottom, 0 center, -1 top
+          const rise = clamp(0.5 - panelCenterOffset * 0.5, 0, 1);
+          const arcScale = lerp(1.22, 0.66, rise);
+          const arcShiftY = lerp(14, -18, rise);
+          wrap.style.transform = `translate3d(0, ${arcShiftY.toFixed(2)}vh, 0) scale(${arcScale.toFixed(3)})`;
         }
       }
 
-      // Continuous 60fps Curved Infinite Carousel Loop for Founder Text Arcs (Runs ONLY when Founder section is in view!)
+      // 100% Seamless Pixel-Measured 60fps Infinite Curved Carousel Loop (Zero Jumps, Zero Resets!)
       function tickFounderCarousel() {
         const now = performance.now();
         const dt = Math.min(0.05, (now - lastFounderTick) / 1000);
@@ -3847,18 +3880,21 @@
 
         if (founderTrack) {
           const fr = founderTrack.getBoundingClientRect();
-          if (fr.top < window.innerHeight && fr.bottom > 0 && founderCurrentP > 0.05) {
-            founderMarqueePhase = (founderMarqueePhase + dt * 3.8) % 100;
-            // Combine continuous motion + gentle scroll offset for tactile response
-            const boldOff = -((founderMarqueePhase + founderCurrentP * 32) % 25);
-            const scriptOff = -(((founderMarqueePhase * 1.18 + founderCurrentP * 38) + 6) % 25);
+          if (fr.top < window.innerHeight && fr.bottom > 0 && founderCurrentP > 0.04) {
+            founderBoldPx += dt * 155;   // Smooth continuous horizontal glide along semicircle
+            founderScriptPx += dt * 195; // Slightly faster delicate cursive counter-parallax!
 
             for (let i = 0; i < 3; i++) {
+              const bUnit = boldUnitLens[i] || 560;
+              const sUnit = scriptUnitLens[i] || 420;
+              // Seamless modulo by exact measured unit width + scroll boost
+              const bOff = -((founderBoldPx + founderCurrentP * 920) % bUnit);
+              const sOff = -((founderScriptPx + founderCurrentP * 1140) % sUnit);
               if (founderBoldTPs[i]) {
-                founderBoldTPs[i].setAttribute('startOffset', `${boldOff.toFixed(2)}%`);
+                founderBoldTPs[i].setAttribute('startOffset', `${bOff.toFixed(1)}`);
               }
               if (founderScriptTPs[i]) {
-                founderScriptTPs[i].setAttribute('startOffset', `${scriptOff.toFixed(2)}%`);
+                founderScriptTPs[i].setAttribute('startOffset', `${sOff.toFixed(1)}`);
               }
             }
           }
@@ -4030,12 +4066,12 @@
         if (maxScrollY <= 0) return;
 
         const clampedDelta = Math.sign(e.deltaY) * Math.min(75, Math.abs(e.deltaY));
-        // Decrease scroll speed by 5% ONLY inside the Watch Track Record section!
+        // Decrease scroll speed by 10% further ONLY inside the Clock / Watch Track Record section!
         let scrollFactor = 0.513;
         if (watchTrack) {
           const wr = watchTrack.getBoundingClientRect();
           if (wr.top <= 10 && wr.bottom >= window.innerHeight - 10) {
-            scrollFactor = 0.487;
+            scrollFactor = 0.438;
           }
         }
         targetY = Math.max(0, Math.min(maxScrollY, targetY + clampedDelta * scrollFactor));
