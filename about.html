@@ -2750,9 +2750,9 @@
           </div>
         </div>
 
-        <!-- Panel 3 (4th): Team Winner Photo — Entrepreneur -->
+        <!-- Panel 3 (4th): Founder Portrait 4 — Entrepreneur -->
         <div class="founder-panel founder-panel-3" id="founderPanel3">
-          <img src="assets/founder_4.jpg" alt="Yathaarth Jaju — Techuilla Team Winner" class="founder-panel-photo" style="object-position: center 22%;" loading="eager" />
+          <img src="assets/founder_4.jpg?v=2" alt="Yathaarth Jaju — Founder & Entrepreneur" class="founder-panel-photo" style="object-position: center 18%;" loading="eager" />
           <div class="founder-arc-overlay" id="founderArcWrap3" aria-hidden="true">
             <svg class="founder-arc-svg" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMid slice">
               <defs><path id="founderArcPath3" d="M -320,-35 Q 720,445 1760,-35" /></defs>
@@ -3987,10 +3987,11 @@
           founderSplitCurtain.style.opacity = splitP >= 0.999 ? '0' : '1';
         }
 
-        // Phase B (0.13 -> 0.80): 6-Panel Continuous Overlapping Upward-Arch Dissolve Sequence (1 -> 2 -> 3 -> 4 -> 5 -> 2)
+        // Phase B (0.13 -> 0.76): 6-Panel Continuous Overlapping Upward-Arch Dissolve Sequence (1 -> 2 -> 3 -> 4 -> 5 -> 2)
         //   Panel 1 starts at 0 so Image 1 is 100% full-screen when THE PERSON BEHIND TECHUILLA opens;
-        //   Panels 2..5 start with 0.36 overlap so each next image is already ~25-27% rising as the previous hits 100%!
-        const seqFloat = clamp((safeP - 0.13) / 0.67, 0, 1) * 5.0;
+        //   Panels 2..5 start with 0.36 overlap so each next image is already ~25-27% rising as the previous hits 100%,
+        //   and Panel 5 (the winking 2nd photo) hits 100% cleanly right as the vertical closing rectangle forms!
+        const seqFloat = clamp((safeP - 0.13) / 0.63, 0, 1) * 5.0;
         const OVERLAP = 0.36;
 
         for (let k = 1; k < FOUNDER_PANEL_COUNT; k++) {
@@ -4089,9 +4090,11 @@
           if (founderArcWraps[i]) {
             founderArcWraps[i].style.opacity = arcOp.toFixed(3);
           }
-          // Smoothly frame inner portrait inside shrinking rectangle/square with zero black gaps
+          // Smoothly frame inner portrait inside shrinking rectangle/square with zero black gaps.
+          // For Panel 5 (winking photo), gently shift +3.8vw right as rectangle closes so face, left ear & winking hand sit dead-center!
           if (founderPanels[i]) {
-            founderPanels[i].style.transform = `translate3d(-50%, -50%, 0) scale(${innerSc.toFixed(3)})`;
+            const panXvw = (i === 5 && safeP > 0.63) ? lerp(0, 3.8, c1) : 0;
+            founderPanels[i].style.transform = `translate3d(calc(-50% + ${panXvw.toFixed(2)}vw), -50%, 0) scale(${innerSc.toFixed(3)})`;
           }
         }
 
